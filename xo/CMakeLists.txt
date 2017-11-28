@@ -1,0 +1,39 @@
+SET ( XO_LIB_NAMES
+	container
+	diagnose
+	filesystem
+	geometry
+	numerical
+	stream
+	string
+	system
+	time
+	utility
+	)
+
+foreach(xolib ${XO_LIB_NAMES})
+  file(GLOB XO_${xolib} ${xolib}/*.h ${xolib}/*.cpp)
+  list(APPEND XO_SOURCES ${XO_${xolib}})
+endforeach()
+
+add_library(xo SHARED ${XO_SOURCES} )
+
+if (UNIX)
+    target_link_libraries(xo pthread)
+endif()
+
+if (MSVC)
+foreach(xolib ${XO_LIB_NAMES})
+source_group("${xolib}" FILES ${XO_${xolib}} )
+endforeach()
+endif()
+
+include_directories(${XO_INCLUDE_DIR})
+
+target_compile_definitions( xo PRIVATE XO_EXPORTS )
+
+set_target_properties(xo PROPERTIES 
+	PROJECT_LABEL "xo"
+	OUTPUT_NAME xo
+    FOLDER "xo"
+	)
