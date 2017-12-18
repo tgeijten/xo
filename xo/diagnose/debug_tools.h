@@ -2,7 +2,7 @@
 
 #include <fstream>
 #include <functional>
-#include "system/path.h"
+#include "xo/filesystem/path.h"
 
 namespace xo
 {
