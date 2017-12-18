@@ -12,17 +12,26 @@ namespace xo
 		using container_t = typename std::vector< std::pair< K, V > >;
 		using value_type = typename container_t::value_type;
 		using iterator = typename container_t::iterator;
+		using reverse_iterator = typename container_t::reverse_iterator;
 		using const_iterator = typename container_t::const_iterator;
+		using const_reverse_iterator = typename container_t::const_reverse_iterator;
 
 		bool empty() const { return data_.empty(); }
 		void clear() { data_.clear(); }
 		size_t size() const { return data_.size(); }
+
 		iterator begin() { return data_.begin(); }
 		const_iterator begin() const { return data_.begin(); }
-		const_iterator cbegin() const { return data_.begin(); }
+		const_iterator cbegin() const { return data_.cbegin(); }
+		reverse_iterator rbegin() { return data_.rbegin(); }
+		const_reverse_iterator crbegin() const { return data_.crbegin(); }
+
 		iterator end() { return data_.end(); }
 		const_iterator end() const { return data_.end(); }
-		const_iterator cend() const { return data_.end(); }
+		const_iterator cend() const { return data_.cend(); }
+		reverse_iterator rend() { return data_.rend(); }
+		const_reverse_iterator crend() const { return data_.crend(); }
+
 		iterator erase( iterator it ) { return data_.erase( it ); }
 
 		iterator lower_bound( const K& key ) { return std::lower_bound( begin(), end(), key, compare_less ); }

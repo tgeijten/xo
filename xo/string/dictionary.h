@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xo/utility/types.h"
+#include "xo/system/assert.h"
 
 namespace xo
 {
@@ -40,4 +41,13 @@ namespace xo
 
 	template< typename T >
 	dictionary< T > make_dictionary( std::initializer_list< std::pair< T, string > > l ) { return dictionary< T >( l ); }
+
+	template< typename T >
+	T lookup( const string& value, std::initializer_list< std::pair< const char*, T > > table )
+	{
+		for ( auto& entry : table )
+			if ( value == entry.first )
+				return entry.second;
+		xo_error( "Could not find " + value );
+	}
 }

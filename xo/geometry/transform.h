@@ -3,6 +3,7 @@
 #include "xo/utility/types.h"
 #include "xo/geometry/vec3.h"
 #include "xo/geometry/quat.h"
+#include "xo/container/prop_node.h"
 
 namespace xo
 {
@@ -43,9 +44,10 @@ namespace xo
 	typedef transform_< real_t > transform;
 	typedef transform_< float > transformf;
 	typedef transform_< double > transformd;
+
+	template< typename T > struct prop_node_cast<transform_<T>> {
+		static transform_<T> from( const prop_node& pn ) { return transform_<T>( pn ); }
+		static prop_node to( const transform_<T>& vec ) { return static_cast<prop_node>( vec ); }
+	};
 }
 
-template< typename T > struct prop_node_cast< transform_<T> > {
-	static transform_<T> from( const prop_node& pn ) { return transform_<T>( pn ); }
-	static prop_node to( const transform_<T>& vec ) { return static_cast< prop_node >( vec ); }
-};

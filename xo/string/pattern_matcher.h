@@ -2,7 +2,7 @@
 
 #include <vector>
 #include "string_tools.h"
-#include "prop_node.h"
+#include "xo/container/prop_node.h"
 
 namespace xo
 {
