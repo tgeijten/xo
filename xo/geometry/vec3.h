@@ -49,15 +49,15 @@ namespace xo
 	{ v1.x *= v2.x; v1.y *= v2.y; v1.z *= v2.z; return v1; }
 
 	/// Get length of a vec3
-	template< typename T > T length( vec3_<T> v )
+	template< typename T > T length( const vec3_<T>& v )
 	{ return sqrt( v.x * v.x + v.y * v.y + v.z * v.z ); }
 
 	/// Get squared length of a vec3
-	template< typename T > T squared_length( vec3_<T> v )
+	template< typename T > T squared_length( const vec3_<T>& v )
 	{ return v.x * v.x + v.y * v.y + v.z * v.z; }
 
 	/// Test if a vec3 is of unit length
-	template< typename T > T is_normalized( vec3_<T> v )
+	template< typename T > T is_normalized( const vec3_<T>& v )
 	{ return equals( v.x * v.x + v.y * v.y + v.z * v.z, T(1) ); }
 
 	/// Get distance between two vec3
