@@ -31,11 +31,11 @@ namespace xo
 	template< typename C > typename C::const_iterator max_element( const C& cont )
 	{ return std::max_element( std::cbegin( cont ), std::cend( cont ) ); }
 
-	template< typename I > typename I::value_type average( I b, I e )
-	{ return std::accumulate( b, e, I::value_type( 0 ) ) / typename I::value_type( e - b ); }
+	template< typename I > typename std::iterator_traits< I >::value_type average( I b, I e )
+	{ return std::accumulate( b, e, std::iterator_traits< I >::value_type( 0 ) ) / ( e - b ); }
 
 	template< typename C > typename C::value_type average( const C& cont )
-	{ return average( std::begin( cont ), std::end( cont ) ); }
+	{ return average( std::cbegin( cont ), std::cend( cont ) ); }
 
 	template < typename C > std::vector< index_t > sort_indices( const C& cont ) {
 		std::vector< size_t > idx_vec( cont.size() );
@@ -46,16 +46,21 @@ namespace xo
 
 	template< typename C > C sorted_copy( const C& cont ) { C res( cont ); std::sort( res.begin(), res.end() ); return res; }
 
-	template< typename T > T median( const vector< T >& vec ) {
-		xo_assert( vec.size() > 0 );
-		auto s = vec.size();
-		auto v = sorted_copy( vec );
+	template< typename I > typename std::iterator_traits< I >::value_type median( I b, I e ) {
+		auto s = e - b;
+		xo_assert( s > 0 );
+		std::vector< std::iterator_traits< I >::value_type > v( e - b );
+		std::copy( b, e, v.begin() );
 		if ( s % 2 == 1 ) return v[ s / 2 ];
-		else return ( v[ s / 2 ] + v[ s / 2 - 1 ] ) / T(2);
+		else return ( v[ s / 2 ] + v[ s / 2 - 1 ] ) / std::iterator_traits< I >::value_type( 2 );
 	}
 
-	template< typename T > T top_average( const vector< T >& vec, size_t count ) {
-		vector< T > result( count );
+	template< typename C > typename C::value_type median( const C& v ) {
+		return median( std::cbegin( v ), std::cend( v ) );
+	}
+
+	template< typename C > typename C::value_type top_average( const C& vec, size_t count ) {
+		C result( count );
 		std::partial_sort_copy( vec.begin(), vec.end(), result.begin(), result.end() );
 		return average( result );
 	}

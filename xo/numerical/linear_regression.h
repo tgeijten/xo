@@ -34,7 +34,7 @@ namespace xo
 		using T = typename CY::value_type;
 		auto n = cy.size();
 		T avgx = x_begin + ( T( n - 1 ) * x_step ) / 2;
-		T avgy = average( cy );
+		T avgy = average( std::begin( cy ), std::end( cy ) );
 		T num = 0.0;
 		T xval = x_begin;
 		for ( auto ity = std::begin( cy ); ity != std::end( cy ); ++ity, xval += x_step )
