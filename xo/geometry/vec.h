@@ -89,7 +89,7 @@ namespace xo
 		return equals( v.length(), T( 1 ) );
 	}
 
-	/// Get distance between two vec3
+	/// Get distance between two vec
 	template< typename T > T distance( const vec_<T>& v1, const vec_<T>& v2 )
 	{
 		xo_assert( v1.size() == v2.size() );
@@ -97,23 +97,6 @@ namespace xo
 		for ( index_t i = 0; i < v1.size(); ++i )
 			sum += squared( v1[ i ] - v2[ i ] );
 		return sqrt( sum );
-	}
-
-	/// compare vec3
-	template< typename T > bool operator==( const vec_<T>& v1, const vec_<T>& v2 )
-	{
-		if ( v1.size() == v2.size() )
-		{
-			for ( index_t i = 0; i < v1.size(); ++i )
-				if ( v1[ i ] != v2[ i ] )
-					return false;
-			return true;
-		}
-		else return false;
-	}
-	template< typename T > bool operator!=( const vec_<T>& v1, const vec_<T>& v2 )
-	{
-		return !( v1 == v2 );
 	}
 
 	/// Normalize a vec3
