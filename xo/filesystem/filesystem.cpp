@@ -57,6 +57,11 @@ namespace xo
 #endif
 	}
 
+	XO_API path temp_directory_path()
+	{
+		return std::getenv( "TMP" );
+	}
+
 	XO_API bool copy_file( const path& from, const path& to, bool overwrite )
 	{
 #ifdef XO_COMP_MSVC

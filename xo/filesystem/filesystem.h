@@ -8,6 +8,7 @@ namespace xo
 	XO_API path get_config_folder();
 	XO_API path get_documents_folder();
 	XO_API path get_application_folder();
+	XO_API path temp_directory_path();
 
 	XO_API bool copy_file( const path& from, const path& to, bool overwrite_existing );
 
