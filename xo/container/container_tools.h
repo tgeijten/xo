@@ -49,7 +49,7 @@ namespace xo
 	template< typename I > typename std::iterator_traits< I >::value_type median( I b, I e ) {
 		auto s = e - b;
 		xo_assert( s > 0 );
-		std::vector< std::iterator_traits< I >::value_type > v( e - b );
+		std::vector< std::remove_cv< std::iterator_traits< I >::value_type >::type > v( e - b );
 		std::copy( b, e, v.begin() );
 		if ( s % 2 == 1 ) return v[ s / 2 ];
 		else return ( v[ s / 2 ] + v[ s / 2 - 1 ] ) / std::iterator_traits< I >::value_type( 2 );

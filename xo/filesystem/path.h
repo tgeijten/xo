@@ -62,6 +62,8 @@ namespace xo
 	XO_API bool operator!=( const path& p1, const path& p2 );
 	XO_API std::ostream& operator<<( std::ostream& str, const path& p );
 
+	inline bool operator<( const path& p1, const path& p2 ) { return p1.string() < p2.string(); }
+
 	template<> struct string_cast< path, void > {
 		static path from( const string& s ) { return path( s ); }
 		static string to( const path& value ) { return value.str(); }

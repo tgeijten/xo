@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include "xo/utility/types.h"
+#include "xo/utility/pointer_iterator.h"
 
 namespace xo
 {
@@ -9,8 +10,8 @@ namespace xo
 	class dynarray
 	{
 	public:
-		typedef T* iterator;
-		typedef const T* const_iterator;
+		using iterator = typename pointer_iterator< T >;
+		using const_iterator = typename pointer_iterator< const T >;
 
 		dynarray() : data_( nullptr ), end_( nullptr ) {}
 		dynarray( size_t n, const T& v = T() ) : data_( new T[ n ] ), end_( data_.get() + n ) { assign( v ); }

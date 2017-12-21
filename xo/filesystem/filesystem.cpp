@@ -1,6 +1,9 @@
 #include "filesystem.h"
 
 #include <fstream>
+#include <sys/types.h>
+#include <sys/stat.h>
+
 #include "xo/string/string_tools.h"
 #include "xo/system/assert.h"
 
@@ -170,4 +173,23 @@ namespace xo
 		free( buf );
 		return p;
 	}
+
+	XO_API std::time_t last_write_time( const path& p )
+	{
+#ifdef XO_COMP_MSVC
+#	ifdef _USE_32BIT_TIME_T
+		struct _stat32 result;
+		if ( _stat32( p.c_str(), &result ) == 0 )
+			return result.st_mtime;
+		else xo_error( "Could not query " + p.string() );
+#	else
+		struct _stat64 result;
+		if ( _stat64( p.c_str(), &result ) == 0 )
+			return result.st_mtime;
+		else xo_error( "Could not query " + p.string() );
+#	endif
+#endif
+		XO_NOT_IMPLEMENTED;
+	}
+
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ctime>
+
 #include "xo/filesystem/path.h"
 #include "xo/system/error_code.h"
 
@@ -25,4 +27,6 @@ namespace xo
 
 	XO_API void current_path( const path& p );
 	XO_API path current_path();
+
+	XO_API std::time_t last_write_time( const path& p );
 }

@@ -8,8 +8,8 @@ namespace xo
 	template< typename T > struct vec_
 	{
 		using value_type = T;
-		using iterator = typename T*;
-		using const_iterator = typename const T*;
+		using iterator = pointer_iterator< T >;
+		using const_iterator = pointer_iterator< const T >;
 
 		vec_() : data_() {}
 		vec_( size_t n ) : data_( n ) {}
