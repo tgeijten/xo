@@ -8,9 +8,9 @@
 namespace xo
 {
 	template< typename T >
-	struct resource_cache
+	struct file_resource_cache
 	{
-		resource_cache( std::function< T*( const path& ) > create_func ) : func_( create_func ) {}
+		file_resource_cache( std::function< T*( const path& ) > create_func ) : func_( create_func ) {}
 		std::unique_ptr< T > operator()( const path& p )
 		{
 			auto timestamp = last_write_time( p );
