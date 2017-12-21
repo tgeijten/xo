@@ -23,14 +23,16 @@ if (UNIX)
 endif()
 
 if (MSVC)
-foreach(xolib ${XO_LIB_NAMES})
-source_group("${xolib}" FILES ${XO_${xolib}} )
-endforeach()
+	foreach(xolib ${XO_LIB_NAMES})
+	source_group("${xolib}" FILES ${XO_${xolib}} )
+	endforeach()
 endif()
 
 include_directories(${XO_INCLUDE_DIR})
 
-target_compile_definitions( xo PRIVATE XO_EXPORTS )
+if (MSVC)
+	target_compile_definitions( xo PRIVATE XO_EXPORTS )
+endif()
 
 set_target_properties(xo PROPERTIES 
 	PROJECT_LABEL "xo"
