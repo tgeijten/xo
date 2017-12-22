@@ -25,11 +25,17 @@ namespace xo
 		class stream_sink : public sink
 		{
 		public:
-			stream_sink( level l, std::ostream& str = std::cout ) : sink( l ), stream_( str ) {}
+			stream_sink( level l, std::ostream& str ) : sink( l ), stream_( str ) {}
 			virtual void send_log_message( level l, const string& msg ) { stream_ << msg << std::endl; };
 
 		protected:
 			std::ostream& stream_;
+		};
+
+		class console_sink : public stream_sink
+		{
+		public:
+			console_sink( level l ) : stream_sink( l, std::cout ) {}
 		};
 
 		class file_sink : public stream_sink
