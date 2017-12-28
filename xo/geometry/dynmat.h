@@ -3,14 +3,14 @@
 namespace xo
 {
 	template< typename T >
-	struct matrix
+	struct dynmat
 	{
 		using value_type = T;
 		using iterator = dynarray< T >::iterator;
 		using const_iterator = dynarray< T >::const_iterator;
 
-		matrix() : data_(), cols_() {}
-		matrix( size_t cols, size_t rows, const T& value = T() ) : data_( rows * cols, value ), cols_( cols ) {}
+		dynmat() : data_(), cols_() {}
+		dynmat( size_t cols, size_t rows, const T& value = T() ) : data_( rows * cols, value ), cols_( cols ) {}
 
 		const T& operator()( index_t col, index_t row ) const { return data_[ row * cols_ + col ]; }
 		T& operator()( index_t col, index_t row ) { return data_[ row * cols_ + col ]; }
@@ -33,10 +33,10 @@ namespace xo
 		dynarray< T > data_;
 	};
 
-	template< typename T > vec_< T > operator*( const matrix< T >& m, const vec_< T >& v )
+	template< typename T > dynvec< T > operator*( const dynmat< T >& m, const dynvec< T >& v )
 	{
 		flut_assert( m.cols() == v.size() );
-		vec_< T > r( m.rows() );
+		dynvec< T > r( m.rows() );
 		for ( index_t row = 0; row < m.rows(); ++row )
 		{
 			T sum = 0.0;
