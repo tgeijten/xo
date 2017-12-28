@@ -8,6 +8,10 @@ namespace xo
 {
 	template< typename T > struct vec4_
 	{
+		using value_type = T;
+		using iterator = T*;
+		using const_iterator = const T*;
+
 		vec4_() : x(), y(), z(), w() {}
 		vec4_( T px, T py, T pz, T pw ) : x( px ), y( py ), z( pz ), w( pw ) {}
 

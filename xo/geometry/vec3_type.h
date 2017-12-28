@@ -7,8 +7,9 @@ namespace xo
 {
 	template< typename T > struct vec3_
 	{
-		typedef T* iterator;
-		typedef const T* const_iterator;
+		using value_type = T;
+		using iterator = T*;
+		using const_iterator = const T*;
 
 		vec3_() : x(), y(), z() {}
 		vec3_( T px, T py, T pz ) : x( px ), y( py ), z( pz ) {}
