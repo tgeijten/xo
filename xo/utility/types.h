@@ -12,6 +12,8 @@ namespace xo
 	typedef double real_t;
 	typedef real_t seconds_t;
 	typedef long long nanoseconds_t;
+	typedef long long microseconds_t;
+	typedef long long milliseconds_t;
 
 	typedef size_t index_t;
 	const size_t no_size = ~size_t( 0 );
