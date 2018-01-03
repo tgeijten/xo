@@ -23,11 +23,9 @@ namespace xo
 #	include <intrin.h>
 	using cpu_cycle_count_t = unsigned long long;
 	inline cpu_cycle_count_t cpu_cycle_count() { return __rdtsc(); }
-	inline cpu_cycle_count_t cpu_cycle_frequency() { return __rdtsc(); }
 #else
 #	include <x86intrin.h>
 	using cpu_cycle_count_t = unsigned long long;
-	inline cpu_cycle_count_t cpu_cycle_count() { return __rdtsc(); }
 #endif
 #endif
 }
