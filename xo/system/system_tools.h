@@ -17,4 +17,17 @@ namespace xo
 	template< typename T > string clean_type_name() { return clean_type_name( typeid( T ).name() ); }
 	enum class thread_priority { lowest = -2, low = -1, normal = 0, high = 1, highest = 2 };
 	XO_API void set_thread_priority( thread_priority p );
+
+#ifdef XO_ENABLE_CPU_CYCLE_COUNT
+#ifdef XO_COMP_MSVC
+#	include <intrin.h>
+	using cpu_cycle_count_t = unsigned long long;
+	inline cpu_cycle_count_t cpu_cycle_count() { return __rdtsc(); }
+	inline cpu_cycle_count_t cpu_cycle_frequency() { return __rdtsc(); }
+#else
+#	include <x86intrin.h>
+	using cpu_cycle_count_t = unsigned long long;
+	inline cpu_cycle_count_t cpu_cycle_count() { return __rdtsc(); }
+#endif
+#endif
 }
