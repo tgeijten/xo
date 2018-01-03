@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xo/utility/types.h"
+#include "xo/system/system_tools.h"
 #include "xo/time/timer.h"
 #include "xo/container/prop_node.h"
 
@@ -14,30 +15,34 @@ namespace xo
 	class XO_API profiler
 	{
 	public:
+		using tick_t = nanoseconds_t;
+
 		struct section
 		{
-			section( const char* n, size_t i, size_t pi ) : name( n ), id( i ), parent_id( pi ), total_time( 0 ), overhead( 0 ) {}
+			section( const char* n, size_t i, size_t pi ) : name( n ), id( i ), parent_id( pi ), total_time( 0 ), overhead( 0 ), count( 0 ) {}
 			const char* name;
 			size_t id;
 			size_t parent_id;
-			nanoseconds_t total_time;
-			nanoseconds_t overhead;
-			nanoseconds_t epoch;
+			tick_t total_time;
+			tick_t overhead;
+			size_t count;
+			tick_t epoch;
 		};
 
 		void reset();
 		section* start_section( const char* name );
 		void end_section();
-		nanoseconds_t now() const { return timer_.nanoseconds(); }
+		tick_t now() const { return timer_.nanoseconds(); }
 		prop_node report();
 		static profiler& instance() { return instance_; }
 
 	private:
 		profiler();
-		void report_section( section* s, prop_node& pn );
+		void clear();
 
-		nanoseconds_t exclusive_time( section* s );
-		nanoseconds_t total_overhead( section* s );
+		void report_section( section* s, prop_node& pn );
+		tick_t exclusive_time( section* s );
+		tick_t total_overhead( section* s );
 		section* root() { return &sections_.front(); }
 		section* find_section( size_t id );
 		section* find_section( const char* name, size_t parent_id );
@@ -49,7 +54,10 @@ namespace xo
 		timer timer_;
 		static profiler instance_;
 		section* current_section_;
-		nanoseconds_t duration_of_now;
+		tick_t duration_of_now;
+		tick_t section_duration;
+
+		static tick_t estimate_section_overhead();
 	};
 
 	struct XO_API scoped_section_profiler
