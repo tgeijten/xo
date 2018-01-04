@@ -54,10 +54,9 @@ namespace xo
 		timer timer_;
 		static profiler instance_;
 		section* current_section_;
-		tick_t duration_of_now;
-		tick_t section_duration;
+		tick_t overhead_estimate;
 
-		static tick_t estimate_section_overhead();
+		void init_overhead_estimate();
 	};
 
 	struct XO_API scoped_section_profiler

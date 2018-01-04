@@ -3,25 +3,14 @@
 #include <thread>
 #include "xo/system/log_sink.h"
 #include "profiler_config.h"
+#include "xo/numerical/math.h"
+
+#define XO_PROFILER_MEASURE_OVERHEAD
 
 namespace xo
 {
 	profiler profiler::instance_;
 	std::thread::id instance_thread_;
-
-	void assign_test()
-	{
-		int apples[ 4 ];
-		apples[ 0 ] = rand() % 100;
-		apples[ 1 ] = rand() % 100;
-		apples[ 2 ] = rand() % 100;
-		apples[ 3 ] = rand() % 100;
-
-		long long value = rand();
-		long long bladie = 10;
-		for ( int i = 0; i < 10000; ++i )
-			bladie += value;
-	}
 
 	profiler::profiler()
 	{
@@ -39,23 +28,7 @@ namespace xo
 
 	void profiler::reset()
 	{
-		timer t;
-		tick_t t1, t2, t3;
-		t1 = now();
-		assign_test();
-		t2 = now();
-		for ( int i = 0; i < 999; ++i )
-			t3 = now();
-		auto ns = t.nanoseconds();
-
-		duration_of_now = ( t3 - t2 - ( t2 - t1 ) ) / 1000;
-		log::info( "duration of now=", duration_of_now, " total=", ( t3 - t2 ), " assign=", ( t2 - t1 ), " ns=", ns / 1000.0 );
-
-		clear();
-
-		section_duration = estimate_section_overhead();
-		log::info( "section duration=", section_duration );
-
+		init_overhead_estimate();
 		clear();
 	}
 
@@ -65,18 +38,29 @@ namespace xo
 		xo_assert_msg( instance_thread_ == std::this_thread::get_id(), "Invalid thread ID" );
 		current_section_ = acquire_section( name, current_section_->id );
 		current_section_->epoch = t;
-		current_section_->overhead += now() - t + 3 * duration_of_now / 2;
-
+#ifdef XO_PROFILER_MEASURE_OVERHEAD
+		current_section_->overhead += now() - t + overhead_estimate;
+#endif
 		return current_section_;
 	}
 
 	void profiler::end_section()
 	{
+#ifdef XO_PROFILER_MEASURE_OVERHEAD
+		auto t1 = now();
+#endif
 		xo_assert_msg( instance_thread_ == std::this_thread::get_id(), "Invalid thread ID" );
 		auto* prev_section = current_section_;
 		current_section_ = &sections_[ prev_section->parent_id ];
-		//prev_section->overhead += section_duration;
+
+#ifdef XO_PROFILER_MEASURE_OVERHEAD
+		auto t2 = now();
+		prev_section->total_time += t2 - prev_section->epoch;
+		prev_section->overhead += ( t2 - t1 ) + overhead_estimate;
+#else
+		prev_section->overhead += overhead_estimate;
 		prev_section->total_time += now() - prev_section->epoch;
+#endif
 	}
 
 	xo::profiler::section* profiler::find_section( size_t id )
@@ -131,7 +115,7 @@ namespace xo
 		double over = total_overhead( s ) / 1e6;
 		double rel_over = 100.0 * over / total;
 
-		pn[ s->name ] = stringf( "%6.0fms %6.2f%% (%5.2f%% exclusive %5.2f%% overhead)", total, rel_total, rel_ex, rel_over );
+		pn[ s->name ] = stringf( "%6.0fms %6.2f%% (%5.2f%% exclusive ~%.0f%% overhead)", total, rel_total, rel_ex, clamped( rel_over, 0.0, 100.0 ) );
 
 		auto children = get_children( s->id );
 		std::sort( children.begin(), children.end(), [&]( section* s1, section* s2 ) { return s1->total_time > s2->total_time; } );
@@ -157,35 +141,26 @@ namespace xo
 		return t;
 	}
 
-	void section_test_function1( profiler& p, int c, int& samples );
-	void section_test_function2( profiler& p, int c, int& samples )
+	void profiler::init_overhead_estimate()
 	{
-		p.start_section( "test2" );
-		for ( int i = 0; i < c; ++i )
-			section_test_function1( p, c / 4, samples );
-		++samples;
-		p.end_section();
-	}
-
-	void section_test_function1( profiler& p, int c, int& samples )
-	{
-		p.start_section( "test1" );
-		for ( int i = 0; i < c; ++i )
-			section_test_function2( p, c / 2, samples );
-		++samples;
-		p.end_section();
-	}
-
-	profiler::tick_t profiler::estimate_section_overhead()
-	{
-		int samples = 0;
+#ifdef XO_PROFILER_MEASURE_OVERHEAD
+		timer t;
+		tick_t t1, t2;
+		t1 = now();
+		for ( int i = 0; i < 9999; ++i )
+			t2 = now();
+		overhead_estimate = ( t2 - t1 ) / 10000;
+#else
+		clear();
+		int samples = 10000;
 		auto t1 = instance().now();
-		for ( int i = 0; i < 10000; ++i )
-			section_test_function1( instance(), 10, samples );
+		for ( int i = 0; i < samples; ++i )
+		{
+			start_section( "test_section1" );
+			end_section();
+		}
 		auto t2 = instance().now();
-		auto n = ( t2 - t1 ) / samples;
-		log::info( instance().report() );
-		log::info( "section duration: ", t2 - t1, " / ", samples, " = ", n );
-		return n;
+		overhead_estimate = ( t2 - t1 ) / samples;
+#endif
 	}
 }
