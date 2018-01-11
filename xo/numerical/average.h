@@ -20,5 +20,6 @@ namespace xo
 		T tot_w;
 	};
 
-	typedef average_< real_t > average;
+	typedef average_< float > averagef;
+	typedef average_< double > averaged;
 }
