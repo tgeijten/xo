@@ -174,11 +174,8 @@ namespace xo
 			if ( line.length() == 0 ) // empty line
 				continue;
 
-			if ( line[0] == '#' ) // comment
-			{
-				str.get_line();
+			if ( line[0] == ';' ) // comment
 				continue;
-			}
 
 			if ( line.size() > 2 && line[ 0 ] == '[' && line[ line.size() -1 ] == ']' )
 			{
