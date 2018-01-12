@@ -6,6 +6,7 @@
 #include "xo/string/string_cast.h"
 #include <algorithm>
 #include "container_tools.h"
+#include "xo/utility/optional.h"
 
 #ifdef XO_COMP_MSVC
 #	pragma warning( push )
@@ -60,9 +61,13 @@ namespace xo
 		/// get the value of a child node
 		template< typename T > T get( const key_t& key ) const { return get_child( key ).get< T >(); }
 
+		/// get the value of a child node
+		template< typename T > optional< T > try_get( const key_t& key ) const
+		{ const auto it = find( key ); return ( it != end() ) ? it->second.get< T >() : optional< T >(); }
+
 		/// get the value of a child node, or a default value if it doesn't exist
 		template< typename T > T get( const key_t& key, const T& def ) const
-		{ const auto it = find( key ); if ( it != end() ) return it->second.get< T >(); else return def; }
+		{ const auto it = find( key ); return ( it != end() ) ? it->second.get< T >() : def; }
 
 		/// get the value of a child node for a range of keys, or a default value if it doesn't exist
 		template< typename T > T get_any( std::initializer_list< key_t > keys, const T& def ) const
@@ -116,6 +121,16 @@ namespace xo
 			auto p = key.find_first_of( delim );
 			if ( p == string::npos ) return get< T >( key );
 			else return get_child( key.substr( 0, p ) ).get_delimited< T >( mid_str( key, p + 1 ), delim );
+		}
+
+		/// get the value of a child node, accessing children through delimiter character
+		template< typename T > optional< T > try_get_delimited( const key_t& key, const char delim = '.' ) const {
+			auto p = key.find_first_of( delim );
+			if ( p == string::npos ) return try_get< T >( key );
+			else {
+				auto ch = try_get_child( key.substr( 0, p ) );
+				return ch ? ch->try_get_delimited< T >( mid_str( key, p + 1 ), delim ) : optional<T>();
+			}
 		}
 
 		/// add a node with a value
