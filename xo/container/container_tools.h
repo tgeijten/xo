@@ -37,6 +37,10 @@ namespace xo
 	template< typename C > typename C::value_type average( const C& cont )
 	{ return average( std::cbegin( cont ), std::cend( cont ) ); }
 
+	/// append two containers, currently requires C::reserve()
+	template< typename C > C& append( C& c1, const C& c2 )
+	{ c1.reserve( c1.size() + c2.size() ); for ( auto& e : c2 ) c1.emplace_back( e ); return c1; }
+
 	template < typename C > std::vector< index_t > sort_indices( const C& cont ) {
 		std::vector< size_t > idx_vec( cont.size() );
 		for ( index_t i = 0; i < cont.size(); ++i ) idx_vec[ i ] = i;
