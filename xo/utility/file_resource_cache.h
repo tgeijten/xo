@@ -15,18 +15,18 @@ namespace xo
 		{
 			std::lock_guard< std::mutex > lock( mutex_ );
 
+			// find file in cache
 			auto timestamp = last_write_time( p );
 			auto it = cache_.find( p );
-
-			if ( it != cache_.end() && it->second.first < timestamp )
+			if ( it != cache_.end() && it->second.first != timestamp )
 			{
-				// update existing cache item
+				// file found in cache with different timestamp
 				it->second.second = std::unique_ptr< T >( func_( p ) );
 				it->second.first = timestamp;
 			}
 			else if ( it == cache_.end() )
-			{
-				// create new item and put it in the cache
+			{				
+				// file not found in cache, create new item and put it in the cache
 				it = cache_.insert( std::make_pair( p, std::make_pair( timestamp, std::unique_ptr< T >( func_( p ) ) ) ) ).first;
 			}
 
