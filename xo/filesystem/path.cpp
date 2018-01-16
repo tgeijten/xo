@@ -56,7 +56,7 @@ namespace xo
 	path path::filename() const
 	{
 		size_t n = last_separator_pos();
-		return n != string::npos ? path( data_.substr( n + 1 ) ) : path();
+		return n != string::npos ? path( data_.substr( n + 1 ) ) : *this;
 	}
 
 	path path::stem() const
