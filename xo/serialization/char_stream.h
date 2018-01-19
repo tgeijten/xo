@@ -21,13 +21,13 @@ namespace xo
 	{
 	public:
 		/// construct char_stream using given zero terminated char buffer
-		char_stream( const char* buf, const char* delim = default_delimiters() );
+		explicit char_stream( const char* buf, const char* delim = default_delimiters() );
 
 		/// construct char_stream from rvalue string
-		char_stream( string&& other, const char* delim = default_delimiters() );
+		explicit char_stream( string&& other, const char* delim = default_delimiters() );
 
 		/// construct char_stream with contents read from file
-		char_stream( const path& filename, const char* delim = default_delimiters() );
+		explicit char_stream( const path& filename, const char* delim = default_delimiters() );
 
 		~char_stream() {}
 
