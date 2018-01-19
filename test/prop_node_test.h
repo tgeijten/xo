@@ -4,6 +4,7 @@
 #include <iostream>
 #include "xo/geometry/vec3_type.h"
 #include "xo/container/container_tools.h"
+#include "xo/serialization/serialize.h"
 
 namespace xo
 {

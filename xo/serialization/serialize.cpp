@@ -208,4 +208,16 @@ namespace xo
 		}
 		return str;
 	}
+
+	XO_API xo::prop_node load_file( const path& filename, error_code* ec )
+	{
+		auto ex = filename.extension();
+		if ( ex == "xml" )
+			return load_xml( filename, ec );
+		else if ( ex == "ini" )
+			return load_ini( filename, ec );
+		else if ( ex == "pn" || ex == "prop" )
+			return load_prop( filename, ec );
+		else xo_error( "File has unknown format: " + filename.string() );
+	}
 }

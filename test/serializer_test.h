@@ -46,7 +46,7 @@ namespace xo
 		cout << str.str();
 
 		prop_node p2;
-		str >> p2;
+		str >> prop_node_deserializer< file_format::xml >( p2 );
 		if ( !XO_TEST( p1 == p2 ) )
 		{
 			log::info( p1 );
