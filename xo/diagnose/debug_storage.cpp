@@ -8,7 +8,7 @@ namespace xo
 	template< typename T, typename L >
 	struct auto_storage_writer
 	{
-		auto_storage_writer( const path filename ) : filename_( filename ) {}
+		auto_storage_writer( const path& filename ) : filename_( filename ) {}
 		~auto_storage_writer() {
 			if ( !storage_.empty() )
 				std::ofstream( filename_.str() ) << storage_;
