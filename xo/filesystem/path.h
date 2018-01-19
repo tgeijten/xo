@@ -14,11 +14,11 @@ namespace xo
 	{
 	public:
 		path() {}
-		path( const string& p ) : data_( p ) {}
-		path( string&& p ) : data_( std::move( p ) ) {}
 		path( const path& p ) : data_( p.data_ ) {}
 		path( path&& p ) : data_( std::move( p.data_ ) ) {}
 		path( const char* p ) : data_( p ) {}
+		explicit path( const string& p ) : data_( p ) {}
+		explicit path( string&& p ) : data_( std::move( p ) ) {}
 
 		path& operator=( const path& p ) { data_ = p.data_; return *this; }
 		path& operator=( path&& p ) { data_ = std::move( p.data_ ); return *this; }
@@ -31,9 +31,9 @@ namespace xo
 		const string& string() const { return data_; }
 		const char* c_str() const { return data_.c_str(); }
 
-		path& replace_extension( const path& ext = "" );
+		path& replace_extension( const path& ext = path() );
 		path& remove_filename();
-		path& replace_filename( const path& f = "" );
+		path& replace_filename( const path& f = path() );
 		path& make_preferred();
 		path parent_path() const;
 		path extension() const;
