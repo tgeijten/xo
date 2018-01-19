@@ -131,7 +131,7 @@ namespace xo
 	{
 		// TODO: more efficient. parser should be able to take any stream type.
 		std::string file_contents( std::istreambuf_iterator<char>( str ), {} );
-		parse_prop( char_stream( file_contents, "\n\r\t\v;" ), p.ec );
+		p.pn = parse_prop( char_stream( file_contents.c_str(), "\n\r\t\v;" ), p.ec );
 		return str;
 	}
 
@@ -168,7 +168,8 @@ namespace xo
 		while ( str.good() )
 		{
 			char buf[ 1024 ];
-			if ( !str.getline( buf, sizeof( buf ) ) )
+			str.getline( buf, sizeof( buf ) );
+			if ( str.fail() && !str.eof() )
 				return set_error_or_throw( p.ec, "Error reading ini file, line too long" ), str;
 
 			string line( buf );
