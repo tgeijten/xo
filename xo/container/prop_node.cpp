@@ -1,5 +1,6 @@
 #include "prop_node.h"
-#include "xo/serialization/prop_node_tools.h"
+
+#include "xo/serialization/serialize.h"
 
 #include <stdio.h>
 #include <memory>

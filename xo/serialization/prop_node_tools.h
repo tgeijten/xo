@@ -16,22 +16,6 @@
 
 namespace xo
 {
-	/// load contents from file (auto detect)
-	XO_API prop_node load_file( const path& filename );
-
-	/// load/save contents from xml
-	XO_API prop_node load_xml( const path& filename, error_code* ec = nullptr  );
-	XO_API void save_xml( const prop_node& pn, const path& filename );
-
-	/// load/save contents from prop
-	XO_API prop_node load_prop( const path& filename, error_code* ec = nullptr );
-	XO_API prop_node parse_prop( const char* str, error_code* ec = nullptr );
-	XO_API bool save_prop( const prop_node& pn, const path& filename, bool readable = true );
-
-	/// load contents from prop
-	XO_API prop_node load_ini( const path& filename );
-	XO_API void save_ini( const prop_node& pn, const path& filename );
-
 	/// merge prop_nodes
 	XO_API void merge_prop_nodes( prop_node& pn, const prop_node& other, bool overwrite );
 
