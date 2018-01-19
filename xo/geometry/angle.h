@@ -4,7 +4,7 @@
 #include "xo/numerical/math.h"
 #include "xo/numerical/result_type.h"
 #include "xo/system/assert.h"
-#include "xo/stream/char_stream.h"
+#include "xo/serialization/char_stream.h"
 
 namespace xo
 {

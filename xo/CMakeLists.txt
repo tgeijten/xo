@@ -4,7 +4,7 @@ SET ( XO_LIB_NAMES
 	filesystem
 	geometry
 	numerical
-	stream
+	serialization
 	string
 	system
 	time

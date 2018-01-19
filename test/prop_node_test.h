@@ -1,6 +1,6 @@
 #pragma once
 
-#include "xo/stream/prop_node_tools.h"
+#include "xo/serialization/prop_node_tools.h"
 #include <iostream>
 #include "xo/geometry/vec3_type.h"
 #include "xo/container/container_tools.h"

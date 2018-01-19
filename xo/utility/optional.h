@@ -2,7 +2,7 @@
 
 #include <limits>
 #include <type_traits>
-#include "xo/stream/char_stream.h"
+#include "xo/serialization/char_stream.h"
 
 namespace xo
 {

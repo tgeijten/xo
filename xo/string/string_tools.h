@@ -3,7 +3,7 @@
 #include "xo/system/platform.h"
 #include "xo/system/assert.h"
 #include "xo/filesystem/path.h"
-#include "xo/stream/char_stream.h"
+#include "xo/serialization/char_stream.h"
 
 #include <iomanip>
 #include <sstream>

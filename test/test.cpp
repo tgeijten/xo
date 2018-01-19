@@ -17,6 +17,7 @@
 #include "delay_test.h"
 #include "filter_test.h"
 #include "math_test.h"
+#include "serializer_test.h"
 
 using xo::string;
 
@@ -37,6 +38,9 @@ int main( int argc, char* argv[] )
 		xo::profile_test();
 #endif
 		xo::stopwatch sw;
+
+		xo::serializer_test();
+		sw.add_measure( "container" );
 
 		xo::container_test();
 		sw.add_measure( "container" );
