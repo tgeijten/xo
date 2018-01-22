@@ -21,7 +21,7 @@ namespace rapidxml {
 
 namespace xo
 {
-	prop_node get_rapid_xml_node2( rapidxml::xml_node<>* node )
+	prop_node get_rapid_xml_node( rapidxml::xml_node<>* node )
 	{
 		// make new prop_node
 		prop_node pn = make_prop_node( node->value() );
@@ -34,13 +34,13 @@ namespace xo
 		for ( rapidxml::xml_node<>* child = node->first_node(); child; child = child->next_sibling() )
 		{
 			if ( child->name_size() > 0 )
-				pn.push_back( child->name(), get_rapid_xml_node2( child ) );
+				pn.push_back( child->name(), get_rapid_xml_node( child ) );
 		}
 
 		return pn;
 	}
 
-	void set_rapid_xml_node2( rapidxml::xml_document<>& doc, rapidxml::xml_node<>* xmlnode, const prop_node& pn )
+	void set_rapid_xml_node( rapidxml::xml_document<>& doc, rapidxml::xml_node<>* xmlnode, const prop_node& pn )
 	{
 		if ( pn.has_value() )
 			xmlnode->value( pn.get_value().c_str() );
@@ -48,25 +48,25 @@ namespace xo
 		for ( auto& child : pn )
 		{
 			xmlnode->append_node( doc.allocate_node( rapidxml::node_element, child.first.c_str() ) );
-			set_rapid_xml_node2( doc, xmlnode->last_node(), child.second );
+			set_rapid_xml_node( doc, xmlnode->last_node(), child.second );
 		}
 	}
 
-	XO_API std::istream& operator>>( std::istream& str, prop_node_deserializer< file_format::xml > p )
+	XO_API std::istream& from_xml_stream( std::istream& str, prop_node_deserializer& p )
 	{
 		std::string file_contents( std::istreambuf_iterator<char>( str ), {} );
 
 		rapidxml::xml_document<> doc;
 		doc.parse< 0 >( &file_contents[ 0 ] ); // not officially supported but probably safe
 		if ( doc.first_node() )
-			p.pn.push_back( doc.first_node()->name(), get_rapid_xml_node2( doc.first_node() ) );
+			p.pn_.push_back( doc.first_node()->name(), get_rapid_xml_node( doc.first_node() ) );
 		return str;
 	}
 
-	XO_API std::ostream& operator<<( std::ostream& str, const prop_node_serializer< file_format::xml > p )
+	XO_API std::ostream& to_xml_stream( std::ostream& str, prop_node_serializer& p )
 	{
 		rapidxml::xml_document<> doc;
-		set_rapid_xml_node2( doc, &doc, p.pn );
+		set_rapid_xml_node( doc, &doc, p.pn_ );
 		return str << doc;
 	}
 
@@ -127,11 +127,11 @@ namespace xo
 		return parse_prop( char_stream( str, "\n\r\t\v;" ), ec );
 	}
 
-	XO_API std::istream& operator>>( std::istream& str, xo::prop_node_deserializer< xo::file_format::pn > p )
+	XO_API std::istream& from_prop_stream( std::istream& str, prop_node_deserializer& p )
 	{
 		// TODO: more efficient. parser should be able to take any stream type.
 		std::string file_contents( std::istreambuf_iterator<char>( str ), {} );
-		p.pn = parse_prop( char_stream( file_contents.c_str(), "\n\r\t\v;" ), p.ec );
+		p.pn_ = parse_prop( char_stream( file_contents.c_str(), "\n\r\t\v;" ), p.ec_ );
 		return str;
 	}
 
@@ -154,23 +154,23 @@ namespace xo
 		}
 	}
 
-	XO_API std::ostream& operator<<( std::ostream& str, xo::prop_node_serializer< xo::file_format::pn > p )
+	std::ostream& to_prop_stream( std::ostream& str, prop_node_serializer& p )
 	{
-		for ( auto& node : p.pn )
+		for ( auto& node : p.pn_ )
 			write_prop_none( str, node.first, node.second, 0, true );
 		return str;
 	}
 
-	XO_API std::istream& operator>>( std::istream& str, xo::prop_node_deserializer< xo::file_format::ini > p )
+	std::istream& from_ini_stream( std::istream& str, prop_node_deserializer& p )
 	{
-		prop_node* cur_group = &p.pn;
+		prop_node* cur_group = &p.pn_;
 
 		while ( str.good() )
 		{
 			char buf[ 1024 ];
 			str.getline( buf, sizeof( buf ) );
 			if ( str.fail() && !str.eof() )
-				return set_error_or_throw( p.ec, "Error reading ini file, line too long" ), str;
+				return set_error_or_throw( p.ec_, "Error reading ini file, line too long" ), str;
 
 			string line( buf );
 
@@ -182,7 +182,7 @@ namespace xo
 
 			if ( line.size() > 2 && line[ 0 ] == '[' && line[ line.size() - 1 ] == ']' )
 			{
-				cur_group = &p.pn.push_back( line.substr( 1, line.size() - 2 ) );
+				cur_group = &p.pn_.push_back( line.substr( 1, line.size() - 2 ) );
 				continue;
 			}
 
@@ -194,9 +194,9 @@ namespace xo
 		return str;
 	}
 
-	XO_API std::ostream& operator<<( std::ostream& str, xo::prop_node_serializer< xo::file_format::ini > p )
+	std::ostream& to_ini_stream( std::ostream& str, prop_node_serializer& p )
 	{
-		for ( auto& e : p.pn )
+		for ( auto& e : p.pn_ )
 		{
 			if ( e.second.size() > 0 ) // group item
 			{
@@ -210,15 +210,55 @@ namespace xo
 		return str;
 	}
 
-	XO_API xo::prop_node load_file( const path& filename, error_code* ec )
+	std::ostream& operator<<( std::ostream& str, prop_node_serializer& p )
+	{
+		switch ( p.ff_ )
+		{
+		case file_format::xml: return to_xml_stream( str, p );
+		case file_format::prop: return to_prop_stream( str, p );
+		case file_format::ini: return to_ini_stream( str, p );
+		default: xo_error( "Unknown file format" );
+		}
+	}
+
+	std::istream& operator>>( std::istream& str, prop_node_deserializer& p )
+	{
+		switch ( p.ff_ )
+		{
+		case file_format::xml: return from_xml_stream( str, p );
+		case file_format::prop: return from_prop_stream( str, p );
+		case file_format::ini: return from_ini_stream( str, p );
+		default: xo_error( "Unknown file format" );
+		}
+	}
+
+	file_format detect_file_format( const path& filename )
 	{
 		auto ex = filename.extension();
-		if ( ex == "xml" )
-			return load_xml( filename, ec );
-		else if ( ex == "ini" )
-			return load_ini( filename, ec );
-		else if ( ex == "pn" || ex == "prop" )
-			return load_prop( filename, ec );
-		else xo_error( "File has unknown format: " + filename.string() );
+		if ( ex == "xml" ) return file_format::xml;
+		else if ( ex == "ini" ) return file_format::ini;
+		else if ( ex == "pn" || ex == "prop" ) return file_format::prop;
+		else return file_format::unknown;
+	}
+
+	prop_node load_file( const path& filename, file_format ff, error_code* ec )
+	{
+		prop_node pn;
+		std::ifstream str( filename.c_str() ); // TODO: use char_stream
+		if ( str ) str >> prop_node_deserializer( ff, pn, ec );
+		else set_error_or_throw( ec, "Could not open file: " + filename.string() );
+		return pn;
+	}
+
+	void save_file( const prop_node& pn, const path& filename, file_format ff, error_code* ec )
+	{
+		std::ofstream str( filename.c_str() );
+		if ( str ) str << prop_node_serializer( ff, pn, ec );
+		else set_error_or_throw( ec, "Could not save to file: " + filename.string() );
+	}
+
+	prop_node load_file( const path& filename, error_code* ec )
+	{
+		return load_file( filename, detect_file_format( filename ), ec );
 	}
 }

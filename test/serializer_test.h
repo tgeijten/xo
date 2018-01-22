@@ -42,11 +42,11 @@ namespace xo
 		prop_node p1 = make_prop_node();
 
 		std::stringstream str;
-		str << prop_node_serializer< file_format::xml >( p1 );
+		str << prop_node_serializer( file_format::xml, p1 );
 		cout << str.str();
 
 		prop_node p2;
-		str >> prop_node_deserializer< file_format::xml >( p2 );
+		str >> prop_node_deserializer( file_format::xml, p2 );
 		if ( !XO_TEST( p1 == p2 ) )
 		{
 			log::info( p1 );
