@@ -14,6 +14,7 @@
 #include <cstdio>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <iomanip>
 
 namespace xo
 {

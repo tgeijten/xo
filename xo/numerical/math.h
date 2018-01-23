@@ -30,6 +30,12 @@ namespace xo
 	const float float_pi = constants< float >::pi();
 	const double double_pi = constants< double >::pi();
 
+	/// min
+	template< typename T > const T& min( const T& v1, const T& v2 ) { return v1 < v2 ? v1 : v2; }
+
+	/// max
+	template< typename T > const T& max( const T& v1, const T& v2 ) { return v1 < v2 ? v2 : v1; }
+
 	/// convert rad to deg
 	template< typename T > T rad_to_deg( T rad_value ) { return ( T( 180 ) / constants<T>::pi() ) * rad_value; }
 

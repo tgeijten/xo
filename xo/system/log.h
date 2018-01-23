@@ -29,12 +29,8 @@
 
 namespace xo
 {
-	struct setfixed
-	{
-		setfixed( int decimals ) : decimals_( decimals ) {};
-		friend std::ostream& operator<<( std::ostream& str, const setfixed& sf ) { return str << std::fixed << std::setprecision( sf.decimals_ ); }
-		int decimals_;
-	};
+	struct setfixed { setfixed( int decimals ) : decimals_( decimals ) {}; int decimals_; };
+	XO_API std::ostream& operator<<( std::ostream& str, const setfixed& sf );
 
 	namespace log
 	{

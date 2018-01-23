@@ -1,20 +1,14 @@
 #pragma once
 
 #include "xo/system/platform.h"
-#include "xo/system/assert.h"
-#include "xo/filesystem/path.h"
 #include "xo/serialization/char_stream.h"
-
-#include <iomanip>
-#include <sstream>
-#include <algorithm>
-#include <stdlib.h>
+#include "xo/numerical/math.h"
 
 namespace xo
 {
 	/// get left n characters; if n < 0, get string WITHOUT the left n characters
 	inline string left_str( const string& str, int n )
-	{ if ( n >= 0 ) return str.substr( 0, size_t( n ) ); else return str.substr( 0, size_t( std::max( 0, int(str.size()) + n ) ) ); }
+	{ if ( n >= 0 ) return str.substr( 0, size_t( n ) ); else return str.substr( 0, size_t( max( 0, int(str.size()) + n ) ) ); }
 
 	/// get middle n characters, starting from pos
 	inline string mid_str( const string& str, index_t pos, size_t n = string::npos ) { return str.substr( pos, n ); }
