@@ -1,8 +1,6 @@
 #pragma once
 
 #include "xo/container/prop_node.h"
-#include "xo/filesystem/path.h"
-#include "xo/system/error_code.h"
 #include "xo/system/system_tools.h"
 #include "xo/system/log.h"
 
@@ -16,11 +14,6 @@
 
 namespace xo
 {
-	/// merge prop_nodes
 	XO_API void merge_prop_nodes( prop_node& pn, const prop_node& other, bool overwrite );
-
-	/// insert prop_nodes
-	XO_API prop_node load_file_with_include( const path& filename, const string& include_directive = "INCLUDE", int level = 0 );
-
 	XO_API void log_unaccessed( const prop_node& pn, log::level level = log::warning_level, int depth = 0 );
 }
