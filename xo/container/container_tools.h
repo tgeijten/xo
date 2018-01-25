@@ -1,21 +1,26 @@
 #pragma once
 
+#include <vector>
+#include <algorithm>
+
 #include "xo/system/assert.h"
 #include "xo/utility/types.h"
-#include <numeric>
-#include <vector>
 
 namespace xo
 {
+	// TODO: use own implementation, avoid <algorithm> header
 	template< typename C > typename C::iterator find( C& cont, typename C::value_type& e )
 	{ return std::find( std::begin( cont ), std::end( cont ), e ); }
 
+	// TODO: use own implementation, avoid <algorithm> header
 	template< typename C, typename P > typename C::const_iterator find( const C& cont, typename C::value_type& e )
 	{ return std::find( std::begin( cont ), std::end( cont ), e ); }
 
+	// TODO: use own implementation, avoid <algorithm> header
 	template< typename C, typename P > typename C::iterator find_if( C& cont, P pred )
 	{ return std::find_if( std::begin( cont ), std::end( cont ), pred ); }
 
+	// TODO: use own implementation, avoid <algorithm> header
 	template< typename C, typename P > typename C::const_iterator find_if( const C& cont, const P pred )
 	{ return std::find_if( std::cbegin( cont ), std::cend( cont ), pred ); }
 
@@ -78,26 +83,6 @@ namespace xo
 	template< typename T > index_t back_index( const vector< T >& vec )
 	{ xo_assert( vec.size() > 0 ) return vec.size() - 1; }
 
-	template< typename It, typename Pr > struct view_if {
-		view_if( It first, It last, Pr pred ) : first_( first ), last_( last ), pred_( pred ) {}
-		struct iterator : public std::iterator< std::forward_iterator_tag, typename It::value_type, typename It::value_type > {
-			iterator( const view_if& cv, It pos ) : cv_( cv ), pos_( pos ) { next_match(); }
-			void next_match() { while ( pos_ != cv_.last_ && !cv_.pred_( *pos_ ) ) ++pos_; }
-			iterator& operator++() { ++pos_; next_match(); return *this; }
-			iterator operator++( int ) { auto keepit = *this; ++pos_; next_match(); return keepit; }
-			bool operator==( const iterator& other ) { return pos_ == other.pos_; }
-			bool operator!=( const iterator& other ) { return pos_ != other.pos_; }
-			typename const It::value_type& operator*() const { return *pos_; }
-			typename const It::value_type* operator->() const { return &(*pos_); }
-			const view_if& cv_;
-			It pos_;
-		};
-		iterator begin() const { return iterator( *this, first_ ); }
-		iterator end() const { return iterator( *this, last_ ); }
-		It first_, last_;
-		Pr pred_;
-	};
-
 	template< typename T > std::ostream& operator<<( std::ostream& str, const vector< T >& vec )
 	{
 		for ( auto it = vec.begin(); it != vec.end(); ++it ) {
@@ -105,13 +90,5 @@ namespace xo
 			str << *it;
 		}
 		return str << std::endl;
-	}
-
-	template< typename It, typename Pr > view_if< It, Pr > make_view_if( It first, It last, Pr pred ) {
-		return view_if< It, Pr >( first, last, pred );
-	}
-
-	template< typename C, typename Pr > view_if< typename C::iterator, Pr > make_view_if( C& cont, Pr pred ) {
-		return view_if< typename C::iterator, Pr >( cont.begin(), cont.end(), pred );
 	}
 }

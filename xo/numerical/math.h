@@ -1,7 +1,8 @@
 #pragma once
 
-#include "xo/utility/types.h"
 #include <limits>
+
+#include "xo/utility/types.h"
 
 namespace xo
 {

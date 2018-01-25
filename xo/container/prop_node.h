@@ -1,12 +1,12 @@
 #pragma once
 
-#include "xo/string/string_tools.h"
 #include "xo/system/platform.h"
 #include "xo/system/assert.h"
+#include "xo/string/string_tools.h"
 #include "xo/string/string_cast.h"
-#include <algorithm>
-#include "container_tools.h"
 #include "xo/utility/optional.h"
+#include "xo/container/view_if.h"
+#include "xo/container/container_tools.h"
 
 #ifdef XO_COMP_MSVC
 #	pragma warning( push )
@@ -196,8 +196,8 @@ namespace xo
 		prop_node& operator[]( index_t idx ) { return get_child( idx ); }
 
 		/// find a child node
-		iterator find( const key_t& key ) { return std::find_if( begin(), end(), [&]( const pair_t& e ) { return e.first == key; } ); }
-		const_iterator find( const key_t& key ) const { return std::find_if( begin(), end(), [&]( const pair_t& e ) { return e.first == key; } ); }
+		iterator find( const key_t& key ) { return find_if( children, [&]( const pair_t& e ) { return e.first == key; } ); }
+		const_iterator find( const key_t& key ) const { return find_if( children, [&]( const pair_t& e ) { return e.first == key; } ); }
 
 		/// begin of child nodes
 		iterator begin() { access(); return children.begin(); }
