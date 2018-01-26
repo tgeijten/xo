@@ -85,10 +85,10 @@ namespace xo
 	XO_API string quoted( const string& s );
 
 	/// get a string between quotes
-	XO_API bool needs_quotes( const string& s );
+	XO_API bool needs_quotes( const string& s, const char* special_chars = "" );
 
 	/// get a string between quotes
-	XO_API string try_quoted( const string& s );
+	XO_API string try_quoted( const string& s, const char* special_chars = "" );
 
 	/// get a string between quotes
 	XO_API string try_unquoted( const string& s );

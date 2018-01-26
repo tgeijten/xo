@@ -16,6 +16,7 @@
 #include <fstream>
 #include <algorithm>
 #include "xo/system/error_code.h"
+#include <string.h>
 
 namespace xo
 {
@@ -165,17 +166,17 @@ namespace xo
 		return sout;
 	}
 
-	XO_API bool needs_quotes( const string& s )
+	XO_API bool needs_quotes( const string& s, const char* special_chars )
 	{
 		for ( const char& c : s )
-			if ( c < 33 || c == '\"' || c == '\\' )
+			if ( c < 33 || c == '\"' || strchr( special_chars, c ) )
 				return true;
 		return false;
 	}
 
-	XO_API string try_quoted( const string& s )
+	XO_API string try_quoted( const string& s, const char* special_chars )
 	{
-		if ( needs_quotes( s ) )
+		if ( needs_quotes( s, special_chars ) )
 			return quoted( s );
 		else return s;
 	}

@@ -80,8 +80,8 @@ namespace xo
 	{
 		while ( true )
 		{
-			string t = str.get_token( "={}%", "\"'" );
-			if ( t == "%" )
+			string t = str.get_token( "={};", "\"'" );
+			if ( t == ";" )
 			{
 				// comment: skip rest of line
 				str.get_line();
@@ -125,40 +125,52 @@ namespace xo
 
 	XO_API prop_node parse_prop( const char* str, error_code* ec )
 	{
-		return parse_prop( char_stream( str, "\n\r\t\v;" ), ec );
+		return parse_prop( char_stream( str, "\n\r\t\v " ), ec );
 	}
 
-	XO_API std::istream& from_prop_stream( std::istream& str, prop_node_deserializer& p )
+	XO_API std::istream& from_zml_stream( std::istream& str, prop_node_deserializer& p )
 	{
 		// TODO: more efficient. parser should be able to take any stream type.
 		std::string file_contents( std::istreambuf_iterator<char>( str ), {} );
-		p.pn_ = parse_prop( char_stream( file_contents.c_str(), "\n\r\t\v;" ), p.ec_ );
+		p.pn_ = parse_prop( char_stream( file_contents.c_str(), "\n\r\t\v " ), p.ec_ );
 		return str;
 	}
 
-	void write_prop_none( std::ostream& str, const string& label, const prop_node& pn, int level, bool readable )
+	void write_zml_none( std::ostream& str, const string& label, const prop_node& pn, int level )
 	{
-		string indent = readable ? string( level, '\t' ) : "";
-		string newline = readable ? "\n" : " ";
-		string assign = readable ? " = " : "=";
+		auto indent = string( level, '\t' );
 
-		str << indent << try_quoted( label );
+		// label
+		str << indent << try_quoted( label, ";" );
+
+		// = and value
 		if ( pn.has_value() || pn.empty() )
-			str << assign << ( pn.empty() ? "\"\"" : try_quoted( pn.get_value() ) );
-		str << newline;
-		if ( pn.size() > 0 )
+			str << " = " << ( pn.empty() ? "\"\"" : try_quoted( pn.get_value(), ";" ) );
+
+		auto d = pn.depth();
+		if ( d == 1 )
 		{
-			str << indent << "{" << newline; // #TODO only do newline when needed
+			// single line children
+			str << " { ";
 			for ( auto& node : pn )
-				write_prop_none( str, node.first, node.second, level + 1, readable );
-			str << indent << "}" << newline;
+				str << node.first << " = " << try_quoted( node.second.get_value(), ";" ) << " ";
+			str << "}" << std::endl;
 		}
+		else if ( d > 1 )
+		{
+			// multi-line children
+			str << " {" << std::endl;
+			for ( auto& node : pn )
+				write_zml_none( str, node.first, node.second, level + 1 );
+			str << indent << "}" << std::endl;
+		}
+		else str << std::endl;
 	}
 
-	std::ostream& to_prop_stream( std::ostream& str, prop_node_serializer& p )
+	std::ostream& to_zml_stream( std::ostream& str, prop_node_serializer& p )
 	{
 		for ( auto& node : p.pn_ )
-			write_prop_none( str, node.first, node.second, 0, true );
+			write_zml_none( str, node.first, node.second, 0 );
 		return str;
 	}
 
@@ -216,8 +228,8 @@ namespace xo
 		switch ( p.ff_ )
 		{
 		case file_format::xml: return to_xml_stream( str, p );
-		case file_format::prop: return to_prop_stream( str, p );
 		case file_format::ini: return to_ini_stream( str, p );
+		case file_format::zml: return to_zml_stream( str, p );
 		default: xo_error( "Unknown file format" );
 		}
 	}
@@ -227,8 +239,8 @@ namespace xo
 		switch ( p.ff_ )
 		{
 		case file_format::xml: return from_xml_stream( str, p );
-		case file_format::prop: return from_prop_stream( str, p );
 		case file_format::ini: return from_ini_stream( str, p );
+		case file_format::zml: return from_zml_stream( str, p );
 		default: xo_error( "Unknown file format" );
 		}
 	}
@@ -238,7 +250,7 @@ namespace xo
 		auto ex = filename.extension();
 		if ( ex == "xml" ) return file_format::xml;
 		else if ( ex == "ini" ) return file_format::ini;
-		else if ( ex == "pn" || ex == "prop" ) return file_format::prop;
+		else if ( ex == "zml" ) return file_format::zml;
 		else return file_format::unknown;
 	}
 

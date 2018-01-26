@@ -32,7 +32,7 @@ namespace xo
 
 	void prop_node_test()
 	{
-		const prop_node literal_pn( "a=appel;b=123" );
+		const prop_node literal_pn( "a=appel b=123" );
 		XO_TEST( literal_pn.get< string >( "a" ) == "appel" );
 		XO_TEST( literal_pn.get< int >( "b" ) == 123 );
 
@@ -100,7 +100,8 @@ namespace xo
 		save_prop( pn, "prop_node_test.prop" );
 		auto pn_loaded = load_prop( "prop_node_test.prop" );
 
-		if ( !XO_TEST( pn == pn_loaded ) )
+		XO_TEST( pn == pn_loaded );
+		if ( pn != pn_loaded )
 		{
 			log::info( pn );
 			log::info( pn_loaded );
