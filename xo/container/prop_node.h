@@ -87,6 +87,9 @@ namespace xo
 		/// number of child keys
 		size_t size() const { return children.size(); }
 
+		/// number of child layers
+		size_t depth() const { size_t d = 0; for ( auto& c : children ) d = set_if_bigger( d, c.second.depth() + 1 ); return d; }
+
 		/// true if prop_node has a value or a key
 		bool empty() const { return value.empty() && children.empty(); }
 
