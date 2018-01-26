@@ -1,10 +1,10 @@
 #pragma once
 
-#include <algorithm>
 #include <type_traits>
 
 #include "xo/utility/types.h"
 #include "xo/utility/pointer_iterator.h"
+#include "xo/container/container_tools.h"
 
 namespace xo
 {
@@ -17,9 +17,9 @@ namespace xo
 
 		dynarray() : data_( nullptr ), end_( nullptr ) {}
 		dynarray( size_t n, const T& v = T() ) : data_( new T[ n ] ), end_( data_.get() + n ) { assign( v ); }
-		dynarray( const dynarray& o ) : data_( new T[ o.size() ] ), end_( data_.get() + o.size() ) { std::copy( o.begin(), o.end(), begin() ); }
+		dynarray( const dynarray& o ) : data_( new T[ o.size() ] ), end_( data_.get() + o.size() ) { xo::copy( o.begin(), o.end(), begin() ); }
 		dynarray( dynarray&& o ) : data_( std::move( o.data_ ) ), end_( o.end_ ) {}
-		dynarray<T>& operator=( const dynarray& o ) { data_ = u_ptr< T[] >( new T[ o.size() ] ); end_ = data_.get() + o.size(); std::copy( o.begin(), o.end(), begin() ); return *this; }
+		dynarray<T>& operator=( const dynarray& o ) { data_ = u_ptr< T[] >( new T[ o.size() ] ); end_ = data_.get() + o.size(); xo::copy( o.begin(), o.end(), begin() ); return *this; }
 		dynarray<T>& operator=( dynarray&& o ) { data_ = std::move( o.data_ ); end_ = o.end_; return *this; }
 		~dynarray() {}
 

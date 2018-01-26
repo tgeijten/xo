@@ -1,11 +1,8 @@
 #include "prop_node.h"
 
-#include "xo/serialization/serialize.h"
-
-#include <stdio.h>
-#include <memory>
 #include <iomanip>
-#include <algorithm>
+
+#include "xo/serialization/serialize.h"
 
 namespace xo
 {
@@ -25,8 +22,8 @@ namespace xo
 		int width = 0;
 		for ( auto& child : pn )
 		{
-			width = std::max( width, depth * 2 + int( child.first.size() ) );
-			width = std::max( width, get_align_width( child.second, depth + 1 ) );
+			width = xo::max( width, depth * 2 + int( child.first.size() ) );
+			width = xo::max( width, get_align_width( child.second, depth + 1 ) );
 		}
 		return width;
 	}

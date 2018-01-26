@@ -5,7 +5,7 @@ namespace xo
 	void stopwatch::add_measure( const string& s )
 	{
 		auto now = timer_.seconds();
-		auto iter = std::find_if( measures_.begin(), measures_.end(), [&]( measure_t& m ) { return m.first == s; } );
+		auto iter = xo::find_if( measures_, [&]( measure_t& m ) { return m.first == s; } );
 		if ( iter == measures_.end() )
 			measures_.push_back( make_pair( s, now - epoch_ ) );
 		else iter->second += now - epoch_;

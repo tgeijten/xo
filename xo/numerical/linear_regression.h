@@ -1,9 +1,10 @@
 #pragma once
 
 #include <numeric>
+
 #include "math.h"
 #include "polynomial.h"
-#include <xtr1common>
+#include "xo/container/container_algorithms.h"
 
 namespace xo
 {
