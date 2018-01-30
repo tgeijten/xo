@@ -1,4 +1,5 @@
 #include "serialize.h"
+#include "prop_node_tools.h"
 
 // Include rapidxml.hpp first for xml_node
 #include <contrib/rapidxml-1.13/rapidxml.hpp>
@@ -17,8 +18,6 @@ namespace rapidxml {
 	}
 }
 #include <contrib/rapidxml-1.13/rapidxml_print.hpp>
-#include <iosfwd>
-#include "prop_node_tools.h"
 
 namespace xo
 {
@@ -71,16 +70,11 @@ namespace xo
 		return str << doc;
 	}
 
-	bool is_valid_prop_label( const string& s )
-	{
-		return ( s.size() > 0 && isalpha( s[ 0 ] ) );
-	}
-
-	string get_prop_token( char_stream& str )
+	string get_zml_token( char_stream& str )
 	{
 		while ( true )
 		{
-			string t = str.get_token( "={};", "\"'" );
+			string t = str.get_token( "={}[];", "\"'" );
 			if ( t == ";" )
 			{
 				// comment: skip rest of line
@@ -91,86 +85,117 @@ namespace xo
 		}
 	}
 
-	void read_prop_node( char_stream& str, prop_node& parent )
+	bool read_zml_label( char_stream& str, prop_node& parent, const char* close )
 	{
-		string t = get_prop_token( str );
-		if ( t == "=" )
+		string t = get_zml_token( str );
+		if ( t != close )
 		{
-			parent.set_value( get_prop_token( str ) );
+			xo_error_if( !isalpha( t[ 0 ] ), "Error parsing ZML: invalid label " + t );
+			string equals = get_zml_token( str );
+			xo_error_if( equals != "=", "Error parsing ZML: expected '='" );
+			parent.push_back( t );
+			return true;
 		}
-		else if ( t == "{" )
+		else return false;
+	}
+
+	bool read_zml_value( char_stream& str, prop_node& parent, const char* close )
+	{
+		xo_error_if( !str.good(), "Error parsing ZML: unexpected end of stream" );
+
+		string t = get_zml_token( str );
+		if ( t == "{" )
 		{
-			while ( str.good() && t != "}" )
-			{
-				t = get_prop_token( str );
-				if ( is_valid_prop_label( t ) )
-					read_prop_node( str, parent.push_back( t ) );
-				else if ( t != "}" )
-					xo_error( "Invalid token: " + t );
-			}
+			while ( read_zml_label( str, parent, "}" ) )
+				read_zml_value( str, parent.back().second, "}" );
+			return false;
+		}
+		else if ( t == "[" )
+		{
+			while ( read_zml_value( str, parent.push_back( "" ), "]" ) );
+			parent.pop_back();
+			return false;
+		}
+		else if ( t == close )
+		{
+			return false;
+		}
+		else
+		{
+			parent.set_value( t );
+			return true;
 		}
 	}
-	
-	prop_node parse_prop( char_stream& str, error_code* ec )
+
+	prop_node parse_zml( char_stream& str, error_code* ec )
 	{
 		prop_node root;
-		string t = get_prop_token( str );
-		while ( is_valid_prop_label( t ) )
-		{
-			read_prop_node( str, root.push_back( t ) );
-			t = get_prop_token( str );
-		}
+		while ( read_zml_label( str, root, "" ) )
+			read_zml_value( str, root.back().second, "" );
 		return root;
 	}
 
-	XO_API prop_node parse_prop( const char* str, error_code* ec )
+	XO_API prop_node parse_zml( const char* str, error_code* ec )
 	{
-		return parse_prop( char_stream( str, "\n\r\t\v " ), ec );
+		return parse_zml( char_stream( str, "\n\r\t\v " ), ec );
 	}
 
 	XO_API std::istream& from_zml_stream( std::istream& str, prop_node_deserializer& p )
 	{
 		// TODO: more efficient. parser should be able to take any stream type.
 		std::string file_contents( std::istreambuf_iterator<char>( str ), {} );
-		p.pn_ = parse_prop( char_stream( file_contents.c_str(), "\n\r\t\v " ), p.ec_ );
+		p.pn_ = parse_zml( char_stream( file_contents.c_str(), "\n\r\t\v " ), p.ec_ );
 		return str;
 	}
 
-	void write_zml_none( std::ostream& str, const string& label, const prop_node& pn, int level )
+	void write_zml_node( std::ostream& str, const string& label, const prop_node& pn, int level )
 	{
 		auto indent = string( level, '\t' );
 
-		// label
-		str << indent << try_quoted( label, ";" );
-
 		// = and value
-		if ( pn.has_value() || pn.empty() )
-			str << " = " << ( pn.empty() ? "\"\"" : try_quoted( pn.get_value(), ";" ) );
-
-		auto d = pn.depth();
-		if ( d == 1 )
+		if ( !label.empty() )
 		{
-			// single line children
-			str << " { ";
+			str << indent << try_quoted( label, ";{}[]" );
+			str << " = " << ( pn.empty() ? "\"\"" : try_quoted( pn.get_value(), ";{}[]" ) );
+		}
+
+		// check if this is an array
+		bool is_array = find_if( pn, [&]( const prop_node::pair_t& n ) { return !n.first.empty(); } ) == pn.end();
+		auto depth = pn.depth();
+		string separate = depth == 1 ? " " : "\n" + indent;
+
+		if ( depth == 0 )
+		{
+			str << std::endl;
+		}
+		else if ( is_array && depth > 0 )
+		{
+			str << "[" << separate;
 			for ( auto& node : pn )
-				str << node.first << " = " << try_quoted( node.second.get_value(), ";" ) << " ";
+				str << try_quoted( node.second.get_value(), ";{}[]" ) << separate;
+			str << "]" << std::endl;
+		}
+		else if ( depth == 1 && pn.size() <= 4 )
+		{
+			str << "{" << separate;
+			for ( auto& node : pn )
+				str << node.first << " = " << try_quoted( node.second.get_value(), ";{}[]" ) << separate;
 			str << "}" << std::endl;
 		}
-		else if ( d > 1 )
+		else
 		{
 			// multi-line children
-			str << " {" << std::endl;
+			str << "{" << std::endl;
 			for ( auto& node : pn )
-				write_zml_none( str, node.first, node.second, level + 1 );
+				write_zml_node( str, node.first, node.second, level + 1 );
 			str << indent << "}" << std::endl;
 		}
-		else str << std::endl;
 	}
 
 	std::ostream& to_zml_stream( std::ostream& str, prop_node_serializer& p )
 	{
 		for ( auto& node : p.pn_ )
-			write_zml_none( str, node.first, node.second, 0 );
+			write_zml_node( str, node.first, node.second, 0 );
 		return str;
 	}
 
