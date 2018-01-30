@@ -53,6 +53,8 @@ namespace xo
 		bool eof() { return buffer_flags.get< eof_flag >(); }
 		bool fail() { return buffer_flags.get< fail_flag >(); }
 
+		size_t line_number() const;
+
 	private:
 		void init_buffer( const char* b, size_t len );
 

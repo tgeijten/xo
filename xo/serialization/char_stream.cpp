@@ -89,6 +89,14 @@ namespace xo
 		return s;
 	}
 
+	size_t char_stream::line_number() const
+	{
+		size_t num = 1;
+		for ( const char* p = buffer; p != cur_pos; ++p )
+			num += ( *p == '\n' );
+		return num;
+	}
+
 	void char_stream::init_buffer( const char* b, size_t len )
 	{
 		xo_assert( b != 0 );
