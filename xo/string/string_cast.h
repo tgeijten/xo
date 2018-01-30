@@ -1,5 +1,6 @@
 #pragma once
 
+#include "xo/system/assert.h"
 #include "xo/string/string_type.h"
 #include <sstream>
 #include <string>
@@ -49,6 +50,11 @@ namespace xo
 	template<> struct string_cast< string, void > {
 		static string from( const string& s ) { return s; }
 		static string to( const string& value ) { return value; }
+	};
+
+	template<> struct string_cast< std::initializer_list< string >, void > {
+		static std::initializer_list< string > from( const string& s ) { XO_NOT_IMPLEMENTED; }
+		static string to( std::initializer_list< string > value ) { string s; for ( auto& e : value ) s += e + ' '; return s; }
 	};
 
 	template< typename T > struct string_cast< T, typename std::enable_if< std::is_enum< T >::value >::type > {
