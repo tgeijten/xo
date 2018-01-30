@@ -8,7 +8,7 @@ namespace xo
 {
 	prop_node::prop_node( const char* pn ) : accessed_flag( false )
 	{
-		*this = parse_prop( pn );
+		*this = parse_zml( pn );
 	}
 
 	prop_node g_empty_prop_node;

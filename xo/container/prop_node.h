@@ -202,11 +202,15 @@ namespace xo
 		iterator begin() { access(); return children.begin(); }
 		const_iterator begin() const { access(); return children.begin(); }
 		const_iterator cbegin() const { access(); return children.cbegin(); }
+		const pair_t& front() const { return children.front(); }
+		pair_t& front() { return children.front(); }
 
 		/// end of child nodes
 		iterator end() { return children.end(); }
 		const_iterator end() const { return children.end(); }
 		const_iterator cend() const { return children.cend(); }
+		const pair_t& back() const { return children.back(); }
+		pair_t& back() { return children.back(); }
 
 		/// access selection of a specific type
 		auto select( const string& key ) const { return make_view_if( begin(), end(), [=]( const pair_t& kvp ) { return kvp.first == key; } ); }
@@ -214,6 +218,7 @@ namespace xo
 
 		/// erase a child
 		iterator erase( const_iterator it ) { return children.erase( it ); }
+		void pop_back() { children.pop_back(); }
 
 		/// see if this node has been accessed (touched)
 		bool is_accessed() const { return accessed_flag; }
