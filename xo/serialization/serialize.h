@@ -15,10 +15,11 @@ namespace xo
 	};
 
 	struct prop_node_deserializer {
-		explicit prop_node_deserializer( file_format ff, prop_node& pn, error_code* ec = nullptr ) : ff_( ff ), pn_( pn ), ec_( ec ) {}
+		explicit prop_node_deserializer( file_format ff, prop_node& pn, error_code* ec = nullptr, path folder = path() ) : ff_( ff ), pn_( pn ), ec_( ec ), folder_( folder ) {}
 		file_format ff_;
 		prop_node& pn_;
 		error_code* ec_;
+		path folder_;
 	};
 
 	XO_API std::ostream& operator<<( std::ostream& str, prop_node_serializer& p );

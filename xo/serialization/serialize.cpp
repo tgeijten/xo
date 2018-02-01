@@ -85,7 +85,7 @@ namespace xo
 		}
 	}
 
-	void read_zml_layer( char_stream& str, prop_node& parent, const char* close, error_code* ec )
+	void read_zml_layer( char_stream& str, prop_node& parent, const char* close, error_code* ec, const path& folder )
 	{
 		prop_node merge_pn;
 		for ( string t = get_zml_token( str ); t != close; t = get_zml_token( str ) )
@@ -97,9 +97,9 @@ namespace xo
 			if ( t[ 0 ] == '#' )
 			{
 				if ( t == "#include" )
-					parent.append( load_zml( path( get_zml_token( str ) ), ec ) );
+					parent.append( load_zml( folder / path( get_zml_token( str ) ), ec ) );
 				else if ( t == "#merge" )
-					merge_pn.merge( load_zml( path( get_zml_token( str ) ), ec ) );
+					merge_pn.merge( load_zml( folder / path( get_zml_token( str ) ), ec ) );
 				else return set_error_or_throw( ec, "Unknown directive: " + t );
 			}
 			else
@@ -119,9 +119,9 @@ namespace xo
 				// read value
 				t = get_zml_token( str );
 				if ( t == "{" ) // new group
-					read_zml_layer( str, parent.back().second, "}", ec );
+					read_zml_layer( str, parent.back().second, "}", ec, folder );
 				else if ( t == "[" ) // new array
-					read_zml_layer( str, parent.back().second, "]", ec );
+					read_zml_layer( str, parent.back().second, "]", ec, folder );
 				else // just a value
 					parent.back().second.set_value( std::move( t ) );
 			}
@@ -131,23 +131,23 @@ namespace xo
 		parent.merge( merge_pn, false );
 	}
 
-	prop_node parse_zml( char_stream& str, error_code* ec )
+	prop_node parse_zml( char_stream& str, error_code* ec, const path& folder )
 	{
 		prop_node root;
-		read_zml_layer( str, root, "", ec );
+		read_zml_layer( str, root, "", ec, folder );
 		return root;
 	}
 
 	XO_API prop_node parse_zml( const char* str, error_code* ec )
 	{
-		return parse_zml( char_stream( str, "\n\r\t\v " ), ec );
+		return parse_zml( char_stream( str, "\n\r\t\v " ), ec, path() );
 	}
 
 	XO_API std::istream& from_zml_stream( std::istream& str, prop_node_deserializer& p )
 	{
 		// TODO: more efficient. parser should be able to take any stream type.
 		std::string file_contents( std::istreambuf_iterator<char>( str ), {} );
-		p.pn_ = parse_zml( char_stream( file_contents.c_str(), "\n\r\t\v " ), p.ec_ );
+		p.pn_ = parse_zml( char_stream( file_contents.c_str(), "\n\r\t\v " ), p.ec_, p.folder_ );
 		return str;
 	}
 
@@ -285,8 +285,8 @@ namespace xo
 	prop_node load_file( const path& filename, file_format ff, error_code* ec )
 	{
 		prop_node pn;
-		std::ifstream str( filename.c_str() ); // TODO: use char_stream
-		if ( str ) str >> prop_node_deserializer( ff, pn, ec );
+		std::ifstream str( filename.c_str() ); // TODO: use char_stream?
+		if ( str ) str >> prop_node_deserializer( ff, pn, ec, filename.parent_path() );
 		else set_error_or_throw( ec, "Could not open file: " + filename.string() );
 		return pn;
 	}
