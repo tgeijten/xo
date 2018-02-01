@@ -85,53 +85,56 @@ namespace xo
 		}
 	}
 
-	bool read_zml_label( char_stream& str, prop_node& parent, const char* close )
+	void read_zml_layer( char_stream& str, prop_node& parent, const char* close, error_code* ec )
 	{
-		string t = get_zml_token( str );
-		if ( t != close )
+		prop_node merge_pn;
+		for ( string t = get_zml_token( str ); t != close; t = get_zml_token( str ) )
 		{
-			xo_error_if( !isalpha( t[ 0 ] ), "Error parsing ZML: invalid label " + t );
-			string equals = get_zml_token( str );
-			xo_error_if( equals != "=", "Error parsing ZML: expected '='" );
-			parent.push_back( t );
-			return true;
-		}
-		else return false;
-	}
+			if ( t.empty() ) // check if the stream has ended while expecting a close tag
+				return set_error_or_throw( ec, "Error parsing ZML: unexpected end of stream" );
 
-	bool read_zml_value( char_stream& str, prop_node& parent, const char* close )
-	{
-		xo_error_if( !str.good(), "Error parsing ZML: unexpected end of stream" );
+			// check directive statement
+			if ( t[ 0 ] == '#' )
+			{
+				if ( t == "#include" )
+					parent.append( load_zml( path( get_zml_token( str ) ), ec ) );
+				else if ( t == "#merge" )
+					merge_pn.merge( load_zml( path( get_zml_token( str ) ), ec ) );
+				else return set_error_or_throw( ec, "Unknown directive: " + t );
+			}
+			else
+			{
+				// check if we're reading an array or if this is a label
+				if ( close != "]" )
+				{
+					// there should be a label = value pair
+					if ( !isalpha( t[ 0 ] ) )
+						return set_error_or_throw( ec, "Error parsing ZML: invalid label " + t );
+					if ( get_zml_token( str ) != "=" )
+						return set_error_or_throw( ec, "Error parsing ZML: expected '='" );
+					parent.push_back( t ); // add labeled child
+				}
+				else parent.push_back( "" ); // add array child
 
-		string t = get_zml_token( str );
-		if ( t == "{" )
-		{
-			while ( read_zml_label( str, parent, "}" ) )
-				read_zml_value( str, parent.back().second, "}" );
-			return false;
+				// read value
+				t = get_zml_token( str );
+				if ( t == "{" ) // new group
+					read_zml_layer( str, parent.back().second, "}", ec );
+				else if ( t == "[" ) // new array
+					read_zml_layer( str, parent.back().second, "]", ec );
+				else // just a value
+					parent.back().second.set_value( std::move( t ) );
+			}
 		}
-		else if ( t == "[" )
-		{
-			while ( read_zml_value( str, parent.push_back( "" ), "]" ) );
-			parent.pop_back();
-			return false;
-		}
-		else if ( t == close )
-		{
-			return false;
-		}
-		else
-		{
-			parent.set_value( t );
-			return true;
-		}
+
+		// add children from #merge directive
+		parent.merge( merge_pn, false );
 	}
 
 	prop_node parse_zml( char_stream& str, error_code* ec )
 	{
 		prop_node root;
-		while ( read_zml_label( str, root, "" ) )
-			read_zml_value( str, root.back().second, "" );
+		read_zml_layer( str, root, "", ec );
 		return root;
 	}
 
@@ -321,7 +324,7 @@ namespace xo
 				// merge or include, depending on options
 				if ( merge_children )
 				{
-					merge_prop_nodes( pn, included_children, false );
+					pn.merge( included_children, false );
 					iter = pn.begin(); // reset the iterator, which has become invalid after merge
 				}
 				else

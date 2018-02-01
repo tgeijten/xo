@@ -151,11 +151,8 @@ namespace xo
 		// this method uses a stringbuf, which may be slower but is more stable
 		std::ifstream ifstr( filename.str() );
 		if ( !ifstr.good() )
-		{
-			if ( try_set_error( ec, "Could not open " + filename.str() ) )
-				return "";
-			else xo_error( "Could not open " + filename.str() );
-		}
+			return set_error_or_throw( ec, "Could not open " + filename.str() ), "";
+
 		std::stringstream buf;
 		buf << ifstr.rdbuf();
 		return buf.str();
