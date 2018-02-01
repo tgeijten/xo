@@ -11,6 +11,20 @@ namespace xo
 		*this = parse_zml( pn );
 	}
 
+	void prop_node::merge( const prop_node& other, bool overwrite /*= false */ )
+	{
+		if ( overwrite )
+			value = other.value;
+		for ( auto& o : other )
+		{
+			auto it = find( o.first );
+			if ( it == end() )
+				push_back( o.first, o.second );
+			else
+				it->second.merge( o.second );
+		}
+	}
+
 	prop_node g_empty_prop_node;
 	XO_API const prop_node& empty_prop_node()
 	{

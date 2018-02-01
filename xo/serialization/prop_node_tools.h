@@ -14,6 +14,5 @@
 
 namespace xo
 {
-	XO_API void merge_prop_nodes( prop_node& pn, const prop_node& other, bool overwrite );
 	XO_API void log_unaccessed( const prop_node& pn, log::level level = log::warning_level, int depth = 0 );
 }

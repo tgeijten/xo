@@ -147,11 +147,14 @@ namespace xo
 		{ children.emplace_back( std::make_pair( key, prop_node() ) ); return children.back().second; }
 
 		/// insert children
-		const_iterator insert( const_iterator pos, const_iterator first, const_iterator last )
-		{ return children.insert( pos, first, last ); }
+		iterator insert( iterator pos, const_iterator first, const_iterator last ) { return children.insert( pos, first, last ); }
 
-		iterator insert( iterator pos, const_iterator first, const_iterator last )
-		{ return children.insert( pos, first, last ); }
+		// append children from another prop_node
+		iterator append( const prop_node& other ) { return children.insert( children.end(), other.begin(), other.end() ); }
+		iterator append( prop_node&& other ) { return children.insert( children.end(), std::make_move_iterator( other.begin() ), std::make_move_iterator( other.end() ) ); }
+		void merge( const prop_node& other, bool overwrite = false );
+
+
 
 		/// reserve children
 		void reserve( size_t n ) { children.reserve( n ); }
