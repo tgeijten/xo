@@ -1,5 +1,6 @@
 #include "serialize.h"
 #include "prop_node_tools.h"
+#include "xo/container/flat_map.h"
 
 // Include rapidxml.hpp first for xml_node
 #include <contrib/rapidxml-1.13/rapidxml.hpp>
@@ -21,6 +22,8 @@ namespace rapidxml {
 
 namespace xo
 {
+	static flat_map< path, file_format > registered_file_formats{ { "ini", file_format::ini }, { "xml", file_format::xml }, { "zml", file_format::zml } };
+
 	prop_node get_rapid_xml_node( rapidxml::xml_node<>* node )
 	{
 		// make new prop_node
@@ -275,20 +278,27 @@ namespace xo
 
 	file_format detect_file_format( const path& filename )
 	{
-		auto ex = filename.extension();
-		if ( ex == "xml" ) return file_format::xml;
-		else if ( ex == "ini" ) return file_format::ini;
-		else if ( ex == "zml" ) return file_format::zml;
+		auto it = registered_file_formats.find( filename.extension() );
+		if ( it != registered_file_formats.end() )
+			return it->second;
 		else return file_format::unknown;
+	}
+
+	XO_API void register_file_format( const path& extension, file_format ff )
+	{
+		registered_file_formats[ extension ] = ff;
 	}
 
 	prop_node load_file( const path& filename, file_format ff, error_code* ec )
 	{
-		prop_node pn;
 		std::ifstream str( filename.c_str() ); // TODO: use char_stream?
-		if ( str ) str >> prop_node_deserializer( ff, pn, ec, filename.parent_path() );
-		else set_error_or_throw( ec, "Could not open file: " + filename.string() );
-		return pn;
+		if ( str )
+		{
+			prop_node pn;
+			str >> prop_node_deserializer( ff, pn, ec, filename.parent_path() );
+			return pn;
+		}
+		else return set_error_or_throw( ec, "Could not open file: " + filename.string() ), prop_node();
 	}
 
 	void save_file( const prop_node& pn, const path& filename, file_format ff, error_code* ec )
@@ -300,7 +310,11 @@ namespace xo
 
 	prop_node load_file( const path& filename, error_code* ec )
 	{
-		return load_file( filename, detect_file_format( filename ), ec );
+		auto ff = detect_file_format( filename );
+		if ( ff == file_format::unknown )
+			return set_error_or_throw( ec, "Could not detect file format: " + filename.str() ), prop_node();
+
+		return load_file( filename, ff, ec );
 	}
 
 	prop_node load_file_with_include( const path& filename, const string& include_directive, int level );

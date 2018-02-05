@@ -26,6 +26,7 @@ namespace xo
 	XO_API std::istream& operator>>( std::istream& str, prop_node_deserializer& p );
 
 	XO_API file_format detect_file_format( const path& filename );
+	XO_API void register_file_format( const path& extension, file_format ff );
 
 	XO_API prop_node load_file( const path& filename, file_format ff, error_code* ec = nullptr );
 	XO_API prop_node load_file( const path& filename, error_code* ec = nullptr );
