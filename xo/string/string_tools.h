@@ -40,6 +40,9 @@ namespace xo
 	XO_API string left_of_str( const string& s, const string& sep_chars );
 	XO_API string right_of_str( const string& s, const string& sep_chars );
 
+	/// replace a substring in a string
+	XO_API string& replace_str( string& s, const string& find_str, const string& replace_with );
+
 	/// split string into trimmed key / value pair
 	XO_API std::pair< string, string > make_key_value_str( const string& s, const string& sep_char = "=" );
 

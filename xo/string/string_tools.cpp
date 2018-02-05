@@ -59,6 +59,13 @@ namespace xo
 		return pos != string::npos ? s.substr( pos + 1 ) : s;
 	}
 
+	XO_API string& replace_str( string& s, const string& find_str, const string& replace_with )
+	{
+		for ( auto pos = s.find( find_str ); pos != string::npos; pos = s.find( find_str ) )
+			s.replace( pos, find_str.size(), replace_with );
+		return s;
+	}
+
 	XO_API std::pair< string, string > make_key_value_str( const string& s, const string& sep_char )
 	{
 		auto pos = s.find_first_of( sep_char.c_str() );
