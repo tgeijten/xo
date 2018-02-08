@@ -20,6 +20,8 @@ namespace xo
 	XO_API bool file_exists( const path& file );
 	XO_API bool folder_exists( const path& folder );
 
+	XO_API path find_file( const path& file );
+
 	XO_API bool create_directories( const path& folder );
 	XO_API path create_unique_folder( const path& folder, int max_attempts = 9999 );
 

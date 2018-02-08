@@ -116,6 +116,15 @@ namespace xo
 #endif
 	}
 
+	XO_API path find_file( const path& file )
+	{
+		if ( file_exists( file ) )
+			return file; // original filename
+		else if ( file.has_filename() && file_exists( file.filename() ) )
+			return file.filename(); // filename with no parent path
+		else xo_error( "Could not find " + file.string() + " in " + xo::current_path().string() );
+	}
+
 	XO_API bool create_directories( const path& folder )
 	{
 		// make sure parent folders exist
