@@ -20,6 +20,7 @@
 #include "xo/numerical/linear_regression.h"
 #include "xo/utility/irange.h"
 #include "xo/utility/optional.h"
+#include <iostream>
 
 using std::cout;
 using std::endl;

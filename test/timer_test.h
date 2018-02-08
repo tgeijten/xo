@@ -3,6 +3,7 @@
 #include "xo/system/system_tools.h"
 #include "xo/system/log.h"
 #include "xo/diagnose/profiler_config.h"
+#include <iomanip>
 
 namespace xo
 {
@@ -19,7 +20,7 @@ namespace xo
 			delta += tick2 - tick1;
 		}
 		
-		xo::log::info( setfixed( 3 ), "Time measure takes ", (double)delta / samples, "ns" );
+		xo::log::info( std::setprecision( 3 ), "Time measure takes ", (double)delta / samples, "ns" );
 	};
 
 	std::vector< double > work_result;
