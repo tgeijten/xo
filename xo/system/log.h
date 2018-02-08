@@ -4,10 +4,10 @@
 #	define XO_STATIC_LOG_LEVEL XO_LOG_LEVEL_TRACE
 #endif
 
-#include "xo/string/string_tools.h"
-#include <iostream>
-#include <functional>
+#include "xo/system/platform.h"
+#include "xo/string/string_type.h"
 #include <stdarg.h>
+#include <sstream>
 
 #define XO_LOG_LEVEL_ALL 1
 #define XO_LOG_LEVEL_TRACE 1
@@ -29,9 +29,6 @@
 
 namespace xo
 {
-	struct setfixed { setfixed( int decimals ) : decimals_( decimals ) {}; int decimals_; };
-	XO_API std::ostream& operator<<( std::ostream& str, const setfixed& sf );
-
 	namespace log
 	{
 		enum level { trace_level = XO_LOG_LEVEL_TRACE, debug_level, info_level, warning_level, error_level, critical_level, never_log_level };
@@ -53,7 +50,7 @@ namespace xo
 		template< typename T, typename... Args > void log_stream( level l, std::stringstream& str, T var, const Args&... args ) { str << var; log_stream( l, str, args... ); }
 
 		// log at specified level
-		template< typename... Args > void message( level l, const Args&... args ) { if ( test_log_level( l ) ) { std::stringstream str; log_stream( l, str, args... ); }	}
+		template< typename... Args > void message( level l, const Args&... args ) { if ( test_log_level( l ) ) { std::stringstream str; log_stream( l, str, args... ); } }
 		inline void messagef( level l, const char* format, ... ) { va_list va; va_start( va, format ); log_vstring( l, format, va ); va_end( va ); }
 
 #if ( XO_STATIC_LOG_LEVEL <= XO_LOG_LEVEL_TRACE )

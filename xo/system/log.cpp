@@ -1,16 +1,14 @@
 #include "xo/system/assert.h"
 #include "log.h"
 #include "log_sink.h"
+
 #include <stdarg.h>
 #include <iomanip>
+#include <iostream>
+#include <vector>
 
 namespace xo
 {
-	std::ostream& operator<<( std::ostream& str, const setfixed& sf )
-	{
-		return str << std::fixed << std::setprecision( sf.decimals_ );
-	}
-
 	namespace log
 	{
 		void std_cout_log( level l, const std::string& msg ) { std::cout << msg << std::endl; }
