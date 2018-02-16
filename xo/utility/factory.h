@@ -2,14 +2,10 @@
 
 #include <functional>
 #include <memory>
+#include <string>
 #include "xo/system/assert.h"
-#include "xo/system/platform.h"
+#include "xo/system/system_tools.h"
 #include "xo/container/flat_map.h"
-
-// need for demangling with GCC
-#ifndef XO_COMP_MSVC
-#	include <cxxabi.h>
-#endif
 
 namespace xo
 {
@@ -24,7 +20,7 @@ namespace xo
 		{ func_map_[ name ] = []( Args... args ) { return std::unique_ptr< T >( new U( args... ) ); }; }
 
 		// access function
-		const create_func_t& operator[]( const string& type ) const
+		const create_func_t& operator[]( const std::string& type ) const
 		{ auto it = func_map_.find( type ); xo_error_if( it == func_map_.end(), "Unregistered type: " + type ); return it->second; }
 
 		// create instance
@@ -38,7 +34,7 @@ namespace xo
 		std::unique_ptr< T > operator()( const std::string& type, Args... args ) const { return create( type, args... ); }
 
 		bool empty() const { return func_map_.empty(); }
-		bool has_type( const string& type ) const { return func_map_.find( type ) != func_map_.end(); }
+		bool has_type( const std::string& type ) const { return func_map_.find( type ) != func_map_.end(); }
 
 	private:
 		xo::flat_map< std::string, create_func_t > func_map_;
