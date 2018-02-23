@@ -78,7 +78,7 @@ namespace xo
 		while ( true )
 		{
 			string t = str.get_token( "={}[];", "\"'" );
-			if ( t == ";" )
+			if ( t == ";" || t == "#" )
 			{
 				// comment: skip rest of line
 				str.get_line();
@@ -161,8 +161,8 @@ namespace xo
 		// = and value
 		if ( !label.empty() )
 		{
-			str << indent << try_quoted( label, ";{}[]" );
-			str << " = " << ( pn.empty() ? "\"\"" : try_quoted( pn.get_value(), ";{}[]" ) );
+			str << indent << try_quoted( label, ";{}[]#" );
+			str << " = " << ( pn.empty() ? "\"\"" : try_quoted( pn.get_value(), ";{}[]#" ) );
 		}
 
 		// check if this is an array
