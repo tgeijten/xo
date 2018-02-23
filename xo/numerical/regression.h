@@ -30,7 +30,7 @@ namespace xo
 	}
 
 	template< typename CY >
-	linear_function< typename CY::value_type > linear_regression( typename CY::value_type x_begin, typename CY::value_type x_step, const CY& cy )
+	linear_function< typename CY::value_type > linear_regression( const CY& cy, typename CY::value_type x_begin, typename CY::value_type x_step )
 	{
 		using T = typename CY::value_type;
 		auto n = cy.size();
@@ -49,4 +49,19 @@ namespace xo
 	template< typename C1, typename C2 >
 	auto linear_regression( const C1& cx, const C2& cy )
 	{ return linear_regression( std::begin( cx ), std::end( cx ), std::begin( cy ), std::end( cy ) ); }
+
+	template< typename CY >
+	linear_function< typename CY::value_type > linear_median_regression( const CY& cy, typename CY::value_type x_begin, typename CY::value_type x_step )
+	{
+		using T = typename CY::value_type;
+		xo_assert( cy.size() >= 2 );
+		std::vector< T > slopes, values;
+		slopes.reserve( cy.size() );
+		for ( index_t i = 0; i < cy.size() - 1; ++i )
+			slopes.push_back( cy[ i + 1 ] - cy[ i ] );
+		auto medslope = median( slopes ) / x_step;
+		auto medy = median( cy );
+		auto medx = x_begin + x_step * ( cy.size() - 1 ) / 2;
+		return linear_function< T >( medy - medslope * medx, medslope );
+	}
 }
