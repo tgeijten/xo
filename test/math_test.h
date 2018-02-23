@@ -17,7 +17,7 @@
 #include "xo/diagnose/test_framework.h"
 #include "xo/geometry/bounding_box.h"
 #include "xo/numerical/math.h"
-#include "xo/numerical/linear_regression.h"
+#include "xo/numerical/regression.h"
 #include "xo/utility/irange.h"
 #include "xo/utility/optional.h"
 #include <iostream>
@@ -186,7 +186,7 @@ void linear_regression_test()
 	XO_TEST( equals( lg2[ 1 ], -1.5 ) );
 	XO_TEST( equals( lg2[ 0 ], -100.0 ) );
 
-	auto lg3 = linear_regression( -50.0, 2.0, y );
+	auto lg3 = linear_regression( y, -50.0, 2.0 );
 	XO_TEST( equals( lg3[ 1 ], -1.5 ) );
 	XO_TEST( equals( lg3[ 0 ], -100.0 ) );
 

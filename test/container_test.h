@@ -72,5 +72,9 @@ namespace xo
 
 		XO_TEST( map1.size() == map2.size() );
 		XO_TEST( map_equals_flat_map );
+
+		std::vector<double> values{ 7.0, 4.0, 2.0, 3.0 };
+		XO_TEST( average( values ) == 4.0 );
+		XO_TEST( median( values ) == 3.5 );
 	}
 }
