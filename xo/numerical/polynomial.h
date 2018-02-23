@@ -9,7 +9,10 @@ namespace xo
 	struct polynomial
 	{
 		polynomial() : coeff() { static_assert( D > 0, "polynomial degree must be > 0" ); }
-		template<typename ...E> polynomial( E&&...e ) : coeff{ { std::forward<E>( e )... } } { static_assert( D > 0, "polynomial degree must be > 0" ); }
+		polynomial( const polynomial& o ) : coeff( o.coeff ) {}
+		template<typename ...E> explicit polynomial( E&&...e ) : coeff{ { std::forward<E>( e )... } } { static_assert( D > 0, "polynomial degree must be > 0" ); }
+
+		polynomial& operator=( const polynomial& o ) { coeff = o.coeff; return *this; }
 
 		T operator()( const T& v ) const {
 			T result = coeff[ 0 ];
