@@ -14,8 +14,8 @@ namespace xo
 		using T = typename ItY::value_type;
 		auto n = x_end - x_begin;
 		xo_assert_msg( n == y_end - y_begin, "Input ranges must be of equal size for x and y" );
-		T avgx = average( x_begin, x_end );
-		T avgY = average( y_begin, y_end );
+		T avgx = average( x_begin, x_end, T() );
+		T avgY = average( y_begin, y_end, T() );
 		T num = 0.0;
 		T den = 0.0;
 		ItX itx = x_begin;
