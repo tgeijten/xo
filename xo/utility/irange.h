@@ -16,11 +16,13 @@ namespace xo
 			typedef T value_type;
 			iterator( T v ) : value_( v ) {}
 			T value_;
-			T operator-( const iterator& other ) { return value_ - other.value_; }
 			T operator++() { return ++value_; }
 			T operator++( int ) { return value++; }
+			iterator operator+( const T& offset ) { return iterator( value_ + offset ); }
+
 			bool operator==( const iterator& other ) { return other.value_ == value_; }
 			bool operator!=( const iterator& other ) { return other.value_ != value_; }
+			T operator-( const iterator& other ) { return value_ - other.value_; }
 			T operator*() { return value_; }
 		};
 
