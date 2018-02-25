@@ -8,25 +8,13 @@
 
 namespace xo
 {
-	template< typename I > typename std::iterator_traits< I >::value_type average( I b, I e ) {
-		auto v = std::iterator_traits< I >::value_type();
+	template< typename I, typename T = typename std::iterator_traits< I >::value_type > T average( I b, I e, T v = T() ) {
 		for ( auto i = b; i != e; ++i ) v += *i;
 		return v / ( e - b );
 	}
 
 	template< typename C > typename C::value_type average( const C& cont )
 	{ return average( std::cbegin( cont ), std::cend( cont ) ); }
-
-	/// average value of container elements
-	//template< typename I > typename std::iterator_traits< I >::value_type average( I b, I e )
-	//{
-	//	auto v = std::iterator_traits< I >::value_type(); for ( ; b != e; ++b ) v += *b; return v / ( e - b );
-	//}
-
-	//template< typename C > typename C::value_type average( const C& cont )
-	//{
-	//	return average( std::cbegin( cont ), std::cend( cont ) );
-	//}
 
 	template < typename C > std::vector< index_t > sort_indices( const C& cont ) {
 		std::vector< size_t > idx_vec( cont.size() );
