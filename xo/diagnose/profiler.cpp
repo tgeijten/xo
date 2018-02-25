@@ -14,7 +14,6 @@ namespace xo
 
 	profiler::profiler()
 	{
-		instance_thread_ = std::this_thread::get_id();
 		reset();
 	}
 
@@ -28,6 +27,7 @@ namespace xo
 
 	void profiler::reset()
 	{
+		instance_thread_ = std::this_thread::get_id();
 		init_overhead_estimate();
 		clear();
 	}
