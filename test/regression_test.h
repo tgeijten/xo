@@ -9,11 +9,11 @@ namespace xo
 {
 	void regression_test()
 	{
-		const int n = 100;
+		const int n = 500;
 
 		linear_function< float > r1, r2, r3, r4, r5;
 
-		for ( int t = 0; t < 100; ++t )
+		for ( int t = 0; t < 1; ++t )
 		{
 			std::vector< float > y( n ), x( n );
 			for ( index_t i = 0; i < n; ++i )
