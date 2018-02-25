@@ -1,3 +1,5 @@
+#define XO_ENABLE_PROFILER
+
 #include "test.h"
 #include "math_test.h"
 #include "buffer_test.h"
@@ -18,6 +20,7 @@
 #include "filter_test.h"
 #include "math_test.h"
 #include "serializer_test.h"
+#include "regression_test.h"
 
 using xo::string;
 
@@ -35,12 +38,14 @@ int main( int argc, char* argv[] )
 		xo::timer_test();
 
 #ifdef XO_ENABLE_PROFILER
-		xo::profile_test();
+		//xo::profile_test();
 #endif
+
+		xo_profiler_reset();
 		xo::stopwatch sw;
 
 		xo::serializer_test();
-		sw.add_measure( "container" );
+		sw.add_measure( "serializer" );
 
 		xo::container_test();
 		sw.add_measure( "container" );
@@ -60,6 +65,9 @@ int main( int argc, char* argv[] )
 		xo::buffer_test();
 		sw.add_measure( "buffer" );
 
+		xo::regression_test();
+		sw.add_measure( "regression" );
+
 		xo::optional_test();
 		xo::clamp_test();
 		xo::linear_regression_test();
@@ -68,6 +76,7 @@ int main( int argc, char* argv[] )
 		xo::angle_test();
 		sw.add_measure( "math" );
 
+		xo_profiler_log_report( xo::log::info_level );
 		auto pn = sw.get_report();
 		xo::log::info( pn );
 	}

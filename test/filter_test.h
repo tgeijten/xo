@@ -11,7 +11,7 @@ namespace xo
 	{
 		float y = 0.0f;
 		for ( int i = 1; i <= 8; ++i )
-			y += std::sin( x * 2 * float_pi * i * i ) / i;
+			y += std::sin( x * 2 * pi< float >() * i * i ) / i;
 		return y;
 	}
 

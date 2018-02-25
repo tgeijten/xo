@@ -70,17 +70,17 @@ void optional_test()
 
 void function_test()
 {
-	regular_piecewise_linear_function< real_t > func( -real_pi, real_pi, 128, sin_func );
+	regular_piecewise_linear_function< real_t > func( -pi< real_t >(), pi< real_t >(), 128, sin_func );
 
 	std::ofstream ostr( "test.txt" );
-	for ( real_t x = -2 * real_pi; x < 2 * real_pi; x += 0.1 )
+	for ( real_t x = -2 * pi< real_t >(); x < 2 * pi< real_t >(); x += 0.1 )
 		ostr << x << "\t" << func( x ) << endl;
 
 	timer t;
 	real_t result = 0.0, verify_result = 0.0;
 	for ( int i = 0; i < 10000; ++i )
 	{
-		for ( real_t x = -real_pi; x <= real_pi; x += 0.001 )
+		for ( real_t x = -pi< real_t >(); x <= pi< real_t >(); x += 0.001 )
 		{
 			result += func( x );
 			verify_result += sin_func( x );
