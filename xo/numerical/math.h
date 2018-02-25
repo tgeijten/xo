@@ -6,12 +6,14 @@
 
 namespace xo
 {
+	const long double PI_LONG_DOUBLE = 3.141592653589793238L;
+
 	/// constants
 	template< typename T > struct constants
 	{
-		static constexpr T pi() { return T( 3.14159265358979 ); }
-		static T half_pi() { return T( 0.5 ) * T( 3.14159265358979 ); }
-		static T two_pi() { return T( 2 ) * T( 3.14159265358979 ); }
+		static constexpr T pi() { return T( PI_LONG_DOUBLE ); }
+		static T half_pi() { return T( 0.5 ) * T( PI_LONG_DOUBLE ); }
+		static T two_pi() { return T( 2 ) * T( PI_LONG_DOUBLE ); }
 		static T epsilon() { return std::numeric_limits< T >::epsilon(); }
 		static T relaxed_epsilon() { return T( 4 * std::numeric_limits< T >::epsilon() ); }
 		static T one() { return T( 1 ); }
@@ -27,9 +29,7 @@ namespace xo
 	typedef constants< float > constantsf;
 	typedef constants< double > constantsd;
 
-	const real_t real_pi = constants< real_t >::pi();
-	const float float_pi = constants< float >::pi();
-	const double double_pi = constants< double >::pi();
+	template< typename T > constexpr T pi() { return T( PI_LONG_DOUBLE ); }
 
 	/// min
 	template< typename T > const T& min( const T& v1, const T& v2 ) { return v1 < v2 ? v1 : v2; }
