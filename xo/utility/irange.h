@@ -14,7 +14,7 @@ namespace xo
 		struct iterator : public std::iterator< std::forward_iterator_tag, T, T >
 		{
 			typedef T value_type;
-			iterator( T v ) : value_( v ) {}
+			iterator( T v ) : value_( v ) { xo_assert_msg( is_whole( v ), "irange requires whole numbers" ); }
 			T value_;
 			T operator++() { return ++value_; }
 			T operator++( int ) { return value++; }
@@ -42,7 +42,7 @@ namespace xo
 		struct iterator : public std::iterator< std::forward_iterator_tag, T, T >
 		{
 			typedef T value_type;
-			iterator( T v, T s ) : value_( v ), step_( s ) {}
+			iterator( T v, T s ) : value_( v ), step_( s ) { xo_assert_msg( is_whole( v ) && is_whole( s ), "irange requires whole numbers" ); }
 			T value_, step_;
 			T operator-( const iterator& other ) { return ( value_ - other.value_ ) / step_; }
 			T operator++() { return value_ += step_; }

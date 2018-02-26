@@ -77,6 +77,9 @@ namespace xo
 	template< typename T > bool is_even( T v ) { return ( v & 1 ) == 0; }
 	template< typename T > bool is_odd( T v ) { return ( v & 1 ) == 1; }
 
+	/// check if a number is whole (i.e. has no decimals)
+	template< typename T > bool is_whole( T v ) { return floor( v ) == v; }
+
 	/// clamp a value so that it is between min and max
 	template< typename T > T& clamp( T& v, const T& min, const T& max )
 	{ if ( v < min ) v = min; else if ( v > max ) v = max; return v; } // TODO: use efficient instructions
