@@ -25,20 +25,39 @@ namespace xo
 
 	template< typename C > C sorted_copy( const C& cont ) { C res( cont ); std::sort( res.begin(), res.end() ); return res; }
 
-	template< typename I > typename std::iterator_traits< I >::value_type median( I b, I e ) {
-		auto s = e - b;
-		xo_assert( s > 0 );
-		std::vector< std::remove_cv< std::iterator_traits< I >::value_type >::type > v( s / 2 + 1 );
+	template< typename I > typename std::iterator_traits< I >::value_type median_slow( I b, I e ) {
+		auto n = e - b;
+		xo_assert( n > 0 );
+		std::vector< std::remove_cv< std::iterator_traits< I >::value_type >::type > v( n / 2 + 1 );
 		std::partial_sort_copy( b, e, v.begin(), v.end() );
-		if ( s % 2 == 1 ) return v[ s / 2 ];
-		else return ( v[ s / 2 ] + v[ s / 2 - 1 ] ) / std::iterator_traits< I >::value_type( 2 );
+		if ( n % 2 == 1 ) return v[ n / 2 ];
+		else return ( v[ n / 2 ] + v[ n / 2 - 1 ] ) / std::iterator_traits< I >::value_type( 2 );
 	}
 
-	template< typename C > typename C::value_type median( const C& v ) {
-		return median( std::cbegin( v ), std::cend( v ) );
+	template< typename I > typename std::iterator_traits< I >::value_type median_non_const( I b, I e ) {
+		xo_error_if( e <= b, "Invalid range" );
+		auto n = e - b;
+		auto h = n / 2;
+		std::nth_element( b, b + h, e );
+		if ( n % 2 == 1 )
+			return *( b + h );
+		else return ( *( b + h ) + *std::max_element( b, b + h ) ) / 2;
+	}
+
+	template< typename C > typename C::value_type median( C v ) {
+		return median_non_const( std::begin( v ), std::end( v ) );
+	}
+
+	template< typename C > typename C::value_type median_non_const( C& v ) {
+		return median_non_const( std::begin( v ), std::end( v ) );
+	}
+
+	template< typename C > typename C::value_type median_slow( const C& v ) {
+		return median_slow( std::begin( v ), std::end( v ) );
 	}
 
 	template< typename C > typename C::value_type top_average( const C& vec, size_t count ) {
+		// TODO: use nth_element for better performance
 		C result( count );
 		std::partial_sort_copy( vec.begin(), vec.end(), result.begin(), result.end() );
 		return average( result );

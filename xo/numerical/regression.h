@@ -85,14 +85,14 @@ namespace xo
 				sl1.emplace_back( ( *( yb + j ) - *( yb + i ) ) / ( *( xb + j ) - *( xb + i ) ) );
 			for ( int j = i + 1; j < n; ++j )
 				sl1.emplace_back( ( *( yb + j ) - *( yb + i ) ) / ( *( xb + j ) - *( xb + i ) ) );
-			sl2.emplace_back( median( sl1 ) );
+			sl2.emplace_back( median_non_const( sl1 ) );
 		}
-		auto slope = median( sl2 );
+		auto slope = median_non_const( sl2 );
 
 		std::vector< T > intercepts( n );
 		for ( int i = 0; i < n; ++i )
 			intercepts[ i ] = *( yb + i ) - slope * *( xb + i );
-		auto offset = median( intercepts );
+		auto offset = median_non_const( intercepts );
 
 		return linear_function< T >( offset, slope );
 	}
