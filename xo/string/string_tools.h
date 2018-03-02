@@ -60,6 +60,9 @@ namespace xo
 	/// match pattern (glob, i.e. name* or name?)
 	XO_API bool pattern_match( const string& str, const string& pattern );
 
+	/// match any of the strings
+	XO_API bool str_equals_any_of( const string& str, std::initializer_list< const char* > str_list );
+
 	/// set precision used in to_str calls, returns previous precision
 	XO_API int set_to_str_precision( int p );
 	XO_API int to_str_precision();

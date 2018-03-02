@@ -101,6 +101,14 @@ namespace xo
 #endif
 	}
 
+	bool str_equals_any_of( const string& str, std::initializer_list< const char* > str_list )
+	{
+		for ( const char* c : str_list )
+			if ( str == c )
+				return true;
+		return false;
+	}
+
 	XO_API int set_to_str_precision( int p )
 	{ int old = to_str_precision_value; to_str_precision_value = p; return old; }
 
