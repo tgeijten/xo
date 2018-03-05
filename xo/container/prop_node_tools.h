@@ -15,4 +15,5 @@
 namespace xo
 {
 	XO_API void log_unaccessed( const prop_node& pn, log::level level = log::warning_level, int depth = 0 );
+	XO_API prop_node::pair_t* get_child_by_index( prop_node& pn, index_t& idx );
 }

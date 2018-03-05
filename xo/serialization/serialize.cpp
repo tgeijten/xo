@@ -1,5 +1,4 @@
 #include "serialize.h"
-#include "prop_node_tools.h"
 #include "xo/container/flat_map.h"
 
 // Include rapidxml.hpp first for xml_node
@@ -167,7 +166,7 @@ namespace xo
 
 		// check if this is an array
 		bool is_array = find_if( pn, [&]( const prop_node::pair_t& n ) { return !n.first.empty(); } ) == pn.end();
-		auto depth = pn.depth();
+		auto depth = pn.count_layers();
 		string separate = depth == 1 ? " " : "\n" + indent;
 
 		if ( depth == 0 )

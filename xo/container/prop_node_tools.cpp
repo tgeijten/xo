@@ -20,4 +20,19 @@ namespace xo
 			log_unaccessed( n.second, level, depth + 1 );
 		}
 	}
+
+	prop_node::pair_t* get_child_by_index( prop_node& pn, index_t& idx )
+	{
+		for ( auto& child : pn )
+		{
+			if ( idx == 0 )
+				return &child;
+			else
+			{
+				if ( auto* c = get_child_by_index( child.second, --idx ) )
+					return c;
+			}
+		}
+		return nullptr;
+	}
 }

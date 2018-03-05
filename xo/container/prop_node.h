@@ -84,11 +84,14 @@ namespace xo
 		/// see if this prop_node has a specific key
 		bool has_key( const key_t& key ) const { return find( key ) != end(); }
 
-		/// number of child keys
+		/// number of direct child keys
 		size_t size() const { return children.size(); }
 
 		/// number of child layers
-		size_t depth() const { size_t d = 0; for ( auto& c : children ) d = max( d, c.second.depth() + 1 ); return d; }
+		size_t count_layers() const { size_t d = 0; for ( auto& c : children ) d = max( d, c.second.count_layers() + 1 ); return d; }
+
+		/// number of children (recursively)
+		size_t count_children() const { size_t n = size(); for ( auto& c : children ) n += c.second.count_children(); return n; }
 
 		/// true if prop_node has a value or a key
 		bool empty() const { return value.empty() && children.empty(); }
