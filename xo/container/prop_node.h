@@ -88,7 +88,7 @@ namespace xo
 		size_t size() const { return children.size(); }
 
 		/// number of child layers
-		size_t depth() const { size_t d = 0; for ( auto& c : children ) d = set_if_bigger( d, c.second.depth() + 1 ); return d; }
+		size_t depth() const { size_t d = 0; for ( auto& c : children ) d = max( d, c.second.depth() + 1 ); return d; }
 
 		/// true if prop_node has a value or a key
 		bool empty() const { return value.empty() && children.empty(); }
@@ -153,8 +153,6 @@ namespace xo
 		iterator append( const prop_node& other ) { return children.insert( children.end(), other.begin(), other.end() ); }
 		iterator append( prop_node&& other ) { return children.insert( children.end(), std::make_move_iterator( other.begin() ), std::make_move_iterator( other.end() ) ); }
 		void merge( const prop_node& other, bool overwrite = false );
-
-
 
 		/// reserve children
 		void reserve( size_t n ) { children.reserve( n ); }
