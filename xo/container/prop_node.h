@@ -103,17 +103,17 @@ namespace xo
 		const value_t& get_value() const { access(); return value; }
 
 		/// set the value of this node
+		prop_node& set( prop_node&& pn ) { *this = std::move( pn ); return *this; }
+		prop_node& set( const prop_node& pn ) { *this = pn; return *this; }
+		template< typename T > prop_node& set( const T& v ) { *this = prop_node_cast< T >::to( v ); return *this; }
+
+		/// set the value of this node
 		template< typename T > prop_node& set_value( const T& v ) { value = string_cast< T >::to( v ); return *this; }
 		prop_node& set_value( value_t&& v ) { value = std::move( v ); return *this; }
 
 		/// set the value of a child node, the node is created if not existing
 		template< typename T > prop_node& set( const key_t& key, const T& v )
-		{ auto it = find( key ); if ( it == end() ) push_back( key, v ); else it->second.set( v ); return *this; }
-
-		/// set the value of this node
-		prop_node& set( prop_node&& pn ) { *this = std::move( pn ); return *this; }
-		prop_node& set( const prop_node& pn ) { *this = pn; return *this; }
-		template< typename T > prop_node& set( const T& v ) { *this = prop_node_cast< T >::to( v ); return *this; }
+		{ auto it = find( key ); if ( it == end() ) return push_back( key, v ); else return it->second.set( v ); }
 
 		/// set the value of a child node, accessing children through delimiter character
 		template< typename T > prop_node& set_delimited( const key_t& key, const T& v, const char delim = '.' ) {
