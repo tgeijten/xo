@@ -6,38 +6,56 @@ namespace xo
 {
 	void extract_settings( const prop_node& src, prop_node& trg )
 	{
-		for ( auto& kpn : src )
+		if ( !src.has_value() )
 		{
-			if ( kpn.second.has_key( "_label_" ) )
-				trg.push_back( kpn.first, kpn.second.get_value() );
-			else extract_settings( kpn.second, trg.push_back( kpn.first ) );
+			for ( auto& kpn : src )
+				extract_settings( kpn.second, trg.push_back( kpn.first ) );
 		}
+		else trg.set_value( src.get_value() );
 	}
 
 	void inject_settings( const prop_node& src, prop_node& trg )
 	{
-		for ( auto& kpn : src )
+		if ( !src.has_value() )
 		{
-			if ( auto* pn = trg.try_get_child( kpn.first ) )
+			for ( auto& kpn : src )
 			{
-				if ( pn->has_key( "_label_" ) )
-					pn->set_value( kpn.second.get_value() );
-				else inject_settings( kpn.second, *pn );
+				if ( auto* pn = trg.try_get_child( kpn.first ) )
+					inject_settings( kpn.second, *pn );
+				else log::warning( "Ignored setting: ", kpn.first );
 			}
-			else log::warning( "Ignored setting: ", kpn.first );
+
 		}
+		else trg.set_value( src.get_value() );
+	}
+
+	void settings::inject_settings( const prop_node& settings )
+	{
+		::xo::inject_settings( settings, data_ );
+	}
+
+	xo::prop_node settings::extract_settings() const
+	{
+		prop_node pn;
+		::xo::extract_settings( data_, pn );
+		return pn;
 	}
 
 	void settings::load( const path& filename )
 	{
 		auto pn = load_file( filename );
-		inject_settings( data_, pn );
+		inject_settings( pn );
 	}
 
 	void settings::save( const path& filename ) const
 	{
-		prop_node pn;
-		extract_settings( data_, pn );
-		save_file( pn, filename, detect_file_format( filename ) );
+		save_file( extract_settings(), filename, detect_file_format( filename ) );
+	}
+
+	void settings::set_meta_data( prop_node& pn, const string& label, const string& info, type_class t )
+	{
+		pn[ "_label_" ] = label;
+		pn[ "_info_" ] = info;
+		pn[ "_type_" ] = t;
 	}
 }

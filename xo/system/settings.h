@@ -14,13 +14,15 @@ namespace xo
 		template< typename T >
 		void add( const string& id, const string& label, const T& default_value, const string& info = "" ) {
 			auto& pn = data_.set_delimited( id, default_value );
-			pn[ "_label_" ] = label;
-			pn[ "_info_" ] = info;
-			pn[ "_type_" ] = get_type_class< T >();
+			set_meta_data( pn, label, info, get_type_class< T >() );
 		}
 
 		template< typename T > T get( const string& id ) const { return data_.get_delimited< T >( id ); }
-		template< typename T > void set( const string& id, const T& value ) { data_.set_delimited< T >( id, value ); }
+		template< typename T > void set( const string& id, const T& value ) {
+			if ( auto* pn = data_.try_get_child_delimited( id ) )
+				pn->set( value );
+			else xo_error( "Could not find setting " + id );
+		}
 
 		void load( const path& filename );
 		void save( const path& filename ) const;
@@ -30,7 +32,11 @@ namespace xo
 		const prop_node& data() const { return data_; }
 		prop_node& data() { return data_; }
 
+		void inject_settings( const prop_node& settings );
+		prop_node extract_settings() const;
+
 	private:
+		void set_meta_data( prop_node& pn, const string& label, const string& info, type_class t );
 		prop_node data_;
 	};
 }
