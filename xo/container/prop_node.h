@@ -88,10 +88,10 @@ namespace xo
 		size_t size() const { return children.size(); }
 
 		/// number of child layers
-		size_t count_layers() const { size_t d = 0; for ( auto& c : children ) d = max( d, c.second.count_layers() + 1 ); return d; }
+		size_t count_layers() const;
 
 		/// number of children (recursively)
-		size_t count_children() const { size_t n = size(); for ( auto& c : children ) n += c.second.count_children(); return n; }
+		size_t count_children() const;
 
 		/// true if prop_node has a value or a key
 		bool empty() const { return value.empty() && children.empty(); }
@@ -131,12 +131,9 @@ namespace xo
 
 		/// get the value of a child node, accessing children through delimiter character
 		template< typename T > optional< T > try_get_delimited( const key_t& key, const char delim = '.' ) const {
-			auto p = key.find_first_of( delim );
-			if ( p == string::npos ) return try_get< T >( key );
-			else {
-				auto ch = try_get_child( key.substr( 0, p ) );
-				return ch ? ch->try_get_delimited< T >( mid_str( key, p + 1 ), delim ) : optional<T>();
-			}
+			if ( auto* pn = try_get_child_delimited( key ) )
+				return pn->get< T >();
+			else return optional< T >();
 		}
 
 		/// add a node with a value
@@ -161,30 +158,27 @@ namespace xo
 		void reserve( size_t n ) { children.reserve( n ); }
 
 		/// get a child node, throws exception if not existing
-		const prop_node& get_child( const key_t& key ) const
-		{ auto it = find( key ); xo_error_if( it == end(), "Could not find key: " + key ); access(); return it->second; }
-		prop_node& get_child( const key_t& key )
-		{ auto it = find( key ); xo_error_if( it == end(), "Could not find key: " + key ); access(); return it->second; }
+		const prop_node& get_child( const key_t& key ) const;
+		prop_node& get_child( const key_t& key );
+
+		/// get a child node using delimiters, throws exception if not existing
+		const prop_node& get_child_delimited( const key_t& key, const char delim = '.' ) const;
+		prop_node& get_child_delimited( const key_t& key, const char delim = '.' );
 
 		/// get a child node by index
-		const prop_node& get_child( index_t idx ) const { xo_assert( idx < size() ); access(); return children[ idx ].second; }
-		prop_node& get_child( index_t idx ) { xo_assert( idx < size() ); access(); return children[ idx ].second; }
+		const prop_node& get_child( index_t idx ) const;
+		prop_node& get_child( index_t idx );
 
 		/// get key by index
-		const key_t& get_key( index_t idx ) const { xo_assert( idx < size() ); access(); return children[ idx ].first; }
+		const key_t& get_key( index_t idx ) const;
 
 		/// get a child node, return nullptr if not existing
-		const prop_node* try_get_child( const key_t& key ) const
-		{ access(); auto it = find( key ); return it != end() ? &( it->second.access() ) : nullptr; }
-		prop_node* try_get_child( const key_t& key )
-		{ access(); auto it = find( key ); return it != end() ? &( it->second.access() ) : nullptr; }
-		const prop_node* try_get_child_delimited( const key_t& key, const char delim = '.' ) const {
-			auto p = key.find_first_of( delim );
-			if ( p == string::npos ) return try_get_child( key );
-			else if ( const prop_node* c = try_get_child( key.substr( 0, p ) ) )
-			return c->try_get_child_delimited( mid_str( key, p + 1 ), delim );
-			else return nullptr;
-		}
+		const prop_node* try_get_child( const key_t& key ) const;
+		prop_node* try_get_child( const key_t& key );
+
+		/// get a child node using delimiters, return nullptr if not existing
+		const prop_node* try_get_child_delimited( const key_t& key, const char delim = '.' ) const;
+		prop_node* try_get_child_delimited( const key_t& key, const char delim = '.' );
 
 		/// get a child node or add it if not existing
 		prop_node& get_or_add_child( const key_t& key )
@@ -268,8 +262,6 @@ namespace xo
 	};
 
 	template< typename T > prop_node make_prop_node( const T& value ) { return prop_node_cast< T >::to( value ); }
-
-	XO_API const prop_node& empty_prop_node();
 
 	/// stream operator
 	XO_API std::ostream& to_stream( std::ostream& str, const prop_node& pn, int depth = 0, int key_align = 0 );

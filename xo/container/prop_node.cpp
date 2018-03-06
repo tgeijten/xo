@@ -11,6 +11,16 @@ namespace xo
 		*this = parse_zml( pn );
 	}
 
+	size_t prop_node::count_layers() const
+	{
+		size_t d = 0; for ( auto& c : children ) d = max( d, c.second.count_layers() + 1 ); return d;
+	}
+
+	size_t prop_node::count_children() const
+	{
+		size_t n = size(); for ( auto& c : children ) n += c.second.count_children(); return n;
+	}
+
 	void prop_node::merge( const prop_node& other, bool overwrite /*= false */ )
 	{
 		if ( overwrite )
@@ -25,10 +35,87 @@ namespace xo
 		}
 	}
 
-	prop_node g_empty_prop_node;
-	XO_API const prop_node& empty_prop_node()
+	const prop_node& prop_node::get_child_delimited( const key_t& key, const char delim ) const
 	{
-		return g_empty_prop_node;
+		auto p = key.find_first_of( delim );
+		if ( p == string::npos )
+			return get_child( key );
+		else return get_child( key.substr( 0, p ) ).get_child_delimited( key.substr( p + 1 ), delim );
+	}
+
+	prop_node& prop_node::get_child_delimited( const key_t& key, const char delim )
+	{
+		auto p = key.find_first_of( delim );
+		if ( p == string::npos )
+			return get_child( key );
+		else return get_child( key.substr( 0, p ) ).get_child_delimited( key.substr( p + 1 ), delim );
+	}
+
+	const xo::prop_node& prop_node::get_child( const key_t& key ) const
+	{
+		auto it = find( key );
+		xo_error_if( it == end(), "Could not find key: " + key );
+		access();
+		return it->second;
+	}
+
+	xo::prop_node& prop_node::get_child( const key_t& key )
+	{
+		auto it = find( key );
+		xo_error_if( it == end(), "Could not find key: " + key ); access();
+		return it->second;
+	}
+
+	const xo::prop_node& prop_node::get_child( index_t idx ) const
+	{
+		xo_assert( idx < size() );
+		access();
+		return children[ idx ].second;
+	}
+
+	xo::prop_node& prop_node::get_child( index_t idx )
+	{
+		xo_assert( idx < size() );
+		access();
+		return children[ idx ].second;
+	}
+
+	const xo::prop_node::key_t& prop_node::get_key( index_t idx ) const
+	{
+		xo_assert( idx < size() ); access();
+		return children[ idx ].first;
+	}
+
+	const xo::prop_node* prop_node::try_get_child( const key_t& key ) const
+	{
+		access();
+		auto it = find( key );
+		return it != end() ? &( it->second.access() ) : nullptr;
+	}
+
+	xo::prop_node* prop_node::try_get_child( const key_t& key )
+	{
+		access();
+		auto it = find( key );
+		return it != end() ? &( it->second.access() ) : nullptr;
+	}
+
+	const xo::prop_node* prop_node::try_get_child_delimited( const key_t& key, const char delim ) const
+	{
+		auto p = key.find_first_of( delim );
+		if ( p == string::npos ) return try_get_child( key );
+		else if ( auto* c = try_get_child( key.substr( 0, p ) ) )
+			return c->try_get_child_delimited( mid_str( key, p + 1 ), delim );
+		else return nullptr;
+	}
+
+	xo::prop_node* prop_node::try_get_child_delimited( const key_t& key, const char delim )
+	{
+		auto p = key.find_first_of( delim );
+		if ( p == string::npos ) return try_get_child( key );
+		else if ( auto* c = try_get_child( key.substr( 0, p ) ) )
+			return c->try_get_child_delimited( mid_str( key, p + 1 ), delim );
+		else return nullptr;
 	}
 
 	int get_align_width( const prop_node& pn, int depth )
