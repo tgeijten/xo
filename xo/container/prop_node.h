@@ -77,6 +77,10 @@ namespace xo
 		template< typename T > T get_any( std::initializer_list< key_t > keys ) const
 		{ for ( auto& key : keys ) { const auto it = find( key ); if ( it != end() ) return it->second.get< T >(); } xo_error( "Could not find key: " + to_str( keys ) ); }
 
+		/// get the value of a child node for a range of keys, or a default value if it doesn't exist
+		template< typename T > optional< T > try_get_any( std::initializer_list< key_t > keys ) const
+		{ for ( auto& key : keys ) { const auto it = find( key ); if ( it != end() ) return it->second.get< T >(); } return optional< T >(); }
+
 		/// see if this prop_node has a value
 		bool has_value() const { return !value.empty(); }
 		bool has_value( const key_t& key ) const { auto c = find( key ); return c != end() && c->second.has_value(); }
