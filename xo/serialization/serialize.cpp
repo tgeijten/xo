@@ -49,7 +49,7 @@ namespace xo
 
 		for ( auto& child : pn )
 		{
-			xmlnode->append_node( doc.allocate_node( rapidxml::node_element, child.first.c_str() ) );
+			xmlnode->append_node( doc.allocate_node( rapidxml::node_element, !child.first.empty() ? child.first.c_str() : "_" ) );
 			set_rapid_xml_node( doc, xmlnode->last_node(), child.second );
 		}
 	}
@@ -87,7 +87,7 @@ namespace xo
 		}
 	}
 
-	void read_zml_layer( char_stream& str, prop_node& parent, const char* close, error_code* ec, const path& folder )
+	void read_zml_layer( char_stream& str, prop_node& parent, const string& close, error_code* ec, const path& folder )
 	{
 		prop_node merge_pn;
 		for ( string t = get_zml_token( str ); t != close; t = get_zml_token( str ) )
@@ -109,17 +109,21 @@ namespace xo
 				// check if we're reading an array or if this is a label
 				if ( close != "]" )
 				{
-					// there should be a label = value pair
+					// read label
 					if ( !isalpha( t[ 0 ] ) )
 						return set_error_or_throw( ec, "Error parsing ZML: invalid label " + t );
-					if ( get_zml_token( str ) != "=" )
-						return set_error_or_throw( ec, "Error parsing ZML: expected '='" );
-					parent.push_back( t ); // add labeled child
+					parent.push_back( t );
+
+					// read =
+					t = get_zml_token( str );
+					if ( t == "=" )
+						t = get_zml_token( str );
+					else if ( t != "{" && t != "[" )
+						return set_error_or_throw( ec, "Error parsing ZML: expected '=', '{' or '['" );
 				}
 				else parent.push_back( "" ); // add array child
 
 				// read value
-				t = get_zml_token( str );
 				if ( t == "{" ) // new group
 					read_zml_layer( str, parent.back().second, "}", ec, folder );
 				else if ( t == "[" ) // new array
