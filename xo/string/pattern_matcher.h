@@ -6,8 +6,9 @@
 
 namespace xo
 {
-	struct pattern_matcher
+	class pattern_matcher
 	{
+	public:
 		pattern_matcher() {}
 		pattern_matcher( const prop_node& pn ) : patterns( split_str( pn.get_value(), ";" ) ) {}
 		pattern_matcher( const char* pattern, const char* delimeters = ";" ) : patterns( split_str( pattern, delimeters ) ) {}
@@ -27,6 +28,7 @@ namespace xo
 			while ( begin != end && !match( static_cast< const string& >( *begin ) ) ) ++begin;
 		}
 
+	private:
 		vector< string > patterns;
 	};
 
