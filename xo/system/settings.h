@@ -20,7 +20,7 @@ namespace xo
 		template< typename T > T get( const string& id ) const { return data_.get_delimited< T >( id ); }
 		template< typename T > void set( const string& id, const T& value ) {
 			if ( auto* pn = data_.try_get_child_delimited( id ) )
-				pn->set( value );
+				pn->set_value( value );
 			else xo_error( "Could not find setting " + id );
 		}
 
@@ -30,7 +30,6 @@ namespace xo
 		bool empty() const { return data_.empty(); }
 
 		const prop_node& data() const { return data_; }
-		prop_node& data() { return data_; }
 
 		void inject_settings( const prop_node& settings );
 		prop_node extract_settings() const;
