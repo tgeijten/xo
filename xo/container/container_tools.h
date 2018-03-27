@@ -8,20 +8,28 @@
 namespace xo
 {
 	/// find element in a container
-	template< typename C > typename C::iterator find( C& cont, typename C::value_type& e )
+	template< typename C > typename auto find( C& cont, const typename C::value_type& e )
 	{ auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( *it == e ) break; return it; }
 
 	/// find element in a container
-	template< typename C, typename P > typename C::const_iterator find( const C& cont, typename C::value_type& e )
+	template< typename C, typename P > auto find( const C& cont, const typename C::value_type& e )
 	{ auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( *it == e ) break; return it; }
 
 	/// find element in a container
-	template< typename C, typename P > typename C::iterator find_if( C& cont, P pred )
+	template< typename C, typename P > auto find_if( C& cont, P pred )
 	{ auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( pred( *it ) ) break; return it; }
 
 	/// find element in a container
-	template< typename C, typename P > typename C::const_iterator find_if( const C& cont, const P pred )
+	template< typename C, typename P > auto find_if( const C& cont, const P pred )
 	{ auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( pred( *it ) ) break; return it; }
+
+	/// count element in a container
+	template< typename C, typename P > size_t count( const C& cont, typename C::value_type& e )
+	{ size_t c = 0; for ( auto it = std::begin( cont ); it != std::end( cont ); ++it ) c += size_t( *it == e ); return c; }
+
+	/// count element in a container
+	template< typename C, typename P > size_t count_if( const C& cont, P pred )
+	{ size_t c = 0; for ( auto it = std::begin( cont ); it != std::end( cont ); ++it ) c += size_t( pred( *it ) ); return c; }
 
 	/// copy elements of one container to another
 	template< typename InIt, typename OutIt > OutIt copy( InIt ib, InIt ie, OutIt ob )
