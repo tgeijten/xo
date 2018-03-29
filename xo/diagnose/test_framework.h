@@ -3,8 +3,8 @@
 #include "xo/system/platform.h"
 #include "xo/utility/types.h"
 
-#define XO_TEST( operation ) try { xo::test_framework::get_instance().test( #operation, operation ); } catch( const std::exception& e ) { xo::test_framework::get_instance().test( #operation, false, e.what() ); }
-#define XO_TEST_MSG( operation, message ) try { xo::test_framework::get_instance().test( #operation, operation, message ); } catch( const std::exception& e ) { xo::test_framework::get_instance().test( #operation, false, e.what() ); }
+#define XO_TEST( operation ) { try { xo::test_framework::get_instance().test( #operation, operation ); } catch( const std::exception& e ) { xo::test_framework::get_instance().test( #operation, false, e.what() ); } }
+#define XO_TEST_MSG( operation, message ) { try { xo::test_framework::get_instance().test( #operation, operation, message ); } catch( const std::exception& e ) { xo::test_framework::get_instance().test( #operation, false, e.what() ); } }
 #define XO_TEST_REPORT xo::test_framework::get_instance().report
 
 namespace xo

@@ -23,6 +23,16 @@ namespace xo
 		return idx_vec;
 	}
 
+	template< typename C > typename C::const_iterator min_element( const C& cont ) {
+		xo_assert( !std::empty( cont ) );
+		return std::min_element( std::begin( cont ), std::end( cont ) );
+	}
+
+	template< typename C > typename C::const_iterator max_element( const C& cont ) {
+		xo_assert( !std::empty( cont ) );
+		return std::max_element( std::begin( cont ), std::end( cont ) );
+	}
+
 	template< typename C > C sorted_copy( const C& cont ) { C res( cont ); std::sort( res.begin(), res.end() ); return res; }
 
 	template< typename I > typename std::iterator_traits< I >::value_type median_slow( I b, I e ) {

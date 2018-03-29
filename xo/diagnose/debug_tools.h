@@ -3,6 +3,7 @@
 #include <fstream>
 #include <functional>
 #include "xo/filesystem/path.h"
+#include <iomanip>
 
 namespace xo
 {

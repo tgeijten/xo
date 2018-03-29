@@ -42,6 +42,10 @@ namespace xo
 		void clear() { x = y = z = T(0); }
 		vec3_< T > normalized() const { T s = inv( length() ); return vec3_< T >( x * s, y * s, z * s ); }
 
+		/// container methods
+		size_t size() const { return 3; }
+		bool empty() const { return false; }
+
 		/// static initializers
 		static vec3_<T> zero() { return vec3_<T>( T(0), T(0), T(0) ); }
 		static vec3_<T> unit_x() { return vec3_<T>( T(1), T(0), T(0) ); }
