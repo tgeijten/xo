@@ -30,40 +30,28 @@ namespace xo
 	prop_node load_file( const path& filename, error_code* ec )
 	{
 		if ( auto s = get_serializer_factory().try_create( filename.extension().string() ) )
-		{
-			std::ifstream str( filename.string() );
-			return s->read_stream( str, ec, filename.parent_path() );
-		}
+			return s->load_file( filename, ec );
 		else return set_error_or_throw( ec, "Unsupported file format for " + filename.string() ), prop_node();
 	}
 
 	prop_node load_file( const path& filename, const string& file_type, error_code* ec )
 	{
 		if ( auto s = make_serializer( file_type ) )
-		{
-			std::ifstream str( filename.string() );
-			return s->read_stream( str, ec, filename.parent_path() );
-		}
+			return s->load_file( filename, ec );
 		else return set_error_or_throw( ec, "Unknown file format: " + file_type ), prop_node();
 	}
 
 	void save_file( const prop_node& pn, const path& filename, error_code* ec )
 	{
 		if ( auto s = get_serializer_factory().try_create( filename.extension().string() ) )
-		{
-			std::fstream str( filename.string() );
-			s->write_stream( str, pn, ec );
-		}
+			s->save_file( pn, filename, ec );
 		else set_error_or_throw( ec, "Could not deduce file format for " + filename.string() );
 	}
 
 	void save_file( const prop_node& pn, const path& filename, const string& file_type, error_code* ec )
 	{
 		if ( auto s = get_serializer_factory().try_create( file_type ) )
-		{
-			std::fstream str( filename.string() );
-			s->write_stream( str, pn, ec );
-		}
+			s->save_file( pn, filename, ec );
 		else set_error_or_throw( ec, "Unknown file format: " + file_type );
 	}
 
