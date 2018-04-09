@@ -1,8 +1,7 @@
 #include "prop_node.h"
+#include "xo/serialization/prop_node_serializer_zml.h"
 
 #include <iomanip>
-
-#include "xo/serialization/serialize.h"
 
 namespace xo
 {

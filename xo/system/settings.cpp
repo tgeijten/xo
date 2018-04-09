@@ -49,7 +49,7 @@ namespace xo
 
 	void settings::save( const path& filename ) const
 	{
-		save_file( extract_settings(), filename, detect_file_format( filename ) );
+		save_file( extract_settings(), filename );
 	}
 
 	void settings::set_meta_data( prop_node& pn, const string& label, const string& info, type_class t )

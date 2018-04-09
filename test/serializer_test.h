@@ -4,6 +4,7 @@
 #include "xo/serialization/serialize.h"
 #include "xo/diagnose/test_framework.h"
 #include "xo/system/log.h"
+#include "xo/serialization/prop_node_serializer_zml.h"
 
 namespace xo
 {
@@ -42,10 +43,8 @@ namespace xo
 		prop_node p1 = make_prop_node();
 
 		std::stringstream str;
-		str << prop_node_serializer( file_format::zml, p1 );
-
-		prop_node p2;
-		str >> prop_node_deserializer( file_format::zml, p2 );
+		prop_node_serializer_zml().write_stream( str, p1 );
+		prop_node p2 = prop_node_serializer_zml().read_stream( str );
 		XO_TEST( p1 == p2 );
 		if ( p1 != p2 )
 		{
