@@ -36,19 +36,19 @@ namespace xo
 
 		/// constructors
 		prop_node() : accessed_flag( false ) {}
+		prop_node( const prop_node& other ) = default;
+		prop_node( prop_node&& other ) = default;
 		prop_node( const char* pn );
 		prop_node( const value_t& v ) : accessed_flag( false ), value( v ) {}
 		prop_node( value_t&& v ) : accessed_flag( false ), value( std::move( v ) ) {}
-		prop_node( const prop_node& other ) : accessed_flag( false ), value( other.value ), children( other.children ) {}
-		prop_node( prop_node&& other ) : accessed_flag( false ), value( std::move( other.value ) ), children( std::move( other.children ) ) {}
-		prop_node( const prop_node* other ) : accessed_flag( false ), value( other ? other->value : value_t() ), children( other ? other->children : container_t() ) {}
+		prop_node( const prop_node* other ) : accessed_flag( other->accessed_flag ), value( other ? other->value : value_t() ), children( other ? other->children : container_t() ) {}
 
 		/// destructor (non-virtual)
 		~prop_node() {}
 
 		/// assignment operators
-		prop_node& operator=( const prop_node& other ) { value = other.value; children = other.children; return *this; }
-		prop_node& operator=( prop_node&& other ) { value = std::move( other.value ); children = std::move( other.children ); return *this; }
+		prop_node& operator=( const prop_node& other ) = default;
+		prop_node& operator=( prop_node&& other ) = default;
 		template< typename T > prop_node& operator=( const T& v ) { *this = prop_node_cast<T>::to( v ); return *this; }
 
 		/// equality operators
