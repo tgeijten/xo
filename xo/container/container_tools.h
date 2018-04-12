@@ -23,6 +23,10 @@ namespace xo
 	template< typename C, typename P > auto find_if( const C& cont, const P pred )
 	{ auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( pred( *it ) ) break; return it; }
 
+	/// find element in a container
+	template< typename C, typename P > typename C::value_type& find_ref_if( C& cont, P pred )
+	{ auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( pred( *it ) ) return *it; xo_error( "Could not find element" ); }
+
 	/// count element in a container
 	template< typename C, typename P > size_t count( const C& cont, typename C::value_type& e )
 	{ size_t c = 0; for ( auto it = std::begin( cont ); it != std::end( cont ); ++it ) c += size_t( *it == e ); return c; }
