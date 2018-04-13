@@ -15,8 +15,9 @@ namespace xo
 		vec3_( T px, T py, T pz ) : x( px ), y( py ), z( pz ) {}
 		vec3_( T v ) : x( v ), y( v ), z( v ) {}
 		template< typename T2 > vec3_( const vec3_<T2>& o ) : x( T( o.x ) ), y( T( o.y ) ), z( T( o.z ) ) {}
-		vec3_( const prop_node& pn ) : x( pn.get<T>( "x", T() ) ), y( pn.get<T>( "y", T() ) ), z( pn.get<T>( "z", T() ) ) {
-			if ( pn.has_value() ) { char_stream str( pn.get_value().c_str() ); str >> x >> y >> z; }
+		vec3_( const prop_node& pn ) : x( pn.get( "x", T() ) ), y( pn.get( "y", T() ) ), z( pn.get( "z", T() ) ) {
+			if ( pn.size() == 3 && pn.get_key( 0 ).empty() && pn.get_key( 1 ).empty() && pn.get_key( 2 ).empty() ) { x = pn.get<T>( 0 ); y = pn.get<T>( 1 ); z = pn.get<T>( 2 ); }
+			else if ( pn.size() == 0 && pn.has_value() ) { char_stream str( pn.get_value().c_str() ); str >> x >> y >> z; }
 		}
 
 		/// assignment
