@@ -62,12 +62,15 @@ namespace xo
 		template< typename T > T get( const key_t& key ) const { return get_child( key ).get< T >(); }
 
 		/// get the value of a child node
-		template< typename T > optional< T > try_get( const key_t& key ) const
-		{ const auto it = find( key ); return ( it != end() ) ? it->second.get< T >() : optional< T >(); }
+		template< typename T > T get( index_t idx ) const { return get_child( idx ).get< T >(); }
 
 		/// get the value of a child node, or a default value if it doesn't exist
 		template< typename T > T get( const key_t& key, const T& def ) const
 		{ const auto it = find( key ); return ( it != end() ) ? it->second.get< T >() : def; }
+
+		/// get the value of a child node
+		template< typename T > optional< T > try_get( const key_t& key ) const
+		{ const auto it = find( key ); return ( it != end() ) ? it->second.get< T >() : optional< T >(); }
 
 		/// get the value of a child node for a range of keys, or a default value if it doesn't exist
 		template< typename T > T get_any( std::initializer_list< key_t > keys, const T& def ) const
