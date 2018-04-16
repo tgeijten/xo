@@ -4,6 +4,8 @@
 #include "xo/serialization/char_stream.h"
 #include "xo/numerical/math.h"
 
+#define xo_varstr( var_ ) ( ::std::string( #var_ ) + '=' + ::xo::to_str( ( var_ ) ) )
+
 namespace xo
 {
 	/// get left n characters; if n < 0, get string WITHOUT the left n characters
