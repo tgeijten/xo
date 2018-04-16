@@ -121,7 +121,7 @@ void angle_test()
 	auto qtest2 = quat_from_axis_angle( vec3_<float>::unit_x(), a6_df );
 
 	//xo_logvar4( a1.value, a2.value, a3.value, a4.value );
-	xo_logvar4( sizeof( a1_rd ), sizeof( a2_dd ), sizeof( a3 ), sizeof( a4 ) );
+	//xo_logvar4( sizeof( a1_rd ), sizeof( a2_dd ), sizeof( a3 ), sizeof( a4 ) );
 }
 
 void clamp_test()
