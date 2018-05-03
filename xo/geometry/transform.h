@@ -29,14 +29,14 @@ namespace xo
 
 		vec3_<T> operator*( const vec3_<T>& v ) const { return p + q * v; }
 		vec3_<T> transform( const vec3_<T>& v ) const { return p + q * v; }
-		vec3_<T> inv_transform( const vec3_<T>& v ) const { return -q * ( v - p ); }
+		vec3_<T> inv_trans( const vec3_<T>& v ) const { return -q * ( v - p ); }
 
 		quat_<T> operator*( const quat_<T>& o ) const { return q * o; }
 		quat_<T> transform( const quat_<T>& o ) const { return q * o; }
-		quat_<T> inv_transform( const quat_<T>& o ) const { return -q * o; }
+		quat_<T> inv_trans( const quat_<T>& o ) const { return -q * o; }
 
 		transform_<T> transform( const transform_<T>& t ) const { return transform_<T>( p + q * t.p, q * t.q ); }
-		transform_<T> inv_transform( const transform_<T>& t ) const { return transform_<T>( -q * ( t.p - p ), -q * t.q ); }
+		transform_<T> inv_trans( const transform_<T>& t ) const { return transform_<T>( -q * ( t.p - p ), -q * t.q ); }
 
 		static transform_<T> identity() { return transform_<T>( vec3_<T>::zero(), quat_<T>::identity() ); }
 	};

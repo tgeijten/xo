@@ -48,6 +48,13 @@ namespace xo
 	template< typename T > vec3_<T>& operator*=( vec3_<T>& v1, const vec3_<T>& v2 )
 	{ v1.x *= v2.x; v1.y *= v2.y; v1.z *= v2.z; return v1; }
 
+	/// Inverse scale components
+	template< typename T > vec3_<T> operator/( const vec3_<T>& v1, const vec3_<T>& v2 )
+	{ return vec3_<T>( v1.x / v2.x, v1.y / v2.y, v1.z / v2.z ); }
+	/// Inverse scale components
+	template< typename T > vec3_<T>& operator/=( vec3_<T>& v1, const vec3_<T>& v2 )
+	{ v1.x /= v2.x; v1.y /= v2.y; v1.z /= v2.z; return v1; }
+
 	/// Get length of a vec3
 	template< typename T > T length( const vec3_<T>& v )
 	{ return sqrt( v.x * v.x + v.y * v.y + v.z * v.z ); }

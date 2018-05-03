@@ -15,7 +15,9 @@ namespace xo
 		shape( shape_type t = undefined, float x_radius = 0, float y_height = 0, float z = 0 );
 		shape( const prop_node& pn );
 
+		// shape properties
 		shape_type type() const { return type_; }
+		const string& name() const;
 		float radius() const;
 		float height() const;
 		float half_height() const;
@@ -28,6 +30,11 @@ namespace xo
 		float y() const { return y_; }
 		float z() const { return z_; }
 
+		// physical properties
+		float compute_mass( float density ) const;
+		vec3f compute_inertia( float density ) const;
+
+		// modify shape
 		void scale( float factor );
 		void scale( const vec3f& factor );
 

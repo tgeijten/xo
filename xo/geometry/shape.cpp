@@ -1,6 +1,7 @@
 #include "shape.h"
 
 #include "xo/container/prop_node_tools.h"
+#include "xo/string/dictionary.h"
 
 namespace xo
 {
@@ -11,6 +12,12 @@ namespace xo
 
 	shape::shape( shape_type t, float x_radius, float y_height, float z ) : type_( t ), x_( x_radius ), y_( y_height ), z_( z )
 	{}
+
+	const xo::string& shape::name() const
+	{
+		static dictionary< shape_type > dict( { { sphere, "sphere" }, { box, "box" }, { capsule, "capsule" }, { cylinder, "cylinder" }, { cone, "cone" } } );
+		return dict( type_ );
+	}
 
 	float shape::radius() const
 	{
@@ -62,8 +69,8 @@ namespace xo
 	{
 		switch ( type_ )
 		{
-		case box: return x_ * y_ * z_;
 		case sphere: return ( 4.0f / 3.0f ) * pi<float>() * cubed( radius() );
+		case box: return x_ * y_ * z_;
 		case cylinder: return pi<float>() * squared( radius() ) * height();
 		default: xo_error( "Cannot compute volume for this shape" );
 		}
@@ -89,9 +96,37 @@ namespace xo
 			for ( index_t i = 0; i < 8; ++i ) bb += t.p + t.q * corner( i );
 			return bb;
 		}
-		case sphere: return bounding_boxf( t.p - vec3f( radius() ), t.p + vec3f( radius() ) );
-		case capsule: xo_error( "Cannot compute bounding box for this shape" );
-		default: xo_error( "Cannot compute bounding box for this shape" );
+		case sphere:
+			return bounding_boxf( t.p - vec3f( radius() ), t.p + vec3f( radius() ) );
+		default: xo_error( "Cannot compute bounding box for " + name() );
+		}
+	}
+
+	float shape::compute_mass( float density ) const
+	{
+		return density * volume();
+	}
+
+	xo::vec3f shape::compute_inertia( float density ) const
+	{
+		if ( density == 0.0f )
+			return vec3f::zero();
+
+		auto mass = compute_mass( density );
+
+		switch ( type_ )
+		{
+		case sphere:
+			// see: en.wikipedia.org/wiki/List_of_moments_of_inertia
+			return vec3f( ( 2.0f / 5.0f ) * mass * squared( radius() ) );
+		case cylinder:
+		{
+			// see: en.wikipedia.org/wiki/List_of_moments_of_inertia
+			auto hi = ( 1.0f / 12.0f ) * mass * ( 3 * squared( radius() ) + squared( height() ) );
+			auto vi = 0.5f * mass * squared( radius() );
+			return vec3f( hi, hi, vi ); // cylinder along z axis
+		}
+		default: xo_error( "Cannot compute volume for this shape" );
 		}
 	}
 

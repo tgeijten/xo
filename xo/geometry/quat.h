@@ -73,6 +73,20 @@ namespace xo
 		return quat_<T>( std::cos( ha ), hs * axis.x, hs * axis.y, hs * axis.z );
 	}
 
+	/// make quaternion from axis and angle
+	template< typename T > quat_<T> quat_from_rotation_vector( vec3_<T> v )
+	{
+		auto l = v.length();
+		if ( l > constants< T >::epsilon() )
+		{
+			v /= l;
+			T ha = T( 0.5 ) * l;
+			T hs = std::sin( ha );
+			return quat_<T>( std::cos( ha ), hs * v.x, hs * v.y, hs * v.z );
+		}
+		else return quat_<T>::identity();
+	}
+
 	/// make quaternion from Euler angles
 	template< angle_unit U, typename T > quat_<T> quat_from_euler( angle_<U, T> x, angle_<U, T> y, angle_<U, T> z, euler_order eo = euler_order::xyz )
 	{
