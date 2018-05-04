@@ -5,6 +5,8 @@
 
 namespace xo
 {
+	xo::dictionary< xo::shape::shape_type > shape::shape_dict( { { sphere, "sphere" },{ box, "box" },{ capsule, "capsule" },{ cylinder, "cylinder" },{ cone, "cone" } } );
+
 	shape::shape( const prop_node& pn )
 	{
 		INIT_PROP( pn, type_, box );
@@ -13,10 +15,9 @@ namespace xo
 	shape::shape( shape_type t, float x_radius, float y_height, float z ) : type_( t ), x_( x_radius ), y_( y_height ), z_( z )
 	{}
 
-	const xo::string& shape::name() const
+	const string& shape::name() const
 	{
-		static dictionary< shape_type > dict( { { sphere, "sphere" }, { box, "box" }, { capsule, "capsule" }, { cylinder, "cylinder" }, { cone, "cone" } } );
-		return dict( type_ );
+		return shape_dict( type_ );
 	}
 
 	float shape::radius() const
@@ -37,31 +38,31 @@ namespace xo
 		return 0.5f * y_;
 	}
 
-	xo::vec3f shape::dim() const
+	vec3f shape::dim() const
 	{
 		switch ( type_ )
 		{
-		case xo::shape::sphere: return vec3f( 2 * x_ );
-		case xo::shape::box: return vec3f( x_, y_, z_ );
-		case xo::shape::capsule:
-		case xo::shape::cylinder:
-		case xo::shape::cone:
+		case shape::sphere: return vec3f( 2 * x_ );
+		case shape::box: return vec3f( x_, y_, z_ );
+		case shape::capsule:
+		case shape::cylinder:
+		case shape::cone:
 			return vec3f( 2 * x_, y_, 2 * x_ );
-		default: xo_error( "Cannot compute dim for this shape" );
+		default: xo_error( "Cannot compute dim for " + name() );
 		}
 	}
 
-	xo::vec3f shape::half_dim() const
+	vec3f shape::half_dim() const
 	{
 		switch ( type_ )
 		{
-		case xo::shape::sphere: return vec3f( x_ );
-		case xo::shape::box: return vec3f( 0.5f * x_, 0.5f * y_, 0.5f * z_ );
-		case xo::shape::capsule:
-		case xo::shape::cylinder:
-		case xo::shape::cone:
+		case shape::sphere: return vec3f( x_ );
+		case shape::box: return vec3f( 0.5f * x_, 0.5f * y_, 0.5f * z_ );
+		case shape::capsule:
+		case shape::cylinder:
+		case shape::cone:
 			return vec3f( x_, 0.5f * y_, x_ );
-		default: xo_error( "Cannot compute half_dim for this shape" );
+		default: xo_error( "Cannot compute half_dim for " + name() );
 		}
 	}
 
@@ -72,11 +73,11 @@ namespace xo
 		case sphere: return ( 4.0f / 3.0f ) * pi<float>() * cubed( radius() );
 		case box: return x_ * y_ * z_;
 		case cylinder: return pi<float>() * squared( radius() ) * height();
-		default: xo_error( "Cannot compute volume for this shape" );
+		default: xo_error( "Cannot compute volume for " + name() );
 		}
 	}
 
-	xo::vec3f shape::corner( index_t idx ) const
+	vec3f shape::corner( index_t idx ) const
 	{
 		xo_assert( type_ == box && idx < 8 );
 		return vec3f(
@@ -107,7 +108,7 @@ namespace xo
 		return density * volume();
 	}
 
-	xo::vec3f shape::compute_inertia( float density ) const
+	vec3f shape::compute_inertia( float density ) const
 	{
 		if ( density == 0.0f )
 			return vec3f::zero();
@@ -126,7 +127,7 @@ namespace xo
 			auto vi = 0.5f * mass * squared( radius() );
 			return vec3f( hi, hi, vi ); // cylinder along z axis
 		}
-		default: xo_error( "Cannot compute volume for this shape" );
+		default: xo_error( "Cannot compute inertia for " + name() );
 		}
 	}
 

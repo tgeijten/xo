@@ -4,6 +4,7 @@
 #include "vec3_type.h"
 #include "bounding_box.h"
 #include "transform.h"
+#include "xo/string/dictionary.h"
 
 namespace xo
 {
@@ -11,6 +12,7 @@ namespace xo
 	{
 	public:
 		enum shape_type { undefined, sphere, box, capsule, cylinder, cone };
+		static dictionary< shape_type > shape_dict;
 
 		shape( shape_type t = undefined, float x_radius = 0, float y_height = 0, float z = 0 );
 		shape( const prop_node& pn );

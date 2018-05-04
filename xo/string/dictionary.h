@@ -10,28 +10,25 @@ namespace xo
 	{
 	public:
 		typedef std::pair< T, string > pair_t;
-
-		dictionary() {}
 		dictionary( std::initializer_list< pair_t > l ) : data( l ) {}
-		~dictionary() {}
 
 		/// lookup name of element e
-		const string& operator()( const T& e ) {
-			auto it = find_if( data, [&]( pair_t& p ) { return e == p.first; } );
+		const string& operator()( const T& e ) const {
+			auto it = find_if( data, [&]( const pair_t& p ) { return e == p.first; } );
 			xo_error_if( it == data.end(), "Could not find element " + to_str( e ) );
 			return it->second;
 		}
 
 		/// lookup element with name str
-		const T& operator()( const string& str ) {
-			auto it = find_if( data, [&]( pair_t& p ) { return str == p.second; } );
+		const T& operator()( const string& str ) const {
+			auto it = find_if( data, [&]( const pair_t& p ) { return str == p.second; } );
 			xo_error_if( it == data.end(), "Could not find element with name " + str );
 			return it->first;
 		}
 
 		/// lookup element with name str or return default
-		const T& operator()( const string& str, const T& value_not_found ) {
-			auto it = find_if( data, [&]( pair_t& p ) { return str == p.second; } );
+		const T& operator()( const string& str, const T& value_not_found ) const {
+			auto it = find_if( data, [&]( const pair_t& p ) { return str == p.second; } );
 			return ( it == data.end() ) ? value_not_found : it->first;
 		}
 
