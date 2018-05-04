@@ -110,25 +110,31 @@ namespace xo
 
 	vec3f shape::compute_inertia( float density ) const
 	{
+		// see: en.wikipedia.org/wiki/List_of_moments_of_inertia
 		if ( density == 0.0f )
 			return vec3f::zero();
 
-		auto mass = compute_mass( density );
-
+		vec3f r;
+		auto m = compute_mass( density );
 		switch ( type_ )
 		{
 		case sphere:
-			// see: en.wikipedia.org/wiki/List_of_moments_of_inertia
-			return vec3f( ( 2.0f / 5.0f ) * mass * squared( radius() ) );
+			r = vec3f( ( 2.0f / 5.0f ) * m * squared( radius() ) );
+			break;
+		case box:
+			r.x = m / 12.0f * ( y_ * y_ + z_ * z_ );
+			r.y = m / 12.0f * ( x_ * x_ + z_ * z_ );
+			r.z = m / 12.0f * ( x_ * x_ + y_ * y_ );
+			break;
+
 		case cylinder:
-		{
-			// see: en.wikipedia.org/wiki/List_of_moments_of_inertia
-			auto hi = ( 1.0f / 12.0f ) * mass * ( 3 * squared( radius() ) + squared( height() ) );
-			auto vi = 0.5f * mass * squared( radius() );
-			return vec3f( hi, hi, vi ); // cylinder along z axis
-		}
+			r.x = m / 12.0f * ( 3 * squared( radius() ) + squared( height() ) );
+			r.y = r.x;
+			r.z = 0.5f * m * squared( radius() ); // cylinder along z axis
+			break;
 		default: xo_error( "Cannot compute inertia for " + name() );
 		}
+		return r;
 	}
 
 	void shape::scale( float factor )
