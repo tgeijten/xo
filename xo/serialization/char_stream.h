@@ -17,7 +17,7 @@ namespace xo
 	inline const char* default_delimiters() { return " \t\r\n\f\v"; }
 
 	/// blazing-fast class for reading text stream-style
-	class XO_API char_stream
+	class XO_API char_stream // TODO: rename this to char_parser or something
 	{
 	public:
 		/// construct char_stream using given zero terminated char buffer
@@ -33,19 +33,24 @@ namespace xo
 
 		char_stream& operator>>( float& v ) { v = strtof( cur_pos, &cur_pos_end ); process_end_pos(); return *this; }
 		char_stream& operator>>( double& v ) { v = strtod( cur_pos, &cur_pos_end ); process_end_pos(); return *this; }
+
 		char_stream& operator>>( long& v ) { v = strtol( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
 		char_stream& operator>>( long long& v ) { v = strtoll( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
 		char_stream& operator>>( unsigned long& v ) { v = strtoul( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
 		char_stream& operator>>( unsigned long long& v ) { v = strtoull( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
-		char_stream& operator>>( string& s );
-
 		char_stream& operator>>( int& v ) { v = (int)strtol( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
 		char_stream& operator>>( unsigned int& v ) { v = (unsigned int)strtoul( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
 		char_stream& operator>>( short& v ) { v = (short)strtol( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
 		char_stream& operator>>( unsigned short& v ) { v = (unsigned short)strtoul( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
 
+		char_stream& operator>>( string& s );
+
 		string get_line();
+
+		// TODO: add multi-char operators
+		// TODO: make operators and quotations class members?
 		string get_token( const char* operators = "", const char* quotations = "\"" );
+
 		char getc() { char c = *cur_pos++; test_eof(); return c; }
 		char peekc() { return *cur_pos; }
 

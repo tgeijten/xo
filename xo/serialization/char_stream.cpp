@@ -78,7 +78,7 @@ namespace xo
 				// operator
 				if ( cur_pos == cur_pos_end && s.empty() )
 					s = *cur_pos_end++; // token is an operator
-				else s += string( cur_pos, size_t( cur_pos_end - cur_pos ) );
+				else s += string( cur_pos, size_t( cur_pos_end - cur_pos ) ); // token is everything before operator
 				cur_pos = cur_pos_end;
 				break;
 			}
