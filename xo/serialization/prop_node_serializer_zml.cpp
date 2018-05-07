@@ -4,6 +4,11 @@
 
 namespace xo
 {
+	void zml_error( const char_stream& str, error_code* ec, const string& message )
+	{
+		set_error_or_throw( ec, stringf( "Error parsing line %d: ", str.line_number() ) + message );
+	}
+
 	string get_zml_token( char_stream& str )
 	{
 		while ( true )
@@ -25,7 +30,7 @@ namespace xo
 		for ( string t = get_zml_token( str ); t != close; t = get_zml_token( str ) )
 		{
 			if ( t.empty() ) // check if the stream has ended while expecting a close tag
-				return set_error_or_throw( ec, "Error parsing ZML: unexpected end of stream" );
+				return zml_error( str, ec, "Unexpected end of stream" );
 
 			// check directive statement
 			if ( t[ 0 ] == '#' )
@@ -34,7 +39,7 @@ namespace xo
 					parent.append( load_zml( folder / path( get_zml_token( str ) ), ec ) );
 				else if ( t == "#merge" )
 					merge_pn.merge( load_zml( folder / path( get_zml_token( str ) ), ec ) );
-				else return set_error_or_throw( ec, "Unknown directive: " + t );
+				else return zml_error( str, ec, "Unknown directive: " + t );
 			}
 			else
 			{
@@ -43,7 +48,7 @@ namespace xo
 				{
 					// read label
 					if ( !isalpha( t[ 0 ] ) )
-						return set_error_or_throw( ec, "Error parsing ZML: invalid label " + t );
+						return zml_error( str, ec, "Invalid label " + t );
 					parent.push_back( t );
 
 					// read =
@@ -51,7 +56,7 @@ namespace xo
 					if ( t == "=" )
 						t = get_zml_token( str );
 					else if ( t != "{" && t != "[" )
-						return set_error_or_throw( ec, "Error parsing ZML: expected '=', '{' or '['" );
+						return zml_error( str, ec, "Error parsing ZML: expected '=', '{' or '['" );
 				}
 				else parent.push_back( "" ); // add array child
 
