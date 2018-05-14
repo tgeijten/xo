@@ -36,7 +36,7 @@ namespace xo
 		quat_<T> inv_trans( const quat_<T>& o ) const { return -q * o; }
 
 		transform_<T> transform( const transform_<T>& t ) const { return transform_<T>( p + q * t.p, q * t.q ); }
-		transform_<T> inv_trans( const transform_<T>& t ) const { return transform_<T>( -q * ( t.p - p ), -q * t.q ); }
+		transform_<T> inv_trans( const transform_<T>& t ) const { return transform_<T>( q.conjugate() * ( t.p - p ), q.conjugate() * t.q ); }
 
 		static transform_<T> identity() { return transform_<T>( vec3_<T>::zero(), quat_<T>::identity() ); }
 	};

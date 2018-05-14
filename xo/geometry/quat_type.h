@@ -21,6 +21,12 @@ namespace xo
 		/// convert to prop_node
 		explicit operator prop_node() const { return prop_node().set( "w", w ).set( "x", x ).set( "y", y ).set( "z", z ); }
 
+		/// conjugate
+		quat_<T> conjugate() const { return quat_<T>( w, -x, -y, -z ); }
+
+		/// inverse
+		quat_<T> inverse() const { auto s = w * w + x * x + y * y + z * z; xo_assert( s > T( 0 ) ); auto f = T( -1 ) / s; return quat_<T>( w, f * x, f * y, f * z ); }
+
 		/// member access
 		T w, x, y, z;
 

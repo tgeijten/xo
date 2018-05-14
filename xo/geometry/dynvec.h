@@ -142,6 +142,6 @@ namespace xo
 	}
 
 	/// stream in
-	template< typename T > std::istream& operator >> ( std::istream& str, dynvec<T>& v )
+	template< typename T > std::istream& operator>>( std::istream& str, dynvec<T>& v )
 	{ for ( auto& e : v ) str >> e; return str; }
 }
