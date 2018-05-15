@@ -97,6 +97,32 @@ namespace xo
 		return num;
 	}
 
+	bool char_stream::seek( const char* str )
+	{
+		if ( good() )
+		{
+			if ( const char* p = strstr( cur_pos, str ) )
+			{
+				cur_pos = p;
+				return true;
+			}
+		}
+
+		buffer_flags.set< fail_flag >();
+		return false;
+	}
+
+	bool char_stream::seek_past( const char* str )
+	{
+		if ( seek( str ) )
+		{
+			skip_delimiters();
+			test_eof();
+			return true;
+		}
+		else return false;
+	}
+
 	void char_stream::init_buffer( const char* b, size_t len )
 	{
 		xo_assert( b != 0 );
