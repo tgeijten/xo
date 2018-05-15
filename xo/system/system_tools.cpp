@@ -81,14 +81,39 @@ namespace xo
 		return ( pos != std::string::npos ) ? str.substr( pos + 1 ) : str;
 	}
 
+#ifdef XO_COMP_MSVC
+	// helper function for setting priorities on windows
+	void set_win_prio( DWORD priority_class, int priority )
+	{
+		auto h = ::GetCurrentThread();
+		::SetPriorityClass( h, priority_class );
+		::SetThreadPriority( h, priority );
+	}
+#endif
+
 	XO_API void set_thread_priority( thread_priority p )
 	{
 #ifdef XO_COMP_MSVC
-		::SetThreadPriority( ::GetCurrentThread(), (int)p );
-#elif __APPLE__
-		// TODO setschedprio unavailable; maybe use getschedparam?
+		switch (p)
+		{
+		case thread_priority::idle: // base priority = 1
+			return set_win_prio( IDLE_PRIORITY_CLASS, THREAD_PRIORITY_IDLE );
+		case thread_priority::lowest: // base priority = 4
+			return set_win_prio( BELOW_NORMAL_PRIORITY_CLASS, THREAD_PRIORITY_LOWEST );
+		case thread_priority::low: // base priority = 6
+			return set_win_prio( BELOW_NORMAL_PRIORITY_CLASS, THREAD_PRIORITY_NORMAL );
+		case thread_priority::normal: // base priority = 8
+			return set_win_prio( NORMAL_PRIORITY_CLASS, THREAD_PRIORITY_NORMAL );
+		case thread_priority::high: // base priority = 11
+			return set_win_prio( ABOVE_NORMAL_PRIORITY_CLASS, THREAD_PRIORITY_ABOVE_NORMAL );
+		case thread_priority::highest: // base priority = 15
+			return set_win_prio( HIGH_PRIORITY_CLASS, THREAD_PRIORITY_HIGHEST );
+		case thread_priority::realtime: // base priority = 25
+			return set_win_prio( REALTIME_PRIORITY_CLASS, THREAD_PRIORITY_NORMAL );
+		default: xo_error( "Unsupported thread priority: " + to_str( p ) );
+		}
 #else
-		pthread_setschedprio( pthread_self(), (int)p );
+		log::warning( "set_thread_priority() unavailable for this platform, setting ignored")
 #endif
 	}
 }

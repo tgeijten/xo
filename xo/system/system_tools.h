@@ -15,7 +15,8 @@ namespace xo
 	XO_API string tidy_identifier( const string& id );
 	XO_API string clean_type_name( const char* name );
 	template< typename T > string clean_type_name() { return clean_type_name( typeid( T ).name() ); }
-	enum class thread_priority { lowest = -2, low = -1, normal = 0, high = 1, highest = 2 };
+
+	enum class thread_priority { idle, lowest, low, normal, high, highest, realtime };
 	XO_API void set_thread_priority( thread_priority p );
 
 #ifdef XO_ENABLE_CPU_CYCLE_COUNT
