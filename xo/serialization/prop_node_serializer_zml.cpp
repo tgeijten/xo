@@ -9,25 +9,44 @@ namespace xo
 		set_error_or_throw( ec, stringf( "Error parsing line %d: ", str.line_number() ) + message );
 	}
 
-	string get_zml_token( char_stream& str )
+	string get_zml_token( char_stream& str, error_code* ec )
 	{
+		string token;
 		while ( true )
 		{
-			string t = str.get_token( "={}[];", "\"'" );
-			if ( t == ";" || t == "#" )
+			string t = str.get_token( "={}[];/", "\"'" );
+			if ( t == ";" || t == "#" ) // single line comment: skip rest of line
 			{
-				// comment: skip rest of line
 				str.get_line();
 				continue;
 			}
-			else return trim_str( t );
+			else if ( t == "/" ) // could be a comment
+			{
+				if ( str.peekc() == '/' ) // single line comment
+				{
+					str.get_line();
+					continue;
+				}
+				else if ( str.peekc() == '*' ) // multiline comment
+				{
+					if ( str.seek_past( "*/" ) )
+						continue;
+					else return zml_error( str, ec, "Could not find matching */" ), string();
+				}
+				else token += t;
+			}
+			else
+			{
+				token += t;
+				return trim_str( token );
+			}
 		}
 	}
 
 	void read_zml_layer( char_stream& str, prop_node& parent, const string& close, error_code* ec, const path& folder )
 	{
 		prop_node merge_pn;
-		for ( string t = get_zml_token( str ); t != close; t = get_zml_token( str ) )
+		for ( string t = get_zml_token( str, ec ); t != close; t = get_zml_token( str, ec ) )
 		{
 			if ( t.empty() ) // check if the stream has ended while expecting a close tag
 				return zml_error( str, ec, "Unexpected end of stream" );
@@ -36,9 +55,9 @@ namespace xo
 			if ( t[ 0 ] == '#' )
 			{
 				if ( t == "#include" )
-					parent.append( load_zml( folder / path( get_zml_token( str ) ), ec ) );
+					parent.append( load_zml( folder / path( get_zml_token( str, ec ) ), ec ) );
 				else if ( t == "#merge" )
-					merge_pn.merge( load_zml( folder / path( get_zml_token( str ) ), ec ) );
+					merge_pn.merge( load_zml( folder / path( get_zml_token( str, ec ) ), ec ) );
 				else return zml_error( str, ec, "Unknown directive: " + t );
 			}
 			else
@@ -52,9 +71,9 @@ namespace xo
 					parent.push_back( t );
 
 					// read =
-					t = get_zml_token( str );
+					t = get_zml_token( str, ec );
 					if ( t == "=" )
-						t = get_zml_token( str );
+						t = get_zml_token( str, ec );
 					else if ( t != "{" && t != "[" )
 						return zml_error( str, ec, "Error parsing ZML: expected '=', '{' or '['" );
 				}
