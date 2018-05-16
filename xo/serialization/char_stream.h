@@ -53,8 +53,10 @@ namespace xo
 
 		char getc() { char c = *cur_pos++; test_eof(); return c; }
 		char peekc() { return *cur_pos; }
+
 		bool seek( const char* str );
 		bool seek_past( const char* str );
+		bool try_get( const char* str );
 
 		bool good() { return !buffer_flags.any(); }
 		bool eof() { return buffer_flags.get< eof_flag >(); }

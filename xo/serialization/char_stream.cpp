@@ -132,6 +132,17 @@ namespace xo
 		skip_delimiters();
 	}
 
+	bool char_stream::try_get( const char* str )
+	{
+		auto l = strlen( str );
+		if ( strncmp( cur_pos, str, l ) == 0 )
+		{
+			cur_pos += l;
+			return true;
+		}
+		else return false;
+	}
+
 	xo::char_stream load_char_stream( const path& filename, const char* delimiters, error_code* ec )
 	{
 		return char_stream( load_string( filename, ec ), delimiters );
