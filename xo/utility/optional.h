@@ -2,7 +2,6 @@
 
 #include <limits>
 #include <type_traits>
-#include "xo/serialization/char_stream.h"
 
 namespace xo
 {
@@ -16,6 +15,7 @@ namespace xo
 		optional< T, E >& operator=( T&& v ) { value_ = std::move( v ); has_value_ = true; return *this; }
 		operator bool() const { return has_value_; }
 		const T& operator*() const { return value_; }
+		void reset() { has_value_ = false; }
 		T value_;
 		bool has_value_;
 	};
@@ -28,6 +28,7 @@ namespace xo
 		optional< T >& operator=( const T& v ) { value_ = v; return *this; }
 		operator bool() const { return value_ != constants<T>::sentinel(); }
 		const T& operator*() const { return value_; }
+		void reset() { value_ = constants<T>::sentinel(); }
 		T value_;
 	};
 
@@ -39,13 +40,11 @@ namespace xo
 		optional< T >& operator=( const T& v ) { value_ = v; return *this; }
 		operator bool() const { return value_ == value_; }
 		const T& operator*() const { return value_; }
+		void reset() { value_ = std::numeric_limits<T>::quiet_NaN(); }
 		T value_;
 	};
 
 	template< typename T > std::istream& operator>>( std::istream& str, optional< T >& v )
-	{ T tmp; str >> tmp; if ( !str.fail() ) v = tmp; return str; }
-
-	template< typename T > char_stream& operator>>( char_stream& str, optional< T >& v )
 	{ T tmp; str >> tmp; if ( !str.fail() ) v = tmp; return str; }
 
 	using optional_int = optional< int >;

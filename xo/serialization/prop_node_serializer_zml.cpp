@@ -11,35 +11,19 @@ namespace xo
 
 	string get_zml_token( char_stream& str, error_code* ec )
 	{
-		string token;
 		while ( true )
 		{
-			string t = str.get_token( "={}[];/", "\"'" );
-			if ( t == ";" || t == "#" ) // single line comment: skip rest of line
+			string t = str.get_token();
+			if ( t == ";" || t == "#" || t == "//" ) // single line comment: skip rest of line
 			{
 				str.get_line();
-				continue;
 			}
-			else if ( t == "/" ) // could be a comment
+			else if ( t == "/*" ) // could be a comment
 			{
-				if ( str.peekc() == '/' ) // single line comment
-				{
-					str.get_line();
-					continue;
-				}
-				else if ( str.peekc() == '*' ) // multiline comment
-				{
-					if ( str.seek_past( "*/" ) )
-						continue;
-					else return zml_error( str, ec, "Could not find matching */" ), string();
-				}
-				else token += t;
+				if ( !str.seek_past( "*/" ) )
+					return zml_error( str, ec, "Could not find matching */" ), string();
 			}
-			else
-			{
-				token += t;
-				return trim_str( token );
-			}
+			else return trim_str( t );
 		}
 	}
 
@@ -95,6 +79,10 @@ namespace xo
 
 	prop_node parse_zml( char_stream& str, error_code* ec, const path& folder )
 	{
+		str.set_operators( { "=", "{", "}", "[", "]", ";", "//", "/*", "*/" } );
+		str.set_delimiter_chars( " \n\r\t\v" );
+		str.set_quotation_chars( "\"" );
+
 		prop_node root;
 		read_zml_layer( str, root, "", ec, folder );
 		return root;
@@ -102,7 +90,7 @@ namespace xo
 
 	prop_node parse_zml( const char* str, error_code* ec )
 	{
-		return parse_zml( char_stream( str, "\n\r\t\v " ), ec, path() );
+		return parse_zml( char_stream( str ), ec, path() );
 	}
 
 	void write_zml_node( std::ostream& str, const string& label, const prop_node& pn, int level )
@@ -152,8 +140,7 @@ namespace xo
 	xo::prop_node prop_node_serializer_zml::read_stream( std::istream& str, error_code* ec, path parent_folder )
 	{
 		// TODO: more efficient. parser should be able to take any stream type.
-		std::string file_contents( std::istreambuf_iterator<char>( str ), {} );
-		return parse_zml( char_stream( file_contents.c_str(), "\n\r\t\v " ), ec, parent_folder );
+		return parse_zml( char_stream( string( std::istreambuf_iterator<char>( str ), {} ) ), ec, parent_folder );
 	}
 
 	std::ostream& prop_node_serializer_zml::write_stream( std::ostream& str, const prop_node& pn, error_code* ec )
@@ -165,9 +152,6 @@ namespace xo
 
 	XO_API prop_node load_zml( const path& filename, error_code* ec, path parent_folder )
 	{
-		std::ifstream str( filename.c_str() );
-		if ( str )
-			return prop_node_serializer_zml().read_stream( str, ec, filename.parent_path() );
-		else return set_error_or_throw( ec, "Could not open file: " + filename.string() ), prop_node();
+		return parse_zml( char_stream( filename ), ec, filename.parent_path() );
 	}
 }

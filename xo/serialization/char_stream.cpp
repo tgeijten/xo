@@ -3,29 +3,46 @@
 #include "xo/system/system_tools.h"
 #include "xo/filesystem/filesystem.h"
 #include <cstring>
+#include <algorithm>
 
 namespace xo
 {
-	char_stream::char_stream( const char* buf, const char* delim ) : delimiters_( delim )
+	char_stream::char_stream( const char * buf, string delim_chars, string quote_chars, std::vector<string> operators ) :
+	delimiters_( delim_chars ),
+	quotations_( quote_chars )
 	{
-		init_buffer( buf, strlen( buf ) );
+		initialize( buf, strlen( buf ) );
+		set_operators( operators );
 	}
 
-	char_stream::char_stream( string&& other, const char* delim ) : str_buffer( std::move( other ) ), delimiters_( delim )
+	char_stream::char_stream( string&& other, string delim_chars, string quote_chars, std::vector< string > operators ) :
+	str_buffer( std::move( other ) ),
+	delimiters_( delim_chars ),
+	quotations_( quote_chars )
 	{
-		init_buffer( str_buffer.c_str(), str_buffer.size() );
+		initialize( str_buffer.c_str(), str_buffer.size() );
+		set_operators( operators );
 	}
 
-	char_stream::char_stream( const path& filename, const char* delim ) :
-	char_stream( load_string( filename ), delim )
+	char_stream::char_stream( const path& filename, string delim_chars, string quote_chars, std::vector< string > operators ) :
+	char_stream( load_string( filename ), delim_chars, quote_chars, operators )
 	{}
 
-	xo::char_stream& char_stream::operator>>( string& s )
+	void char_stream::set_operators( std::vector< string > operators )
 	{
-		for ( cur_pos_end = const_cast<char*>( cur_pos ); *cur_pos_end && !isspace( *cur_pos_end ); ++cur_pos_end );
-		s = string( cur_pos, size_t( cur_pos_end - cur_pos ) );
-		process_end_pos();
-		return *this;
+		// sort operators based on length, from large to small
+		operators_ = std::move( operators );
+		std::sort( operators_.begin(), operators_.end(), [&]( const string& a, const string& b ) { return a.size() > b.size(); } );
+	}
+
+	void char_stream::set_delimiter_chars( string delimiter_chars )
+	{
+		delimiters_ = std::move( delimiter_chars );
+	}
+
+	void char_stream::set_quotation_chars( string quotation_chars )
+	{
+		quotations_ = std::move( quotation_chars );
 	}
 
 	xo::string char_stream::get_line()
@@ -37,20 +54,20 @@ namespace xo
 		return s;
 	}
 
-	xo::string char_stream::get_token( const char* operators, const char* quotations )
+	xo::string char_stream::get_token()
 	{
 		string s;
 		cur_pos_end = const_cast< char* >( cur_pos );
 		while ( good() )
 		{
-			if ( cur_pos_end == buffer_end || strchr( delimiters_, *cur_pos_end ) )
+			if ( cur_pos_end == buffer_end || strchr( delimiters_.c_str(), *cur_pos_end ) ) // check for delimiter
 			{
 				// end of buffer or delimiter
 				s += string( cur_pos, size_t( cur_pos_end - cur_pos ) );
 				cur_pos = cur_pos_end;
 				break;
 			}
-			else if ( strchr( quotations, *cur_pos_end ) )
+			else if ( strchr( quotations_.c_str(), *cur_pos_end ) ) // check for quote
 			{
 				// this is a part between quotes and must be decoded
 				cur_pos = cur_pos_end;
@@ -73,13 +90,19 @@ namespace xo
 				}
 				cur_pos_end = const_cast<char*>( cur_pos );
 			}
-			else if ( strchr( operators, *cur_pos_end ) )
+			else if ( auto opstr = check_operator( cur_pos_end ) ) // check for operator
 			{
-				// operator
 				if ( cur_pos == cur_pos_end && s.empty() )
-					s = *cur_pos_end++; // token is an operator
-				else s += string( cur_pos, size_t( cur_pos_end - cur_pos ) ); // token is everything before operator
-				cur_pos = cur_pos_end;
+				{
+					s = *opstr; // token is an operator
+					cur_pos += opstr->length();
+				}
+				else
+				{
+					// token is everything up to operator
+					s += string( cur_pos, size_t( cur_pos_end - cur_pos ) );
+					cur_pos = cur_pos_end;
+				}
 				break;
 			}
 			else ++cur_pos_end;
@@ -97,11 +120,11 @@ namespace xo
 		return num;
 	}
 
-	bool char_stream::seek( const char* str )
+	bool char_stream::seek( const string& s )
 	{
 		if ( good() )
 		{
-			if ( const char* p = strstr( cur_pos, str ) )
+			if ( const char* p = strstr( cur_pos, s.c_str() ) )
 			{
 				cur_pos = p;
 				return true;
@@ -112,10 +135,11 @@ namespace xo
 		return false;
 	}
 
-	bool char_stream::seek_past( const char* str )
+	bool char_stream::seek_past( const string& s )
 	{
-		if ( seek( str ) )
+		if ( seek( s ) )
 		{
+			cur_pos += s.length();
 			skip_delimiters();
 			test_eof();
 			return true;
@@ -123,8 +147,9 @@ namespace xo
 		else return false;
 	}
 
-	void char_stream::init_buffer( const char* b, size_t len )
+	void char_stream::initialize( const char* b, size_t len )
 	{
+		// setup buffer pointers
 		xo_assert( b != 0 );
 		cur_pos = buffer = b;
 		cur_pos_end = nullptr;
@@ -132,19 +157,23 @@ namespace xo
 		skip_delimiters();
 	}
 
-	bool char_stream::try_get( const char* str )
+	bool char_stream::try_get( const string& s )
 	{
-		auto l = strlen( str );
-		if ( strncmp( cur_pos, str, l ) == 0 )
+		if ( strncmp( cur_pos, s.c_str(), s.length() ) == 0 )
 		{
-			cur_pos += l;
+			cur_pos += s.length();
 			return true;
 		}
 		else return false;
 	}
 
-	xo::char_stream load_char_stream( const path& filename, const char* delimiters, error_code* ec )
+	const string* char_stream::check_operator( const char* s )
 	{
-		return char_stream( load_string( filename, ec ), delimiters );
+		for ( auto& op : operators_ )
+		{
+			if ( strncmp( op.c_str(), s, op.size() ) == 0 )
+				return &op;
+		}
+		return nullptr;
 	}
 }

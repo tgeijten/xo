@@ -6,6 +6,7 @@
 #include "xo/system/error_code.h"
 #include "xo/filesystem/path.h"
 #include "xo/container/flag_set.h"
+#include "xo/utility/optional.h"
 
 #ifdef XO_COMP_MSVC
 #	pragma warning( push )
@@ -21,19 +22,24 @@ namespace xo
 	{
 	public:
 		/// construct char_stream using given zero terminated char buffer
-		explicit char_stream( const char* buf, const char* delim = default_delimiters() );
+		explicit char_stream( const char* buf, string delim_chars = default_delimiters(), string quote_chars = "\"", std::vector< string > operators = {} );
 
 		/// construct char_stream from rvalue string
-		explicit char_stream( string&& other, const char* delim = default_delimiters() );
+		explicit char_stream( string&& other, string delim_chars = default_delimiters(), string quote_chars = "\"", std::vector< string > operators = {} );
 
 		/// construct char_stream with contents read from file
-		explicit char_stream( const path& filename, const char* delim = default_delimiters() );
+		explicit char_stream( const path& filename, string delim_chars = default_delimiters(), string quote_chars = "\"", std::vector< string > operators = {} );
 
 		~char_stream() {}
 
+		/// initialize operators
+		void set_operators( std::vector< string > operators );
+		void set_delimiter_chars( string delimiter_chars );
+		void set_quotation_chars( string quotation_chars );
+
+		/// read PODs
 		char_stream& operator>>( float& v ) { v = strtof( cur_pos, &cur_pos_end ); process_end_pos(); return *this; }
 		char_stream& operator>>( double& v ) { v = strtod( cur_pos, &cur_pos_end ); process_end_pos(); return *this; }
-
 		char_stream& operator>>( long& v ) { v = strtol( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
 		char_stream& operator>>( long long& v ) { v = strtoll( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
 		char_stream& operator>>( unsigned long& v ) { v = strtoul( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
@@ -43,20 +49,21 @@ namespace xo
 		char_stream& operator>>( short& v ) { v = (short)strtol( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
 		char_stream& operator>>( unsigned short& v ) { v = (unsigned short)strtoul( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
 
-		char_stream& operator>>( string& s );
+		/// read optional variable
+		template< typename T > char_stream& operator>>( optional< T >& v ) { T tmp; *this >> tmp; if ( !fail() ) v = tmp; else v.reset(); return *this; }
+
+		/// read token
+		char_stream& operator>>( string& s ) { s = get_token(); return *this; }
 
 		string get_line();
-
-		// TODO: add multi-char operators
-		// TODO: make operators and quotations class members?
-		string get_token( const char* operators = "", const char* quotations = "\"" );
+		string get_token();
 
 		char getc() { char c = *cur_pos++; test_eof(); return c; }
 		char peekc() { return *cur_pos; }
 
-		bool seek( const char* str );
-		bool seek_past( const char* str );
-		bool try_get( const char* str );
+		bool seek( const string& s );
+		bool seek_past( const string& s );
+		bool try_get( const string& s );
 
 		bool good() { return !buffer_flags.any(); }
 		bool eof() { return buffer_flags.get< eof_flag >(); }
@@ -65,9 +72,9 @@ namespace xo
 		size_t line_number() const;
 
 	private:
-		void init_buffer( const char* b, size_t len );
-
-		void skip_delimiters() { while ( !test_eof() && strchr( delimiters_, *cur_pos ) ) ++cur_pos; }
+		void initialize( const char* b, size_t len );
+		const string* check_operator( const char* s );
+		void skip_delimiters() { while ( !test_eof() && strchr( delimiters_.c_str(), *cur_pos ) ) ++cur_pos; }
 		void skip_delimiters( const char* delim ) { while ( !test_eof() && strchr( delim, *cur_pos ) ) ++cur_pos; }
 		bool test_eof() { if ( cur_pos == buffer_end ) { buffer_flags.set< eof_flag >(); return true; } else return false; }
 		void process_end_pos() { if ( cur_pos == cur_pos_end ) buffer_flags.set< fail_flag >(); else { cur_pos = cur_pos_end; skip_delimiters(); } }
@@ -78,14 +85,14 @@ namespace xo
 		const char* cur_pos;
 		char* cur_pos_end;
 		const char* buffer_end;
-		const char* delimiters_;
+
+		std::vector< string > operators_;
+		string delimiters_;
+		string quotations_;
 
 		enum buffer_flag { fail_flag, eof_flag };
 		flag_set< buffer_flag > buffer_flags;
 	};
-
-	/// load file into char buffer
-	XO_API char_stream load_char_stream( const path& filename, const char* delimiters = default_delimiters(), error_code* ec = nullptr );
 }
 
 #ifdef XO_COMP_MSVC
