@@ -21,6 +21,7 @@
 #include "math_test.h"
 #include "serializer_test.h"
 #include "regression_test.h"
+#include "alignment_test.h"
 
 using xo::string;
 
@@ -31,6 +32,7 @@ int main( int argc, char* argv[] )
 
 	try
 	{
+		xo::alignment_test();
 		//xo::wrap_test();
 		//xo::filter_test();
 		//xo::delay_test();
