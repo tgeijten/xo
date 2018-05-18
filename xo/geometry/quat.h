@@ -36,6 +36,9 @@ namespace xo
 	template< typename T > T length( quat_<T> q )
 	{ return sqrt( q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z ); }
 
+	template< typename T > T squared_length( quat_<T> q )
+	{ return q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z; }
+
 	/// test if a quat is of unit length
 	template< typename T > bool is_normalized( quat_<T> q )
 	{ return equals( q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z, T(1) ); }
@@ -50,6 +53,13 @@ namespace xo
 
 	/// get normalized quaternion
 	template< typename T > quat_<T> normalized( quat_<T> q ) { normalize( q ); return q; }
+
+	/// get quaternion conjugate
+	template< typename T > quat_<T> conjugate( quat_<T> q ) { q.x = -q.x; q.y = -q.y; q.z = -q.z; return q; }
+
+	/// get quaternion inverse
+	template< typename T > quat_<T> inverse( quat_<T> q )
+	{ auto s = squared_length( q ); xo_assert( s > T( 0 ) ); auto f = -inv( s ); q.x *= f; q.y *= f; q.z *= f; return q; }
 
 	/// return quaternion in which w is positive (negate if w < 0)
 	template< typename T > quat_<T> positive( quat_<T> q )
@@ -66,8 +76,7 @@ namespace xo
 	/// make quaternion from axis and angle
 	template< typename T > quat_<T> quat_from_rotation_vector( vec3_<T> v ) {
 		auto l = v.length();
-		if ( l > constants< T >::epsilon() )
-		{
+		if ( l > constants< T >::epsilon() ) {
 			v /= l;
 			T ha = T( 0.5 ) * l;
 			T hs = std::sin( ha );
@@ -101,10 +110,9 @@ namespace xo
 	}
 
 	/// get Euler angles from quat
-	template< typename T > vec3_< radian_< T > > euler_from_quat( const quat_<T>& q ) {
-		// TODO: add Euler order as argument
-		return vec3_< radian_< T > >( pitch( q ), yaw( q ), roll( q ) );
-	}
+	// TODO: add Euler order as argument
+	template< typename T > vec3_< radian_< T > > euler_from_quat( const quat_<T>& q )
+	{ return vec3_< radian_< T > >( pitch( q ), yaw( q ), roll( q ) ); }
 
 	template< typename T > radian_< T > pitch( const quat_<T>& q ) {
 		T tx = T(2) * q.x, tz = T(2) * q.z;
