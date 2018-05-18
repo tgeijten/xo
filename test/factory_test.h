@@ -6,15 +6,15 @@
 
 namespace xo
 {
-	struct A { A( const prop_node& pn ) : value( 0 ) {} int value; };
-	struct B : A { B( const prop_node& pn ) : A( pn ) { value = 67; } };
-	struct C : A { C( const prop_node& pn ) : A( pn ) { value = -1; } };
+	struct FA { FA( const prop_node& pn ) : value( 0 ) {} int value; };
+	struct FB : FA { FB( const prop_node& pn ) : FA( pn ) { value = 67; } };
+	struct FC : FA { FC( const prop_node& pn ) : FA( pn ) { value = -1; } };
 
 	void factory_test()
 	{
-		factory< A, prop_node > fact;
-		fact.register_class< B >( "B" );
-		fact.register_class< C >( "C" );
+		factory< FA, prop_node > fact;
+		fact.register_class< FB >( "B" );
+		fact.register_class< FC >( "C" );
 
 		prop_node pn;
 
