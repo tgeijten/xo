@@ -13,22 +13,22 @@
 #	pragma warning( disable: 4251 )
 #endif
 
+#define XO_WHITESPACE_CHARS " \t\r\n\f\v"
+
 namespace xo
 {
-	inline const char* default_delimiters() { return " \t\r\n\f\v"; }
-
 	/// blazing-fast class for reading text stream-style
 	class XO_API char_stream // TODO: rename this to char_parser or something
 	{
 	public:
 		/// construct char_stream using given zero terminated char buffer
-		explicit char_stream( const char* buf, string delim_chars = default_delimiters(), string quote_chars = "\"", std::vector< string > operators = {} );
+		explicit char_stream( const char* buf, string delim_chars = XO_WHITESPACE_CHARS, string quote_chars = "\"", std::vector< string > operators = {} );
 
 		/// construct char_stream from rvalue string
-		explicit char_stream( string&& other, string delim_chars = default_delimiters(), string quote_chars = "\"", std::vector< string > operators = {} );
+		explicit char_stream( string&& other, string delim_chars = XO_WHITESPACE_CHARS, string quote_chars = "\"", std::vector< string > operators = {} );
 
 		/// construct char_stream with contents read from file
-		explicit char_stream( const path& filename, string delim_chars = default_delimiters(), string quote_chars = "\"", std::vector< string > operators = {} );
+		explicit char_stream( const path& filename, string delim_chars = XO_WHITESPACE_CHARS, string quote_chars = "\"", std::vector< string > operators = {} );
 
 		~char_stream() {}
 

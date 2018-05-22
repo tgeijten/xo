@@ -76,7 +76,7 @@ namespace xo
 	template< typename T > T from_str( const string& s ) { return string_cast< T >::from( s ); }
 
 	/// convert space-delimited string to vector of elements
-	template< typename T > vector< T > str_to_vec( const string& s, size_t max_values, const char* delim = default_delimiters() ) {
+	template< typename T > vector< T > str_to_vec( const string& s, size_t max_values, const char* delim = XO_WHITESPACE_CHARS ) {
 		char_stream str( s.c_str(), delim );
 		vector< T > vec; if ( max_values != no_index ) vec.reserve( max_values );
 		while ( str.good() && vec.size() < max_values ) { T elem; str >> elem; if ( !str.fail() ) vec.push_back( elem ); }
