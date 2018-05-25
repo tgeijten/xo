@@ -3,7 +3,6 @@
 #include <thread>
 #include "xo/system/log_sink.h"
 #include "profiler_config.h"
-#include "xo/numerical/math.h"
 
 #define XO_PROFILER_MEASURE_OVERHEAD
 

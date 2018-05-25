@@ -1,6 +1,6 @@
 #include "debug_storage.h"
 #include "xo/container/storage.h"
-#include "xo/numerical/math.h"
+#include "xo/numerical/constants.h"
 #include <fstream>
 
 namespace xo
@@ -15,9 +15,9 @@ namespace xo
 		}
 
 		void write( const L& label, T value ) {
-			auto idx = storage_.find_or_add_channel( label, constantsf::sentinel() );
-			if ( storage_.empty() || storage_[ idx ] != constantsf::sentinel() )
-				storage_.add_frame( constantsf::sentinel() );
+			auto idx = storage_.find_or_add_channel( label, sentinel<T>() );
+			if ( storage_.empty() || storage_[ idx ] != sentinel<T>() )
+				storage_.add_frame( sentinel<T>() );
 			storage_[ idx ] = value;
 		}
 		path filename_;

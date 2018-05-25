@@ -1,6 +1,5 @@
 #pragma once
 
-#include "xo/numerical/math.h"
 #include "xo/system/assert.h"
 #include "xo/utility/pointer_iterator.h"
 #include "xo/container/dynarray.h"
@@ -118,7 +117,7 @@ namespace xo
 	}
 
 	/// Normalize
-	template< typename T > void normalize( dynvec<T>& v ) { T l = length( v ); if ( l > constants<T>::epsilon() ) { v /= l; } }
+	template< typename T > void normalize( dynvec<T>& v ) { T l = length( v ); if ( l > epsilon<T>() ) { v /= l; } }
 	template< typename T > dynvec<T> normalized( dynvec<T> v ) { normalize( v ); return v; }
 
 	/// Dot product

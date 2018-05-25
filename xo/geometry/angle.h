@@ -1,14 +1,14 @@
 #pragma once
 
-#include <cmath>
-#include "xo/numerical/math.h"
-#include "xo/numerical/result_type.h"
-#include "xo/system/assert.h"
-#include "xo/serialization/char_stream.h"
+#include "xo/numerical/constants.h"
+#include <cmath> // TODO: get rid of this header
 
 namespace xo
 {
 	enum class angle_unit { degrees, radians };
+
+	template< typename T > T rad_to_deg( T rad_value ) { return ( T( 180 ) / pi<T>() ) * rad_value; }
+	template< typename T > T deg_to_rad( T deg_value ) { return ( pi<T>() / T( 180 ) ) * deg_value; }
 
 	template< angle_unit A, angle_unit B > struct angle_converter
 	{ template< typename T > static const T& convert( const T& v ) { return v; } };
@@ -118,14 +118,4 @@ namespace xo
 	template< angle_unit U, typename T > T asin( const angle_<U, T>& a ) { return std::asin( a.rad_value() ); }
 	template< angle_unit U, typename T > T acos( const angle_<U, T>& a ) { return std::acos( a.rad_value() ); }
 	template< angle_unit U, typename T > T atan( const angle_<U, T>& a ) { return std::atan( a.rad_value() ); }
-
-	/// streaming
-	template< angle_unit U, typename T > std::ostream& operator<<( std::ostream& str, const angle_<U, T>& a )
-	{ return ( str << a.value ); }
-
-	template< angle_unit U, typename T > std::istream& operator>>( std::istream& str, angle_<U, T>& a )
-	{ return ( str >> a.value ); }
-
-	template< angle_unit U, typename T > char_stream& operator>>( char_stream& str, angle_<U, T>& a )
-	{ return ( str >> a.value ); }
 }

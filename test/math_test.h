@@ -96,13 +96,13 @@ void angle_test()
 	//auto ang2 = radian( ang1 );
 	//auto ang3 = ang1 + degree( 180 );
 
-	auto a1_rd = rad( constants< double >::half_pi() );
+	auto a1_rd = rad( half_pi<double>() );
 	auto a2_dd = deg( 180.0 );
 	auto a3 = a1_rd + a2_dd.radian();
 	auto a4 = a2_dd + a1_rd.degree();
 
 	auto a5_rf = radianf( deg( 90.0f ) );
-	auto a6_df = degreef( radiand( constants<float>::half_pi() ) );
+	auto a6_df = degreef( radiand( half_pi<float>() ) );
 
 	auto a1s = 0.5 * a1_rd;
 	auto a2s = 0.5f * a2_dd;

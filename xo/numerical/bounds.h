@@ -1,5 +1,6 @@
 #pragma once
-#include "math.h"
+
+#include "xo/serialization/serialize.h"
 
 namespace xo
 {
@@ -50,8 +51,8 @@ namespace xo
 			else upper = lower;
 		}
 		else if ( pn.size() > 0 ) {
-			lower = pn.get_any< T >( { "min", "lower" }, constants<T>::lowest() );
-			upper = pn.get_any<T>( { "max", "upper" }, constants< T >::max() );
+			lower = pn.get_any< T >( { "min", "lower" }, lowest<T>() );
+			upper = pn.get_any<T>( { "max", "upper" }, max<T>() );
 		}
 		else xo_error( "Cannot read bounds from prop_node" );
 	}

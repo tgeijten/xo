@@ -1,8 +1,8 @@
 #pragma once
 
 #include "vec3_type.h"
-#include "xo/numerical/math.h"
 #include "angle.h"
+#include <cmath> // TODO: get rid of this header
 
 namespace xo
 {
@@ -79,11 +79,17 @@ namespace xo
 
 	/// Normalize a vec3
 	template< typename T > void normalize( vec3_<T>& v )
-	{ T l = length( v ); if ( l > constants<T>::epsilon() ) { T s = inv( l ); v.x *= s; v.y *= s; v.z *= s; } }
+	{ T l = length( v ); if ( l > epsilon<T>() ) { T s = inv( l ); v.x *= s; v.y *= s; v.z *= s; } }
+
+	/// clamp a value so that it is between min and max
+	template< typename T > vec3_<T>& clamp( vec3_<T>& v, const T& lb, const T& ub )
+	{ clamp( v.x, lb, ub ); clamp( v.y, lb, ub ); clamp( v.z, lb, ub ); return v; }
 
 	/// Get normalized vec3
-	template< typename T > vec3_<T> normalized( vec3_<T> v )
-	{ normalize( v ); return v; }
+	template< typename T > vec3_<T> normalized( vec3_<T> v ) { normalize( v ); return v; }
+
+	/// Get absolute value of vec3
+	template< typename T > vec3_<T> abs( vec3_<T> v ) { v.x = std::abs( v.x ); v.y = std::abs( v.y ); v.z = std::abs( v.z ); return v; }
 
 	/// Dot product of two vec3
 	template< typename T > T dot_product( const vec3_<T>& v1, const vec3_<T>& v2 )
@@ -94,6 +100,7 @@ namespace xo
 	{ return vec3_<T>( v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x ); }
 
 	/// Make vec3 from radius, inclination & azimuth
+	// TODO: move to somewhere else
 	template< angle_unit U, typename T > vec3_<T> vec3_from_polar( T radius, angle_<U, T> inclination, angle_<U, T> azimuth )
 	{ return vec3_<T>( radius * sin( inclination ) * sin( azimuth ) , radius * cos( inclination ), radius * sin( inclination ) * cos( azimuth ) ); }
 

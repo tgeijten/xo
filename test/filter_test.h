@@ -1,6 +1,5 @@
 #pragma once
 
-#include "xo/numerical/math.h"
 #include "xo/container/storage.h"
 #include "xo/numerical/filter.h"
 #include <fstream>

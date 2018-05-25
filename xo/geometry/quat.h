@@ -1,6 +1,5 @@
 #pragma once
 
-#include "xo/numerical/math.h"
 #include "xo/geometry/quat_type.h"
 #include "xo/geometry/vec3.h"
 #include "xo/geometry/mat33.h"
@@ -46,7 +45,7 @@ namespace xo
 	/// normalize quaternion, return length
 	template< typename T > T normalize( quat_<T>& q ) {
 		T l = length( q );
-		if ( l > constants<T>::epsilon() )
+		if ( l > epsilon<T>() )
 		{ T invl = inv( l ); q.x *= invl; q.y *= invl; q.z *= invl; q.w *= invl; }
 		return l;
 	}
@@ -76,7 +75,7 @@ namespace xo
 	/// make quaternion from axis and angle
 	template< typename T > quat_<T> quat_from_rotation_vector( vec3_<T> v ) {
 		auto l = v.length();
-		if ( l > constants< T >::epsilon() ) {
+		if ( l > epsilon<T>() ) {
 			v /= l;
 			T ha = T( 0.5 ) * l;
 			T hs = std::sin( ha );
@@ -161,7 +160,7 @@ namespace xo
 	template< typename T > vec3_<T> rotation_vector_from_quat( const quat_<T>& q ) {
 		//xo_assert( is_normalized( q ) );
 		T l = sqrt( q.x * q.x + q.y * q.y + q.z * q.z );
-		if ( l > constants<T>::epsilon() ) {
+		if ( l > epsilon<T>() ) {
 			T f = T(2) * std::acos( q.w ) / l;
 			return vec3_<T>( f * q.x, f * q.y, f * q.z );
 		}
@@ -172,7 +171,7 @@ namespace xo
 	template< typename T > std::pair< vec3_<T>, radian_<T> > axis_angle_from_quat( const quat_<T>& q ) {
 		//xo_assert( is_normalized( q ) );
 		T l = sqrt( q.x * q.x + q.y * q.y + q.z * q.z );
-		if ( l > constants<T>::epsilon() ) {
+		if ( l > epsilon<T>() ) {
 			T s = T(1) / l;
 			return std::pair< vec3_<T>, radian_<T> >{ vec3f( s * q.x, s * q.y, s * q.z ), radian_<T>( T(2) * std::acos( q.w ) ) };
 		}

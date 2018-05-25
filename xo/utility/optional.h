@@ -23,12 +23,12 @@ namespace xo
 	template< typename T > struct optional< T, typename std::enable_if< std::is_integral<T>::value >::type >
 	{
 		using value_type = T;
-		optional() : value_( constants<T>::sentinel() ) {}
+		optional() : value_( sentinel<T>() ) {}
 		optional( const T& v ) : value_( v ) {}
 		optional< T >& operator=( const T& v ) { value_ = v; return *this; }
-		operator bool() const { return value_ != constants<T>::sentinel(); }
+		operator bool() const { return value_ != sentinel<T>(); }
 		const T& operator*() const { return value_; }
-		void reset() { value_ = constants<T>::sentinel(); }
+		void reset() { value_ = sentinel<T>(); }
 		T value_;
 	};
 
