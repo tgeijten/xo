@@ -32,6 +32,9 @@ namespace xo
 	/// signum of v: 1, 0 or -1
 	template< typename T > int signum( T v ) { return ( T(0) < v ) - ( v < T(0) ); }
 
+	/// check if sign of v1 equals sign of v2
+	template< typename T > bool same_sign( T v1, T v2 ) { return signum( v1 ) == signum( v2 ); }
+
 	/// set if smaller
 	template< typename T > T& set_if_smaller( T& value, const T& other ) { if ( other < value ) value = other; return value; }
 
