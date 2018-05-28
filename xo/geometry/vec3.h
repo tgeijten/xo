@@ -64,7 +64,7 @@ namespace xo
 	{ return v.x * v.x + v.y * v.y + v.z * v.z; }
 
 	/// Test if a vec3 is of unit length
-	template< typename T > T is_normalized( const vec3_<T>& v )
+	template< typename T > bool is_normalized( const vec3_<T>& v )
 	{ return equals( v.x * v.x + v.y * v.y + v.z * v.z, T(1) ); }
 
 	/// Get distance between two vec3
@@ -77,9 +77,12 @@ namespace xo
 	template< typename T > bool operator!=( const vec3_<T>& v1, const vec3_<T>& v2 )
 	{ return !( v1 == v2 ); }
 
-	/// Normalize a vec3
-	template< typename T > void normalize( vec3_<T>& v )
-	{ T l = length( v ); if ( l > epsilon<T>() ) { T s = inv( l ); v.x *= s; v.y *= s; v.z *= s; } }
+	/// Normalize a vec3, returns length
+	template< typename T > T normalize( vec3_<T>& v ) {
+		T l = length( v );
+		if ( l > epsilon<T>() ) { T s = inv( l ); v.x *= s; v.y *= s; v.z *= s; }
+		return l;
+	}
 
 	/// clamp a value so that it is between min and max
 	template< typename T > vec3_<T>& clamp( vec3_<T>& v, const T& lb, const T& ub )
