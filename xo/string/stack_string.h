@@ -9,9 +9,10 @@ namespace xo
 	{
 	public:
 		stack_string() {}
-		stack_string& operator=( std::string s ) { value_ = s; if ( s.empty() ) sizes_.clear(); else sizes_.assign( 1, 0 ); }
 
 		const std::string& str() const { return value_; }
+
+		void set( std::string s ) { value_ = s; sizes_.assign( s.empty() ? 0 : 1, 0 ); }
 		void push_back( const std::string& s ) { sizes_.push_back( value_.size() ); value_ += s; }
 		void pop_back() { value_.resize( sizes_.back() ); sizes_.pop_back(); }
 
