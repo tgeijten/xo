@@ -16,6 +16,9 @@ foreach(xolib ${XO_LIB_NAMES})
   list(APPEND XO_SOURCES ${XO_${xolib}})
 endforeach()
 
+include( PrecompiledHeaders )
+use_precompiled_headers( XO_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/stdafx.h" "stdafx.cpp" 256 )
+
 add_library(xo SHARED ${XO_SOURCES} )
 
 if (UNIX)
@@ -26,6 +29,7 @@ if (MSVC)
 	foreach(xolib ${XO_LIB_NAMES})
 	source_group("${xolib}" FILES ${XO_${xolib}} )
 	endforeach()
+	source_group("" FILES "${CMAKE_CURRENT_SOURCE_DIR}/stdafx.h" "${CMAKE_CURRENT_SOURCE_DIR}/stdafx.cpp" )
 endif()
 
 include_directories(${XO_INCLUDE_DIR})

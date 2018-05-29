@@ -1,7 +1,7 @@
 #pragma once
 
 #include "xo/system/build_config.h"
-#include <cstdlib>
+#include <string>
 
 #if XO_USE_EXCEPTIONS
 #	include <stdexcept>
