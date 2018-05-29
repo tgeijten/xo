@@ -5,11 +5,48 @@
 
 namespace xo
 {
-	xo::dictionary< xo::shape::shape_type > shape::shape_dict( { { sphere, "sphere" },{ box, "box" },{ capsule, "capsule" },{ cylinder, "cylinder" },{ cone, "cone" } } );
+	xo::dictionary< xo::shape_type > shape_dict( {
+		{ shape_type::sphere, "sphere" },
+		{ shape_type::box, "box" },
+		{ shape_type::capsule, "capsule" },
+		{ shape_type::cylinder, "cylinder" },
+		{ shape_type::cone, "cone" },
+		{ shape_type::plane, "plane" }
+	} );
 
-	shape::shape( const prop_node& pn )
+	shape_type get_shape_type( const string& s )
 	{
-		INIT_PROP( pn, type_, box );
+		return shape_dict( s );
+	}
+
+	shape::shape( const prop_node& pn ) :
+	type_( get_shape_type( pn.get< string >( "type" ) ) )
+	{
+		switch ( type_ )
+		{
+		case shape_type::capsule:
+		case shape_type::cylinder:
+		case shape_type::cone:
+			y_ = pn.get< float >( "height" );
+			// fall through
+		case shape_type::sphere:
+			x_ = pn.get< float >( "radius" );
+			break;
+		case shape_type::box:
+		{
+			auto d = pn.get< vec3f >( "dim" );
+			x_ = d.x, y_ = d.y, z_ = d.z;
+			break;
+		}
+		case shape_type::plane:
+		{
+			auto n = pn.get< vec3f >( "normal" );
+			x_ = n.x, y_ = n.y, z_ = n.z;
+			break;
+		}
+
+		default: xo_error( "Unknown shape type" );
+		}
 	}
 
 	shape::shape( shape_type t, float x_radius, float y_height, float z ) : type_( t ), x_( x_radius ), y_( y_height ), z_( z )
@@ -22,19 +59,19 @@ namespace xo
 
 	float shape::radius() const
 	{
-		xo_assert( type_ == sphere || type_ == cylinder || type_ == capsule || type_ == cone );
+		xo_assert( type_ == shape_type::sphere || type_ == shape_type::cylinder || type_ == shape_type::capsule || type_ == shape_type::cone );
 		return x_;
 	}
 
 	float shape::height() const
 	{
-		xo_assert( type_ == cylinder || type_ == capsule || type_ == cone );
+		xo_assert( type_ == shape_type::cylinder || type_ == shape_type::capsule || type_ == shape_type::cone );
 		return y_;
 	}
 
 	float shape::half_height() const
 	{
-		xo_assert( type_ == cylinder || type_ == capsule || type_ == cone );
+		xo_assert( type_ == shape_type::cylinder || type_ == shape_type::capsule || type_ == shape_type::cone );
 		return 0.5f * y_;
 	}
 
@@ -42,11 +79,11 @@ namespace xo
 	{
 		switch ( type_ )
 		{
-		case shape::sphere: return vec3f( 2 * x_ );
-		case shape::box: return vec3f( x_, y_, z_ );
-		case shape::capsule:
-		case shape::cylinder:
-		case shape::cone:
+		case shape_type::sphere: return vec3f( 2 * x_ );
+		case shape_type::box: return vec3f( x_, y_, z_ );
+		case shape_type::capsule:
+		case shape_type::cylinder:
+		case shape_type::cone:
 			return vec3f( 2 * x_, y_, 2 * x_ );
 		default: xo_error( "Cannot compute dim for " + name() );
 		}
@@ -56,11 +93,11 @@ namespace xo
 	{
 		switch ( type_ )
 		{
-		case shape::sphere: return vec3f( x_ );
-		case shape::box: return vec3f( 0.5f * x_, 0.5f * y_, 0.5f * z_ );
-		case shape::capsule:
-		case shape::cylinder:
-		case shape::cone:
+		case shape_type::sphere: return vec3f( x_ );
+		case shape_type::box: return vec3f( 0.5f * x_, 0.5f * y_, 0.5f * z_ );
+		case shape_type::capsule:
+		case shape_type::cylinder:
+		case shape_type::cone:
 			return vec3f( x_, 0.5f * y_, x_ );
 		default: xo_error( "Cannot compute half_dim for " + name() );
 		}
@@ -70,16 +107,16 @@ namespace xo
 	{
 		switch ( type_ )
 		{
-		case sphere: return ( 4.0f / 3.0f ) * pi<float>() * cubed( radius() );
-		case box: return x_ * y_ * z_;
-		case cylinder: return pi<float>() * squared( radius() ) * height();
+		case shape_type::sphere: return ( 4.0f / 3.0f ) * pi<float>() * cubed( radius() );
+		case shape_type::box: return x_ * y_ * z_;
+		case shape_type::cylinder: return pi<float>() * squared( radius() ) * height();
 		default: xo_error( "Cannot compute volume for " + name() );
 		}
 	}
 
 	vec3f shape::corner( index_t idx ) const
 	{
-		xo_assert( type_ == box && idx < 8 );
+		xo_assert( type_ == shape_type::box && idx < 8 );
 		return vec3f(
 			x_ * ( ( idx & 1 ) ? 0.5f : -0.5f ),
 			y_ * ( ( idx & 2 ) ? 0.5f : -0.5f ),
@@ -91,13 +128,13 @@ namespace xo
 	{
 		switch ( type_ )
 		{
-		case box:
+		case shape_type::box:
 		{
 			bounding_boxf bb;
 			for ( index_t i = 0; i < 8; ++i ) bb += t.p + t.q * corner( i );
 			return bb;
 		}
-		case sphere:
+		case shape_type::sphere:
 			return bounding_boxf( t.p - vec3f( radius() ), t.p + vec3f( radius() ) );
 		default: xo_error( "Cannot compute bounding box for " + name() );
 		}
@@ -118,16 +155,16 @@ namespace xo
 		auto m = compute_mass( density );
 		switch ( type_ )
 		{
-		case sphere:
+		case shape_type::sphere:
 			r = vec3f( ( 2.0f / 5.0f ) * m * squared( radius() ) );
 			break;
-		case box:
+		case shape_type::box:
 			r.x = m / 12.0f * ( y_ * y_ + z_ * z_ );
 			r.y = m / 12.0f * ( x_ * x_ + z_ * z_ );
 			r.z = m / 12.0f * ( x_ * x_ + y_ * y_ );
 			break;
 
-		case cylinder:
+		case shape_type::cylinder:
 			r.x = m / 12.0f * ( 3 * squared( radius() ) + squared( height() ) );
 			r.y = r.x;
 			r.z = 0.5f * m * squared( radius() ); // cylinder along z axis

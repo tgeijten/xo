@@ -13,13 +13,12 @@
 
 namespace xo
 {
+	enum class shape_type { undefined, sphere, box, capsule, cylinder, cone, plane };
+
 	class XO_API shape
 	{
 	public:
-		enum shape_type { undefined, sphere, box, capsule, cylinder, cone, plane };
-		static dictionary< shape_type > shape_dict;
-
-		shape( shape_type t = undefined, float x_radius = 0, float y_height = 0, float z = 0 );
+		shape( shape_type t = shape_type::undefined, float x_radius = 0, float y_height = 0, float z = 0 );
 		shape( const prop_node& pn );
 
 		// shape properties
@@ -38,6 +37,7 @@ namespace xo
 		float z() const { return z_; }
 
 		// physical properties
+		// TODO: move this out of here!
 		float compute_mass( float density ) const;
 		vec3f compute_inertia( float density ) const;
 
@@ -49,6 +49,8 @@ namespace xo
 		shape_type type_;
 		float x_, y_, z_;
 	};
+
+	XO_API shape_type get_shape_type( const string& s );
 }
 
 #if defined(_MSC_VER)
