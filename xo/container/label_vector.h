@@ -50,8 +50,8 @@ namespace xo
 			return idx;
 		}
 
-		typename vector< L >::const_iterator begin() const { return labels_.begin(); }
-		typename vector< L >::const_iterator end() const { return labels_.end(); }
+		typename std::vector< L >::const_iterator begin() const { return labels_.begin(); }
+		typename std::vector< L >::const_iterator end() const { return labels_.end(); }
 
 	private:
 		std::vector< L > labels_;

@@ -3,13 +3,14 @@
 #include "xo/utility/types.h"
 #include "xo/system/assert.h"
 #include "xo/container/label_vector.h"
-#include "xo/geometry/vec3_type.h"
-#include "xo/geometry/quat_type.h"
+
+#include <vector>
+#include <string>
 
 namespace xo
 {
 	/// Simple storage class for storing frames with channels of data
-	template< typename T, typename L = string >
+	template< typename T, typename L = std::string >
 	class storage
 	{
 	public:
@@ -20,7 +21,7 @@ namespace xo
 		index_t add_channel( L label, const T& value = T() ) { resize( frame_size(), channel_size() + 1, value ); return labels_.set( channel_size() - 1, label ); }
 
 		/// add a channel with data, resize buffer if needed
-		index_t add_channel( L label, const vector< T >& data ) {
+		index_t add_channel( L label, const std::vector< T >& data ) {
 			resize( std::max( frame_size(), data.size() ), channel_size() + 1 );
 			labels_.set( channel_size() - 1, label );
 			auto cidx = channel_size() - 1;
@@ -47,7 +48,7 @@ namespace xo
 		storage< T, L >& add_frame( T value = T( 0 ) ) { data_.resize( data_.size() + channel_size(), value ); ++frame_size_; return *this; }
 
 		/// add frame to storage
-		void add_frame( const vector< T >& data ) {
+		void add_frame( const std::vector< T >& data ) {
 			xo_assert( data.size() == channel_size() );
 			data_.resize( data_.size() + channel_size() );
 			++frame_size_;
@@ -84,7 +85,7 @@ namespace xo
 		T& operator[]( const L& label ) { return (*this)[ find_or_add_channel( label ) ]; }
 
 		/// access value of most recent frame by channel name
-		const T& operator()( const L& label ) const { return *this( find_channel( label ) ); }
+		const T& operator[]( const L& label ) const { return *this( find_channel( label ) ); }
 
 		/// get the interpolated value of a specific frame / channel
 		T get_interpolated_value( T frame_idx, index_t channel ) {
@@ -119,7 +120,7 @@ namespace xo
 			}
 		}
 
-		const std::vector< L >& labels() const { return labels_; }
+		const label_vector< L >& labels() const { return labels_; }
 		const std::vector< T >& data() const { return data_; }
 
 	private:
@@ -128,32 +129,11 @@ namespace xo
 		std::vector< T > data_;
 	};
 
-	// TODO: move to tools file?
-	template< typename T > void write_storage( storage<T>& sto, const string& str, const vec3_<T>& v ) {
-		sto[ str + ".x" ] = v.x;
-		sto[ str + ".y" ] = v.y;
-		sto[ str + ".z" ] = v.z;
-	}
-
-	// TODO: move to tools file?
-	template< typename T > void write_storage( storage<T>& sto, const string& str, const quat_<T>& q ) {
-		sto[ str + ".w" ] = q.w;
-		sto[ str + ".x" ] = q.x;
-		sto[ str + ".y" ] = q.y;
-		sto[ str + ".z" ] = q.z;
-	}
-
-	// TODO: move to tools file?
-	//template< typename T > void write_storage( storage<T>& sto, const string& str, const T& v ) { sto[ str ] = v; }
-
-	// TODO: move to IO file
-	template< typename T, typename L > std::ostream& operator<<( std::ostream& str, const storage< T, L >& buf )
-	{
+	template< typename T, typename L > std::ostream& operator<<( std::ostream& str, const storage< T, L >& buf ) {
 		for ( index_t ci = 0; ci < buf.channel_size(); ++ci ) {
 			str << buf.get_label( ci );
 			if ( ci == buf.channel_size() - 1 ) str << std::endl; else str << '\t';
 		}
-
 		for ( index_t fi = 0; fi < buf.frame_size(); ++fi ) {
 			for ( index_t ci = 0; ci < buf.channel_size(); ++ci ) {
 				str << buf( fi, ci );

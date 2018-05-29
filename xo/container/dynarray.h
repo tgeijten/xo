@@ -5,6 +5,7 @@
 #include "xo/utility/types.h"
 #include "xo/utility/pointer_iterator.h"
 #include "xo/container/container_tools.h"
+#include "xo/utility/pointer_type.h"
 
 namespace xo
 {
