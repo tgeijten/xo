@@ -3,6 +3,7 @@
 #include "xo/system/platform.h"
 #include "xo/serialization/char_stream.h"
 #include "xo/numerical/math.h"
+#include <vector>
 
 #define xo_varstr( var_ ) ( ::std::string( #var_ ) + '=' + ::xo::to_str( ( var_ ) ) )
 
@@ -36,7 +37,7 @@ namespace xo
 	XO_API string trim_right_str( const string& str, const char* trim_chars = " \t\r\n\f\v" );
 
 	/// split a string into a vector of strings
-	XO_API vector< string > split_str( const string& s, const string& sep_chars );
+	XO_API std::vector< string > split_str( const string& s, const string& sep_chars );
 
 	/// get the string left / right of a delimiter
 	XO_API string left_of_str( const string& s, const string& sep_chars );
@@ -76,9 +77,9 @@ namespace xo
 	template< typename T > T from_str( const string& s ) { return string_cast< T >::from( s ); }
 
 	/// convert space-delimited string to vector of elements
-	template< typename T > vector< T > str_to_vec( const string& s, size_t max_values, const char* delim = XO_WHITESPACE_CHARS ) {
+	template< typename T > std::vector< T > str_to_vec( const string& s, size_t max_values, const char* delim = XO_WHITESPACE_CHARS ) {
 		char_stream str( s.c_str(), delim );
-		vector< T > vec; if ( max_values != no_index ) vec.reserve( max_values );
+		std::vector< T > vec; if ( max_values != no_index ) vec.reserve( max_values );
 		while ( str.good() && vec.size() < max_values ) { T elem; str >> elem; if ( !str.fail() ) vec.push_back( elem ); }
 		return vec;
 	}

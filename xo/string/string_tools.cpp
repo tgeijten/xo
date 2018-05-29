@@ -36,7 +36,7 @@ namespace xo
 		return s.substr( 0, 1 + right );
 	}
 
-	XO_API vector< string > split_str( const string& s, const string& sep_chars )
+	XO_API std::vector< string > split_str( const string& s, const string& sep_chars )
 	{
 		std::vector< string > strings;
 		size_t ofs = s.find_first_not_of( sep_chars.c_str(), 0 );

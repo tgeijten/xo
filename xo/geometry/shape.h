@@ -16,7 +16,7 @@ namespace xo
 	class XO_API shape
 	{
 	public:
-		enum shape_type { undefined, sphere, box, capsule, cylinder, cone };
+		enum shape_type { undefined, sphere, box, capsule, cylinder, cone, plane };
 		static dictionary< shape_type > shape_dict;
 
 		shape( shape_type t = undefined, float x_radius = 0, float y_height = 0, float z = 0 );

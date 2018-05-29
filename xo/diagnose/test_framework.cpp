@@ -11,7 +11,7 @@ namespace xo
 	num_failed( 0 )
 	{}
 
-	bool test_framework::test( const char* name, bool result, const string& message )
+	bool test_framework::test( const char* name, bool result, const std::string& message )
 	{
 		++num_tests;
 		if ( result )

@@ -7,6 +7,8 @@
 
 namespace xo
 {
+	using std::vector;
+
 	/// find element in a container
 	template< typename C > typename auto find( C& cont, const typename C::value_type& e )
 	{ auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( *it == e ) break; return it; }

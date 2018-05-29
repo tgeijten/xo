@@ -34,4 +34,3 @@ namespace xo
 
 	IS_PROP_NODE_CONSTRUCTABLE( pattern_matcher );
 }
-

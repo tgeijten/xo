@@ -1,7 +1,10 @@
 #pragma once
 
+#include <vector>
+
 #include "xo/system/platform.h"
 #include "xo/utility/types.h"
+#include "xo/string/string_type.h"
 #include "xo/system/assert.h"
 #include "xo/system/error_code.h"
 #include "xo/filesystem/path.h"
