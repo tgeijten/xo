@@ -31,6 +31,9 @@ namespace xo
 		return v + uv + uuv;
 	}
 
+	/// Quaternion multiplication
+	template< typename T > quat_<T>& operator*=( quat_<T>& q1, const quat_<T>& q2 ) { q1 = q1 * q2; return q1; }
+
 	/// get length of a quat
 	template< typename T > T length( quat_<T> q )
 	{ return sqrt( q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z ); }
