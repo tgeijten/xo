@@ -41,9 +41,9 @@ namespace xo
 	template< typename InIt, typename OutIt > OutIt copy( InIt ib, InIt ie, OutIt ob )
 	{ for ( ; ib != ie; ++ib, ++ob ) *ob = *ib; }
 
-	/// append two containers, currently requires C::reserve()
-	template< typename C > C& append( C& c1, const C& c2 )
-	{ c1.reserve( c1.size() + c2.size() ); for ( auto& e : c2 ) c1.emplace_back( e ); return c1; }
+	/// append a container to another
+	template< typename C1, typename C2 > C1& append( C1& c1, const C1& c2 )
+	{ c1.insert( c1.end(), c2.begin(), c2.end() ); return c1; }
 
 	template< typename T > index_t find_index( const vector< T >& vec, const T& val ) {
 		auto it = std::find( vec.begin(), vec.end(), val );
