@@ -51,8 +51,8 @@ namespace xo
 		else return it - vec.begin();
 	}
 
-	template< typename T > index_t back_index( const vector< T >& vec )
-	{ xo_assert( vec.size() > 0 ) return vec.size() - 1; }
+	template< typename T > index_t back_index( const vector< T >& vec ) { return vec.size() > 0 ? vec.size() - 1 : no_index; }
+	template< typename T > index_t index_of( const T& e, const vector< T >& vec ) { auto idx = index_t( &e - &vec[ 0 ] ); return idx < vec.size() ? idx : no_index; }
 
 	template< typename T > std::ostream& operator<<( std::ostream& str, const vector< T >& vec ) {
 		for ( auto it = vec.begin(); it != vec.end(); ++it ) {
