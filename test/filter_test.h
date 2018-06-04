@@ -23,13 +23,13 @@ namespace xo
 		auto f4 = make_lowpass_butterworth_2nd_order( 0.005f ); // 5Hz
 		for ( float x = 0; x < 2; x += 0.001f ) // 1000Hz
 		{
-			sto.add_frame();
+			auto f = sto.add_frame();
 			auto s = filter_test_function( x );
-			sto[ "signal" ] = s;
-			sto[ "f1" ] = f1( s );
-			sto[ "f2" ] = f2( s );
-			sto[ "f3" ] = f3( s );
-			sto[ "f4" ] = f4( s );
+			f[ "signal" ] = s;
+			f[ "f1" ] = f1( s );
+			f[ "f2" ] = f2( s );
+			f[ "f3" ] = f3( s );
+			f[ "f4" ] = f4( s );
 		}
 		
 		std::ofstream( "X:/filter_test.txt" ) << sto;

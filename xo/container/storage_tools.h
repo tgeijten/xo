@@ -5,15 +5,17 @@
 namespace xo
 {
 	template< typename T > void write( storage<T>& sto, const string& str, const vec3_<T>& v ) {
-		sto[ str + ".x" ] = v.x;
-		sto[ str + ".y" ] = v.y;
-		sto[ str + ".z" ] = v.z;
+		auto f = sto.back();
+		f[ str + ".x" ] = v.x;
+		f[ str + ".y" ] = v.y;
+		f[ str + ".z" ] = v.z;
 	}
 
 	template< typename T > void write( storage<T>& sto, const string& str, const quat_<T>& q ) {
-		sto[ str + ".w" ] = q.w;
-		sto[ str + ".x" ] = q.x;
-		sto[ str + ".y" ] = q.y;
-		sto[ str + ".z" ] = q.z;
+		auto f = sto.back();
+		f[ str + ".w" ] = q.w;
+		f[ str + ".x" ] = q.x;
+		f[ str + ".y" ] = q.y;
+		f[ str + ".z" ] = q.z;
 	}
 }

@@ -26,24 +26,24 @@ namespace xo
 
 		for ( float t = 0; t < 1.0; t += dt )
 		{
-			auto f = test_function( t );
-			sto.add_frame();
-			sto[ "time" ] = t;
-			sto[ "func" ] = f;
+			auto func = test_function( t );
+			auto frame = sto.add_frame();
+			frame[ "time" ] = t;
+			frame[ "func" ] = func;
 
 			for ( int i = 0; i < times; ++i )
 			{
 				auto delay_amount = ( i + 1 ) * delay_inc;
-				delvec1[ i ].add_sample( f, t == 0 ? 0.0f : dt );
-				delvec2[ i ].add_sample( f, t == 0 ? 0.0f : dt );
+				delvec1[ i ].add_sample( func, t == 0 ? 0.0f : dt );
+				delvec2[ i ].add_sample( func, t == 0 ? 0.0f : dt );
 				auto dd1 = delvec1[ i ].delayed_value();
 				auto dd2 = delvec2[ i ].delayed_value();
 				auto df = t > delay_amount ? test_function( t - delay_amount ) : 0;
-				sto[ stringf( "delay%.2f", delay_amount ) ] = dd1;
-				sto[ stringf( "sdelay%.2f", delay_amount ) ] = dd2;
-				sto[ stringf( "fdelay%.2f", delay_amount ) ] = df;
-				sto[ stringf( "error%.2f", delay_amount ) ] = dd1 - df;
-				sto[ stringf( "serror%.2f", delay_amount ) ] = dd2 - df;
+				frame[ stringf( "delay%.2f", delay_amount ) ] = dd1;
+				frame[ stringf( "sdelay%.2f", delay_amount ) ] = dd2;
+				frame[ stringf( "fdelay%.2f", delay_amount ) ] = df;
+				frame[ stringf( "error%.2f", delay_amount ) ] = dd1 - df;
+				frame[ stringf( "serror%.2f", delay_amount ) ] = dd2 - df;
 			}
 		}
 		std::ofstream fs( stringf( "X:/delay_test_%d_%.3f_%.3f.txt", N, delay_inc, dt ) );

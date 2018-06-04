@@ -26,6 +26,12 @@ namespace xo
 			return ( it != label_indices_.end() ) ? it->second : no_index;
 		}
 
+		index_t find_or_throw( const L& label ) const {
+			auto it = label_indices_.find( label );
+			xo_error_if( it == label_indices_.end(), "Could not find label: " + label );
+			return it->second;
+		}
+
 		index_t find_or_add( const L& label ) const {
 			auto it = label_indices_.find( label );
 			if ( it == label_indices_.end() ) {

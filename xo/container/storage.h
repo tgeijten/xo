@@ -14,13 +14,20 @@ namespace xo
 	class storage
 	{
 	public:
-		// TODO: use frame struct for everything
+		struct const_frame {
+			const_frame( const storage< T, L >& s, index_t f ) : sto_( s ), ofs_( f * s.channel_size() ) {}
+			const T& operator[]( index_t i ) const { return sto_.data()[ ofs_ + i ]; }
+			const T& operator[]( const L& l ) const { return sto_.data()[ ofs_ + sto_.find_channel( l ) ]; }
+			const storage< T, L >& sto_;
+			index_t ofs_;
+		};
+
 		struct frame {
-			frame( storage< T, L >& s, index_t f ) : storage_( s ), offset_( f * s.channel_size() ) {}
-			const T& operator[]( index_t i ) const { return storage_.data()[ offset_ + i ]; }
-			T& operator[]( index_t i ) { return storage_.data()[ offset_ + i ]; }
-			storage< T, L >& storage_;
-			index_t offset_;
+			frame( storage< T, L >& s, index_t f ) : sto_( s ), fidx_( f ) {}
+			T& operator[]( index_t i ) const { return sto_( fidx_, i ); }
+			T& operator[]( const L& l ) const { return sto_( fidx_, sto_.find_or_add_channel( l ) ); }
+			storage< T, L >& sto_;
+			index_t fidx_;
 		};
 
 		storage( size_t frames = 0, size_t channels = 0, T value = T() ) : frame_size_( frames ), labels_( channels ), data_( channels * frames, value ) {}
@@ -39,11 +46,14 @@ namespace xo
 		}
 
 		/// find index of a label
-		index_t find_channel( const L& label ) const { return labels_.find( label ); }
+		index_t find_channel( const L& label ) const { return labels_.find_or_throw( label ); }
+
+		/// find index of a label
+		index_t try_find_channel( const L& label ) const { return labels_.find( label ); }
 
 		/// find or add a channel
 		index_t find_or_add_channel( const L& label, const T& value = T() ) {
-			auto idx = find_channel( label );
+			auto idx = labels_.find( label );
 			return idx == no_index ? add_channel( label, value ) : idx;
 		}
 
@@ -54,14 +64,15 @@ namespace xo
 		const L& get_label( index_t channel ) const { return labels_[ channel ]; }
 
 		/// add frame to storage
-		void add_frame( T value = T( 0 ) ) { data_.resize( data_.size() + channel_size(), value ); ++frame_size_; }
+		frame add_frame( T value = T( 0 ) ) { data_.resize( data_.size() + channel_size(), value ); ++frame_size_; return back(); }
 
 		/// add frame to storage
-		void add_frame( const std::vector< T >& data ) {
+		frame add_frame( const std::vector< T >& data ) {
 			xo_assert( data.size() == channel_size() );
 			data_.resize( data_.size() + channel_size() );
 			++frame_size_;
 			std::copy( data.begin(), data.end(), data_.end() - channel_size() );
+			return back();
 		}
 
 		/// number of channels
@@ -76,23 +87,27 @@ namespace xo
 		/// clear the storage
 		void clear() { frame_size_ = 0; labels_.clear(); data_.clear(); }
 
-		/// access value with bounds checking
-		const T& at( index_t frame, index_t channel ) const { xo_assert( frame < frame_size() && channel < channel_size() ); return data_[ frame * channel_size() + channel ]; }
-		T& at( index_t frame, index_t channel ) { xo_assert( frame < frame_size() && channel < channel_size() ); return data_[ frame * channel_size() + channel ]; }
-
 		/// access value (no bounds checking)
 		const T& operator()( index_t frame, index_t channel ) const { return data_[ frame * channel_size() + channel ]; }
 		T& operator()( index_t frame, index_t channel ) { return data_[ frame * channel_size() + channel ]; }
 
-		/// access value of most recent frame
-		const T& operator[]( index_t channel ) const { xo_assert( !data_.empty() ); return (*this)( frame_size() - 1, channel ); }
-		T& operator[]( index_t channel ) { xo_assert( !data_.empty() ); return (*this)( frame_size() - 1, channel ); }
+		/// access frame
+		const_frame operator[]( index_t f ) const { return const_frame( *this, f ); }
+		frame operator[]( index_t f ) { return frame( *this, f ); }
+		const_frame front() const { return const_frame( *this, 0 ); }
+		frame front() { return frame( *this, 0 ); }
+		const_frame back() const { return const_frame( *this, frame_size() - 1 ); }
+		frame back() { return frame( *this, frame_size() - 1 ); }
 
-		/// access value of most recent frame by channel name
-		const T& operator[]( const L& label ) const { return *this( find_channel( label ) ); }
+		///// access value of most recent frame
+		//const T& operator[]( index_t channel ) const { xo_assert( !data_.empty() ); return (*this)( frame_size() - 1, channel ); }
+		//T& operator[]( index_t channel ) { xo_assert( !data_.empty() ); return (*this)( frame_size() - 1, channel ); }
 
-		/// access value of most recent frame by channel name, add channel if not existing
-		T& operator[]( const L& label ) { return (*this)[ find_or_add_channel( label ) ]; }
+		///// access value of most recent frame by channel name
+		//const T& operator[]( const L& label ) const { return *this( find_channel( label ) ); }
+
+		///// access value of most recent frame by channel name, add channel if not existing
+		//T& operator[]( const L& label ) { return (*this)[ find_or_add_channel( label ) ]; }
 
 		/// get the interpolated value of a specific frame / channel
 		T get_interpolated_value( T frame_idx, index_t channel ) {
@@ -129,6 +144,7 @@ namespace xo
 
 		const label_vector< L >& labels() const { return labels_; }
 		const std::vector< T >& data() const { return data_; }
+		std::vector< T >& data() { return data_; }
 
 	private:
 		size_t frame_size_;

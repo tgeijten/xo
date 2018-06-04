@@ -129,14 +129,14 @@ void clamp_test()
 	storage< double > sto;
 	for ( double x = -100; x < 100; x += 1 )
 	{
-		sto.add_frame();
+		auto f = sto.add_frame();
 		double a = soft_clamped( x, 10.0, 20.0, 0.1 );
 		double b = soft_clamped( x, -50.0, 50.0, 0.1 );
 		double c = soft_clamped( x, -200.0, 0.0, 0.1 );
-		sto[ "x" ] = x;
-		sto[ "10..20" ] = a;
-		sto[ "-50..50" ] = b;
-		sto[ "-200..0" ] = c;
+		f[ "x" ] = x;
+		f[ "10..20" ] = a;
+		f[ "-50..50" ] = b;
+		f[ "-200..0" ] = c;
 	}
 	//std::ofstream( "X:/clamp_test.txt" ) << sto;
 }
