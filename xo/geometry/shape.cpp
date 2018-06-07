@@ -148,9 +148,6 @@ namespace xo
 	vec3f shape::compute_inertia( float density ) const
 	{
 		// see: en.wikipedia.org/wiki/List_of_moments_of_inertia
-		if ( density == 0.0f )
-			return vec3f::zero();
-
 		vec3f r;
 		auto m = compute_mass( density );
 		switch ( type_ )

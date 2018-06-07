@@ -37,6 +37,9 @@ namespace xo
 	/// Scalar division
 	template< typename T > vec3_<T> operator/( vec3_<T> v, T s )
 	{ T ms = inv( s ); v.x *= ms; v.y *= ms; v.z *= ms; return v; }
+	/// Invert components
+	template< typename T > vec3_<T> operator/( T s, vec3_<T> v )
+	{ v.x = s / v.x; v.y = s / v.y; v.z = s / v.z; return v; }
 	/// Scalar division
 	template< typename T > vec3_<T>& operator/=( vec3_<T>& v, T s )
 	{ T ms = inv( s ); v.x *= ms; v.y *= ms; v.z *= ms; return v; }
