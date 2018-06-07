@@ -10,7 +10,7 @@ namespace xo
 	template< typename T >
 	struct transform_
 	{
-		transform_() {}
+		transform_() : p(), q() {}
 		transform_( const prop_node& pn ) : p( pn[ "p" ] ), q( pn[ "q" ] ) {}
 		transform_( vec3_<T> pos, quat_<T> ori ) : p( pos ), q( ori ) {}
 		transform_( vec3_<T> pos ) : p( pos ), q( quat_<T>::identity() ) {}
@@ -23,25 +23,19 @@ namespace xo
 		explicit operator prop_node() const { return prop_node().set( "p", p ).set( "q", q ); }
 
 		/// concatenate transforms
-		transform_<T> operator*( const transform_<T>& other ) const { return transform( other ); }
-		transform_<T> operator-() const { return inverse(); }
-		transform_<T> inverse() const { auto iq = -q; return transform_<T>( iq * -p, iq ); }
+		transform_<T> operator*( const transform_<T>& t ) const { return transform_<T>( p + q * t.p, q * t.q ); }
+		transform_<T> inv() const { auto iq = -q; return transform_<T>( iq * -p, iq ); }
+		transform_<T> inv_trans( const transform_<T>& t ) const { return transform_<T>( q.conjugate() * ( t.p - p ), q.conjugate() * t.q ); }
 
 		vec3_<T> operator*( const vec3_<T>& v ) const { return p + q * v; }
-		vec3_<T> transform( const vec3_<T>& v ) const { return p + q * v; }
 		vec3_<T> inv_trans( const vec3_<T>& v ) const { return -q * ( v - p ); }
 
 		quat_<T> operator*( const quat_<T>& o ) const { return q * o; }
-		quat_<T> transform( const quat_<T>& o ) const { return q * o; }
 		quat_<T> inv_trans( const quat_<T>& o ) const { return -q * o; }
-
-		transform_<T> transform( const transform_<T>& t ) const { return transform_<T>( p + q * t.p, q * t.q ); }
-		transform_<T> inv_trans( const transform_<T>& t ) const { return transform_<T>( q.conjugate() * ( t.p - p ), q.conjugate() * t.q ); }
 
 		static transform_<T> identity() { return transform_<T>( vec3_<T>::zero(), quat_<T>::identity() ); }
 	};
 
-	typedef transform_< real_t > transform;
 	typedef transform_< float > transformf;
 	typedef transform_< double > transformd;
 
