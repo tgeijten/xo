@@ -98,7 +98,7 @@ namespace xo
 	template< typename T > vec3_<T> abs( vec3_<T> v ) { v.x = std::abs( v.x ); v.y = std::abs( v.y ); v.z = std::abs( v.z ); return v; }
 
 	/// Dot product of two vec3
-	template< typename T > T dot_product( const vec3_<T>& v1, const vec3_<T>& v2 )
+	template< typename T1, typename T2 > auto dot_product( const vec3_<T1>& v1, const vec3_<T2>& v2 )
 	{ return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z; }
 
 	/// Cross product

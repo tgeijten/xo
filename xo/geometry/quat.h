@@ -161,7 +161,6 @@ namespace xo
 
 	/// Get rotation vector from quaternion
 	template< typename T > vec3_<T> rotation_vector_from_quat( const quat_<T>& q ) {
-		//xo_assert( is_normalized( q ) );
 		T l = sqrt( q.x * q.x + q.y * q.y + q.z * q.z );
 		if ( l > epsilon<T>() ) {
 			T f = T(2) * std::acos( q.w ) / l;
