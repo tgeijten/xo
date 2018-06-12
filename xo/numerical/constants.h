@@ -13,8 +13,8 @@ namespace xo
 
 	template< typename T > constexpr T const_e() { return T( XO_E_LONG_DOUBLE ); }
 
-	template< typename T > constexpr T epsilon() { return std::numeric_limits< T >::epsilon(); }
-	template< typename T > constexpr T relaxed_epsilon() { return T( 4 * std::numeric_limits< T >::epsilon() ); }
+	template< typename T > constexpr T const_epsilon() { return std::numeric_limits< T >::epsilon(); }
+	template< typename T > constexpr T const_ample_epsilon() { return T( 4 * std::numeric_limits< T >::epsilon() ); }
 
 	template< typename T > constexpr T const_max() { return std::numeric_limits<T>::max(); }
 	template< typename T > constexpr T const_min() { return std::numeric_limits<T>::min(); }
@@ -25,5 +25,5 @@ namespace xo
 
 	/// compare floating point variables using relaxed_epsilon
 	// TODO: move somewhere else (not math.h because we don't want to include constants there)
-	template< typename T > bool equals( T v1, T v2, T e = relaxed_epsilon<T>() ) { return std::abs( v1 - v2 ) <= std::abs( v1 ) * e; }
+	template< typename T > bool equals( T v1, T v2, T e = const_ample_epsilon<T>() ) { return std::abs( v1 - v2 ) <= std::abs( v1 ) * e; }
 }

@@ -83,7 +83,7 @@ namespace xo
 	/// Normalize a vec3, returns length
 	template< typename T > T normalize( vec3_<T>& v ) {
 		T l = length( v );
-		if ( l > epsilon<T>() ) { T s = inv( l ); v.x *= s; v.y *= s; v.z *= s; }
+		if ( l > const_epsilon<T>() ) { T s = inv( l ); v.x *= s; v.y *= s; v.z *= s; }
 		return l;
 	}
 
