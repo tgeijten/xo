@@ -9,7 +9,10 @@ namespace xo
 	{
 	public:
 		file_storage( const path& filename ) : storage(), filename_( filename )  {}
-		virtual ~file_storage() { if ( !storage_.empty() ) std::ofstream( filename_.str() ) << storage_; }
+		virtual ~file_storage() { 
+			if ( !empty() )
+				std::ofstream( filename_.str() ) << *this;
+		}
 	private:
 		path filename_;
 	};
