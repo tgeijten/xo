@@ -31,7 +31,7 @@ namespace xo
 		};
 
 		storage( size_t frames = 0, size_t channels = 0, T value = T() ) : frame_size_( frames ), labels_( channels ), data_( channels * frames, value ) {}
-		~storage() {}
+		virtual ~storage() {}
 
 		/// add a channel and resize buffer if needed
 		index_t add_channel( L label, const T& value = T() ) { resize( frame_size(), channel_size() + 1, value ); return labels_.set( channel_size() - 1, label ); }

@@ -4,6 +4,17 @@
 
 namespace xo
 {
+	template< typename T, typename L = std::string >
+	class file_storage : public storage< T, L >
+	{
+	public:
+		file_storage( const path& filename ) : storage(), filename_( filename )  {}
+		virtual ~file_storage() { if ( !storage_.empty() ) std::ofstream( filename_.str() ) << storage_; }
+	private:
+		path filename_;
+	};
+
+
 	template< typename T, typename L  > void write( storage<T, L>& sto, const string& str, const vec3_<T>& v ) {
 		auto f = sto.back();
 		f[ str + ".x" ] = v.x;
