@@ -10,7 +10,7 @@ namespace xo
 {
 	inline float test_function( float x )
 	{
-		return std::sin( x * x * 16 * pi< float >() );
+		return std::sin( x * x * 16 * const_pi< float >() );
 	}
 
 	template< int N > void do_delay_test( float delay_inc, float dt, int times = 1 )

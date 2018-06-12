@@ -15,9 +15,9 @@ namespace xo
 		}
 
 		void write( const L& label, T value ) {
-			auto idx = storage_.find_or_add_channel( label, sentinel<T>() );
-			if ( storage_.empty() || storage_.back()[ idx ] != sentinel<T>() )
-				storage_.add_frame( sentinel<T>() );
+			auto idx = storage_.find_or_add_channel( label, const_sentinel<T>() );
+			if ( storage_.empty() || storage_.back()[ idx ] != const_sentinel<T>() )
+				storage_.add_frame( const_sentinel<T>() );
 			storage_.back()[ idx ] = value;
 		}
 		path filename_;

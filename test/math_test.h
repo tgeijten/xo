@@ -70,17 +70,17 @@ void optional_test()
 
 void function_test()
 {
-	regular_piecewise_linear_function< real_t > func( -pi< real_t >(), pi< real_t >(), 128, sin_func );
+	regular_piecewise_linear_function< real_t > func( -const_pi< real_t >(), const_pi< real_t >(), 128, sin_func );
 
 	std::ofstream ostr( "test.txt" );
-	for ( real_t x = -2 * pi< real_t >(); x < 2 * pi< real_t >(); x += 0.1 )
+	for ( real_t x = -2 * const_pi< real_t >(); x < 2 * const_pi< real_t >(); x += 0.1 )
 		ostr << x << "\t" << func( x ) << endl;
 
 	timer t;
 	real_t result = 0.0, verify_result = 0.0;
 	for ( int i = 0; i < 10000; ++i )
 	{
-		for ( real_t x = -pi< real_t >(); x <= pi< real_t >(); x += 0.001 )
+		for ( real_t x = -const_pi< real_t >(); x <= const_pi< real_t >(); x += 0.001 )
 		{
 			result += func( x );
 			verify_result += sin_func( x );
@@ -96,13 +96,13 @@ void angle_test()
 	//auto ang2 = radian( ang1 );
 	//auto ang3 = ang1 + degree( 180 );
 
-	auto a1_rd = rad( half_pi<double>() );
+	auto a1_rd = rad( const_pi_2<double>() );
 	auto a2_dd = deg( 180.0 );
 	auto a3 = a1_rd + a2_dd.radian();
 	auto a4 = a2_dd + a1_rd.degree();
 
 	auto a5_rf = radianf( deg( 90.0f ) );
-	auto a6_df = degreef( radiand( half_pi<float>() ) );
+	auto a6_df = degreef( radiand( const_pi_2<float>() ) );
 
 	auto a1s = 0.5 * a1_rd;
 	auto a2s = 0.5f * a2_dd;

@@ -51,8 +51,8 @@ namespace xo
 			else upper = lower;
 		}
 		else if ( pn.size() > 0 ) {
-			lower = pn.get_any< T >( { "min", "lower" }, lowest<T>() );
-			upper = pn.get_any<T>( { "max", "upper" }, max<T>() );
+			lower = pn.get_any< T >( { "min", "lower" }, const_lowest<T>() );
+			upper = pn.get_any<T>( { "max", "upper" }, const_max<T>() );
 		}
 		else xo_error( "Cannot read bounds from prop_node" );
 	}
