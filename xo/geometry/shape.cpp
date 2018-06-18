@@ -85,6 +85,7 @@ namespace xo
 		case shape_type::cylinder:
 		case shape_type::cone:
 			return vec3f( 2 * x_, y_, 2 * x_ );
+		case shape_type::plane: return vec3f::zero();
 		default: xo_error( "Cannot compute dim for " + name() );
 		}
 	}
