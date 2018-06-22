@@ -26,13 +26,13 @@ namespace xo
 		}
 
 		iterator find( const T& e ) {
-			auto it = std::lower_bound( begin(), end(), e );
-			return ( it != end() && *it == e ) ? *it : end();
+			iterator it = std::lower_bound( begin(), end(), e );
+			return ( it != end() && *it == e ) ? it : end();
 		}
 
 		const_iterator find( const T& e ) const {
-			auto it = std::lower_bound( cbegin(), cend(), e );
-			return ( it != cend() && *it == e ) ? *it : cend();
+			const_iterator it = std::lower_bound( cbegin(), cend(), e );
+			return ( it != cend() && *it == e ) ? it : cend();
 		}
 	};
 }
