@@ -27,11 +27,8 @@ namespace xo
 		{
 			if ( idx == 0 )
 				return &child;
-			else
-			{
-				if ( auto* c = get_child_by_index( child.second, --idx ) )
-					return c;
-			}
+			else if ( auto* c = get_child_by_index( child.second, --idx ) )
+				return c;
 		}
 		return nullptr;
 	}
