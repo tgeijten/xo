@@ -41,7 +41,6 @@ namespace xo
 		prop_node( const char* pn );
 		prop_node( const value_t& v ) : accessed_flag( false ), value( v ) {}
 		prop_node( value_t&& v ) : accessed_flag( false ), value( std::move( v ) ) {}
-		prop_node( const prop_node* other ) : accessed_flag( other->accessed_flag ), value( other ? other->value : value_t() ), children( other ? other->children : container_t() ) {}
 
 		/// destructor (non-virtual)
 		~prop_node() {}
