@@ -117,6 +117,14 @@ namespace xo
 		else return nullptr;
 	}
 
+	const xo::prop_node* prop_node::try_get_child_delimited( std::initializer_list< key_t > keys, const char delim ) const
+	{
+		for ( auto& k : keys )
+			if ( auto p = try_get_child_delimited( k, delim ) )
+				return p;
+		return nullptr;
+	}
+
 	int get_align_width( const prop_node& pn, int depth )
 	{
 		int width = 0;

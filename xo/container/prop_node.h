@@ -83,12 +83,37 @@ namespace xo
 		template< typename T > optional< T > try_get_any( std::initializer_list< key_t > keys ) const
 		{ for ( auto& key : keys ) { const auto it = find( key ); if ( it != end() ) return it->second.get< T >(); } return optional< T >(); }
 
+		/// get the value of a child node, accessing children through delimiter character
+		template< typename T > T get_delimited( const key_t& key, const char delim = '.' ) const {
+			auto p = key.find_first_of( delim );
+			if ( p == string::npos ) return get< T >( key );
+			else return get_child( key.substr( 0, p ) ).get_delimited< T >( mid_str( key, p + 1 ), delim );
+		}
+
+		/// get the value of a child node, accessing children through delimiter character
+		template< typename T > optional< T > try_get_delimited( const key_t& key, const char delim = '.' ) const {
+			if ( auto* pn = try_get_child_delimited( key ) )
+				return pn->get< T >();
+			else return optional< T >();
+		}
+
+		/// get the value of a child node, accessing children through delimiter character
+		template< typename T > T get_any_delimited( const key_t& key, const char delim = '.' ) const {
+			auto p = key.find_first_of( delim );
+			if ( p == string::npos ) return get< T >( key );
+			else return get_child( key.substr( 0, p ) ).get_delimited< T >( mid_str( key, p + 1 ), delim );
+		}
+
+
 		/// see if this prop_node has a value
 		bool has_value() const { return !value.empty(); }
 		bool has_value( const key_t& key ) const { auto c = find( key ); return c != end() && c->second.has_value(); }
 
 		/// see if this prop_node has a specific key
 		bool has_key( const key_t& key ) const { return find( key ) != end(); }
+
+		/// see if this prop_node has a specific key
+		bool has_any_key( std::initializer_list< key_t > keys ) const { for ( auto& k : keys ) if ( has_key( k ) ) return true; return false; }
 
 		/// number of direct child keys
 		size_t size() const { return children.size(); }
@@ -126,20 +151,6 @@ namespace xo
 			auto p = key.find_first_of( delim );
 			if ( p == string::npos ) return set( key, v );
 			else return get_or_add_child( key.substr( 0, p ) ).set_delimited( mid_str( key, p + 1 ), v, delim );
-		}
-
-		/// get the value of a child node, accessing children through delimiter character
-		template< typename T > T get_delimited( const key_t& key, const char delim = '.' ) const {
-			auto p = key.find_first_of( delim );
-			if ( p == string::npos ) return get< T >( key );
-			else return get_child( key.substr( 0, p ) ).get_delimited< T >( mid_str( key, p + 1 ), delim );
-		}
-
-		/// get the value of a child node, accessing children through delimiter character
-		template< typename T > optional< T > try_get_delimited( const key_t& key, const char delim = '.' ) const {
-			if ( auto* pn = try_get_child_delimited( key ) )
-				return pn->get< T >();
-			else return optional< T >();
 		}
 
 		/// add a node with a value
@@ -184,6 +195,8 @@ namespace xo
 
 		/// get a child node using delimiters, return nullptr if not existing
 		const prop_node* try_get_child_delimited( const key_t& key, const char delim = '.' ) const;
+		const prop_node* try_get_child_delimited( std::initializer_list< key_t > keys, const char delim = '.' ) const;
+
 		prop_node* try_get_child_delimited( const key_t& key, const char delim = '.' );
 
 		/// get a child node or add it if not existing
