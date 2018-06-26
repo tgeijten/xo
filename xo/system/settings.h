@@ -19,9 +19,8 @@ namespace xo
 
 		template< typename T > T get( const string& id ) const { return data_.get_delimited< T >( id ); }
 		template< typename T > void set( const string& id, const T& value ) {
-			if ( auto* pn = data_.try_get_child_delimited( id ) )
-				pn->set_value( value );
-			else xo_error( "Could not find setting " + id );
+			xo_error_if( !data_.try_get_child_delimited( id ), "Could not find setting " + id );
+			data_.set_delimited( id, value );
 		}
 
 		void load( const path& filename );

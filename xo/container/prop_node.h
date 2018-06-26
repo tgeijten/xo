@@ -97,14 +97,6 @@ namespace xo
 			else return optional< T >();
 		}
 
-		/// get the value of a child node, accessing children through delimiter character
-		template< typename T > T get_any_delimited( const key_t& key, const char delim = '.' ) const {
-			auto p = key.find_first_of( delim );
-			if ( p == string::npos ) return get< T >( key );
-			else return get_child( key.substr( 0, p ) ).get_delimited< T >( mid_str( key, p + 1 ), delim );
-		}
-
-
 		/// see if this prop_node has a value
 		bool has_value() const { return !value.empty(); }
 		bool has_value( const key_t& key ) const { auto c = find( key ); return c != end() && c->second.has_value(); }
@@ -112,7 +104,7 @@ namespace xo
 		/// see if this prop_node has a specific key
 		bool has_key( const key_t& key ) const { return find( key ) != end(); }
 
-		/// see if this prop_node has a specific key
+		/// see if this prop_node has any specific key
 		bool has_any_key( std::initializer_list< key_t > keys ) const { for ( auto& k : keys ) if ( has_key( k ) ) return true; return false; }
 
 		/// number of direct child keys
@@ -174,42 +166,34 @@ namespace xo
 		/// reserve children
 		void reserve( size_t n ) { children.reserve( n ); }
 
-		/// get a child node, throws exception if not existing
+		/// access child by name, throws if not existing
 		const prop_node& get_child( const key_t& key ) const;
+		const prop_node& operator[]( const key_t& key ) const { return get_child( key ); }
 		prop_node& get_child( const key_t& key );
 
-		/// get a child node using delimiters, throws exception if not existing
-		const prop_node& get_child_delimited( const key_t& key, const char delim = '.' ) const;
-		prop_node& get_child_delimited( const key_t& key, const char delim = '.' );
+		/// get a child node or add it if not existing
+		prop_node& get_or_add_child( const key_t& key );
+		prop_node& operator[]( const key_t& key ) { return get_or_add_child( key ); }
 
-		/// get a child node by index
+		/// get a child node by index, throws if invalid
 		const prop_node& get_child( index_t idx ) const;
 		prop_node& get_child( index_t idx );
-
-		/// get key by index
-		const key_t& get_key( index_t idx ) const;
+		const prop_node& operator[]( index_t idx ) const { return get_child( idx ); }
+		prop_node& operator[]( index_t idx ) { return get_child( idx ); }
 
 		/// get a child node, return nullptr if not existing
 		const prop_node* try_get_child( const key_t& key ) const;
 		prop_node* try_get_child( const key_t& key );
 
+		/// get a child node using delimiters, throws exception if not existing
+		const prop_node& get_child_delimited( const key_t& key, const char delim = '.' ) const;
+
 		/// get a child node using delimiters, return nullptr if not existing
 		const prop_node* try_get_child_delimited( const key_t& key, const char delim = '.' ) const;
 		const prop_node* try_get_child_delimited( std::initializer_list< key_t > keys, const char delim = '.' ) const;
 
-		prop_node* try_get_child_delimited( const key_t& key, const char delim = '.' );
-
-		/// get a child node or add it if not existing
-		prop_node& get_or_add_child( const key_t& key )
-		{ access(); auto it = find( key ); if ( it != end() ) return it->second.access(); else return push_back( key ); }
-
-		/// access child by name
-		const prop_node& operator[]( const key_t& key ) const { return get_child( key ); }
-		prop_node& operator[]( const key_t& key ) { return get_or_add_child( key ); }
-
-		/// access child by index
-		const prop_node& operator[]( index_t idx ) const { return get_child( idx ); }
-		prop_node& operator[]( index_t idx ) { return get_child( idx ); }
+		/// get key by index
+		const key_t& get_key( index_t idx ) const;
 
 		/// find a child node
 		iterator find( const key_t& key ) { return find_if( children, [&]( const pair_t& e ) { return e.first == key; } ); }
@@ -237,7 +221,7 @@ namespace xo
 		iterator erase( const_iterator it ) { return children.erase( it ); }
 		void pop_back() { children.pop_back(); }
 
-		/// see if this node has been accessed (touched)
+		/// see if this node has been accessed
 		bool is_accessed() const { return accessed_flag; }
 		size_t count_unaccessed() const { size_t t = is_accessed() ? 0 : 1; for ( auto& c : children ) t += c.second.count_unaccessed(); return t; }
 		void clear_accessed_recursively() { accessed_flag = false; for ( auto& c : children ) c.second.clear_accessed_recursively(); }

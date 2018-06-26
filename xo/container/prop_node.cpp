@@ -42,14 +42,6 @@ namespace xo
 		else return get_child( key.substr( 0, p ) ).get_child_delimited( key.substr( p + 1 ), delim );
 	}
 
-	prop_node& prop_node::get_child_delimited( const key_t& key, const char delim )
-	{
-		auto p = key.find_first_of( delim );
-		if ( p == string::npos )
-			return get_child( key );
-		else return get_child( key.substr( 0, p ) ).get_child_delimited( key.substr( p + 1 ), delim );
-	}
-
 	const xo::prop_node& prop_node::get_child( const key_t& key ) const
 	{
 		auto it = find( key );
@@ -79,6 +71,11 @@ namespace xo
 		return children[ idx ].second;
 	}
 
+	xo::prop_node& prop_node::get_or_add_child( const key_t& key )
+	{
+		access(); auto it = find( key ); if ( it != end() ) return it->second.access(); else return push_back( key );
+	}
+
 	const xo::prop_node::key_t& prop_node::get_key( index_t idx ) const
 	{
 		xo_assert( idx < size() ); access();
@@ -100,15 +97,6 @@ namespace xo
 	}
 
 	const xo::prop_node* prop_node::try_get_child_delimited( const key_t& key, const char delim ) const
-	{
-		auto p = key.find_first_of( delim );
-		if ( p == string::npos ) return try_get_child( key );
-		else if ( auto* c = try_get_child( key.substr( 0, p ) ) )
-			return c->try_get_child_delimited( mid_str( key, p + 1 ), delim );
-		else return nullptr;
-	}
-
-	xo::prop_node* prop_node::try_get_child_delimited( const key_t& key, const char delim )
 	{
 		auto p = key.find_first_of( delim );
 		if ( p == string::npos ) return try_get_child( key );
