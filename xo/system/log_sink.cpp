@@ -17,7 +17,8 @@ namespace xo
 
 	void log::sink::try_send_log_message( level l, const string& msg )
 	{
-		if ( test_log_level( l ) ) send_log_message( l, msg );
+		if ( test_log_level( l ) )
+			send_log_message( l, msg );
 	}
 
 	void log::sink::set_log_level( level l )
@@ -43,6 +44,8 @@ namespace xo
 		// TODO: make the time prefix an option
 		auto str = get_date_time_str( "%H:%M:%S " );
 		stream_ << str << msg << std::endl;
+		if ( l >= error_level )
+			stream_.flush();
 	}
 
 	log::console_sink::console_sink( level l ) : stream_sink( l, std::cout )

@@ -59,7 +59,7 @@ namespace xo
 					if ( t == "=" )
 						t = get_zml_token( str, ec );
 					else if ( t != "{" && t != "[" )
-						return zml_error( str, ec, "Error parsing ZML: expected '=', '{' or '['" );
+						return zml_error( str, ec, "Expected '=', '{' or '['" );
 				}
 				else parent.push_back( "" ); // add array child
 

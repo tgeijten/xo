@@ -1,5 +1,6 @@
 #pragma once
 
+#include "platform.h"
 #include "xo/string/string_type.h"
 #include "assert.h"
 
@@ -19,8 +20,6 @@ namespace xo
 		string message_;
 	};
 
-	inline error_code no_error() { return error_code(); }
-	inline error_code error( string msg ) { return error_code( -1, msg ); }
-	inline bool try_set_error( error_code* ec, string msg ) { if ( ec ) ec->set( -1, msg ); return ec != nullptr; }
-	inline void set_error_or_throw( error_code* ec, string msg ) { if ( ec ) ec->set( -1, msg ); else xo_error( msg ); }
+	XO_API bool try_set_error( error_code* ec, string msg );
+	XO_API void set_error_or_throw( error_code* ec, string msg );
 }

@@ -17,13 +17,14 @@ namespace xo
 
 		void log_string( level l, const string& str )
 		{
+			// no need to do additional test_log_level(), no performance gain
 			for ( auto s : global_sinks )
 				s->try_send_log_message( l, str );
 		}
 
 		void log_vstring( level l, const char* format, va_list list )
 		{
-			if ( test_log_level( l ) )
+			if ( test_log_level( l ) ) // check for global log level first
 			{
 				char buf[ 1024 ];
 				vsnprintf( buf, sizeof( buf ), format, list );
