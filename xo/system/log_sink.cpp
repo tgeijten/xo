@@ -5,7 +5,7 @@
 namespace xo
 {
 	
-	log::sink::sink( level l /*= info_level */ ) : log_level_( l )
+	log::sink::sink( level l ) : log_level_( l )
 	{
 		xo::log::add_sink( this );
 	}
