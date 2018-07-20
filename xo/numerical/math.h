@@ -7,9 +7,11 @@ namespace xo
 {
 	/// min
 	template< typename T > const T& min( const T& v1, const T& v2 ) { return v1 < v2 ? v1 : v2; }
+	template< typename T > const T& min( const T& v1, const T& v2, const T& v3 ) { return min( v1, min( v2, v3 ) ); }
 
 	/// max
 	template< typename T > const T& max( const T& v1, const T& v2 ) { return v1 < v2 ? v2 : v1; }
+	template< typename T > const T& max( const T& v1, const T& v2, const T& v3 ) { return max( v1, max( v2, v3 ) ); }
 
 	/// inverse of v (1 / v)
 	template< typename T > T inv( T v ) { return T(1) / v; }
