@@ -99,16 +99,6 @@ namespace xo
 		const_frame back() const { return const_frame( *this, frame_size() - 1 ); }
 		frame back() { return frame( *this, frame_size() - 1 ); }
 
-		///// access value of most recent frame
-		//const T& operator[]( index_t channel ) const { xo_assert( !data_.empty() ); return (*this)( frame_size() - 1, channel ); }
-		//T& operator[]( index_t channel ) { xo_assert( !data_.empty() ); return (*this)( frame_size() - 1, channel ); }
-
-		///// access value of most recent frame by channel name
-		//const T& operator[]( const L& label ) const { return *this( find_channel( label ) ); }
-
-		///// access value of most recent frame by channel name, add channel if not existing
-		//T& operator[]( const L& label ) { return (*this)[ find_or_add_channel( label ) ]; }
-
 		/// get the interpolated value of a specific frame / channel
 		T get_interpolated_value( T frame_idx, index_t channel ) {
 			auto frame_f = floor( frame_idx );
