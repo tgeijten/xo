@@ -19,4 +19,7 @@ namespace xo
 
 		T value;
 	};
+
+	template< typename ID, typename T >
+	inline std::ostream& operator<<( std::ostream& str, const handle< ID, T >& h ) { return str << h.value; }
 }
