@@ -4,7 +4,10 @@
 
 namespace xo
 {
+	// TODO: do we really need this?
 	typedef double real_t;
+
+	// TODO: move these types elsewhere (and perhaps use std::chrono)
 	typedef real_t seconds_t;
 	typedef long long nanoseconds_t;
 	typedef long long microseconds_t;
