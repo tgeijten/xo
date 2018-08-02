@@ -25,6 +25,17 @@ namespace xo
 			return std::vector< T >::insert( std::upper_bound( begin(), end(), e ), e );
 		}
 
+		iterator remove( const T& e ) {
+			iterator it = find( e );
+			if ( it != end() ) {
+				auto it2 = it + 1;
+				while ( it2 != end() && *it2 == e )
+					++it2;
+				return erase( it, it2 );
+			}
+			else return it;
+		}
+
 		iterator find( const T& e ) {
 			iterator it = std::lower_bound( begin(), end(), e );
 			return ( it != end() && *it == e ) ? it : end();
