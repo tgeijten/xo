@@ -15,6 +15,27 @@ namespace xo
 	class storage
 	{
 	public:
+		struct const_frame_iterator {
+			const_frame_iterator( const storage< T, L >& s, index_t f ) : sto_( s ), ofs_( f * s.channel_size() ) {}
+			using iterator_category = std::random_access_iterator_tag;
+			using value_type = T*;
+			using difference_type = int;
+			using pointer = T**;
+			using reference = T*&;
+
+			const_frame_iterator& operator++() { ofs_ += sto_.channel_size(); return *this; }
+			const_frame_iterator operator++( int ) { auto keepit = *this; ofs_ += sto_.channel_size(); return keepit; }
+			bool operator+( int i ) { ofs_ += i * sto_.channel_size(); }
+
+			bool operator==( const const_frame_iterator& other ) { return ofs_ == other.ofs_; }
+			bool operator!=( const const_frame_iterator& other ) { return ofs_ != other.ofs_; }
+			typename const value_type& operator*() const { return &sto_.data_[ ofs_ ]; }
+			typename const value_type* operator->() const { return &( *pos_ ); }
+
+			const storage< T, L >& sto_;
+			index_t ofs_;
+		};
+
 		struct const_frame {
 			const_frame( const storage< T, L >& s, index_t f ) : sto_( s ), ofs_( f * s.channel_size() ) {}
 			const T& operator[]( index_t i ) const { return sto_.data()[ ofs_ + i ]; }
