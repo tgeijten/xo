@@ -36,13 +36,11 @@ namespace xo
 
 		// create instance
 		std::unique_ptr< T > create( const std::string& type, Args... args ) const { return ( *this )[ type ]( args... ); }
+		std::unique_ptr< T > operator()( const std::string& type, Args... args ) const { return create( type, args... ); }
 
 		// try create instance
 		std::unique_ptr< T > try_create( const std::string& type, Args... args ) const
 		{ auto it = func_map_.find( type ); return it != func_map_.end() ? it->second( args... ) : nullptr; }
-
-		// create instance
-		std::unique_ptr< T > operator()( const std::string& type, Args... args ) const { return create( type, args... ); }
 
 		bool empty() const { return func_map_.empty(); }
 		bool has_type( const std::string& type ) const { return func_map_.find( type ) != func_map_.end(); }
