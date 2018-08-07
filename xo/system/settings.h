@@ -19,7 +19,7 @@ namespace xo
 
 		template< typename T > T get( const string& id ) const { return data_.get_delimited< T >( id ); }
 		template< typename T > void set( const string& id, const T& value ) {
-			auto& pn = data.get_child_delimited( id );
+			auto pn = data_.try_get_child_delimited( id );
 			xo_error_if( !pn, "Could not find setting " + id );
 			pn->set_value( value );
 		}

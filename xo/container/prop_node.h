@@ -190,6 +190,7 @@ namespace xo
 
 		/// get a child node using delimiters, return nullptr if not existing
 		const prop_node* try_get_child_delimited( const key_t& key, const char delim = '.' ) const;
+		prop_node* try_get_child_delimited( const key_t& key, const char delim = '.' );
 		const prop_node* try_get_child_delimited( std::initializer_list< key_t > keys, const char delim = '.' ) const;
 
 		/// get key by index

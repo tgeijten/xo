@@ -105,6 +105,15 @@ namespace xo
 		else return nullptr;
 	}
 
+	xo::prop_node* prop_node::try_get_child_delimited( const key_t& key, const char delim )
+	{
+		auto p = key.find_first_of( delim );
+		if ( p == string::npos ) return try_get_child( key );
+		else if ( auto* c = try_get_child( key.substr( 0, p ) ) )
+			return c->try_get_child_delimited( mid_str( key, p + 1 ), delim );
+		else return nullptr;
+	}
+
 	const xo::prop_node* prop_node::try_get_child_delimited( std::initializer_list< key_t > keys, const char delim ) const
 	{
 		for ( auto& k : keys )
