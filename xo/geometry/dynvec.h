@@ -104,7 +104,7 @@ namespace xo
 	template< typename T > dynvec<T>& operator/=( dynvec<T>& v, T s ) { return v *= inv( s ); }
 
 	/// Test if a vec3 is of unit length
-	template< typename T > T is_normalized( const dynvec<T>& v ) { return equals( v.length(), T( 1 ) ); }
+	template< typename T > T is_normalized( const dynvec<T>& v ) { return equal( v.length(), T( 1 ) ); }
 
 	/// Get distance between two dynvecs
 	template< typename T > T distance( const dynvec<T>& v1, const dynvec<T>& v2 )

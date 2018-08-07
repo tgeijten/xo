@@ -25,5 +25,6 @@ namespace xo
 
 	/// compare floating point variables using relaxed_epsilon
 	// TODO: move somewhere else (not math.h because we don't want to include constants there)
-	template< typename T > bool equals( T v1, T v2, T e = const_ample_epsilon<T>() ) { return std::abs( v1 - v2 ) <= std::abs( v1 ) * e; }
+	template< typename T > bool equal( T v1, T v2, T e = const_ample_epsilon<T>() ) { return std::abs( v1 - v2 ) <= std::abs( v1 ) * e; }
+	template< typename T > bool less_or_equal( T v1, T v2, T e = const_ample_epsilon<T>() ) { return v1 < v2 || equal( v1, v2, e ); }
 }

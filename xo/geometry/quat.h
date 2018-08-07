@@ -43,7 +43,7 @@ namespace xo
 
 	/// test if a quat is of unit length
 	template< typename T > bool is_normalized( quat_<T> q )
-	{ return equals( q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z, T(1) ); }
+	{ return equal( q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z, T(1) ); }
 
 	/// normalize quaternion, return length
 	template< typename T > T normalize( quat_<T>& q ) {
@@ -141,11 +141,11 @@ namespace xo
 		vec3_<T> c = cross_product( s, t );
 		T d = dot_product( s, t );
 
-		if ( equals( d, T(1) ) ) // check if vectors are the same
+		if ( equal( d, T(1) ) ) // check if vectors are the same
 			return quat_<T>::identity();
 
 		auto clen = length( c );
-		if ( equals( clen, T() ) ) // check if vectors are 180 deg apart
+		if ( equal( clen, T() ) ) // check if vectors are 180 deg apart
 			return quat_<T>( 0, 1, 0, 0 ); // this doesn't work if source is unit_x
 
 		c /= clen;

@@ -68,7 +68,7 @@ namespace xo
 
 	/// Test if a vec3 is of unit length
 	template< typename T > bool is_normalized( const vec3_<T>& v )
-	{ return equals( v.x * v.x + v.y * v.y + v.z * v.z, T(1) ); }
+	{ return equal( v.x * v.x + v.y * v.y + v.z * v.z, T(1) ); }
 
 	/// Get distance between two vec3
 	template< typename T > T distance( const vec3_<T>& v1, const vec3_<T>& v2 )
