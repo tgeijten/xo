@@ -87,7 +87,7 @@ void function_test()
 		}
 	}
 	auto duration = t.seconds();
-	XO_TEST_MSG( equals( result, verify_result, 0.01 ), stringf( "diff=%f duration=%f", result - verify_result, duration ) );
+	XO_TEST_MSG( equal( result, verify_result, 0.01 ), stringf( "diff=%f duration=%f", result - verify_result, duration ) );
 }
 
 void angle_test()
@@ -114,7 +114,7 @@ void angle_test()
 	vec3_< degreef > deg_vec( degreef( 10 ), degreef( 20 ), degreef( 30 ) );
 	vec3_< radianf > rad_vec;
 	rad_vec = deg_vec;
-	XO_TEST( equals( rad_vec[ 0 ].value, radianf( degreef( 10 ) ).value ) );
+	XO_TEST( equal( rad_vec[ 0 ].value, radianf( degreef( 10 ) ).value ) );
 
 
 	auto qtest = quat_from_euler( degree( 180.0 ), degree( 180 ), degree( 180 ).radian().degree(), euler_order::xyz );
@@ -173,8 +173,8 @@ void linear_regression_test()
 	//xo::linear_regression lg( x.begin(), x.end(), y.begin(), y.end() );
 
 	auto lg1 = linear_regression( x.begin(), x.end(), y.begin(), y.end() );
-	XO_TEST( equals( lg1[ 1 ], 2.5 ) );
-	XO_TEST( equals( lg1[ 0 ], 4.0 ) );
+	XO_TEST( equal( lg1[ 1 ], 2.5 ) );
+	XO_TEST( equal( lg1[ 0 ], 4.0 ) );
 
 	x.clear();
 	y.clear();
@@ -183,19 +183,19 @@ void linear_regression_test()
 		y.push_back( xre * -1.5 - 100 );
 
 	auto lg2 = linear_regression( xr, y );
-	XO_TEST( equals( lg2[ 1 ], -1.5 ) );
-	XO_TEST( equals( lg2[ 0 ], -100.0 ) );
+	XO_TEST( equal( lg2[ 1 ], -1.5 ) );
+	XO_TEST( equal( lg2[ 0 ], -100.0 ) );
 
 	auto lg3 = linear_regression( y, -50.0, 2.0 );
-	XO_TEST( equals( lg3[ 1 ], -1.5 ) );
-	XO_TEST( equals( lg3[ 0 ], -100.0 ) );
+	XO_TEST( equal( lg3[ 1 ], -1.5 ) );
+	XO_TEST( equal( lg3[ 0 ], -100.0 ) );
 
 	auto x0 = intersect_y( lg3, 0.0 );
 	auto x1 = intersect_y( lg3, 10.0 );
 	auto x2 = intersect_y( lg3, -10.0 );
-	XO_TEST( equals( lg3( x0 ), 0.0 ) );
-	XO_TEST( equals( lg3( x1 ), 10.0 ) );
-	XO_TEST( equals( lg3( x2 ), -10.0 ) );
+	XO_TEST( equal( lg3( x0 ), 0.0 ) );
+	XO_TEST( equal( lg3( x1 ), 10.0 ) );
+	XO_TEST( equal( lg3( x2 ), -10.0 ) );
 }
 
 #if 0
