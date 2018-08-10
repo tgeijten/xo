@@ -13,6 +13,8 @@ namespace xo
 		using std::vector< T >::empty;
 		using std::vector< T >::clear;
 		using std::vector< T >::size;
+		using std::vector< T >::capacity;
+		using std::vector< T >::reserve;
 		using std::vector< T >::begin;
 		using std::vector< T >::end;
 		using std::vector< T >::cbegin;
@@ -20,6 +22,8 @@ namespace xo
 		using std::vector< T >::front;
 		using std::vector< T >::back;
 		using std::vector< T >::erase;
+		using std::vector< T >::data;
+		using std::vector< T >::operator[];
 
 		iterator insert( const T& e ) {
 			return std::vector< T >::insert( std::upper_bound( begin(), end(), e ), e );
