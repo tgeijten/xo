@@ -25,6 +25,9 @@ namespace xo
 		using std::vector< T >::data;
 		using std::vector< T >::operator[];
 
+		sorted_vector() : vector() {}
+		sorted_vector( std::initializer_list< T > l ) : vector( l ) { std::sort( begin(), end() ); }
+
 		iterator insert( const T& e ) {
 			return std::vector< T >::insert( std::upper_bound( begin(), end(), e ), e );
 		}
