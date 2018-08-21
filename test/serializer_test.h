@@ -8,7 +8,7 @@
 
 namespace xo
 {
-	prop_node make_prop_node()
+	prop_node example_prop_node()
 	{
 		xo::prop_node pn;
 		pn.set( "empty", "" );
@@ -40,7 +40,7 @@ namespace xo
 
 	void serializer_test()
 	{
-		prop_node p1 = make_prop_node();
+		prop_node p1 = example_prop_node();
 
 		std::stringstream str;
 		prop_node_serializer_zml().write_stream( str, p1 );
