@@ -146,14 +146,10 @@ namespace xo
 		}
 
 		/// add a node with a value
-		template< typename T > prop_node& push_back( const key_t& key, const T& value )
-		{ children.push_back( std::make_pair( key, make_prop_node( value ) ) ); return children.back().second; }
-		prop_node& push_back( const key_t& key, const prop_node& pn )
-		{ children.emplace_back( std::make_pair( key, pn ) ); return children.back().second; }
-		prop_node& push_back( const key_t& key, prop_node&& pn )
-		{ children.emplace_back( std::make_pair( key, std::move( pn ) ) ); return children.back().second; }
-		prop_node& push_back( const key_t& key )
-		{ children.emplace_back( std::make_pair( key, prop_node() ) ); return children.back().second; }
+		template< typename T > prop_node& push_back( const key_t& key, const T& value ) { children.emplace_back( key, make_prop_node( value ) ); return children.back().second; }
+		prop_node& push_back( const key_t& key, const prop_node& pn ) { children.emplace_back( key, pn ); return children.back().second; }
+		prop_node& push_back( const key_t& key, prop_node&& pn ) { children.emplace_back( key, std::move( pn ) ); return children.back().second; }
+		prop_node& push_back( const key_t& key ) { children.emplace_back( key, prop_node() ); return children.back().second; }
 
 		/// insert children
 		iterator insert( iterator pos, const_iterator first, const_iterator last ) { return children.insert( pos, first, last ); }
