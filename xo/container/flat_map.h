@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <vector>
+#include "xo/system/assert.h"
 
 namespace xo
 {
