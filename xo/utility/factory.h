@@ -9,7 +9,7 @@
 
 namespace xo
 {
-	template< typename T, class ...Args >
+	template< typename T, typename... Args >
 	class factory
 	{
 	public:

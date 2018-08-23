@@ -186,7 +186,7 @@ namespace xo
 		for ( const char& c : s )
 			if ( c < 33 || c == '\"' || strchr( special_chars, c ) )
 				return true;
-		return false;
+		return s.empty();
 	}
 
 	XO_API string try_quoted( const string& s, const char* special_chars )
