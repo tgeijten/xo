@@ -13,7 +13,8 @@
 namespace xo
 {
 	XO_API factory< prop_node_serializer >& get_serializer_factory();
-	XO_API u_ptr< prop_node_serializer > make_serializer( const std::string& file_type, error_code* ec = nullptr );
+	XO_API u_ptr< prop_node_serializer > make_serializer( const std::string& file_type, prop_node& pn, error_code* ec = nullptr, path p = path() );
+	XO_API u_ptr< prop_node_serializer > make_serializer( const std::string& file_type, const prop_node& pn, error_code* ec = nullptr, path p = path() );
 	template< class S > void register_serializer( const std::string& extension ) { get_serializer_factory().register_class< S >( extension ); }
 
 	XO_API prop_node load_file( const path& filename, error_code* ec = nullptr );

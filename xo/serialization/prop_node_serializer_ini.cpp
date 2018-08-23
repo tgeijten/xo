@@ -3,9 +3,10 @@
 
 namespace xo
 {
-	std::ostream& prop_node_serializer_ini::write_stream( std::ostream& str, const prop_node& pn, error_code* ec )
+	std::ostream& prop_node_serializer_ini::write_stream( std::ostream& str )
 	{
-		for ( auto& e : pn )
+		xo_assert( write_pn_ );
+		for ( auto& e : *write_pn_ )
 		{
 			if ( e.second.size() > 0 ) // group item
 			{
@@ -19,17 +20,17 @@ namespace xo
 		return str;
 	}
 
-	xo::prop_node prop_node_serializer_ini::read_stream( std::istream& str, error_code* ec, path parent_folder )
+	std::istream& prop_node_serializer_ini::read_stream( std::istream& str )
 	{
-		prop_node pn;
-		prop_node* cur_group = &pn;
+		xo_assert( read_pn_ );
+		prop_node* cur_group = read_pn_;
 
 		while ( str.good() )
 		{
 			char buf[ 1024 ];
 			str.getline( buf, sizeof( buf ) );
 			if ( str.fail() && !str.eof() )
-				return set_error_or_throw( ec, "Error reading ini file, line too long" ), prop_node();
+				return set_error_or_throw( ec_, "Error reading ini file, line too long" ), str;
 
 			string line( buf );
 
@@ -41,7 +42,7 @@ namespace xo
 
 			if ( line.size() > 2 && line[ 0 ] == '[' && line[ line.size() - 1 ] == ']' )
 			{
-				cur_group = &pn.push_back( line.substr( 1, line.size() - 2 ) );
+				cur_group = &read_pn_->push_back( line.substr( 1, line.size() - 2 ) );
 				continue;
 			}
 
@@ -50,6 +51,6 @@ namespace xo
 			xo_error_if( kvp.first == line, "Error loading ini file, expected '='" );
 			cur_group->set( kvp.first, kvp.second );
 		}
-		return pn;
+		return str;
 	}
 }

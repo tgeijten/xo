@@ -6,11 +6,31 @@
 
 namespace xo
 {
+
+	prop_node_serializer::prop_node_serializer( error_code* ec, path file_folder ) :
+		read_pn_( nullptr ), write_pn_( nullptr ), ec_( ec ), file_folder_( file_folder )
+	{}
+
+	prop_node_serializer::prop_node_serializer( const prop_node& pn, error_code* ec, path file_folder ) :
+		read_pn_( nullptr ), write_pn_( &pn ), ec_( ec ), file_folder_( file_folder )
+	{}
+
+	prop_node_serializer::prop_node_serializer( prop_node& pn, error_code* ec, path file_folder ) :
+		read_pn_( &pn ), write_pn_( &pn ), ec_( ec ), file_folder_( file_folder )
+	{}
+
 	prop_node prop_node_serializer::load_file( const path& filename, error_code* ec )
 	{
 		std::ifstream str( filename.string() );
 		if ( str )
-			return read_stream( str, ec, filename.parent_path() );
+		{
+			prop_node pn;
+			read_pn_ = &pn;
+			ec_ = ec;
+			file_folder_ = filename.parent_path();
+			read_stream( str );
+			return *read_pn_;
+		}
 		else return set_error_or_throw( ec, "Cannot open " + filename.string() ), prop_node();
 	}
 
@@ -18,7 +38,12 @@ namespace xo
 	{
 		std::ofstream str( filename.string() );
 		if ( str )
-			write_stream( str, pn, ec );
+		{
+			write_pn_ = &pn;
+			ec_ = ec;
+			file_folder_ = filename.parent_path();
+			write_stream( str );
+		}
 		else set_error_or_throw( ec, "Cannot open " + filename.string() );
 	}
 }

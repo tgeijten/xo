@@ -18,8 +18,8 @@ namespace xo
 
 		prop_node pn;
 
-		auto b = fact( "B", pn );
-		auto c = fact( "C", pn );
+		auto b = fact.create( "B", pn );
+		auto c = fact.create( "C", pn );
 
 		XO_TEST( b->value == 67 );
 		XO_TEST( c->value == -1 );

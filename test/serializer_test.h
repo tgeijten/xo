@@ -41,10 +41,12 @@ namespace xo
 	void serializer_test()
 	{
 		prop_node p1 = example_prop_node();
+		prop_node p2;
 
 		std::stringstream str;
-		prop_node_serializer_zml().write_stream( str, p1 );
-		prop_node p2 = prop_node_serializer_zml().read_stream( str );
+		prop_node_serializer_zml( p1 ).write_stream( str );
+		prop_node_serializer_zml( p2 ).read_stream( str );
+
 		XO_TEST( p1 == p2 );
 		if ( p1 != p2 )
 		{

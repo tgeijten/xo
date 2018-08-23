@@ -27,5 +27,4 @@ namespace xo
 		static test_framework& get_instance();
 		static test_framework test_;
 	};
-
 }

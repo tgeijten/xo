@@ -53,21 +53,21 @@ namespace xo
 		}
 	}
 
-	xo::prop_node prop_node_serializer_xml::read_stream( std::istream& str, error_code* ec /*= nullptr*/, path parent_folder /*= path() */ )
+	std::istream& prop_node_serializer_xml::read_stream( std::istream& str )
 	{
-		prop_node pn;
+		xo_assert( read_pn_ );
 		rapidxml::xml_document<> doc;
 		std::string file_contents( std::istreambuf_iterator<char>( str ), {} );
 		doc.parse< 0 >( &file_contents[ 0 ] ); // not officially supported but probably safe
 		if ( doc.first_node() )
-			pn.push_back( doc.first_node()->name(), get_rapid_xml_node( doc.first_node() ) );
-		return pn;
+			read_pn_->push_back( doc.first_node()->name(), get_rapid_xml_node( doc.first_node() ) );
+		return str;
 	}
 
-	std::ostream& prop_node_serializer_xml::write_stream( std::ostream& str, const prop_node& pn, error_code* ec /*= nullptr */ )
+	std::ostream& prop_node_serializer_xml::write_stream( std::ostream& str )
 	{
 		rapidxml::xml_document<> doc;
-		set_rapid_xml_node( doc, &doc, pn );
+		set_rapid_xml_node( doc, &doc, *write_pn_ );
 		return str << doc;
 	}
 }

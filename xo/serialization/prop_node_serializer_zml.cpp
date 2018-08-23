@@ -100,6 +100,7 @@ namespace xo
 		// = and value
 		if ( !label.empty() )
 		{
+			// TODO: this does not work when arrays contain objects!
 			str << indent << try_quoted( label, ";{}[]#" );
 			str << " = " << ( pn.empty() ? "\"\"" : try_quoted( pn.get_value(), ";{}[]#" ) );
 		}
@@ -115,6 +116,7 @@ namespace xo
 		}
 		else if ( is_array && depth > 0 )
 		{
+			// TODO: this does not work when arrays contain objects!
 			str << "[" << separate;
 			for ( auto& node : pn )
 				str << try_quoted( node.second.get_value(), ";{}[]" ) << separate;
@@ -137,16 +139,63 @@ namespace xo
 		}
 	}
 
-	xo::prop_node prop_node_serializer_zml::read_stream( std::istream& str, error_code* ec, path parent_folder )
+	void write_zml_node_concise( std::ostream& str, const string& label, const prop_node& pn )
 	{
-		// TODO: more efficient. parser should be able to take any stream type.
-		return parse_zml( char_stream( string( std::istreambuf_iterator<char>( str ), {} ) ), ec, parent_folder );
+		if ( !label.empty() )
+		{
+			// TODO: this does not work when arrays contain objects!
+			str << try_quoted( label, ";{}[]#" );
+			str << "=" << try_quoted( pn.get_value(), ";{}[]#" );
+		}
+
+		if ( pn.size() > 0 )
+		{
+			// check if this is an array
+			if ( find_if( pn, [&]( const prop_node::pair_t& n ) { return !n.first.empty(); } ) == pn.end() )
+			{
+				str << "[ ";
+				for ( auto& node : pn )
+					str << try_quoted( node.second.get_value(), ";{}[]" ) << ' ';
+				str << "]" << std::endl;
+			}
+			else
+			{
+				// multi-line children
+				str << "{ ";
+				for ( auto& node : pn )
+				{
+					write_zml_node_concise( str, node.first, node.second );
+					str << ' ';
+				}
+				str << "}";
+			}
+		}
 	}
 
-	std::ostream& prop_node_serializer_zml::write_stream( std::ostream& str, const prop_node& pn, error_code* ec )
+	std::istream& prop_node_serializer_zml::read_stream( std::istream& str )
 	{
-		for ( auto& node : pn )
+		xo_assert( read_pn_ );
+		// TODO: more efficient. parser should be able to take any stream type.
+		*read_pn_ = parse_zml( char_stream( string( std::istreambuf_iterator<char>( str ), {} ) ), ec_, file_folder_ );
+		return str;
+	}
+
+	std::ostream& prop_node_serializer_zml::write_stream( std::ostream& str )
+	{
+		xo_assert( write_pn_ );
+		for ( auto& node : *write_pn_ )
 			write_zml_node( str, node.first, node.second, 0 );
+		return str;
+	}
+
+	std::ostream& prop_node_serializer_zml_concise::write_stream( std::ostream& str )
+	{
+		xo_assert( write_pn_ );
+		for ( auto& node : *write_pn_ )
+		{
+			write_zml_node_concise( str, node.first, node.second );
+			str << ' ';
+		}
 		return str;
 	}
 

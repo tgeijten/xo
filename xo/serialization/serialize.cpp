@@ -20,37 +20,57 @@ namespace xo
 		return f;
 	}
 
-	u_ptr< prop_node_serializer > make_serializer( const string& file_type, error_code* ec )
+	u_ptr< prop_node_serializer > make_serializer( const string& file_type, prop_node& pn, error_code* ec, path p )
 	{
 		if ( auto s = get_serializer_factory().try_create( file_type ) )
+		{
+			s->write_pn_ = &pn;
+			s->read_pn_ = &pn;
+			s->ec_ = ec;
+			s->file_folder_ = p;
 			return s;
+		}
+		else return set_error_or_throw( ec, "Unsupported file format: " + file_type ), nullptr;
+	}
+
+	u_ptr< prop_node_serializer > make_serializer( const string& file_type, const prop_node& pn, error_code* ec, path p )
+	{
+		if ( auto s = get_serializer_factory().try_create( file_type ) )
+		{
+			s->write_pn_ = &pn;
+			s->ec_ = ec;
+			s->file_folder_ = p;
+			return s;
+		}
 		else return set_error_or_throw( ec, "Unsupported file format: " + file_type ), nullptr;
 	}
 
 	prop_node load_file( const path& filename, error_code* ec )
 	{
-		if ( auto s = get_serializer_factory().try_create( filename.extension().string() ) )
+		prop_node pn;
+		if ( auto s = make_serializer( filename.extension().string(), pn, ec ) )
 			return s->load_file( filename, ec );
 		else return set_error_or_throw( ec, "Unsupported file format for " + filename.string() ), prop_node();
 	}
 
 	prop_node load_file( const path& filename, const string& file_type, error_code* ec )
 	{
-		if ( auto s = make_serializer( file_type ) )
+		prop_node pn;
+		if ( auto s = make_serializer( file_type, pn, ec ) )
 			return s->load_file( filename, ec );
 		else return set_error_or_throw( ec, "Unknown file format: " + file_type ), prop_node();
 	}
 
 	void save_file( const prop_node& pn, const path& filename, error_code* ec )
 	{
-		if ( auto s = get_serializer_factory().try_create( filename.extension().string() ) )
+		if ( auto s = make_serializer( filename.extension().string(), pn, ec ) )
 			s->save_file( pn, filename, ec );
 		else set_error_or_throw( ec, "Could not deduce file format for " + filename.string() );
 	}
 
 	void save_file( const prop_node& pn, const path& filename, const string& file_type, error_code* ec )
 	{
-		if ( auto s = get_serializer_factory().try_create( file_type ) )
+		if ( auto s = make_serializer( file_type, pn, ec ) )
 			s->save_file( pn, filename, ec );
 		else set_error_or_throw( ec, "Unknown file format: " + file_type );
 	}
