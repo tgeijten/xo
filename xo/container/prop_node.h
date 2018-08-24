@@ -67,9 +67,13 @@ namespace xo
 		template< typename T > T get( const key_t& key, const T& def ) const
 		{ const auto it = find( key ); return ( it != end() ) ? it->second.get< T >() : def; }
 
-		/// get the value of a child node
+		/// get an optional value of a child node
 		template< typename T > optional< T > try_get( const key_t& key ) const
 		{ const auto it = find( key ); return ( it != end() ) ? it->second.get< T >() : optional< T >(); }
+
+		/// get a value of a child node, only stores if exists
+		template< typename T > bool try_get( T& value, const key_t& key ) const
+		{ const auto it = find( key ); if ( it != end() ) { value = it->second.get< T >(); return true; } else return false; }
 
 		/// get the value of a child node for a range of keys, or a default value if it doesn't exist
 		template< typename T > T get_any( std::initializer_list< key_t > keys, const T& def ) const
@@ -131,7 +135,7 @@ namespace xo
 		template< typename T > prop_node& set( const T& v ) { *this = prop_node_cast< T >::to( v ); return *this; }
 
 		/// set the value of this node
-		template< typename T > prop_node& set_value( const T& v ) { value = string_cast< T >::to( v ); return *this; }
+		template< typename T > prop_node& set_value( const T& v ) { value = to_str( v ); return *this; }
 		prop_node& set_value( value_t&& v ) { value = std::move( v ); return *this; }
 
 		/// set the value of a child node, the node is created if not existing
@@ -257,8 +261,8 @@ namespace xo
 	};
 
 	template< typename T, typename E > struct prop_node_cast {
-		static T from( const prop_node& pn ) { return string_cast<T, E>::from( pn.get_value() ); }
-		static prop_node to( const T& value ) { return prop_node( string_cast<T, E>::to( value ) ); }
+		static T from( const prop_node& pn ) { return string_cast< T >::from( pn.get_value() ); }
+		static prop_node to( const T& value ) { return prop_node( to_str( value ) ); }
 	};
 
 	template< typename T > prop_node make_prop_node( const T& value ) { return prop_node_cast< T >::to( value ); }
