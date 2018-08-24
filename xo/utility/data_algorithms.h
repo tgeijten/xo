@@ -5,10 +5,10 @@
 namespace xo
 {
 	template< typename T, typename L >
-	vector< T > compute_channel_means( const storage< T, L >& sto )
+	std::vector< T > compute_channel_means( const storage< T, L >& sto )
 	{
 		// compute means
-		vector< T > means( sto.channel_size() );
+		std::vector< T > means( sto.channel_size() );
 		for ( index_t row = 0; row < sto.frame_size(); ++row )
 			for ( index_t col = 0; col < sto.channel_size(); ++col )
 				means[ col ] += sto( row, col );

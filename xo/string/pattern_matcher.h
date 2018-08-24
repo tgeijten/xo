@@ -29,7 +29,7 @@ namespace xo
 		}
 
 	private:
-		vector< string > patterns;
+		std::vector< string > patterns;
 	};
 
 	IS_PROP_NODE_CONSTRUCTABLE( pattern_matcher );

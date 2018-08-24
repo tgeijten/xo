@@ -1,14 +1,10 @@
 #pragma once
 
-#include <vector>
-
 #include "xo/system/assert.h"
 #include "xo/utility/types.h"
 
 namespace xo
 {
-	using std::vector;
-
 	/// find element in a container
 	template< typename C > typename auto find( C& cont, const typename C::value_type& e )
 	{ auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( *it == e ) break; return it; }
@@ -45,19 +41,11 @@ namespace xo
 	template< typename C1, typename C2 > C1& append( C1& c1, const C1& c2 )
 	{ c1.insert( c1.end(), c2.begin(), c2.end() ); return c1; }
 
-	template< typename T > index_t find_index( const vector< T >& vec, const T& val ) {
-		auto it = std::find( vec.begin(), vec.end(), val );
-		if ( it == vec.end() ) return no_index;
-		else return it - vec.begin();
+	template< typename C > index_t find_index( const C& cont, const typename C::value_type& e ) {
+		auto it = std::find( std::begin( cont ), std::end( cont ), val );
+		if ( it == std::end( cont ) ) return no_index;
+		else return it - std::begin( cont );
 	}
 
 	template< typename C > index_t back_index( const C& cont ) { return size( cont ) > 0 ? size( cont ) - 1 : no_index; }
-
-	template< typename T > std::ostream& operator<<( std::ostream& str, const vector< T >& vec ) {
-		for ( auto it = vec.begin(); it != vec.end(); ++it ) {
-			if ( it != vec.begin() ) str << "\t";
-			str << *it;
-		}
-		return str << std::endl;
-	}
 }

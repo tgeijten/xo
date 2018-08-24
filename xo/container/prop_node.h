@@ -242,11 +242,13 @@ namespace xo
 		static prop_node to( const prop_node& value ) { return value; }
 	};
 
-	template< typename T > struct prop_node_cast< vector<T> > {
-		static vector<T> from( const prop_node& pn )
-		{ vector<T> vec; for ( auto& p : pn ) vec.push_back( p.second.get<T>() ); return vec; }
-		static prop_node to( const vector<T>& vec )
-		{ prop_node pn; for ( size_t i = 0; i < vec.size(); ++i ) pn.push_back( stringf( "item%d", i ), make_prop_node( vec[ i ] ) ); return pn; }
+	template< typename T > struct prop_node_cast< std::vector<T> > {
+		static std::vector<T> from( const prop_node& pn ) {
+			std::vector<T> vec; for ( auto& p : pn ) vec.push_back( p.second.get<T>() ); return vec;
+		}
+		static prop_node to( const std::vector<T>& vec ) { 
+			prop_node pn; for ( size_t i = 0; i < vec.size(); ++i ) pn.push_back( stringf( "item%d", i ), make_prop_node( vec[ i ] ) ); return pn;
+		}
 	};
 
 	template< typename T > struct is_prop_node_constructable { static const bool value = false; };

@@ -64,7 +64,7 @@ namespace xo
 
 		label_vector< L > row_labels;
 		label_vector< L > col_labels;
-		vector< T > data;
+		std::vector< T > data;
 	};
 
 	template< typename T >

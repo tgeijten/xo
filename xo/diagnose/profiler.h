@@ -50,7 +50,7 @@ namespace xo
 		section* add_section( const char* name, size_t parent_id );
 		std::vector< section* > get_children( size_t parent_id );
 
-		vector< section > sections_;
+		std::vector< section > sections_;
 		timer timer_;
 		static profiler instance_;
 		section* current_section_;
