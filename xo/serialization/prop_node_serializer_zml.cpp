@@ -93,82 +93,70 @@ namespace xo
 		return parse_zml( char_stream( str ), ec, path() );
 	}
 
-	void write_zml_node( std::ostream& str, const string& label, const prop_node& pn, int level )
+	void write_zml_kvp( std::ostream& str, const string& label, const prop_node& pn, const char* equals_str = " = " )
 	{
-		auto indent = string( level, '\t' );
-
-		// = and value
-		if ( !label.empty() )
-		{
-			// TODO: this does not work when arrays contain objects!
-			str << indent << try_quoted( label, ";{}[]#" );
-			str << " = " << ( pn.empty() ? "\"\"" : try_quoted( pn.get_value(), ";{}[]#" ) );
-		}
-
-		// check if this is an array
-		bool is_array = find_if( pn, [&]( const prop_node::pair_t& n ) { return !n.first.empty(); } ) == pn.end();
-		auto depth = pn.count_layers();
-		string separate = depth == 1 ? " " : "\n" + indent;
-
-		if ( depth == 0 )
-		{
-			str << std::endl;
-		}
-		else if ( is_array && depth > 0 )
-		{
-			// TODO: this does not work when arrays contain objects!
-			str << "[" << separate;
-			for ( auto& node : pn )
-				str << try_quoted( node.second.get_value(), ";{}[]" ) << separate;
-			str << "]" << std::endl;
-		}
-		else if ( depth == 1 && pn.size() <= 4 )
-		{
-			str << "{" << separate;
-			for ( auto& node : pn )
-				str << node.first << " = " << try_quoted( node.second.get_value(), ";{}[]" ) << separate;
-			str << "}" << std::endl;
-		}
-		else
-		{
-			// multi-line children
-			str << "{" << std::endl;
-			for ( auto& node : pn )
-				write_zml_node( str, node.first, node.second, level + 1 );
-			str << indent << "}" << std::endl;
-		}
+		bool show_label = !label.empty();
+		bool show_value = !pn.get_value().empty() || pn.size() == 0;
+		if ( show_label )
+			str << try_quoted( label, ";{}[]#" );
+		if ( show_label && show_value )
+			str << equals_str;
+		if ( show_value )
+			str << try_quoted( pn.get_value(), ";{}[]#" );
 	}
 
-	void write_zml_node_concise( std::ostream& str, const string& label, const prop_node& pn )
+	void write_zml_node( std::ostream& str, const string& label, const prop_node& pn, int level )
 	{
-		if ( !label.empty() )
-		{
-			// TODO: this does not work when arrays contain objects!
-			str << try_quoted( label, ";{}[]#" );
-			str << "=" << try_quoted( pn.get_value(), ";{}[]#" );
-		}
+		if ( level > 0 )
+			str << string( level - 1, '\t' );
+
+		write_zml_kvp( str, label, pn, " = " );
 
 		if ( pn.size() > 0 )
 		{
 			// check if this is an array
-			if ( find_if( pn, [&]( const prop_node::pair_t& n ) { return !n.first.empty(); } ) == pn.end() )
+			bool is_array = find_if( pn, [&]( const prop_node::pair_t& n ) { return !n.first.empty(); } ) == pn.end();
+			auto depth = pn.count_layers();
+
+			if ( depth == 1 && pn.size() <= 4 )
 			{
-				str << "[ ";
-				for ( auto& node : pn )
-					str << try_quoted( node.second.get_value(), ";{}[]" ) << ' ';
-				str << "]" << std::endl;
+				// single line children
+				if ( level > 0 ) str << ( is_array ? " [ " : " { " );
+				for ( auto it = pn.begin(); it != pn.end(); ++it )
+				{
+					if ( it != pn.begin() ) str << " ";
+					write_zml_node( str, it->first, it->second, 0 );
+				}
+				if ( level > 0 ) str << ( is_array ? " ]" : " }" );
 			}
 			else
 			{
 				// multi-line children
-				str << "{ ";
-				for ( auto& node : pn )
+				if ( level > 0 ) str << ( is_array ? " [" : " {" ) << std::endl;
+				for ( auto it = pn.begin(); it != pn.end(); ++it )
 				{
-					write_zml_node_concise( str, node.first, node.second );
-					str << ' ';
+					write_zml_node( str, it->first, it->second, level + 1 );
+					str << std::endl;
 				}
-				str << "}";
+				if ( level > 0 ) str << string( level - 1, '\t' ) << ( is_array ? "]" : "}" );
 			}
+		}
+	}
+
+	void write_zml_node_concise( std::ostream& str, const string& label, const prop_node& pn, int level )
+	{
+		write_zml_kvp( str, label, pn, "=" );
+		if ( pn.size() > 0 )
+		{
+			// add children, either array or group
+			bool is_array = find_if( pn, [&]( const prop_node::pair_t& n ) { return !n.first.empty(); } ) == pn.end();
+			if ( level > 0 ) str << ( is_array ? '[' : '{' );
+			for ( auto it = pn.begin(); it != pn.end(); ++it )
+			{
+				if ( it != pn.begin() ) str << " ";
+				write_zml_node_concise( str, it->first, it->second, level + 1 );
+			}
+			if ( level > 0 ) str << ( is_array ? ']' : '}' );
 		}
 	}
 
@@ -183,19 +171,14 @@ namespace xo
 	std::ostream& prop_node_serializer_zml::write_stream( std::ostream& str )
 	{
 		xo_assert( write_pn_ );
-		for ( auto& node : *write_pn_ )
-			write_zml_node( str, node.first, node.second, 0 );
+		write_zml_node( str, "", *write_pn_, 0 );
 		return str;
 	}
 
 	std::ostream& prop_node_serializer_zml_concise::write_stream( std::ostream& str )
 	{
 		xo_assert( write_pn_ );
-		for ( auto& node : *write_pn_ )
-		{
-			write_zml_node_concise( str, node.first, node.second );
-			str << ' ';
-		}
+		write_zml_node_concise( str, "", *write_pn_, 0 );
 		return str;
 	}
 
