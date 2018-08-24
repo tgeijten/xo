@@ -24,8 +24,10 @@ namespace xo
 		T& operator[]( size_t idx ) { return coeff[ idx ]; }
 		const T& operator[]( size_t idx ) const { return coeff[ idx ]; }
 
-		T offset() const { return coeff[ 0 ]; }
-		T slope() const { return coeff[ 1 ]; }
+		const T& offset() const { return coeff[ 0 ]; }
+		const T& slope() const { return coeff[ 1 ]; }
+		T& offset() { return coeff[ 0 ]; }
+		T& slope() { return coeff[ 1 ]; }
 
 	private:
 		std::array< T, D + 1 > coeff;
