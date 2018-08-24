@@ -70,12 +70,6 @@ namespace xo
 	XO_API int set_to_str_precision( int p );
 	XO_API int to_str_precision();
 
-	/// convert any streamable type to string
-	template< typename T > string to_str( const T& value ) { return string_cast< T >::to( value ); }
-
-	/// convert string to any streamable type
-	template< typename T > T from_str( const string& s ) { return string_cast< T >::from( s ); }
-
 	/// convert space-delimited string to vector of elements
 	template< typename T > std::vector< T > str_to_vec( const string& s, size_t max_values, const char* delim = XO_WHITESPACE_CHARS ) {
 		char_stream str( s.c_str(), delim );

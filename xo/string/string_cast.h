@@ -3,10 +3,15 @@
 #include "xo/system/assert.h"
 #include "xo/string/string_type.h"
 #include <sstream>
-#include <string>
 
 namespace xo
 {
+	/// convert any type to string
+	template< typename T > string to_str( const T& value ) { return string_cast<T>::to( value ); }
+
+	/// convert string to any type
+	template< typename T > T from_str( const string& s ) { return string_cast<T>::from( s ); }
+
 	template< typename T, typename E = void > struct string_cast {
 		static T from( const string& s ) { T value = T(); std::stringstream str( s ); str >> value; return value; }
 		static string to( const T& value ) { std::ostringstream str; str << value; return str.str(); }
@@ -14,12 +19,12 @@ namespace xo
 
 	template<> struct string_cast< float, void > {
 		static float from( const string& s ) { return std::stof( s ); }
-		static string to( float value ) { return std::to_string( value ); }
+		static string to( float value ) { char buf[ 32 ]; sprintf_s( buf, sizeof( buf ), "%g", value ); return string( buf ); }
 	};
 
 	template<> struct string_cast< double, void > {
 		static double from( const string& s ) { return std::stod( s ); }
-		static string to( double value ) { return std::to_string( value ); }
+		static string to( double value ) { char buf[ 32 ]; sprintf_s( buf, sizeof( buf ), "%g", value ); return string( buf ); }
 	};
 
 	template<> struct string_cast< long, void > {
@@ -64,6 +69,6 @@ namespace xo
 
 	template< typename T > bool can_string_cast( const string& s ) {
 		try { T result = string_cast<T>::from( s ); return true; }
-		catch( std::exception& e ) { return false; }
+		catch ( std::exception& e ) { return false; }
 	}
 }
