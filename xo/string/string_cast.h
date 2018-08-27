@@ -9,6 +9,15 @@ namespace xo
 	/// convert any type to string
 	template< typename T > string to_str( const T& value ) { return string_cast<T>::to( value ); }
 
+	template< typename E > string to_str( std::initializer_list< E > list, const string& delim = " " ) {
+		string s;
+		for ( auto it = list.begin(); it != list.end(); ++it ) {
+			if ( it != list.begin() ) s += delim;
+			s += to_str( *it );
+		}
+		return s;
+	}
+
 	/// convert string to any type
 	template< typename T > T from_str( const string& s ) { return string_cast<T>::from( s ); }
 
@@ -55,11 +64,6 @@ namespace xo
 	template<> struct string_cast< string, void > {
 		static string from( const string& s ) { return s; }
 		static string to( const string& value ) { return value; }
-	};
-
-	template<> struct string_cast< std::initializer_list< string >, void > {
-		static std::initializer_list< string > from( const string& s ) { XO_NOT_IMPLEMENTED; }
-		static string to( std::initializer_list< string > value ) { string s; for ( auto& e : value ) s += e + ' '; return s; }
 	};
 
 	template< typename T > struct string_cast< T, typename std::enable_if< std::is_enum< T >::value >::type > {
