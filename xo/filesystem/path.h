@@ -64,9 +64,14 @@ namespace xo
 
 	inline bool operator<( const path& p1, const path& p2 ) { return p1.string() < p2.string(); }
 
-	template<> struct string_cast< path, void > {
+	template<> struct string_cast<path, void> {
 		static path from( const string& s ) { return path( s ); }
 		static string to( const path& value ) { return value.str(); }
+	};
+
+	template<> struct string_cast<std::initializer_list< path >, void> {
+		static std::initializer_list< path > from( const string& s ) { XO_NOT_IMPLEMENTED; }
+		static string to( std::initializer_list< path > v ) { string s = "{ "; for ( auto& p : v ) s += p.string() + ' '; s += '}'; return s; }
 	};
 }
 

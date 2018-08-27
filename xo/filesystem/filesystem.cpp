@@ -128,10 +128,8 @@ namespace xo
 	xo::optional< xo::path > try_find_file( std::initializer_list< path > filenames )
 	{
 		for ( auto& f : filenames )
-		{
 			if ( auto ff = try_find_file( f ) )
 				return *ff;
-		}
 		return xo::optional< xo::path >();
 	}
 
@@ -142,6 +140,14 @@ namespace xo
 		else if ( file.has_filename() && file_exists( file.filename() ) )
 			return file.filename(); // filename with no parent path
 		else xo_error( "Could not find " + file.string() + " in " + xo::current_path().string() );
+	}
+
+	XO_API path find_file( std::initializer_list< path > filenames )
+	{
+		for ( auto& f : filenames )
+			if ( auto ff = try_find_file( f ) )
+				return *ff;
+		xo_error( "Could not find " + to_str( filenames ) + " in " + xo::current_path().string() );
 	}
 
 	XO_API bool create_directories( const path& folder )
