@@ -23,14 +23,14 @@ namespace xo
 		// unregister class
 		void unregister_class( const std::string& type ) {
 			auto it = func_map_.find( type );
-			xo_error_if( it == func_map_.end(), "Unregistered type: " + type );
+			xo_error_if( it == func_map_.end(), "Unknown type: " + type );
 			func_map_.erase( it );
 		}
 
 		// access function
 		const create_func_t& operator[]( const std::string& type ) const {
 			auto it = func_map_.find( type );
-			xo_error_if( it == func_map_.end(), "Unregistered type: " + type );
+			xo_error_if( it == func_map_.end(), "Unknown type: " + type );
 			return it->second;
 		}
 
