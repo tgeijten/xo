@@ -116,6 +116,25 @@ namespace xo
 #endif
 	}
 
+	xo::optional< xo::path > try_find_file( const path& file )
+	{
+		if ( file_exists( file ) )
+			return file; // original filename
+		else if ( file.has_filename() && file_exists( file.filename() ) )
+			return file.filename(); // filename with no parent path
+		else return xo::optional< xo::path >();
+	}
+
+	xo::optional< xo::path > try_find_file( std::initializer_list< path > filenames )
+	{
+		for ( auto& f : filenames )
+		{
+			if ( auto ff = try_find_file( f ) )
+				return *ff;
+		}
+		return xo::optional< xo::path >();
+	}
+
 	XO_API path find_file( const path& file )
 	{
 		if ( file_exists( file ) )

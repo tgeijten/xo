@@ -4,6 +4,7 @@
 
 #include "xo/filesystem/path.h"
 #include "xo/system/error_code.h"
+#include "xo/utility/optional.h"
 
 namespace xo
 {
@@ -21,6 +22,8 @@ namespace xo
 	XO_API bool folder_exists( const path& folder );
 
 	XO_API path find_file( const path& file );
+	XO_API xo::optional< path > try_find_file( const path& file );
+	XO_API xo::optional< path > try_find_file( std::initializer_list< xo::path > filenames );
 
 	XO_API bool create_directories( const path& folder );
 	XO_API path create_unique_folder( const path& folder, int max_attempts = 9999 );
