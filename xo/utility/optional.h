@@ -16,6 +16,7 @@ namespace xo
 		optional< T, E >& operator=( T&& v ) { value_ = std::move( v ); has_value_ = true; return *this; }
 		operator bool() const { return has_value_; }
 		const T& operator*() const { return value_; }
+		const T* operator->() const { return &value_; }
 		void reset() { has_value_ = false; }
 		T value_;
 		bool has_value_;
@@ -29,6 +30,7 @@ namespace xo
 		optional< T >& operator=( const T& v ) { value_ = v; return *this; }
 		operator bool() const { return value_ != const_sentinel<T>(); }
 		const T& operator*() const { return value_; }
+		const T* operator->() const { return &value_; }
 		void reset() { value_ = const_sentinel<T>(); }
 		T value_;
 	};
@@ -41,6 +43,7 @@ namespace xo
 		optional< T >& operator=( const T& v ) { value_ = v; return *this; }
 		operator bool() const { return value_ == value_; }
 		const T& operator*() const { return value_; }
+		const T* operator->() const { return &value_; }
 		void reset() { value_ = std::numeric_limits<T>::quiet_NaN(); }
 		T value_;
 	};
