@@ -5,6 +5,7 @@
 
 #include "xo/system/assert.h"
 #include "xo/utility/types.h"
+#include <xstddef>
 
 namespace xo
 {
@@ -16,11 +17,15 @@ namespace xo
 	template< typename C > typename C::value_type average( const C& cont )
 	{ return average( std::cbegin( cont ), std::cend( cont ) ); }
 
-	template < typename C > std::vector< index_t > sort_indices( const C& cont ) {
+	template < typename C, typename P > std::vector< index_t > sort_indices( const C& cont, P pred ) {
 		std::vector< size_t > idx_vec( cont.size() );
 		for ( index_t i = 0; i < cont.size(); ++i ) idx_vec[ i ] = i;
-		std::sort( idx_vec.begin(), idx_vec.end(), [&cont]( size_t i1, size_t i2 ) { return cont[ i1 ] < cont[ i2 ]; } );
+		std::sort( idx_vec.begin(), idx_vec.end(), [&]( size_t i1, size_t i2 ) { return pred( cont[ i1 ], cont[ i2 ] ); } );
 		return idx_vec;
+	}
+
+	template < typename C > std::vector< index_t > sort_indices( const C& cont ) {
+		return sort_indices( cont, std::less< typename C::value_type >() );
 	}
 
 	template< typename C > typename C::const_iterator min_element( const C& cont ) {
