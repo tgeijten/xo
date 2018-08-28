@@ -20,7 +20,7 @@ namespace xo
 		size_t n = size(); for ( auto& c : children ) n += c.second.count_children(); return n;
 	}
 
-	void prop_node::merge( const prop_node& other, bool overwrite /*= false */ )
+	void prop_node::merge( const prop_node& other, bool overwrite )
 	{
 		if ( overwrite )
 			value = other.value;
