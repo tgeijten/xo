@@ -1,61 +1,72 @@
 #include "settings.h"
 #include "xo/serialization/serialize.h"
 #include "log.h"
+#include "xo/numerical/bounds.h"
+#include "xo/filesystem/filesystem.h"
 
 namespace xo
 {
-	void extract_settings( const prop_node& src, prop_node& trg )
+	settings::settings( const xo::path& schema_file, const xo::path& data_file ) :
+	schema_( load_file( schema_file ) )
 	{
-		if ( !src.has_value() )
-		{
-			for ( auto& kpn : src )
-				extract_settings( kpn.second, trg.push_back( kpn.first ) );
-		}
-		else trg.set_value( src.get_value() );
+		if ( file_exists( data_file ) )
+			data_ = load_file( data_file );
+		fix_settings( data_, schema_ );
 	}
 
-	void inject_settings( const prop_node& src, prop_node& trg )
+	void settings::set( const prop_node& data )
 	{
-		if ( !src.has_value() )
+		data_ = data;
+		fix_settings( data_, schema_ );
+	}
+
+	void settings::fix_settings( prop_node& data_pn, const prop_node& schema_pn )
+	{
+		for ( auto& item : schema_pn )
 		{
-			for ( auto& kpn : src )
+			bool is_group = !item.second.has_key( "default" );
+			if ( auto data_child = data_pn.try_get_child( item.first ) )
 			{
-				if ( auto* pn = trg.try_get_child( kpn.first ) )
-					inject_settings( kpn.second, *pn );
-				else log::warning( "Ignored setting: ", kpn.first );
+				if ( is_group )
+					fix_settings( *data_child, item.second );
+				else fix_setting( *data_child, item.second );
 			}
-
+			else
+			{
+				if ( is_group )
+					fix_settings( data_pn.push_back( item.first ), item.second );
+				else data_pn.push_back( item.first, item.second.get_child( "default" ) );
+			}
 		}
-		else trg.set_value( src.get_value() );
 	}
 
-	void settings::inject_settings( const prop_node& settings )
+	void settings::fix_setting( prop_node& setting, const prop_node& schema )
 	{
-		::xo::inject_settings( settings, data_ );
-	}
+		if ( auto allowed = schema.try_get_child( "allowed" ) )
+		{
+			bool is_allowed = false;
+			for ( auto& v : *allowed )
+				is_allowed |= v.second.get_value() == setting.get_value();
+			if ( !is_allowed )
+			{
+				log::warning( "Invalid setting: ", setting.get_value(), ", restoring to default " );
+				setting.set_value( schema[ "default" ].get_value() );
+			}
+		}
+		if ( auto range = schema.try_get< boundsd >( "range" ) )
+		{
+			auto value = setting.get<double>();
+			if ( !range->is_within( value ) )
+			{
 
-	xo::prop_node settings::extract_settings() const
-	{
-		prop_node pn;
-		::xo::extract_settings( data_, pn );
-		return pn;
-	}
-
-	void settings::load( const path& filename )
-	{
-		auto pn = load_file( filename );
-		inject_settings( pn );
+				log::warning( "Invalid value: ", value, ", restricting to range ", *range );
+				setting.set( range->clamped( value ) );
+			}
+		}
 	}
 
 	void settings::save( const path& filename ) const
 	{
-		save_file( extract_settings(), filename );
-	}
-
-	void settings::set_meta_data( prop_node& pn, const string& label, const string& info, type_class t )
-	{
-		pn[ "_label_" ] = label;
-		pn[ "_info_" ] = info;
-		pn[ "_type_" ] = t;
+		save_file( data_, filename );
 	}
 }

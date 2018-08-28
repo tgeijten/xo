@@ -9,33 +9,30 @@ namespace xo
 	class XO_API settings
 	{
 	public:
-		settings() {}
-
-		template< typename T >
-		void add( const string& id, const string& label, const T& default_value, const string& info = "" ) {
-			auto& pn = data_.set_delimited( id, default_value );
-			set_meta_data( pn, label, info, get_type_class< T >() );
-		}
+		settings( const xo::path& schema_file, const xo::path& data_file );
 
 		template< typename T > T get( const string& id ) const { return data_.get_delimited< T >( id ); }
-		template< typename T > void set( const string& id, const T& value ) {
-			auto pn = data_.try_get_child_delimited( id );
-			xo_error_if( !pn, "Could not find setting " + id );
-			pn->set_value( value );
+
+		template< typename T > T set( const string& id, const T& value ) {
+			auto& schema_pn = schema_.get_child_delimited( id );
+			auto& data_pn = data_.set_delimited( id, value );
+			fix_setting( data_pn, schema_pn );
+			return data_pn.get<T>();
 		}
 
-		void load( const path& filename );
-		void save( const path& filename ) const;
-
-		bool empty() const { return data_.empty(); }
+		void set( const prop_node& data );
 
 		const prop_node& data() const { return data_; }
+		const prop_node& schema() const { return schema_; }
+		const prop_node& schema( const string& id ) { return schema_.get_child_delimited( id ); }
 
-		void inject_settings( const prop_node& settings );
-		prop_node extract_settings() const;
+		void save( const path& filename ) const;
 
 	private:
-		void set_meta_data( prop_node& pn, const string& label, const string& info, type_class t );
+		void fix_setting( prop_node& setting, const prop_node& schema );
+		void fix_settings( prop_node& settings, const prop_node& schema );
+
 		prop_node data_;
+		const prop_node schema_;
 	};
 }
