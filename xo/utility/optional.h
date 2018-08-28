@@ -14,7 +14,7 @@ namespace xo
 		optional( T&& v ) : value_( std::move( v ) ), has_value_( true ) {}
 		optional< T, E >& operator=( const T& v ) { value_ = v; has_value_ = true; return *this; }
 		optional< T, E >& operator=( T&& v ) { value_ = std::move( v ); has_value_ = true; return *this; }
-		operator bool() const { return has_value_; }
+		explicit operator bool() const { return has_value_; }
 		const T& operator*() const { return value_; }
 		const T* operator->() const { return &value_; }
 		void reset() { has_value_ = false; }
@@ -28,7 +28,7 @@ namespace xo
 		optional() : value_( const_sentinel<T>() ) {}
 		optional( const T& v ) : value_( v ) {}
 		optional< T >& operator=( const T& v ) { value_ = v; return *this; }
-		operator bool() const { return value_ != const_sentinel<T>(); }
+		explicit operator bool() const { return value_ != const_sentinel<T>(); }
 		const T& operator*() const { return value_; }
 		const T* operator->() const { return &value_; }
 		void reset() { value_ = const_sentinel<T>(); }
@@ -41,7 +41,7 @@ namespace xo
 		optional() : value_( std::numeric_limits<T>::quiet_NaN() ) {}
 		optional( const T& v ) : value_( v ) {}
 		optional< T >& operator=( const T& v ) { value_ = v; return *this; }
-		operator bool() const { return value_ == value_; }
+		explicit operator bool() const { return value_ == value_; }
 		const T& operator*() const { return value_; }
 		const T* operator->() const { return &value_; }
 		void reset() { value_ = std::numeric_limits<T>::quiet_NaN(); }
