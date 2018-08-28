@@ -44,7 +44,7 @@ void optional_test()
 	XO_TEST( sizeof( a ) == sizeof( char ) );
 	XO_TEST( !a );
 	a = 123;
-	XO_TEST( a );
+	XO_TEST( !!a );
 	XO_TEST( *a == 123 );
 	a = -128;
 	XO_TEST( !a );
@@ -53,7 +53,7 @@ void optional_test()
 	XO_TEST( sizeof( b ) == sizeof( double ) );
 	XO_TEST( !b );
 	b = 1.234;
-	XO_TEST( b );
+	XO_TEST( !!b );
 	XO_TEST( *b == 1.234 );
 	b = std::numeric_limits< double >::quiet_NaN();
 	XO_TEST( !b );
@@ -62,10 +62,10 @@ void optional_test()
 	XO_TEST( sizeof( c ) != sizeof( vec3f ) );
 	XO_TEST( !c );
 	c = vec3f( 1, 2, 3 );
-	XO_TEST( c );
+	XO_TEST( !!c );
 	XO_TEST( *c == vec3f( 1, 2, 3 ) );
 	optional< vec3d > d( vec3f( 3, 4, 5 ) );
-	XO_TEST( d );
+	XO_TEST( !!d );
 }
 
 void function_test()
