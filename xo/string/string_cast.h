@@ -36,19 +36,29 @@ namespace xo
 		static string to( double value ) { char buf[ 32 ]; sprintf_s( buf, sizeof( buf ), "%g", value ); return string( buf ); }
 	};
 
-	template<> struct string_cast< long, void > {
+	template<> struct string_cast<int, void> {
+		static long from( const string& s ) { return std::stoi( s ); }
+		static string to( long value ) { return std::to_string( value ); }
+	};
+
+	template<> struct string_cast<unsigned int, void> {
+		static unsigned int from( const string& s ) { return static_cast<unsigned int>( std::stoul( s ) ); } // this needs a cast, because C++ has no stoui
+		static string to( long long value ) { return std::to_string( value ); }
+	};
+
+	template<> struct string_cast<long, void> {
 		static long from( const string& s ) { return std::stol( s ); }
 		static string to( long value ) { return std::to_string( value ); }
+	};
+
+	template<> struct string_cast<unsigned long, void> {
+		static unsigned long from( const string& s ) { return std::stoul( s ); }
+		static string to( unsigned long value ) { return std::to_string( value ); }
 	};
 
 	template<> struct string_cast< long long, void > {
 		static long long from( const string& s ) { return std::stoll( s ); }
 		static string to( long long value ) { return std::to_string( value ); }
-	};
-
-	template<> struct string_cast< unsigned long, void > {
-		static unsigned long from( const string& s ) { return std::stoul( s ); }
-		static string to( unsigned long value ) { return std::to_string( value ); }
 	};
 
 	template<> struct string_cast< unsigned long long, void > {
