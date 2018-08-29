@@ -3,20 +3,22 @@
 #include "log.h"
 #include "xo/numerical/bounds.h"
 #include "xo/filesystem/filesystem.h"
+#include "assert.h"
 
 namespace xo
 {
-	settings::settings( const xo::path& schema_file, const xo::path& data_file ) :
-	schema_( load_file( schema_file ) )
+	settings::settings( prop_node schema, const path& filename ) :
+	schema_( std::move( schema ) ),
+	data_file_( filename )
 	{
-		if ( file_exists( data_file ) )
-			data_ = load_file( data_file );
+		if ( file_exists( data_file_ ) )
+			data_ = load_file( data_file_ );
 		fix_settings( data_, schema_ );
 	}
 
-	void settings::set( const prop_node& data )
+	void settings::set( prop_node data )
 	{
-		data_ = data;
+		data_ = std::move( data );
 		fix_settings( data_, schema_ );
 	}
 
@@ -65,8 +67,19 @@ namespace xo
 		}
 	}
 
-	void settings::save( const path& filename ) const
+	void settings::load( const path& filename )
 	{
-		save_file( data_, filename );
+		if ( !filename.empty() )
+			data_file_ = filename;
+		set( load_file( data_file_ ) );
+	}
+
+	void settings::save( const path& filename )
+	{
+		if ( !filename.empty() )
+			data_file_ = filename;
+		xo::create_directories( data_file_.parent_path() );
+		save_file( data_, data_file_ );
+		log::info( "Saved settings to ", data_file_ );
 	}
 }

@@ -9,7 +9,7 @@ namespace xo
 	class XO_API settings
 	{
 	public:
-		settings( const xo::path& schema_file, const xo::path& data_file );
+		settings( prop_node schema, const path& filename = path() );
 
 		template< typename T > T get( const string& id ) const { return data_.get_delimited< T >( id ); }
 
@@ -20,13 +20,15 @@ namespace xo
 			return data_pn.get<T>();
 		}
 
-		void set( const prop_node& data );
+		void set( prop_node data );
 
 		const prop_node& data() const { return data_; }
 		const prop_node& schema() const { return schema_; }
 		const prop_node& schema( const string& id ) { return schema_.get_child_delimited( id ); }
 
-		void save( const path& filename ) const;
+		void load( const path& filename = path() );
+		void save( const path& filename = path() );
+		const path& data_file() const { return data_file_; }
 
 	private:
 		void fix_setting( prop_node& setting, const prop_node& schema );
@@ -34,5 +36,6 @@ namespace xo
 
 		prop_node data_;
 		const prop_node schema_;
+		path data_file_;
 	};
 }
