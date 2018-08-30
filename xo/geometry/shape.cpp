@@ -20,7 +20,8 @@ namespace xo
 	}
 
 	shape::shape( const prop_node& pn ) :
-	type_( get_shape_type( pn.get< string >( "type" ) ) )
+	type_( get_shape_type( pn.get< string >( "type" ) ) ),
+	x_(), y_(), z_()
 	{
 		switch ( type_ )
 		{

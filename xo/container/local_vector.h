@@ -14,11 +14,11 @@ namespace xo
 		local_vector( size_t n, const T& v ) : end_( data_ + n ) { assign( v ); }
 		~local_vector() { for ( auto it = begin(); it != end(); ++it ) { it->~T(); } }
 
-		T& operator[]( index_t i ) { return *reinterpret_cast< T* >( data_ + i ); }
-		const T& operator[]( index_t i ) const { return *reinterpret_cast< const T* >( data_ + i ); }
+		T& operator[]( index_t i ) { return *reinterpret_cast<T*>( data_ + i ); }
+		const T& operator[]( index_t i ) const { return *reinterpret_cast<const T*>( data_ + i ); }
 
-		T& at( size_t i ) { xo_error_if( i >= size(), "stackvec index out of bounds" ); return (*this)[ i ]; }
-		const T& at( size_t i ) const { xo_error_if( i >= size(), "stackvec index out of bounds" ); (*this)data_[ i ]; }
+		T& at( size_t i ) { xo_error_if( i >= size(), "stackvec index out of bounds" ); return ( *this )[ i ]; }
+		const T& at( size_t i ) const { xo_error_if( i >= size(), "stackvec index out of bounds" ); ( *this )data_[ i ]; }
 
 		template<typename ...Args> void emplace_back( Args&&... args ) {
 			xo_error_if( size() >= N, "stackvec buffer overflow" );
@@ -46,11 +46,11 @@ namespace xo
 
 		void clear() { }
 
-		T* data() { return reinterpret_cast< T* >( data_ ); }
-		const T* data() const { return reinterpret_cast< const T* >( data_ ); }
+		T* data() { return reinterpret_cast<T*>( data_ ); }
+		const T* data() const { return reinterpret_cast<const T*>( data_ ); }
 
 	private:
-		typename std::aligned_storage< sizeof(T), alignof(T) >::type data[ N ];
+		typename std::aligned_storage< sizeof( T ), alignof( T ) >::type data[ N ];
 		T* end_;
 	};
 }

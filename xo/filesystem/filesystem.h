@@ -21,9 +21,7 @@ namespace xo
 	XO_API bool file_exists( const path& file );
 	XO_API bool folder_exists( const path& folder );
 
-	XO_API path find_file( const path& file );
 	XO_API path find_file( std::initializer_list< xo::path > filenames );
-	XO_API xo::optional< path > try_find_file( const path& file );
 	XO_API xo::optional< path > try_find_file( std::initializer_list< xo::path > filenames );
 
 	XO_API bool create_directories( const path& folder );
@@ -31,7 +29,7 @@ namespace xo
 
 	XO_API string load_string( const path& filename, error_code* ec = nullptr );
 
-	XO_API void current_path( const path& p );
+	XO_API bool current_path( const path& p );
 	XO_API path current_path();
 
 	XO_API std::time_t last_write_time( const path& p );

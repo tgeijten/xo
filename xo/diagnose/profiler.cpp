@@ -11,7 +11,7 @@ namespace xo
 	profiler profiler::instance_;
 	std::thread::id instance_thread_;
 
-	profiler::profiler()
+	profiler::profiler() : current_section_( nullptr )
 	{
 		reset();
 	}

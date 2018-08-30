@@ -4,6 +4,7 @@
 #include "xo/utility/types.h"
 #include "xo/container/sorted_vector.h"
 #include <map>
+#include "xo/container/table.h"
 
 namespace xo
 {
@@ -76,5 +77,13 @@ namespace xo
 		std::vector<double> values{ 7.0, 4.0, 2.0, 3.0 };
 		XO_TEST( average( values ) == 4.0 );
 		XO_TEST( median( values ) == 3.5 );
+
+		table< double > t;
+		for ( int i = 0; i < 10; ++i )
+		{
+			t.add_column( stringf( "C%d", i ) );
+			t.add_row( stringf( "C%d", i ) );
+		}
+		XO_TEST( t( "R1", "C1" ) == 1.0 );
 	}
 }

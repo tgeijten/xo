@@ -11,8 +11,8 @@ namespace xo
 	class file_storage : public storage< T, L >
 	{
 	public:
-		file_storage( const path& filename ) : storage(), filename_( filename )  {}
-		virtual ~file_storage() { 
+		file_storage( const path& filename ) : storage(), filename_( filename ) {}
+		virtual ~file_storage() {
 			if ( !empty() )
 				std::ofstream( filename_.str() ) << *this;
 		}

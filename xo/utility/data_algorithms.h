@@ -1,5 +1,7 @@
 #pragma once
+
 #include "xo/container/table.h"
+#include "xo/container/storage.h"
 #include <vector>
 
 namespace xo

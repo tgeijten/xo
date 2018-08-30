@@ -15,7 +15,7 @@
 
 namespace xo
 {
-	class prop_node; 
+	class prop_node;
 
 	/// make a prop_node with a value
 	template< typename T > prop_node make_prop_node( const T& value );
@@ -32,7 +32,7 @@ namespace xo
 		typedef std::pair< key_t, prop_node > pair_t;
 		typedef std::vector< pair_t > container_t;
 		typedef container_t::iterator iterator;
-		typedef container_t::const_iterator const_iterator; 
+		typedef container_t::const_iterator const_iterator;
 
 		/// constructors
 		prop_node() : accessed_flag( false ) {}
@@ -55,7 +55,7 @@ namespace xo
 		bool operator!=( const prop_node& other ) { return !( *this == other ); }
 
 		/// get the value of this node
-		template< typename T > T get() const { access(); return prop_node_cast< T >::from( *this ); }
+		template< typename T > T get() const { access(); return prop_node_cast<T>::from( *this ); }
 
 		/// get the value of a child node
 		template< typename T > T get( const key_t& key ) const { return get_child( key ).get< T >(); }
@@ -132,7 +132,7 @@ namespace xo
 		/// set the value of this node
 		prop_node& set( prop_node&& pn ) { *this = std::move( pn ); return *this; }
 		prop_node& set( const prop_node& pn ) { *this = pn; return *this; }
-		template< typename T > prop_node& set( const T& v ) { *this = prop_node_cast< T >::to( v ); return *this; }
+		template< typename T > prop_node& set( const T& v ) { *this = prop_node_cast<T>::to( v ); return *this; }
 
 		/// set the value of this node
 		template< typename T > prop_node& set_value( const T& v ) { value = to_str( v ); return *this; }
@@ -237,37 +237,37 @@ namespace xo
 	};
 
 	/// prop_node_cast and specializations
-	template<> struct prop_node_cast< prop_node > {
+	template<> struct prop_node_cast<prop_node> {
 		static prop_node from( const prop_node& pn ) { return pn; }
 		static prop_node to( const prop_node& value ) { return value; }
 	};
 
-	template< typename T > struct prop_node_cast< std::vector<T> > {
+	template< typename T > struct prop_node_cast<std::vector<T>> {
 		static std::vector<T> from( const prop_node& pn ) {
 			std::vector<T> vec; for ( auto& p : pn ) vec.push_back( p.second.get<T>() ); return vec;
 		}
-		static prop_node to( const std::vector<T>& vec ) { 
+		static prop_node to( const std::vector<T>& vec ) {
 			prop_node pn; for ( size_t i = 0; i < vec.size(); ++i ) pn.push_back( stringf( "item%d", i ), make_prop_node( vec[ i ] ) ); return pn;
 		}
 	};
 
 	template< typename T > struct is_prop_node_constructable { static const bool value = false; };
-	template< typename T > struct prop_node_cast< T, typename std::enable_if< is_prop_node_constructable< T >::value >::type > {
+	template< typename T > struct prop_node_cast<T, typename std::enable_if< is_prop_node_constructable< T >::value >::type> {
 		static T from( const prop_node& pn ) { return T( pn ); }
 		static prop_node to( const T& value ) { xo_error( "Cannot convert this class to prop_node" ); }
 	};
 
-	template< std::size_t N > struct prop_node_cast< char[ N ] > {
+	template< std::size_t N > struct prop_node_cast<char[ N ]> {
 		static const char* from( const prop_node& pn ) { xo_error( "Cannot convert prop_node to string literal" ); }
 		static prop_node to( const char* value ) { return prop_node( string( value ) ); }
 	};
 
 	template< typename T, typename E > struct prop_node_cast {
-		static T from( const prop_node& pn ) { return string_cast< T >::from( pn.get_value() ); }
+		static T from( const prop_node& pn ) { return string_cast<T>::from( pn.get_value() ); }
 		static prop_node to( const T& value ) { return prop_node( to_str( value ) ); }
 	};
 
-	template< typename T > prop_node make_prop_node( const T& value ) { return prop_node_cast< T >::to( value ); }
+	template< typename T > prop_node make_prop_node( const T& value ) { return prop_node_cast<T>::to( value ); }
 
 	/// stream operator
 	XO_API std::ostream& to_stream( std::ostream& str, const prop_node& pn, int depth = 0, int key_align = 0 );

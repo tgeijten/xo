@@ -8,10 +8,12 @@ namespace xo
 	struct version
 	{
 	public:
+		version() : major(), minor(), patch(), build(), postfix() {}
+
 		version( int maj, int min, int bugfix, int bld = 0, string post = "" ) :
 			major( maj ), minor( min ), patch( bugfix ), build( bld ), postfix( post ) {}
 
-		version( const string& version ) {
+		version( const string& version ) : version() {
 			std::stringstream str( version );
 			char dummy;
 			str >> major >> dummy >> minor >> dummy >> patch >> dummy;

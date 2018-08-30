@@ -5,6 +5,7 @@
 #include <vector>
 #include "xo/container/container_tools.h"
 #include "xo/container/label_vector.h"
+#include "xo/string/string_type.h"
 
 namespace xo
 {
@@ -54,8 +55,8 @@ namespace xo
 		const T& operator()( index_t row, index_t col ) const { xo_assert( row < row_size() && col < column_size() ); return data[ row * column_size() + col ]; }
 		T& operator()( index_t row, index_t col ) { xo_assert( row < row_size() && col < column_size() ); return data[ row * column_size() + col ]; }
 
-		const T& operator()( const L& row, const L& col ) const { return (*this)( row_index( row ), col_index( col ) ); }
-		T& operator()( const L& row, const L& col ) { return (*this)( get_or_add_row( row ), get_or_add_column( col ) ); }
+		const T& operator()( const L& row, const L& col ) const { operator()( row_index( row ), col_index( col ) ); }
+		T& operator()( const L& row, const L& col ) { return operator()( get_or_add_row( row ), get_or_add_column( col ) ); }
 
 		template< typename T1 >
 		friend std::ostream& operator<<( std::ostream& str, const table< T1 >& t );

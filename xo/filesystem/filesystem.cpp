@@ -174,9 +174,9 @@ namespace xo
 		return buf.str();
 	}
 
-	XO_API void current_path( const path& p )
+	XO_API bool current_path( const path& p )
 	{
-		chdir( p.c_str() );
+		return chdir( p.c_str() ) == 0;
 	}
 
 	XO_API path current_path()

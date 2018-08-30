@@ -17,11 +17,8 @@ namespace xo
 	public:
 		typedef std::pair< std::string, seconds_t > measure_t;
 
-		stopwatch() : internal_measure_( 0 ), timer_() { start_first_measure(); }
+		stopwatch() : internal_measure_( 0 ), timer_() { epoch_ = timer_.seconds(); }
 		~stopwatch() {}
-
-		/// reset timer for first measurement
-		void start_first_measure() { epoch_ = timer_.seconds(); }
 
 		/// add a measure with a specific tag. identically names measures are summed
 		void add_measure( const string& s );
@@ -30,10 +27,10 @@ namespace xo
 		prop_node get_report( int decimals = 6 );
 		
 	private:
-		seconds_t epoch_;
+		timer timer_;
 		std::vector< measure_t > measures_;
 		seconds_t internal_measure_;
-		timer timer_;
+		seconds_t epoch_;
 	};
 }
 

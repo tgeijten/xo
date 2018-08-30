@@ -110,7 +110,7 @@ namespace xo
 			index_t frame0 = static_cast<index_t>( frame_f );
 			xo_assert( frame0 + 1 < frame_size() );
 			index_t ofs = frame0 * this->channel_size() + channel;
-			return ( T(1) - frame_w ) * data_[ ofs ] + frame_w * data_[ ofs + this->channel_size() ];
+			return ( T( 1 ) - frame_w ) * data_[ ofs ] + frame_w * data_[ ofs + this->channel_size() ];
 		}
 
 		void resize( size_t nframes, size_t nchannels, T value = T() ) {
