@@ -1,8 +1,7 @@
 #pragma once
 
-#include "xo/utility/types.h"
 #include "timer.h"
-#include "xo/system/log.h"
+#include "xo/utility/types.h"
 #include "xo/container/prop_node.h"
 
 #ifdef XO_COMP_MSVC

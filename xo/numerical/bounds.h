@@ -49,10 +49,10 @@ namespace xo
 
 	template< typename T > xo::bounds<T>::bounds( const prop_node& pn ) {
 		if ( pn.has_value() ) {
-			lower = from_str< T >( pn.get_value() );
+			lower = from_str< T >( pn.get_value(), const_lowest<T>() );
 			auto p = pn.get_value().find( ".." );
 			if ( p != string::npos )
-				upper = from_str< T >( pn.get_value().substr( p + 2 ) );
+				upper = from_str< T >( pn.get_value().substr( p + 2 ), const_max<T>() );
 			else upper = lower;
 		}
 		else if ( pn.size() >= 2 ) {

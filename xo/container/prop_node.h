@@ -263,7 +263,7 @@ namespace xo
 	};
 
 	template< typename T, typename E > struct prop_node_cast {
-		static T from( const prop_node& pn ) { return string_cast<T>::from( pn.get_value() ); }
+		static T from( const prop_node& pn ) { return from_str( pn.get_value(), T() ); }
 		static prop_node to( const T& value ) { return prop_node( to_str( value ) ); }
 	};
 
