@@ -205,7 +205,7 @@ namespace xo
 		void pop_back() { children.pop_back(); }
 
 		/// see if this node has been accessed
-		bool is_accessed() const { return accessed_flag; }
+		bool is_accessed() const { return accessed_flag || !has_value(); }
 		size_t count_unaccessed() const { size_t t = is_accessed() ? 0 : 1; for ( auto& c : children ) t += c.second.count_unaccessed(); return t; }
 		void clear_accessed_recursively() { accessed_flag = false; for ( auto& c : children ) c.second.clear_accessed_recursively(); }
 

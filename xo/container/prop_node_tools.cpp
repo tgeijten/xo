@@ -9,7 +9,7 @@ namespace xo
 			if ( n.second.count_unaccessed() > 0 )
 			{
 				string str = string( depth * 2, ' ' ) + n.first;
-				if ( !n.second.is_accessed() && n.second.has_value() )
+				if ( !n.second.is_accessed() )
 				{
 					if ( n.second.has_value() )
 						str += " = " + n.second.get_value();
