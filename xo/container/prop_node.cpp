@@ -26,74 +26,51 @@ namespace xo
 			value = other.value;
 		for ( auto& o : other )
 		{
-			auto it = find( o.first );
-			if ( it == end() )
-				push_back( o.first, o.second );
-			else
-				it->second.merge( o.second );
+			if ( auto c = try_get_child( o.first ) )
+				c->merge( o.second );
+			else push_back( o.first, o.second );
 		}
-	}
-
-	const prop_node& prop_node::get_child_delimited( const key_t& key, const char delim ) const
-	{
-		auto p = key.find_first_of( delim );
-		if ( p == string::npos )
-			return get_child( key );
-		else return get_child( key.substr( 0, p ) ).get_child_delimited( key.substr( p + 1 ), delim );
 	}
 
 	const xo::prop_node& prop_node::get_child( const key_t& key ) const
 	{
-		auto it = find( key );
-		xo_error_if( it == end(), "Could not find key: " + key );
-		access();
-		return it->second;
+		for ( auto& c : children )
+			if ( c.first == key )
+				return c.second;
+		xo_error( "Could not find key: " + key );
 	}
 
 	xo::prop_node& prop_node::get_child( const key_t& key )
 	{
-		auto it = find( key );
-		xo_error_if( it == end(), "Could not find key: " + key ); access();
-		return it->second;
+		for ( auto& c : children )
+			if ( c.first == key )
+				return c.second;
+		xo_error( "Could not find key: " + key );
 	}
 
 	const xo::prop_node& prop_node::get_child( index_t idx ) const
 	{
-		xo_assert( idx < size() );
-		access();
+		xo_error_if( idx >= size(), "Invalid index: " + to_str( idx ) );
 		return children[ idx ].second;
 	}
 
 	xo::prop_node& prop_node::get_child( index_t idx )
 	{
-		xo_assert( idx < size() );
-		access();
+		xo_error_if( idx >= size(), "Invalid index: " + to_str( idx ) );
 		return children[ idx ].second;
 	}
 
 	xo::prop_node& prop_node::get_or_add_child( const key_t& key )
 	{
-		access(); auto it = find( key ); if ( it != end() ) return it->second.access(); else return push_back( key );
+		if ( auto c = try_get_child( key ) )
+			return *c;
+		else return push_back( key );
 	}
 
 	const xo::prop_node::key_t& prop_node::get_key( index_t idx ) const
 	{
 		xo_assert( idx < size() ); access();
 		return children[ idx ].first;
-	}
-
-	const xo::prop_node* prop_node::try_get_child( const key_t& key ) const
-	{
-		access();
-		auto it = find( key );
-		return it != end() ? &( it->second.access() ) : nullptr;
-	}
-
-	xo::prop_node* prop_node::try_get_child( const key_t& key )
-	{
-		access();
-		auto it = find( key );
-		return it != end() ? &( it->second.access() ) : nullptr;
 	}
 
 	const xo::prop_node* prop_node::try_get_child_delimited( const key_t& key, const char delim ) const
@@ -112,14 +89,6 @@ namespace xo
 		else if ( auto* c = try_get_child( key.substr( 0, p ) ) )
 			return c->try_get_child_delimited( mid_str( key, p + 1 ), delim );
 		else return nullptr;
-	}
-
-	const xo::prop_node* prop_node::try_get_child_delimited( std::initializer_list< key_t > keys, const char delim ) const
-	{
-		for ( auto& k : keys )
-			if ( auto p = try_get_child_delimited( k, delim ) )
-				return p;
-		return nullptr;
 	}
 
 	int get_align_width( const prop_node& pn, int depth )

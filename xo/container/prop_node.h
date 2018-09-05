@@ -65,41 +65,27 @@ namespace xo
 
 		/// get the value of a child node, or a default value if it doesn't exist
 		template< typename T > T get( const key_t& key, const T& def ) const
-		{ auto it = find( key ); return ( it != end() ) ? it->second.get< T >() : def; }
+		{ if ( auto c = try_get_child( key ) ) return c->get< T >(); else return def; }
 
 		/// get an optional value of a child node
 		template< typename T > optional< T > try_get( const key_t& key ) const
-		{ auto it = find( key ); return ( it != end() ) ? it->second.get< T >() : optional< T >(); }
+		{ if ( auto c = try_get_child( key ) ) return c->get< T >(); else return optional< T >(); }
 
 		/// get a value of a child node, only stores if exists
 		template< typename T > bool try_get( T& value, const key_t& key ) const
-		{ auto it = find( key ); if ( it != end() ) { value = it->second.get< T >(); return true; } else return false; }
+		{ if ( auto c = try_get_child( key ) ) { value = c->get< T >(); return true; } else return false; }
 
 		/// get the value of a child node for a range of keys, or a default value if it doesn't exist
 		template< typename T > T get_any( std::initializer_list< key_t > keys, const T& def ) const
-		{ for ( auto& key : keys ) { const auto it = find( key ); if ( it != end() ) return it->second.get< T >(); } return def; }
+		{ for ( auto& key : keys ) { if ( auto c = try_get_child( key ) ) return c->get< T >(); } return def; }
 
 		/// get the value of a child node for a range of keys, or a default value if it doesn't exist
 		template< typename T > T get_any( std::initializer_list< key_t > keys ) const
-		{ for ( auto& key : keys ) { const auto it = find( key ); if ( it != end() ) return it->second.get< T >(); } xo_error( "Could not find key: " + to_str( keys ) ); }
+		{ for ( auto& key : keys ) { if ( auto c = try_get_child( key ) ) return c->get< T >(); } xo_error( "Could not find key: " + to_str( keys ) ); }
 
 		/// get the value of a child node for a range of keys, or a default value if it doesn't exist
 		template< typename T > optional< T > try_get_any( std::initializer_list< key_t > keys ) const
-		{ for ( auto& key : keys ) { const auto it = find( key ); if ( it != end() ) return it->second.get< T >(); } return optional< T >(); }
-
-		/// get the value of a child node, accessing children through delimiter character
-		template< typename T > T get_delimited( const key_t& key, const char delim = '.' ) const {
-			auto p = key.find_first_of( delim );
-			if ( p == string::npos ) return get< T >( key );
-			else return get_child( key.substr( 0, p ) ).get_delimited< T >( mid_str( key, p + 1 ), delim );
-		}
-
-		/// get the value of a child node, accessing children through delimiter character
-		template< typename T > optional< T > try_get_delimited( const key_t& key, const char delim = '.' ) const {
-			if ( auto* pn = try_get_child_delimited( key ) )
-				return pn->get< T >();
-			else return optional< T >();
-		}
+		{ for ( auto& key : keys ) { if ( auto c = try_get_child( key ) ) return c->get< T >(); } return optional< T >(); }
 
 		/// see if this prop_node has a value
 		bool has_value() const { return !value.empty(); }
@@ -182,16 +168,12 @@ namespace xo
 		prop_node& operator[]( index_t idx ) { return get_child( idx ); }
 
 		/// get a child node, return nullptr if not existing
-		const prop_node* try_get_child( const key_t& key ) const;
-		prop_node* try_get_child( const key_t& key );
-
-		/// get a child node using delimiters, throws exception if not existing
-		const prop_node& get_child_delimited( const key_t& key, const char delim = '.' ) const;
+		const prop_node* try_get_child( const key_t& key ) const { for ( auto& c : children ) if ( c.first == key ) return &c.second; return nullptr; }
+		prop_node* try_get_child( const key_t& key ) { for ( auto& c : children ) if ( c.first == key ) return &c.second; return nullptr; }
 
 		/// get a child node using delimiters, return nullptr if not existing
-		const prop_node* try_get_child_delimited( const key_t& key, const char delim = '.' ) const;
-		prop_node* try_get_child_delimited( const key_t& key, const char delim = '.' );
-		const prop_node* try_get_child_delimited( std::initializer_list< key_t > keys, const char delim = '.' ) const;
+		const prop_node* try_get_child_delimited( const key_t& search_key, const char delim = '.' ) const;
+		prop_node* try_get_child_delimited( const key_t& search_key, const char delim = '.' );
 
 		/// get key by index
 		const key_t& get_key( index_t idx ) const;

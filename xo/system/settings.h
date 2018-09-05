@@ -11,20 +11,26 @@ namespace xo
 	public:
 		settings( prop_node schema, const path& filename = path() );
 
-		template< typename T > T get( const string& id ) const { return data_.get_delimited< T >( id ); }
+		template< typename T > T get( const string& id ) const {
+			if ( auto c = data_.try_get_child_delimited( id ) )
+				return c->get< T >();
+			else xo_error( "Undefined setting: " + id );
+		}
 
 		template< typename T > T set( const string& id, const T& value ) {
-			auto& schema_pn = schema_.get_child_delimited( id );
-			auto& data_pn = data_.set_delimited( id, value );
-			fix_setting( data_pn, schema_pn );
-			return data_pn.get<T>();
+			if ( auto schema_pn = schema_.try_get_child_delimited( id ) ) {
+				auto& data_pn = data_.set_delimited( id, value );
+				fix_setting( data_pn, *schema_pn );
+				return data_pn.get<T>();
+			}
+			else xo_error( "Undefined setting: " + id );
 		}
 
 		void set( prop_node data );
 
 		const prop_node& data() const { return data_; }
 		const prop_node& schema() const { return schema_; }
-		const prop_node& schema( const string& id ) { return schema_.get_child_delimited( id ); }
+		//const prop_node& schema( const string& id ) { if ( schema_.get_child_delimited( id ); }
 
 		void load( const path& filename = path() );
 		void save( const path& filename = path() );
