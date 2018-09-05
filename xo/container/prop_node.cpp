@@ -76,7 +76,8 @@ namespace xo
 	const xo::prop_node* prop_node::try_get_child_delimited( const key_t& key, const char delim ) const
 	{
 		auto p = key.find_first_of( delim );
-		if ( p == string::npos ) return try_get_child( key );
+		if ( p == string::npos )
+			return try_get_child( key );
 		else if ( auto* c = try_get_child( key.substr( 0, p ) ) )
 			return c->try_get_child_delimited( mid_str( key, p + 1 ), delim );
 		else return nullptr;
@@ -84,11 +85,7 @@ namespace xo
 
 	xo::prop_node* prop_node::try_get_child_delimited( const key_t& key, const char delim )
 	{
-		auto p = key.find_first_of( delim );
-		if ( p == string::npos ) return try_get_child( key );
-		else if ( auto* c = try_get_child( key.substr( 0, p ) ) )
-			return c->try_get_child_delimited( mid_str( key, p + 1 ), delim );
-		else return nullptr;
+		return const_cast<prop_node*>( const_cast<const prop_node&>( *this ).try_get_child_delimited( key, delim ) );
 	}
 
 	int get_align_width( const prop_node& pn, int depth )
