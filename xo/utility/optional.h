@@ -51,6 +51,9 @@ namespace xo
 	template< typename T > std::istream& operator>>( std::istream& str, optional< T >& v )
 	{ T tmp; str >> tmp; if ( !str.fail() ) v = tmp; return str; }
 
+	template< typename T > std::ostream& operator<<( std::ostream& str, const optional< T >& v )
+	{ if ( v ) return str << *v; else return str << "(null)"; }
+
 	using optional_int = optional< int >;
 	using optional_size = optional< size_t >;
 	using optional_float = optional< float >;
