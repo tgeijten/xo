@@ -80,8 +80,8 @@ namespace xo
 		else if ( key.size() > 0 && key[ 0 ] == '#' )
 		{
 			auto idx = from_str( key.substr( 1 ), 0 );
-			if ( idx > 0 && idx < size() )
-				return &children[ idx ].second;
+			if ( idx > 0 && idx <= size() )
+				return &children[ idx - 1 ].second;
 			else return nullptr;
 		}
 		else return nullptr;
