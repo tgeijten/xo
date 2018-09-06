@@ -129,11 +129,8 @@ namespace xo
 		{ auto it = find( key ); if ( it == end() ) return push_back( key, v ); else return it->second.set( v ); }
 
 		/// set the value of a child node, accessing children through delimiter character
-		template< typename T > prop_node& set_delimited( const key_t& key, const T& v, const char delim = '.' ) {
-			auto p = key.find_first_of( delim );
-			if ( p == string::npos ) return set( key, v );
-			else return get_or_add_child( key.substr( 0, p ) ).set_delimited( mid_str( key, p + 1 ), v, delim );
-		}
+		template< typename T > prop_node& set_query( const key_t& query, const T& v, const char delim = '.' )
+		{ return get_or_add_query( query, delim ).set( v ); }
 
 		/// add a node with a value
 		template< typename T > prop_node& push_back( const key_t& key, const T& value ) { children.emplace_back( key, make_prop_node( value ) ); return children.back().second; }
@@ -172,8 +169,8 @@ namespace xo
 		prop_node* try_get_child( const key_t& key ) { for ( auto& c : children ) if ( c.first == key ) return &c.second; return nullptr; }
 
 		/// get a child node using delimiters, return nullptr if not existing
-		const prop_node* try_get_child_delimited( const key_t& search_key, const char delim = '.' ) const;
-		prop_node* try_get_child_delimited( const key_t& search_key, const char delim = '.' );
+		const prop_node* try_get_query( const key_t& query, const char delim = '.' ) const;
+		prop_node& get_or_add_query( const key_t& query, const char delim = '.' );
 
 		/// get key by index
 		const key_t& get_key( index_t idx ) const;
@@ -212,6 +209,7 @@ namespace xo
 	private:
 		const prop_node& access() const { accessed_flag = true; return *this; }
 		prop_node& access() { accessed_flag = true; return *this; }
+		const prop_node* try_get_query_key( const key_t& key ) const;
 
 		mutable bool accessed_flag;
 		value_t value;

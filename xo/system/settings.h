@@ -12,14 +12,14 @@ namespace xo
 		settings( prop_node schema, const path& filename = path() );
 
 		template< typename T > T get( const string& id ) const {
-			if ( auto c = data_.try_get_child_delimited( id ) )
+			if ( auto c = data_.try_get_query( id ) )
 				return c->get< T >();
 			else xo_error( "Undefined setting: " + id );
 		}
 
 		template< typename T > T set( const string& id, const T& value ) {
-			if ( auto schema_pn = schema_.try_get_child_delimited( id ) ) {
-				auto& data_pn = data_.set_delimited( id, value );
+			if ( auto schema_pn = schema_.try_get_query( id ) ) {
+				auto& data_pn = data_.set_query( id, value );
 				fix_setting( data_pn, *schema_pn );
 				return data_pn.get<T>();
 			}

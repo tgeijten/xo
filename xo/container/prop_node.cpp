@@ -73,19 +73,46 @@ namespace xo
 		return children[ idx ].first;
 	}
 
-	const xo::prop_node* prop_node::try_get_child_delimited( const key_t& key, const char delim ) const
+	const xo::prop_node* prop_node::try_get_query_key( const key_t& key ) const
 	{
-		auto p = key.find_first_of( delim );
-		if ( p == string::npos )
-			return try_get_child( key );
-		else if ( auto* c = try_get_child( key.substr( 0, p ) ) )
-			return c->try_get_child_delimited( mid_str( key, p + 1 ), delim );
+		if ( auto* c = try_get_child( key ) )
+			return c;
+		else if ( key.size() > 0 && key[ 0 ] == '#' )
+		{
+			auto idx = from_str( key.substr( 1 ), 0 );
+			if ( idx > 0 && idx < size() )
+				return &children[ idx ].second;
+			else return nullptr;
+		}
 		else return nullptr;
 	}
 
-	xo::prop_node* prop_node::try_get_child_delimited( const key_t& key, const char delim )
+	const xo::prop_node* prop_node::try_get_query( const key_t& key, const char delim ) const
 	{
-		return const_cast<prop_node*>( const_cast<const prop_node&>( *this ).try_get_child_delimited( key, delim ) );
+		auto p = key.find_first_of( delim );
+		if ( p == string::npos )
+			return try_get_query_key( key );
+		else if ( auto* c = try_get_query_key( key.substr( 0, p ) ) )
+			return c->try_get_query( mid_str( key, p + 1 ), delim );
+		else return nullptr;
+	}
+
+	xo::prop_node& prop_node::get_or_add_query( const key_t& key, const char delim )
+	{
+		auto p = key.find_first_of( delim );
+		if ( p == string::npos )
+		{
+			if ( auto* c = try_get_query_key( key ) )
+				return const_cast<prop_node&>( *c );
+			else return push_back( key );
+		}
+		else
+		{
+			auto sub_key = key.substr( 0, p );
+			if ( auto* c = try_get_query_key( sub_key ) )
+				return const_cast<prop_node&>( *c ).get_or_add_query( mid_str( key, p + 1 ), delim );
+			else return push_back( sub_key ).get_or_add_query( mid_str( key, p + 1 ), delim );
+		}
 	}
 
 	int get_align_width( const prop_node& pn, int depth )
