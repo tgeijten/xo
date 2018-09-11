@@ -1,6 +1,7 @@
 #include "prop_node_serializer_zml.h"
 
 #include <fstream>
+#include "char_stream.h"
 
 namespace xo
 {

@@ -41,16 +41,16 @@ namespace xo
 		void set_quotation_chars( string quotation_chars );
 
 		/// read PODs
-		char_stream& operator>>( float& v ) { v = strtof( cur_pos, &cur_pos_end ); process_end_pos(); return *this; }
-		char_stream& operator>>( double& v ) { v = strtod( cur_pos, &cur_pos_end ); process_end_pos(); return *this; }
-		char_stream& operator>>( long& v ) { v = strtol( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
-		char_stream& operator>>( long long& v ) { v = strtoll( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
-		char_stream& operator>>( unsigned long& v ) { v = strtoul( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
-		char_stream& operator>>( unsigned long long& v ) { v = strtoull( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
-		char_stream& operator>>( int& v ) { v = (int)strtol( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
-		char_stream& operator>>( unsigned int& v ) { v = (unsigned int)strtoul( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
-		char_stream& operator>>( short& v ) { v = (short)strtol( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
-		char_stream& operator>>( unsigned short& v ) { v = (unsigned short)strtoul( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
+		char_stream& operator>>( float& v ) { skip_delimiters(); v = strtof( cur_pos, &cur_pos_end ); process_end_pos(); return *this; }
+		char_stream& operator>>( double& v ) { skip_delimiters(); v = strtod( cur_pos, &cur_pos_end ); process_end_pos(); return *this; }
+		char_stream& operator>>( long& v ) { skip_delimiters(); v = strtol( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
+		char_stream& operator>>( long long& v ) { skip_delimiters(); v = strtoll( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
+		char_stream& operator>>( unsigned long& v ) { skip_delimiters(); v = strtoul( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
+		char_stream& operator>>( unsigned long long& v ) { skip_delimiters(); v = strtoull( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
+		char_stream& operator>>( int& v ) { skip_delimiters(); v = (int)strtol( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
+		char_stream& operator>>( unsigned int& v ) { skip_delimiters(); v = (unsigned int)strtoul( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
+		char_stream& operator>>( short& v ) { skip_delimiters(); v = (short)strtol( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
+		char_stream& operator>>( unsigned short& v ) { skip_delimiters(); v = (unsigned short)strtoul( cur_pos, &cur_pos_end, radix ); process_end_pos(); return *this; }
 
 		/// read optional variable
 		template< typename T > char_stream& operator>>( optional< T >& v ) { T tmp; *this >> tmp; if ( !fail() ) v = tmp; else v.reset(); return *this; }
@@ -61,8 +61,8 @@ namespace xo
 		string get_line();
 		string get_token();
 
-		char getc() { char c = *cur_pos++; test_eof(); return c; }
-		char peekc() { return *cur_pos; }
+		char getc() { if ( !test_eof() ) return *cur_pos++; else return '\0'; }
+		char peekc() { if ( !test_eof() ) return *cur_pos; else return '\0'; }
 
 		bool seek( const string& s );
 		bool seek_past( const string& s );
@@ -78,9 +78,8 @@ namespace xo
 		void initialize( const char* b, size_t len );
 		const string* check_operator( const char* s );
 		void skip_delimiters() { while ( !test_eof() && strchr( delimiters_.c_str(), *cur_pos ) ) ++cur_pos; }
-		void skip_delimiters( const char* delim ) { while ( !test_eof() && strchr( delim, *cur_pos ) ) ++cur_pos; }
 		bool test_eof() { if ( cur_pos == buffer_end ) { buffer_flags.set< eof_flag >(); return true; } else return false; }
-		void process_end_pos() { if ( cur_pos == cur_pos_end ) buffer_flags.set< fail_flag >(); else { cur_pos = cur_pos_end; skip_delimiters(); } }
+		void process_end_pos() { if ( cur_pos == cur_pos_end ) buffer_flags.set< fail_flag >(); else cur_pos = cur_pos_end; }
 
 		int radix = 10;
 		string str_buffer;

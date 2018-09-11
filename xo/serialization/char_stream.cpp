@@ -47,15 +47,20 @@ namespace xo
 
 	xo::string char_stream::get_line()
 	{
-		size_t len = strcspn( cur_pos, "\r\n" );
-		string s = string( cur_pos, len );
-		cur_pos_end = const_cast<char*>(cur_pos) + len;
-		process_end_pos();
-		return s;
+		if ( !test_eof() )
+		{
+			size_t len = strcspn( cur_pos, "\r\n" );
+			string s = string( cur_pos, len );
+			cur_pos_end = const_cast<char*>( cur_pos ) + len;
+			process_end_pos();
+			return s;
+		}
+		else return "";
 	}
 
 	xo::string char_stream::get_token()
 	{
+		skip_delimiters();
 		string s;
 		cur_pos_end = const_cast< char* >( cur_pos );
 		while ( good() )

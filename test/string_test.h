@@ -30,6 +30,7 @@ namespace xo
 		}
 
 		string s = "Test 0.123 24";
+#if 0
 		string a;
 		double d;
 		int i;
@@ -37,6 +38,7 @@ namespace xo
 		XO_TEST( a == "Test" );
 		XO_TEST( d == 0.123 );
 		XO_TEST( i == 24 );
+#endif // 0
 
 		auto vs = split_str( s, " " );
 		XO_TEST( vs[ 0 ] == "Test" );

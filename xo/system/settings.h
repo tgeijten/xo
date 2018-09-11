@@ -3,6 +3,7 @@
 #include "xo/string/string_type.h"
 #include "xo/container/prop_node.h"
 #include "type_class.h"
+#include "xo/filesystem/path.h"
 
 namespace xo
 {

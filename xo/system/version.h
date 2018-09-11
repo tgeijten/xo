@@ -2,6 +2,7 @@
 
 #include "xo/utility/types.h"
 #include "xo/string/string_tools.h"
+#include <sstream>
 
 namespace xo
 {
