@@ -8,7 +8,7 @@ namespace xo
 {
 	struct XO_API prop_node_serializer
 	{
-		prop_node_serializer( error_code* ec = nullptr, path file_folder = path() );
+		prop_node_serializer();
 		prop_node_serializer( const prop_node& pn, error_code* ec = nullptr, path file_folder = path() );
 		prop_node_serializer( prop_node& pn, error_code* ec = nullptr, path file_folder = path() );
 		virtual ~prop_node_serializer() {}

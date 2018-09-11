@@ -6,9 +6,8 @@
 
 namespace xo
 {
-
-	prop_node_serializer::prop_node_serializer( error_code* ec, path file_folder ) :
-		read_pn_( nullptr ), write_pn_( nullptr ), ec_( ec ), file_folder_( file_folder )
+	prop_node_serializer::prop_node_serializer() :
+		read_pn_( nullptr ), write_pn_( nullptr ), ec_( nullptr ), file_folder_()
 	{}
 
 	prop_node_serializer::prop_node_serializer( const prop_node& pn, error_code* ec, path file_folder ) :

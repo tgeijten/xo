@@ -21,6 +21,9 @@ use_precompiled_headers( XO_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/stdafx.h" "${CM
 
 add_library(xo SHARED ${XO_SOURCES} )
 
+set_property(TARGET xo PROPERTY CXX_STANDARD 17)
+set_property(TARGET xo PROPERTY CXX_STANDARD_REQUIRED ON)
+
 if (UNIX)
     target_link_libraries(xo pthread)
 endif()

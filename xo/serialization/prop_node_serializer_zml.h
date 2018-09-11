@@ -1,12 +1,14 @@
 #pragma once
+
 #include "prop_node_serializer.h"
 
 namespace xo
 {
 	struct XO_API prop_node_serializer_zml : prop_node_serializer
 	{
-		// inherit constructors from base class
-		using prop_node_serializer::prop_node_serializer;
+		prop_node_serializer_zml() : prop_node_serializer() {}
+		prop_node_serializer_zml( const prop_node& pn, error_code* ec = nullptr, path file_folder = path() ) : prop_node_serializer( pn, ec, file_folder ) {}
+		prop_node_serializer_zml( prop_node& pn, error_code* ec = nullptr, path file_folder = path() ) : prop_node_serializer( pn, ec, file_folder ) {}
 
 		virtual std::istream& read_stream( std::istream& str ) override;
 		virtual std::ostream& write_stream( std::ostream& str ) override;
@@ -14,8 +16,10 @@ namespace xo
 
 	struct XO_API prop_node_serializer_zml_concise : prop_node_serializer_zml
 	{
-		// inherit constructors from base class
-		using prop_node_serializer_zml::prop_node_serializer_zml;
+		prop_node_serializer_zml_concise() : prop_node_serializer_zml() {}
+		prop_node_serializer_zml_concise( const prop_node& pn, error_code* ec = nullptr, path file_folder = path() ) : prop_node_serializer_zml( pn, ec, file_folder ) {}
+		prop_node_serializer_zml_concise( prop_node& pn, error_code* ec = nullptr, path file_folder = path() ) : prop_node_serializer_zml( pn, ec, file_folder ) {}
+
 		virtual std::ostream& write_stream( std::ostream& str ) override;
 	};
 

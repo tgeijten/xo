@@ -45,15 +45,19 @@ namespace xo
 		void reserve( size_t s ) { buffer_.resize( s ); }
 		size_t capacity() const { return buffer_.size(); }
 
-		template< typename IT > struct iterator_impl : public std::iterator< std::forward_iterator_tag, IT >
+		template< typename IT > struct iterator_impl
 		{
+			using iterator_category = std::forward_iterator_tag;
 			using value_type = IT;
+			using difference_type = size_t;
+			using pointer = IT*;
+			using reference = IT&;
 			iterator_impl( size_t index, const buffer_type& buffer ) : index_( index ), buffer_( buffer ) {}
 			iterator_impl< IT >& operator++() { ++index_; return *this; }
 			iterator_impl< IT >& operator++( int ) { auto ret = *this; ++index_; return ret; }
 			iterator_impl< IT > operator+( int v ) const { return iterator_impl< IT >( index_ + v, buffer_ ); }
 			iterator_impl< IT > operator-( int v ) const { return iterator_impl< IT >( index_ - v, buffer_ ); }
-			difference_type operator-( const iterator_impl< IT >& other ) const { return index_ - other.index_; }
+			auto operator-( const iterator_impl< IT >& other ) const { return index_ - other.index_; }
 			bool operator==( const iterator_impl< IT >& other ) { return other.index_ == index_; }
 			bool operator!=( const iterator_impl< IT >& other ) { return other.index_ != index_; }
 			IT& operator*() { return const_cast<IT&>( buffer_[ index_ % buffer_.size() ] ); }
