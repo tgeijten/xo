@@ -7,6 +7,9 @@ add_executable(xo_test ${TEST_FILES})
 
 target_link_libraries(xo_test xo)
 
+set_property(TARGET xo_test PROPERTY CXX_STANDARD 17)
+set_property(TARGET xo_test PROPERTY CXX_STANDARD_REQUIRED ON)
+
 set_target_properties(xo_test PROPERTIES
 	PROJECT_LABEL "xo_test"
 	OUTPUT_NAME xo_test
