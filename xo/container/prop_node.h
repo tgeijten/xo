@@ -151,6 +151,9 @@ namespace xo
 
 		/// access child by name, throws if not existing
 		const prop_node& get_child( const key_t& key ) const;
+		const prop_node& get_any_child( std::initializer_list< key_t > keys ) const;
+		const prop_node* try_get_any_child( std::initializer_list< key_t > keys ) const;
+
 		const prop_node& operator[]( const key_t& key ) const { return get_child( key ); }
 		prop_node& get_child( const key_t& key );
 

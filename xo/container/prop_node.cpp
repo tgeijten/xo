@@ -60,6 +60,22 @@ namespace xo
 		return children[ idx ].second;
 	}
 
+	const prop_node& prop_node::get_any_child( std::initializer_list< key_t > keys ) const
+	{
+		for ( auto& key : keys )
+			if ( auto c = try_get_child( key ) )
+				return *c;
+		xo_error( "Could not find key: " + to_str( keys ) );
+	}
+
+	const prop_node* prop_node::try_get_any_child( std::initializer_list< key_t > keys ) const
+	{
+		for ( auto& key : keys )
+			if ( auto c = try_get_child( key ) )
+				return c;
+		return nullptr;
+	}
+
 	xo::prop_node& prop_node::get_or_add_child( const key_t& key )
 	{
 		if ( auto c = try_get_child( key ) )
