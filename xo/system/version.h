@@ -22,7 +22,7 @@ namespace xo
 			if ( str.good() ) str >> postfix;
 		}
 
-		string to_str() const {
+		string str() const {
 			string s = stringf( "%d.%d.%d", major, minor, patch );
 			if ( build > 0 ) s += stringf( ".%d", build );
 			if ( !postfix.empty() ) s += ' ' + postfix;
@@ -36,5 +36,5 @@ namespace xo
 		string postfix;
 	};
 
-	inline std::ostream& operator<<( std::ostream& str, const version& ver ) { str << ver.to_str(); return str; }
+	inline std::ostream& operator<<( std::ostream& str, const version& ver ) { str << ver.str(); return str; }
 }
