@@ -32,5 +32,7 @@ namespace xo
 		std::vector< string > patterns;
 	};
 
+	inline bool is_pattern( const string& s ) { return s.find_first_of( "*?" ) != string::npos; }
+
 	IS_PROP_NODE_CONSTRUCTABLE( pattern_matcher );
 }
