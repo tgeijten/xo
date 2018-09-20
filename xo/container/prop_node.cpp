@@ -27,7 +27,7 @@ namespace xo
 		for ( auto& o : other )
 		{
 			if ( auto c = try_get_child( o.first ) )
-				c->merge( o.second );
+				c->merge( o.second, overwrite );
 			else push_back( o.first, o.second );
 		}
 	}
