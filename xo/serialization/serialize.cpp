@@ -120,7 +120,7 @@ namespace xo
 
 		prop_node pn = load_file( filename );
 		resolve_include_files( pn, filename, include_directive, level );
-		pn.clear_accessed_recursively();
+		pn.set_accessed_recursively( false );
 
 		return pn;
 	}

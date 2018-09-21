@@ -85,7 +85,8 @@ namespace xo
 
 	const xo::prop_node::key_t& prop_node::get_key( index_t idx ) const
 	{
-		xo_assert( idx < size() ); access();
+		xo_assert( idx < size() );
+		access();
 		return children[ idx ].first;
 	}
 
