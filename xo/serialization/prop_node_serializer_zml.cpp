@@ -5,6 +5,14 @@
 
 namespace xo
 {
+	using str_replace_vec = std::vector< std::pair< string, string > >;
+
+	void replace_all( string& s, const str_replace_vec& rvec )
+	{
+		for ( auto& r : rvec )
+			replace_str( s, r.first, r.second );
+	}
+
 	void zml_error( const char_stream& str, error_code* ec, const string& message )
 	{
 		set_error_or_throw( ec, stringf( "Error parsing line %d: ", str.line_number() ) + message );
@@ -28,7 +36,7 @@ namespace xo
 		}
 	}
 
-	void read_zml_layer( char_stream& str, prop_node& parent, const string& close, error_code* ec, const path& folder )
+	void read_zml_layer( char_stream& str, prop_node& parent, const string& close, error_code* ec, const path& folder, str_replace_vec& defines )
 	{
 		prop_node merge_pn;
 		for ( string t = get_zml_token( str, ec ); t != close; t = get_zml_token( str, ec ) )
@@ -43,7 +51,9 @@ namespace xo
 					parent.append( load_zml( folder / path( get_zml_token( str, ec ) ), ec ) );
 				else if ( t == "#merge" )
 					merge_pn.merge( load_zml( folder / path( get_zml_token( str, ec ) ), ec ) );
-				else return zml_error( str, ec, "Unknown directive: " + t );
+				else if ( t == "#define" )
+					defines.emplace_back( get_zml_token( str, ec ), get_zml_token( str, ec ) );
+				return zml_error( str, ec, "Unknown directive: " + t );
 			}
 			else
 			{
@@ -53,6 +63,8 @@ namespace xo
 					// read label
 					if ( !isalpha( t[ 0 ] ) )
 						return zml_error( str, ec, "Invalid label " + t );
+
+					replace_all( t, defines );
 					parent.push_back( t );
 
 					// read =
@@ -66,11 +78,14 @@ namespace xo
 
 											 // read value
 				if ( t == "{" ) // new group
-					read_zml_layer( str, parent.back().second, "}", ec, folder );
+					read_zml_layer( str, parent.back().second, "}", ec, folder, defines );
 				else if ( t == "[" ) // new array
-					read_zml_layer( str, parent.back().second, "]", ec, folder );
-				else // just a value
+					read_zml_layer( str, parent.back().second, "]", ec, folder, defines );
+				else // value
+				{
+					replace_all( t, defines );
 					parent.back().second.set_value( std::move( t ) );
+				}
 			}
 		}
 
@@ -85,7 +100,8 @@ namespace xo
 		str.set_quotation_chars( "\"" );
 
 		prop_node root;
-		read_zml_layer( str, root, "", ec, folder );
+		str_replace_vec defines;
+		read_zml_layer( str, root, "", ec, folder, defines );
 		return root;
 	}
 
