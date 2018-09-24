@@ -52,7 +52,10 @@ namespace xo
 				else if ( t == "#merge" )
 					merge_pn.merge( load_zml( folder / path( get_zml_token( str, ec ) ), ec ) );
 				else if ( t == "#define" )
-					defines.emplace_back( get_zml_token( str, ec ), get_zml_token( str, ec ) );
+				{
+					auto key = get_zml_token( str, ec ); // get this first because order of evaluation
+					defines.emplace_back( std::move( key ), get_zml_token( str, ec ) );
+				}
 				else return zml_error( str, ec, "Unknown directive: " + t );
 			}
 			else
