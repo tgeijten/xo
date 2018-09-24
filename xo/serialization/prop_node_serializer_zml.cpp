@@ -36,7 +36,7 @@ namespace xo
 		}
 	}
 
-	void read_zml_layer( char_stream& str, prop_node& parent, const string& close, error_code* ec, const path& folder, str_replace_vec& defines )
+	void read_zml_layer( char_stream& str, prop_node& parent, const string& close, error_code* ec, const path& folder, str_replace_vec& vars )
 	{
 		prop_node merge_pn;
 		for ( string t = get_zml_token( str, ec ); t != close; t = get_zml_token( str, ec ) )
@@ -51,10 +51,10 @@ namespace xo
 					parent.append( load_zml( folder / path( get_zml_token( str, ec ) ), ec ) );
 				else if ( t == "#merge" )
 					merge_pn.merge( load_zml( folder / path( get_zml_token( str, ec ) ), ec ) );
-				else if ( t == "#define" )
+				else if ( t == "#set" )
 				{
-					auto key = get_zml_token( str, ec ); // get this first because order of evaluation
-					defines.emplace_back( std::move( key ), get_zml_token( str, ec ) );
+					auto key = '(' + get_zml_token( str, ec ) + ')'; // do this first because order of evaluation
+					vars.emplace_back( std::move( key ), get_zml_token( str, ec ) );
 				}
 				else return zml_error( str, ec, "Unknown directive: " + t );
 			}
@@ -67,7 +67,7 @@ namespace xo
 					if ( !isalpha( t[ 0 ] ) )
 						return zml_error( str, ec, "Invalid label " + t );
 
-					replace_all( t, defines );
+					replace_all( t, vars );
 					parent.push_back( t );
 
 					// read =
@@ -81,12 +81,12 @@ namespace xo
 
 											 // read value
 				if ( t == "{" ) // new group
-					read_zml_layer( str, parent.back().second, "}", ec, folder, defines );
+					read_zml_layer( str, parent.back().second, "}", ec, folder, vars );
 				else if ( t == "[" ) // new array
-					read_zml_layer( str, parent.back().second, "]", ec, folder, defines );
+					read_zml_layer( str, parent.back().second, "]", ec, folder, vars );
 				else // value
 				{
-					replace_all( t, defines );
+					replace_all( t, vars );
 					parent.back().second.set_value( std::move( t ) );
 				}
 			}
