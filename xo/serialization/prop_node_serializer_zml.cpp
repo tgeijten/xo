@@ -53,7 +53,7 @@ namespace xo
 					merge_pn.merge( load_zml( folder / path( get_zml_token( str, ec ) ), ec ) );
 				else if ( t == "#define" )
 					defines.emplace_back( get_zml_token( str, ec ), get_zml_token( str, ec ) );
-				return zml_error( str, ec, "Unknown directive: " + t );
+				else return zml_error( str, ec, "Unknown directive: " + t );
 			}
 			else
 			{
