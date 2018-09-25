@@ -111,6 +111,14 @@ namespace xo
 	auto operator-( const angle_<U, T1>& a1, const angle_<U, T2>& a2 ) -> angle_<U, decltype( a1.value - a2.value )>
 	{ return angle_<U, decltype( a1.value - a2.value )>( a1.value - a2.value ); }
 
+	/// multiplication
+	template< angle_unit U, typename T >
+	angle_<U, T> operator*( const angle_<U, T>& a, const angle_<U, T>& b ) { return angle_<U, T>( a.value * b.value ); }
+
+	/// absolute value
+	template< angle_unit U, typename T >
+	angle_<U, T> abs( const angle_<U, T>& v ) { return angle_<U, T>( std::abs( v.value ) ); }
+
 	/// sin/cos/tan
 	template< angle_unit U, typename T > T sin( const angle_<U, T>& a ) { return std::sin( a.rad_value() ); }
 	template< angle_unit U, typename T > T cos( const angle_<U, T>& a ) { return std::cos( a.rad_value() ); }
