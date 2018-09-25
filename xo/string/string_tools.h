@@ -39,6 +39,9 @@ namespace xo
 	/// split a string into a vector of strings
 	XO_API std::vector< string > split_str( const string& s, const string& sep_chars );
 
+	template< typename C > string concatenate_str( const C& c )
+	{ string str; for ( auto& e : c ) str += string( e ); return str; }
+
 	/// get the string left / right of a delimiter
 	XO_API string left_of_str( const string& s, const string& sep_chars );
 	XO_API string right_of_str( const string& s, const string& sep_chars );
@@ -99,16 +102,4 @@ namespace xo
 
 	/// get a string between quotes
 	XO_API string try_unquoted( const string& s );
-
-	/// Get filename extension (without dot)
-	XO_API string get_filename_ext( const string& str );
-
-	/// Get filename without extension (without dot)
-	XO_API string get_filename_without_ext( const string& str );
-
-	/// Get folder of filename (including slash, if any)
-	XO_API string get_filename_folder( const string& str );
-
-	/// Get filename without folder
-	XO_API string get_filename_without_folder( const string& str );
 }
