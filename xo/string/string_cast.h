@@ -17,6 +17,9 @@ namespace xo
 	template<> inline double from_str( const string& s, double default_value ) { char* p; auto v = std::strtod( s.c_str(), &p ); return p != s.c_str() ? v : default_value; }
 	inline string to_str( const double& value ) { char buf[ 32 ]; sprintf_s( buf, sizeof( buf ), "%g", value ); return string( buf ); }
 
+	template<> inline bool from_str( const string& s, bool default_value ) { return ( s == "1" || s == "true" ); }
+	inline string to_str( const bool& value ) { return string( value ? "1" : "0" ); }
+
 	template<> inline int from_str( const string& s, int default_value ) { char* p; auto v = int( std::strtol( s.c_str(), &p, 10 ) ); return p != s.c_str() ? v : default_value; }
 	inline string to_str( const int& value ) { return std::to_string( value ); }
 
