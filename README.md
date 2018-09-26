@@ -3,6 +3,7 @@
 **xo** is a lightweight utility library for c++, intended to be a less bulky replacement for boost. It contains the following libraries:
 
 ## container
+Library with various efficient containers and tools.
 | Class / File | Description |
 | ------------ | ----------- |
 | circular_deque | A deque stored in a ring buffer |
@@ -16,18 +17,19 @@
 | storage | A table with data |
 | view_if | Iterate through a vector based on specific condition |
 
-### diagnose
+## diagnose
+Library for debugging, testing and performance analysis.
 | Class / File | Description |
 | ------------ | ----------- |
 | debug_storage | Output data to a file without worrying about the file |
 | profiler | Very light-weight invasive profiler that measures user-tagged function times |
 | test_framework.h/cpp | Framework for unit testing |
 
-### filesystem
+## filesystem
 A library with basic functionality found in the C++17 filesystem library.
 
-### geometry
-A library for 3d geometry.
+## geometry
+A library for efficient and flexible 3d geometry.
 | Class / File | Description |
 | ------------ | ----------- |
 | angle | Class for representing angles in radians or degrees, with efficient conversion between types |
@@ -38,7 +40,8 @@ A library for 3d geometry.
 | vec4 | 4D vector |
 | shape | Basic shape class |
 
-### numerical
+## numerical
+Library for dealing with numbers.
 | Class / File | Description |
 | ------------ | ----------- |
 | average.h |  |
@@ -53,13 +56,15 @@ A library for 3d geometry.
 | regression |  |
 | regular_piecewise_liner_function |  |
 
-### serialization
+## serialization
+Library for input / output to serial streams of data.
 | Class / File | Description |
 | ------------ | ----------- |
 | char_stream | Text parser |
 | prop_node_serializer | Read / write xml, ini, or zml into prop_node |
 
-### string
+## string
+Library for dealing with strings.
 | Class / File | Description |
 | ------------ | ----------- |
 | dictionary | Efficient mapping for type <--> string |
@@ -68,7 +73,8 @@ A library for 3d geometry.
 | string_cast.h | Efficiently convert strings to / from any type |
 | string_tools.h | Many tools for string manipulation |
 
-### system
+## system
+System related tools such as logging and versioning.
 | Class / File | Description |
 | ------------ | ----------- |
 | assert.h | Support for assert that can use exceptions or not |
@@ -80,14 +86,15 @@ A library for 3d geometry.
 | system_tools.h/cpp | System tools |
 | version | Class for versioning |
 
-### time
+## time
+Library for dealing with time.
 | Class / File | Description |
 | ------------ | ----------- |
 | stopwatch | Stopwatch class |
 | timer | Timer class |
 
-
-### utility
+## utility
+Several utilities.
 | Class / File | Description |
 | ------------ | ----------- |
 | factory | Generic factory class |
