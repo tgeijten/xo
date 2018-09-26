@@ -31,7 +31,6 @@ namespace xo
 
 		const prop_node& data() const { return data_; }
 		const prop_node& schema() const { return schema_; }
-		//const prop_node& schema( const string& id ) { if ( schema_.get_child_delimited( id ); }
 
 		void load( const path& filename = path() );
 		void save( const path& filename = path() );
