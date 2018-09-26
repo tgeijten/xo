@@ -4,6 +4,7 @@
 
 ## container
 Library with various efficient containers and tools.
+
 | Class / File | Description |
 | ------------ | ----------- |
 | circular_deque | A deque stored in a ring buffer |
@@ -19,6 +20,7 @@ Library with various efficient containers and tools.
 
 ## diagnose
 Library for debugging, testing and performance analysis.
+
 | Class / File | Description |
 | ------------ | ----------- |
 | debug_storage | Output data to a file without worrying about the file |
@@ -30,6 +32,7 @@ A library with basic functionality found in the C++17 filesystem library.
 
 ## geometry
 A library for efficient and flexible 3d geometry.
+
 | Class / File | Description |
 | ------------ | ----------- |
 | angle | Class for representing angles in radians or degrees, with efficient conversion between types |
@@ -42,6 +45,7 @@ A library for efficient and flexible 3d geometry.
 
 ## numerical
 Library for dealing with numbers.
+
 | Class / File | Description |
 | ------------ | ----------- |
 | average.h |  |
@@ -58,6 +62,7 @@ Library for dealing with numbers.
 
 ## serialization
 Library for input / output to serial streams of data.
+
 | Class / File | Description |
 | ------------ | ----------- |
 | char_stream | Text parser |
@@ -65,6 +70,7 @@ Library for input / output to serial streams of data.
 
 ## string
 Library for dealing with strings.
+
 | Class / File | Description |
 | ------------ | ----------- |
 | dictionary | Efficient mapping for type <--> string |
@@ -75,6 +81,7 @@ Library for dealing with strings.
 
 ## system
 System related tools such as logging and versioning.
+
 | Class / File | Description |
 | ------------ | ----------- |
 | assert.h | Support for assert that can use exceptions or not |
@@ -88,13 +95,15 @@ System related tools such as logging and versioning.
 
 ## time
 Library for dealing with time.
+
 | Class / File | Description |
 | ------------ | ----------- |
 | stopwatch | Stopwatch class |
 | timer | Timer class |
 
 ## utility
-Several utilities.
+Several utilities that don't fit in any other library.
+
 | Class / File | Description |
 | ------------ | ----------- |
 | factory | Generic factory class |
