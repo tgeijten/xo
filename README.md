@@ -1,10 +1,10 @@
 # xo
 
-**xo** is a utility library for c++, intended to be a less bulky replacement for boost. It contains the following libraries:
+**xo** is a lightweight utility library for c++, intended to be a less bulky replacement for boost. It contains the following libraries:
 
-### container
-| item | Description |
-| ----- | ----------- |
+## container
+| Class / File | Description |
+| ------------ | ----------- |
 | circular_deque | A deque stored in a ring buffer |
 | dynarray | An array with run-time allocation |
 | flag_set | A set for enum-based flags |
@@ -19,18 +19,17 @@
 ### diagnose
 | Class / File | Description |
 | ------------ | ----------- |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
+| debug_storage | Output data to a file without worrying about the file |
+| profiler | Very light-weight invasive profiler that measures user-tagged function times |
+| test_framework.h/cpp | Framework for unit testing |
 
 ### filesystem
 A library with basic functionality found in the C++17 filesystem library.
 
 ### geometry
 A library for 3d geometry.
-| class | Description |
-| ----- | ----------- |
+| Class / File | Description |
+| ------------ | ----------- |
 | angle | Class for representing angles in radians or degrees, with efficient conversion between types |
 | bounding_box | Axis-aligned bounding box |
 | catmull_rom | Catmull-Rom spline implementation |
@@ -40,8 +39,8 @@ A library for 3d geometry.
 | shape | Basic shape class |
 
 ### numerical
-| class | Description |
-| ----- | ----------- |
+| Class / File | Description |
+| ------------ | ----------- |
 | average.h |  |
 | bounds |  |
 | constants.h |  |
