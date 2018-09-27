@@ -48,10 +48,11 @@ namespace xo
 		static string to( const T& v ) { return string_cast< int >::to( static_cast< int >( v ) ); }
 	};
 
-	template< typename E > string to_str( std::initializer_list< E > list, const string& delim = " " ) {
+	/// make string out of container of elements
+	template< typename C > string to_str( const C& c, const string& delim ) {
 		string s;
-		for ( auto it = list.begin(); it != list.end(); ++it ) {
-			if ( it != list.begin() ) s += delim;
+		for ( auto it = std::begin( c ); it != std::end( c ); ++it ) {
+			if ( it != c.begin() ) s += delim;
 			s += to_str( *it );
 		}
 		return s;
