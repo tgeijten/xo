@@ -10,8 +10,9 @@ namespace xo
 	public:
 		bounds() : lower(), upper() {};
 		bounds( const prop_node& props );
-		template< typename T2 > bounds( const T2& lower_bound, const T2& upper_bound ) : lower( T( lower_bound ) ), upper( T( upper_bound ) ) {};
-		template< typename T2 > bounds( const bounds< T2 >& other ) : lower( T( other.lower ) ), upper( T( other.upper ) ) {};
+		template< typename U > bounds( const U& lower_bound, const U& upper_bound ) : lower( T( lower_bound ) ), upper( T( upper_bound ) ) {};
+		template< typename U > bounds( const bounds< U >& other ) : lower( T( other.lower ) ), upper( T( other.upper ) ) {};
+		template< typename U > bounds( const U& value ) : lower( T( value ) ), upper( T( value ) ) {};
 
 		bool is_within( const T& value ) const { return ( value >= lower ) && ( value <= upper ); }
 		T range() const { return upper - lower; }
@@ -26,6 +27,7 @@ namespace xo
 
 		// return inverted bounds
 		bounds< T > operator-() const { return bounds( -upper, -lower ); }
+		bool is_null() const { return lower == T( 0 ) && upper == T( 0 ); }
 
 		T lower;
 		T upper;
@@ -53,7 +55,7 @@ namespace xo
 			auto p = pn.get_value().find( ".." );
 			if ( p != string::npos )
 				upper = from_str< T >( pn.get_value().substr( p + 2 ), const_max<T>() );
-			else upper = lower;
+			else upper = lower; // single value
 		}
 		else if ( pn.size() >= 2 ) {
 			lower = pn.get_any< T >( { "min", "lower" }, pn.get< T >( 0 ) );
