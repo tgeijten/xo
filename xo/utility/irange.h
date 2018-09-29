@@ -1,6 +1,7 @@
 #pragma once
 
 #include <xutility>
+#include "sfinae.h"
 
 namespace xo
 {
@@ -58,9 +59,8 @@ namespace xo
 		T begin_, end_, step_;
 	};
 
-	// TODO: SFINAE to make sure it's integer
-	template< typename T > irange< T > make_irange( T b, T e ) { return irange< T >( b, e ); }
-	template< typename T > irange< T > make_irange( T e ) { return irange< T >( T( 0 ), e ); }
-	template< typename T > irange_step< T > make_irange( T b, T e, T s ) { return irange_step< T >( b, e, s ); }
-	template< typename T > irange_step< T > make_irange( const irange< T >& r, T s ) { return irange_step< T >( r, s ); }
+	template< typename T, XO_ENABLE_IF_INTEGRAL > irange< T > make_irange( T b, T e ) { return irange< T >( b, e ); }
+	template< typename T, XO_ENABLE_IF_INTEGRAL > irange< T > make_irange( T e ) { return irange< T >( T( 0 ), e ); }
+	template< typename T, XO_ENABLE_IF_INTEGRAL > irange_step< T > make_irange( T b, T e, T s ) { return irange_step< T >( b, e, s ); }
+	template< typename T, XO_ENABLE_IF_INTEGRAL > irange_step< T > make_irange( const irange< T >& r, T s ) { return irange_step< T >( r, s ); }
 }
