@@ -9,8 +9,8 @@
 #define INIT_PROP_REQUIRED( _pn_, _var_ ) _var_ = _pn_.get< decltype( _var_ ) >( ::xo::tidy_identifier( #_var_ ) )
 #define INIT_PROP_NAMED_REQUIRED( _pn_, _var_, _name_ ) _var_ = _pn_.get< decltype( _var_ ) >( _name_ )
 
-#define SET_PROP( _pn_, _var_ ) _pn_.set< decltype( _var_ ) >( ::xo::tidy_identifier( #_var_ ), _var_ )
-#define SET_PROP_NAMED( _pn_, _var_, _name_ ) _pn_.set< decltype( _var_ ) >( _name_, _var_ )
+#define CONSTRUCT_PROP( _pn_, _var_, _default_ ) _var_( _pn_.get< decltype( _var_ ) >( ::xo::tidy_identifier( #_var_ ), decltype( _var_ )( _default_ ) ) )
+#define CONSTRUCT_PROP_REQUIRED( _pn_, _var_ ) _var_( _pn_.get< decltype( _var_ ) >( ::xo::tidy_identifier( #_var_ ) ) )
 
 namespace xo
 {
