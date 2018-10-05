@@ -2,8 +2,10 @@
 
 #include "xo/filesystem/path.h"
 #include "xo/container/flat_map.h"
-#include <functional>
 #include "xo/filesystem/filesystem.h"
+
+#include <functional>
+#include <mutex>
 
 namespace xo
 {
