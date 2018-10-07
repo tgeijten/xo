@@ -10,8 +10,8 @@ namespace xo
 	class flat_map
 	{
 	public:
-		using container_t = typename std::vector< std::pair< K, V > >;
-		using value_type = typename container_t::value_type;
+		using value_type = typename std::pair< K, V >;
+		using container_t = typename std::vector< value_type >;
 		using iterator = typename container_t::iterator;
 		using reverse_iterator = typename container_t::reverse_iterator;
 		using const_iterator = typename container_t::const_iterator;
@@ -40,10 +40,19 @@ namespace xo
 		reverse_iterator rend() { return data_.rend(); }
 		const_reverse_iterator crend() const { return data_.crend(); }
 
+		const value_type& front() const { return data_.front(); }
+		value_type& front() { return data_.front(); }
+
+		const value_type& back() const { return data_.back(); }
+		value_type& back() { return data_.back(); }
+
 		iterator erase( iterator it ) { return data_.erase( it ); }
 
-		iterator lower_bound( const K& key ) { return std::lower_bound( begin(), end(), key, compare_less ); }
-		const_iterator lower_bound( const K& key ) const { return std::lower_bound( begin(), end(), key, compare_less ); }
+		iterator lower_bound( const K& key ) { return std::lower_bound( begin(), end(), key, [&]( const value_type& kvp, const K& key ) { return kvp.first < key; } ); }
+		const_iterator lower_bound( const K& key ) const { return std::lower_bound( begin(), end(), key, [&]( const value_type& kvp, const K& key ) { return kvp.first < key; } ); }
+
+		iterator upper_bound( const K& key ) { return std::upper_bound( begin(), end(), key, [&]( const K& key, const value_type& kvp ) { return key < kvp.first; } ); }
+		const_iterator upper_bound( const K& key ) const { return std::upper_bound( begin(), end(), key, [&]( const K& key, const value_type& kvp ) { return key < kvp.first; } ); }
 
 		iterator find( const K& key ) {
 			auto it = lower_bound( key );
@@ -76,7 +85,7 @@ namespace xo
 		}
 
 		V& operator[]( const K& key ) {
-			auto it = std::lower_bound( begin(), end(), key, compare_less );
+			auto it = lower_bound( key );
 			if ( it != end() && it->first == key )
 				return it->second;
 			return data_.insert( it, std::make_pair( key, V() ) )->second;
@@ -98,7 +107,5 @@ namespace xo
 
 	private:
 		container_t data_;
-		static bool compare_less( const value_type& kvp, const K& key ) { return kvp.first < key; }
-		static bool compare_equal( const value_type& kvp, const K& key ) { return kvp.first == key; }
 	};
 }
