@@ -21,6 +21,8 @@ namespace xo
 			return s;
 		}
 
+		bool empty() const { return major == 0 && minor == 0 && patch == 0 && build == 0 && postfix.empty(); }
+
 		int major;
 		int minor;
 		int patch;
