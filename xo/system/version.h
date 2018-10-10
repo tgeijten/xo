@@ -14,14 +14,6 @@ namespace xo
 		version( int maj, int min, int bugfix, int bld = 0, string post = "" ) :
 			major( maj ), minor( min ), patch( bugfix ), build( bld ), postfix( post ) {}
 
-		version( const string& version ) : version() {
-			std::stringstream str( version );
-			char dummy;
-			str >> major >> dummy >> minor >> dummy >> patch >> dummy;
-			if ( str.good() ) str >> build;
-			if ( str.good() ) str >> postfix;
-		}
-
 		string str() const {
 			string s = stringf( "%d.%d.%d", major, minor, patch );
 			if ( build > 0 ) s += stringf( ".%d", build );
@@ -37,4 +29,12 @@ namespace xo
 	};
 
 	inline std::ostream& operator<<( std::ostream& str, const version& ver ) { str << ver.str(); return str; }
+	inline std::istream& operator>>( std::istream& str, version& ver )
+	{
+		char dummy;
+		str >> ver.major >> dummy >> ver.minor >> dummy >> ver.patch >> dummy;
+		if ( str.good() ) str >> ver.build;
+		if ( str.good() ) str >> ver.postfix;
+		return str;
+	}
 }
