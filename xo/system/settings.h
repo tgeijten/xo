@@ -21,22 +21,32 @@ namespace xo
 		template< typename T > T get( const string& id ) const;
 
 		/// Set setting of type T
-		template< typename T > T set( const string& id, const T& value );
+		template< typename T > bool set( const string& id, T value );
 
+		/// Set all settings in data
+		bool set( const prop_node& data ) { return set_recursive( data, "" ); }
+
+		/// Find a setting in the scheme
+		const prop_node* try_find_setting( const string& id ) const;
+
+		/// Data access
 		const prop_node& data() const { return data_; }
 		prop_node& data() { return data_; }
-		void set_data( prop_node data );
 
+		/// Schema access
 		const prop_node& schema() const { return schema_; }
 
+		/// Load settings from a file
 		void load( const path& filename = path() );
+
+		/// Save settings to a file
 		void save( const path& filename = path() );
 
 		const path& data_file() const { return data_file_; }
 
 	private:
-		void fix_setting( prop_node& setting, const prop_node& schema );
-		void fix_settings( prop_node& settings, const prop_node& schema );
+		bool try_set( const string& id, const prop_node& value );
+		bool set_recursive( const prop_node& data, string prefix );
 
 		prop_node data_;
 		const prop_node schema_;
@@ -47,23 +57,21 @@ namespace xo
 	// IMPLEMENTATION
 	//
 
-	template< typename T > T xo::settings::get( const string& id ) const {
-		if ( auto c = data_.try_get_query( id ) )
-			return c->get< T >();
+	template< typename T > T xo::settings::get( const string& id ) const
+	{
+		if ( auto data_node = data_.try_get_query( id ) )
+			return data_node->get< T >();
+		else if ( auto* schema_node = try_find_setting( id ) )
+			return schema_node->get< T >( "default" );
 		else xo_error( "Undefined setting: " + id );
 	}
 
-	template< typename T > T xo::settings::set( const string& id, const T& value ) {
-		if ( auto schema_pn = schema_.try_get_query( id ) ) {
-			auto& data_pn = data_.set_query( id, value );
-			fix_setting( data_pn, *schema_pn );
-			return data_pn.get<T>();
-		}
-		else xo_error( "Undefined setting: " + id );
+	template< typename T > bool xo::settings::set( const string& id, T value )
+	{
+		return try_set( id, make_prop_node( value ) );
 	}
 }
 
 #if defined(_MSC_VER)
 #	pragma warning( pop )
 #endif
-

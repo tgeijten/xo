@@ -8,65 +8,76 @@
 namespace xo
 {
 	settings::settings( prop_node schema, const path& filename ) :
-	schema_( std::move( schema ) ),
-	data_file_( filename )
+	schema_( std::move( schema ) )
 	{
-		if ( file_exists( data_file_ ) )
-			data_ = load_file( data_file_ );
-		fix_settings( data_, schema_ );
+		load( filename );
 	}
 
-	void settings::set_data( prop_node data )
+	const xo::prop_node* settings::try_find_setting( const string& id ) const
 	{
-		data_ = std::move( data );
-		fix_settings( data_, schema_ );
+		const auto* schema_node = schema_.try_get_query( id );
+		if ( schema_node && schema_node->has_key( "default" ) )
+			return schema_node;
+		else return nullptr;
 	}
 
-	void settings::fix_settings( prop_node& data_pn, const prop_node& schema_pn )
+	bool settings::try_set( const string& id, const prop_node& value )
 	{
-		for ( auto& item : schema_pn )
+		log::info( "Setting ", id, " to ", value.get_value() );
+
+		if ( auto* schema_node = try_find_setting( id ) )
 		{
-			bool is_group = !item.second.has_key( "default" );
-			if ( auto data_child = data_pn.try_get_child( item.first ) )
+			// check if value is different from default
+			if ( value == schema_node->get_child( "default" ) )
+				return true; // success, don't store value
+
+			// check if the setting is part of a specified 'allowed' list
+			if ( auto allowed = schema_node->try_get_child( "allowed" ) )
 			{
-				if ( is_group )
-					fix_settings( *data_child, item.second );
-				else fix_setting( *data_child, item.second );
+				auto it = xo::find_if( *allowed, [&]( auto& kvp ) { return kvp.second == value; } );
+				if ( it == allowed->end() )
+				{
+					log::warning( "Invalid value for ", id, ": ", value );
+					return false; // value not allowed, don't store value
+				}
 			}
-			else
+
+			// check if the setting is within a specified 'range'
+			if ( auto range = schema_node->try_get< bounds< double > >( "range" ) )
 			{
-				if ( is_group )
-					fix_settings( data_pn.push_back( item.first ), item.second );
-				else data_pn.push_back( item.first, item.second.get_child( "default" ) );
+				auto dvalue = from_str< double >( value.get_value(), schema_node->get< double >( "default" ) );
+				if ( !range->is_within( dvalue ) )
+				{
+					log::warning( "Invalid value for ", id, ": ", dvalue, ", restricting to range ", *range );
+					range->clamp( dvalue );
+				}
+				data_.set_query( id, dvalue );
+				return true;
 			}
+
+			// value can be set
+			data_.set_query( id, value );
+			return true;
+		}
+		else
+		{
+			log::warning( "Undefined setting: " + id );
+			return false;
 		}
 	}
 
-	void settings::fix_setting( prop_node& setting, const prop_node& schema )
+	bool settings::set_recursive( const prop_node& data, string prefix )
 	{
-		// check if the setting is part of a specified 'allowed' list
-		if ( auto allowed = schema.try_get_child( "allowed" ) )
+		if ( auto* pn = try_find_setting( prefix ) )
 		{
-			bool is_allowed = false;
-			for ( auto& v : *allowed )
-				is_allowed |= v.second.get_value() == setting.get_value();
-			if ( !is_allowed )
-			{
-				log::warning( "Invalid setting: ", setting.get_value(), ", restoring to default " );
-				setting.set_value( schema[ "default" ].get_value() );
-			}
+			return try_set( prefix, data );
 		}
-
-		// check if the setting is within a specified 'range'
-		if ( auto range = schema.try_get< boundsd >( "range" ) )
+		else
 		{
-			auto value = setting.get<double>();
-			if ( !range->is_within( value ) )
-			{
-
-				log::warning( "Invalid value: ", value, ", restricting to range ", *range );
-				setting.set( range->clamped( value ) );
-			}
+			bool ok = true;
+			for ( auto& child : data )
+				ok &= set_recursive( child.second, prefix.empty() ? child.first : prefix + '.' + child.first );
+			return ok;
 		}
 	}
 
@@ -74,7 +85,9 @@ namespace xo
 	{
 		if ( !filename.empty() )
 			data_file_ = filename;
-		set_data( load_file( data_file_ ) );
+
+		if ( !data_file_.empty() )
+			set( load_file( data_file_ ) );
 	}
 
 	void settings::save( const path& filename )
