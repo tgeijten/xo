@@ -4,6 +4,7 @@
 #include "xo/container/prop_node.h"
 #include "type_class.h"
 #include "xo/filesystem/path.h"
+#include "version.h"
 
 #if defined(_MSC_VER)
 #	pragma warning( push )
@@ -24,7 +25,7 @@ namespace xo
 		template< typename T > bool set( const string& id, T value );
 
 		/// Set all settings in data
-		bool set( const prop_node& data ) { return set_recursive( data, "" ); }
+		void set( const prop_node& data ) { set_recursive( data, "" ); }
 
 		/// Find a setting in the scheme
 		const prop_node* try_find_setting( const string& id ) const;
@@ -40,17 +41,20 @@ namespace xo
 		void load( const path& filename = path() );
 
 		/// Save settings to a file
-		void save( const path& filename = path() );
+		void save( const path& filename = path(), const version& current_version = version() );
 
 		const path& data_file() const { return data_file_; }
 
+		version data_version() const { return data_.get< version >( "version", version() ); }
+
 	private:
 		bool try_set( const string& id, const prop_node& value );
-		bool set_recursive( const prop_node& data, string prefix );
+		void set_recursive( const prop_node& data, string prefix );
 
 		prop_node data_;
 		const prop_node schema_;
 		path data_file_;
+		version data_version_;
 	};
 
 	//

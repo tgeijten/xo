@@ -23,8 +23,6 @@ namespace xo
 
 	bool settings::try_set( const string& id, const prop_node& value )
 	{
-		log::info( "Setting ", id, " to ", value.get_value() );
-
 		if ( auto* schema_node = try_find_setting( id ) )
 		{
 			// check if value is different from default
@@ -66,19 +64,15 @@ namespace xo
 		}
 	}
 
-	bool settings::set_recursive( const prop_node& data, string prefix )
+	void settings::set_recursive( const prop_node& data, string prefix )
 	{
-		if ( auto* pn = try_find_setting( prefix ) )
-		{
-			return try_set( prefix, data );
-		}
-		else
-		{
-			bool ok = true;
+		if ( prefix == "version" )
+			data_.set( "version", data );
+		else if ( auto* pn = try_find_setting( prefix ) )
+			try_set( prefix, data );
+		else if ( data.size() > 0 )
 			for ( auto& child : data )
-				ok &= set_recursive( child.second, prefix.empty() ? child.first : prefix + '.' + child.first );
-			return ok;
-		}
+				set_recursive( child.second, prefix.empty() ? child.first : prefix + '.' + child.first );
 	}
 
 	void settings::load( const path& filename )
@@ -87,13 +81,18 @@ namespace xo
 			data_file_ = filename;
 
 		if ( !data_file_.empty() )
-			set( load_file( data_file_ ) );
+		{
+			prop_node pn = load_file( data_file_ );
+			set( pn );
+		}
 	}
 
-	void settings::save( const path& filename )
+	void settings::save( const path& filename, const version& current_version )
 	{
 		if ( !filename.empty() )
 			data_file_ = filename;
+		if ( !current_version.empty() )
+			data_.set( "version", current_version );
 		xo::create_directories( data_file_.parent_path() );
 		save_file( data_, data_file_ );
 		log::info( "Saved settings to ", data_file_ );
