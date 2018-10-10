@@ -16,7 +16,7 @@ namespace xo
 		fix_settings( data_, schema_ );
 	}
 
-	void settings::set( prop_node data )
+	void settings::set_data( prop_node data )
 	{
 		data_ = std::move( data );
 		fix_settings( data_, schema_ );
@@ -44,6 +44,7 @@ namespace xo
 
 	void settings::fix_setting( prop_node& setting, const prop_node& schema )
 	{
+		// check if the setting is part of a specified 'allowed' list
 		if ( auto allowed = schema.try_get_child( "allowed" ) )
 		{
 			bool is_allowed = false;
@@ -55,6 +56,8 @@ namespace xo
 				setting.set_value( schema[ "default" ].get_value() );
 			}
 		}
+
+		// check if the setting is within a specified 'range'
 		if ( auto range = schema.try_get< boundsd >( "range" ) )
 		{
 			auto value = setting.get<double>();
@@ -71,7 +74,7 @@ namespace xo
 	{
 		if ( !filename.empty() )
 			data_file_ = filename;
-		set( load_file( data_file_ ) );
+		set_data( load_file( data_file_ ) );
 	}
 
 	void settings::save( const path& filename )
