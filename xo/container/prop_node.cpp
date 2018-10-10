@@ -164,7 +164,7 @@ namespace xo
 		return str;
 	}
 
-	bool prop_node::operator==( const prop_node& other )
+	bool prop_node::operator==( const prop_node& other ) const
 	{
 		if ( value != other.value )
 			return false;

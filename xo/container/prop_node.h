@@ -51,8 +51,8 @@ namespace xo
 		template< typename T > prop_node& operator=( const T& v ) { *this = prop_node_cast<T>::to( v ); return *this; }
 
 		/// equality operators
-		bool operator==( const prop_node& other );
-		bool operator!=( const prop_node& other ) { return !( *this == other ); }
+		bool operator==( const prop_node& other ) const;
+		bool operator!=( const prop_node& other ) const { return !( *this == other ); }
 
 		/// get the value of this node
 		template< typename T > T get() const { access(); return prop_node_cast<T>::from( *this ); }
