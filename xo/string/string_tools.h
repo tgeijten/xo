@@ -49,15 +49,7 @@ namespace xo
 	/// split string into trimmed key / value pair
 	XO_API std::pair< string, string > make_key_value_str( const string& s, const string& sep_char = "=" );
 
-#if 0
-	inline int scan_str_impl( char_stream& str ) { return 0; }
-	template< typename T, typename... Args > int scan_str_impl( char_stream& str, T& v, Args&... args )
-	{ str >> v; return str.good() ? scan_str_impl( str, args... ) + 1 : 0; }
-
-	/// read variables from string
-	template< typename... Args > int scan_str( const string& s, Args&... args )
-	{ char_stream str( s.c_str() ); return scan_str_impl( str, args... ); }
-#endif
+	XO_API string concatenate_str( std::initializer_list< string > lst, const string& delim = "" );
 
 	/// get formatted string (printf style)
 	XO_API string stringf( const char* format, ... );
@@ -71,16 +63,6 @@ namespace xo
 	/// set precision used in to_str calls, returns previous precision
 	XO_API int set_to_str_precision( int p );
 	XO_API int to_str_precision();
-
-#if 0
-	/// convert space-delimited string to vector of elements
-	template< typename T > std::vector< T > str_to_vec( const string& s, size_t max_values, const char* delim = XO_WHITESPACE_CHARS ) {
-		char_stream str( s.c_str(), delim );
-		std::vector< T > vec; if ( max_values != no_index ) vec.reserve( max_values );
-		while ( str.good() && vec.size() < max_values ) { T elem; str >> elem; if ( !str.fail() ) vec.push_back( elem ); }
-		return vec;
-	}
-#endif
 
 	/// get a string between quotes
 	XO_API string encode_char( char c );

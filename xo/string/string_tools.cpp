@@ -74,6 +74,21 @@ namespace xo
 		else return make_pair( trim_str( s.substr( 0, pos ) ), trim_str( mid_str( s, pos + 1 ) ) );
 	}
 
+	XO_API string concatenate_str( std::initializer_list< string > string_list, const string& delim )
+	{
+		string str;
+		bool first = true;
+		for ( auto& element : string_list )
+		{
+			if ( !element.empty() )
+			{
+				if ( !first ) str += delim; else first = false;
+				str += element;
+			}
+		}
+		return str;
+	}
+
 	string stringf( const char* format, ... )
 	{
 #ifdef XO_COMP_MSVC
