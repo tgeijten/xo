@@ -2,9 +2,8 @@
 
 #include "xo/string/string_type.h"
 #include "xo/container/prop_node.h"
-#include "type_class.h"
 #include "xo/filesystem/path.h"
-#include "version.h"
+#include "xo/system/version.h"
 
 #if defined(_MSC_VER)
 #	pragma warning( push )
@@ -16,16 +15,13 @@ namespace xo
 	class XO_API settings
 	{
 	public:
-		settings( prop_node schema, const path& filename = path() );
+		settings( prop_node schema, const path& filename = path(), const version& current_version = version() );
 
 		/// Get setting of type T
 		template< typename T > T get( const string& id ) const;
 
 		/// Set setting of type T
 		template< typename T > bool set( const string& id, T value );
-
-		/// Set all settings in data
-		void set( const prop_node& data ) { set_recursive( data, "" ); }
 
 		/// Find a setting in the scheme
 		const prop_node* try_find_setting( const string& id ) const;
@@ -41,20 +37,25 @@ namespace xo
 		void load( const path& filename = path() );
 
 		/// Save settings to a file
-		void save( const path& filename = path(), const version& current_version = version() );
+		void save( const path& filename = path() );
 
 		const path& data_file() const { return data_file_; }
 
-		version data_version() const { return data_.get< version >( "version", version() ); }
+		/// Reset to default
+		void reset();
+
+		const version& data_version() const { return data_version_; }
+		const version& current_version() const { return current_version_; }
 
 	private:
 		bool try_set( const string& id, const prop_node& value );
-		void set_recursive( const prop_node& data, string prefix );
+		void set_recursive( const string& id, const prop_node& data );
 
 		prop_node data_;
 		const prop_node schema_;
 		path data_file_;
 		version data_version_;
+		version current_version_;
 	};
 
 	//

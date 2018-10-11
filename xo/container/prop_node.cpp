@@ -114,6 +114,11 @@ namespace xo
 		else return nullptr;
 	}
 
+	prop_node* prop_node::try_get_query( const key_t& key, const char delim )
+	{
+		return const_cast<prop_node*>( const_cast<const prop_node*>( this )->try_get_query( key, delim ) );
+	}
+
 	xo::prop_node& prop_node::get_or_add_query( const key_t& key, const char delim )
 	{
 		auto p = key.find_first_of( delim );
@@ -130,6 +135,24 @@ namespace xo
 				return const_cast<prop_node&>( *c ).get_or_add_query( mid_str( key, p + 1 ), delim );
 			else return push_back( sub_key ).get_or_add_query( mid_str( key, p + 1 ), delim );
 		}
+	}
+
+	bool prop_node::erase( const key_t& key )
+	{
+		for ( auto it = begin(); it != end(); ++it )
+			if ( it->first == key )
+				return erase( it ), true;
+		return false;
+	}
+
+	bool prop_node::erase_query( const key_t& query, const char delim )
+	{
+		auto p = query.find_first_of( delim );
+		if ( p == string::npos )
+			return erase( query );
+		else if ( auto* c = try_get_query( query.substr( 0, p ) ) )
+			return c->erase_query( mid_str( query, p + 1 ), delim );
+		else return false;
 	}
 
 	int get_align_width( const prop_node& pn, int depth )

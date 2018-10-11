@@ -7,8 +7,9 @@
 
 namespace xo
 {
-	settings::settings( prop_node schema, const path& filename ) :
-	schema_( std::move( schema ) )
+	settings::settings( prop_node schema, const path& filename, const version& current_version ) :
+	schema_( std::move( schema ) ),
+	current_version_( current_version )
 	{
 		load( filename );
 	}
@@ -27,7 +28,10 @@ namespace xo
 		{
 			// check if value is different from default
 			if ( value == schema_node->get_child( "default" ) )
+			{
+				data_.erase_query( id );
 				return true; // success, don't store value
+			}
 
 			// check if the setting is part of a specified 'allowed' list
 			if ( auto allowed = schema_node->try_get_child( "allowed" ) )
@@ -64,15 +68,13 @@ namespace xo
 		}
 	}
 
-	void settings::set_recursive( const prop_node& data, string prefix )
+	void settings::set_recursive( const string& id, const prop_node& data )
 	{
-		if ( prefix == "version" )
-			data_.set( "version", data );
-		else if ( auto* pn = try_find_setting( prefix ) )
-			try_set( prefix, data );
-		else if ( data.size() > 0 )
+		if ( auto* pn = try_find_setting( id ) ) // actual setting?
+			try_set( id, data );
+		else if ( data.size() > 0 ) // settings group?
 			for ( auto& child : data )
-				set_recursive( child.second, prefix.empty() ? child.first : prefix + '.' + child.first );
+				set_recursive( id + '.' + child.first, child.second );
 	}
 
 	void settings::load( const path& filename )
@@ -83,18 +85,31 @@ namespace xo
 		if ( !data_file_.empty() )
 		{
 			prop_node pn = load_file( data_file_ );
-			set( pn );
+			for ( auto& c : pn )
+			{
+				if ( c.first == "version" )
+					data_version_ = c.second.get< version >();
+				else set_recursive( c.first, c.second );
+			}
 		}
+		else log::warning( "Cannot load settings, no filename" );
 	}
 
-	void settings::save( const path& filename, const version& current_version )
+	void settings::save( const path& filename )
 	{
 		if ( !filename.empty() )
 			data_file_ = filename;
-		if ( !current_version.empty() )
-			data_.set( "version", current_version );
+
+		if ( !current_version().empty() )
+			data_.set( "version", current_version() );
+
 		xo::create_directories( data_file_.parent_path() );
 		save_file( data_, data_file_ );
 		log::info( "Saved settings to ", data_file_ );
+	}
+
+	void settings::reset()
+	{
+		data_.clear();
 	}
 }

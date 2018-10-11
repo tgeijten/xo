@@ -21,6 +21,7 @@ namespace xo
 			return s;
 		}
 
+		int to_int100() const { return major * 10000 + minor * 100 + patch; }
 		bool empty() const { return major == 0 && minor == 0 && patch == 0 && build == 0 && postfix.empty(); }
 
 		int major;
@@ -29,6 +30,10 @@ namespace xo
 		int build;
 		string postfix;
 	};
+
+	inline bool operator<( const version& v1, const version& v2 ) { return v1.to_int100() < v2.to_int100(); }
+	inline bool operator==( const version& v1, const version& v2 ) { return v1.to_int100() == v2.to_int100(); }
+	inline bool operator!=( const version& v1, const version& v2 ) { return v1.to_int100() != v2.to_int100(); }
 
 	inline std::ostream& operator<<( std::ostream& str, const version& ver ) { str << ver.str(); return str; }
 	inline std::istream& operator>>( std::istream& str, version& ver )

@@ -89,10 +89,10 @@ namespace xo
 
 		/// see if this prop_node has a value
 		bool has_value() const { return !value.empty(); }
-		bool has_value( const key_t& key ) const { auto c = find( key ); return c != end() && c->second.has_value(); }
+		bool has_value( const key_t& key ) const { if ( auto c = try_get_child( key ) ) return c->has_value(); else return false; }
 
 		/// see if this prop_node has a specific key
-		bool has_key( const key_t& key ) const { return find( key ) != end(); }
+		bool has_key( const key_t& key ) const { return try_get_child( key ) != nullptr; }
 
 		/// see if this prop_node has any specific key
 		bool has_any_key( std::initializer_list< key_t > keys ) const { for ( auto& k : keys ) if ( has_key( k ) ) return true; return false; }
@@ -126,7 +126,7 @@ namespace xo
 
 		/// set the value of a child node, the node is created if not existing
 		template< typename T > prop_node& set( const key_t& key, const T& v )
-		{ auto it = find( key ); if ( it == end() ) return push_back( key, v ); else return it->second.set( v ); }
+		{ if ( auto c = try_get_child( key ) ) return c->set( v ); else return push_back( key, v ); }
 
 		/// set the value of a child node, accessing children through delimiter character
 		template< typename T > prop_node& set_query( const key_t& query, const T& v, const char delim = '.' )
@@ -173,14 +173,11 @@ namespace xo
 
 		/// get a child node using delimiters, return nullptr if not existing
 		const prop_node* try_get_query( const key_t& query, const char delim = '.' ) const;
+		prop_node* try_get_query( const key_t& query, const char delim = '.' );
 		prop_node& get_or_add_query( const key_t& query, const char delim = '.' );
 
 		/// get key by index
 		const key_t& get_key( index_t idx ) const;
-
-		/// find a child node
-		iterator find( const key_t& key ) { return find_if( children, [&]( const pair_t& e ) { return e.first == key; } ); }
-		const_iterator find( const key_t& key ) const { return find_if( children, [&]( const pair_t& e ) { return e.first == key; } ); }
 
 		/// begin of child nodes
 		iterator begin() { access(); return children.begin(); }
@@ -202,6 +199,9 @@ namespace xo
 
 		/// erase a child
 		iterator erase( const_iterator it ) { return children.erase( it ); }
+		bool erase( const key_t& key );
+		bool erase_query( const key_t& query, const char delim = '.' );
+
 		void pop_back() { children.pop_back(); }
 
 		/// see if this node has been accessed
