@@ -84,15 +84,24 @@ namespace xo
 
 		if ( !data_file_.empty() )
 		{
-			prop_node pn = load_file( data_file_ );
-			for ( auto& c : pn )
+			if ( file_exists( data_file_ ) )
 			{
-				if ( c.first == "version" )
-					data_version_ = c.second.get< version >();
-				else set_recursive( c.first, c.second );
+				prop_node pn = load_file( data_file_ );
+				for ( auto& c : pn )
+				{
+					if ( c.first == "version" )
+						data_version_ = c.second.get< version >();
+					else set_recursive( c.first, c.second );
+				}
+			}
+			else
+			{
+				log::info( "Could not find settings file, creating defaults" );
+				reset();
+				save();
 			}
 		}
-		else log::warning( "Cannot load settings, no filename" );
+		else xo_error( "Error loading settings: no filename was given" );
 	}
 
 	void settings::save( const path& filename )
@@ -105,7 +114,7 @@ namespace xo
 
 		xo::create_directories( data_file_.parent_path() );
 		save_file( data_, data_file_ );
-		log::info( "Saved settings to ", data_file_ );
+		log::debug( "Saved settings to ", data_file_ );
 	}
 
 	void settings::reset()
