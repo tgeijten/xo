@@ -4,6 +4,7 @@
 #include "xo/system/platform.h"
 #include "xo/numerical/math.h"
 #include <vector>
+#include <cctype>
 
 #define xo_varstr( var_ ) ( ::std::string( #var_ ) + '=' + ::xo::to_str( ( var_ ) ) )
 
@@ -45,6 +46,9 @@ namespace xo
 
 	/// replace a substring in a string
 	XO_API string& replace_str( string& s, const string& find_str, const string& replace_with );
+
+	inline string to_lower( string& s ) { for ( char& c : s ) c = std::tolower( c ); return s; }
+	inline string to_upper( string& s ) { for ( char& c : s ) c = std::toupper( c ); return s; }
 
 	/// split string into trimmed key / value pair
 	XO_API std::pair< string, string > make_key_value_str( const string& s, const string& sep_char = "=" );
