@@ -42,7 +42,7 @@ namespace xo
 	{ c1.insert( c1.end(), c2.begin(), c2.end() ); return c1; }
 
 	template< typename C > index_t find_index( const C& cont, const typename C::value_type& e ) {
-		auto it = std::find( std::begin( cont ), std::end( cont ), val );
+		auto it = find( cont, e );
 		if ( it == std::end( cont ) ) return no_index;
 		else return it - std::begin( cont );
 	}

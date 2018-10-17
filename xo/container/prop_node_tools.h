@@ -12,9 +12,10 @@
 #define CONSTRUCT_PROP( _pn_, _var_, _default_ ) _var_( _pn_.get< decltype( _var_ ) >( ::xo::tidy_identifier( #_var_ ), decltype( _var_ )( _default_ ) ) )
 #define CONSTRUCT_PROP_REQUIRED( _pn_, _var_ ) _var_( _pn_.get< decltype( _var_ ) >( ::xo::tidy_identifier( #_var_ ) ) )
 
+#define SET_PROP( _pn_, _var_ ) _pn_.set< decltype( _var_ ) >( ::xo::tidy_identifier( #_var_ ), _var_ )
+
 namespace xo
 {
 	XO_API void log_unaccessed( const prop_node& pn, log::level level = log::warning_level, int depth = 0 );
-
 	XO_API std::pair< bool, string > find_query_to_node( const prop_node* from, const prop_node* to, const char delim = '.' );
 }

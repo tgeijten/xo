@@ -80,7 +80,7 @@ namespace xo
 		}
 
 	private:
-		vector< catmull_rom_segment< P > > segments_;
-		vector< T > times_;
+		std::vector< catmull_rom_segment< P > > segments_;
+		std::vector< T > times_;
 	};
 }
