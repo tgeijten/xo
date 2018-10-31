@@ -51,10 +51,11 @@ namespace xo
 					parent.append( load_zml( folder / path( get_zml_token( str, ec ) ), ec ) );
 				else if ( t == "#merge" )
 					merge_pn.merge( load_zml( folder / path( get_zml_token( str, ec ) ), ec ) );
-				else if ( t == "#set" )
+				else if ( t == "#define" )
 				{
-					auto key = '(' + get_zml_token( str, ec ) + ')'; // do this first because order of evaluation
-					vars.emplace_back( std::move( key ), get_zml_token( str, ec ) );
+					auto key = get_zml_token( str, ec ); // do this first because order of evaluation
+					auto value = get_zml_token( str, ec );
+					vars.emplace_back( std::move( key ), std::move( value ) );
 				}
 				else return zml_error( str, ec, "Unknown directive: " + t );
 			}
