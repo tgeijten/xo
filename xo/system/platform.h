@@ -12,8 +12,10 @@
 #	define XO_API
 #endif
 
-#ifdef _DEBUG
-#	define XO_IS_DEBUG_BUILD true
+#ifdef NDEBUG
+constexpr bool XO_IS_DEBUG = false;
+constexpr bool XO_IS_RELEASE = true;
 #else
-#	define XO_IS_DEBUG_BUILD false
+constexpr bool XO_IS_DEBUG = true;
+constexpr bool XO_IS_RELEASE = false;
 #endif
