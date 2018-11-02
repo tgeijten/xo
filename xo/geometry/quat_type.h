@@ -34,9 +34,9 @@ namespace xo
 		static quat_<T> identity() { return quat_<T>( T(1), T(0), T(0), T(0) ); }
 	};
 		
-	typedef quat_< real_t > quat;
-	typedef quat_< float > quatf;
-	typedef quat_< double > quatd;
+	using quat = quat_< real_t >;
+	using quatf = quat_< float >;
+	using quatd = quat_< double >;
 
 	template< typename T > struct prop_node_cast< quat_<T> > {
 		static quat_<T> from( const prop_node& pn ) { return quat_<T>( pn ); }

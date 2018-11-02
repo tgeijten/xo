@@ -36,8 +36,8 @@ namespace xo
 		static transform_<T> identity() { return transform_<T>( vec3_<T>::zero(), quat_<T>::identity() ); }
 	};
 
-	typedef transform_< float > transformf;
-	typedef transform_< double > transformd;
+	using transformf = transform_< float >;
+	using transformd = transform_< double >;
 
 	template< typename T > struct prop_node_cast<transform_<T>> {
 		static transform_<T> from( const prop_node& pn ) { return transform_<T>( pn ); }

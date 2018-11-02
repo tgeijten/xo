@@ -16,7 +16,7 @@ namespace xo
 	};
 	template<> struct v4i< dbl4 >
 	{
-		typedef double elem_t;
+		using elem_t = double;
 		static const elem_t& w( const dbl4& q ) { return q.data[ 3 ]; }
 		static const elem_t& x( const dbl4& q ) { return q.data[ 0 ]; }
 		static const elem_t& y( const dbl4& q ) { return q.data[ 1 ]; }

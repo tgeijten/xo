@@ -13,7 +13,7 @@ namespace xo
 	class factory
 	{
 	public:
-		typedef std::function< std::unique_ptr< T >( Args... ) > create_func_t;
+		using create_func_t = std::function< std::unique_ptr< T >( Args... ) >;
 
 		// register class
 		template< typename U > void register_class( const std::string& name = clean_type_name<U>() ) {

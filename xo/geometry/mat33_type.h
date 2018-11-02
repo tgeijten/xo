@@ -21,7 +21,7 @@ namespace xo
 		T* ptr() { return &e00; }
 	};
 
-	typedef mat33_< real_t > mat33;
-	typedef mat33_< float > mat33f;
-	typedef mat33_< double > mat33d;
+	using mat33 = mat33_< real_t >;
+	using mat33f = mat33_< float >;
+	using mat33d = mat33_< double >;
 }

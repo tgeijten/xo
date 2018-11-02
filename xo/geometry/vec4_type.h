@@ -34,7 +34,7 @@ namespace xo
 	};
 
 	/// template instantiations
-	typedef vec4_< real_t > vec4;
-	typedef vec4_< float > vec4f;
-	typedef vec4_< double > vec4d;
+	using vec4 = vec4_< real_t >;
+	using vec4f = vec4_< float >;
+	using vec4d = vec4_< double >;
 }

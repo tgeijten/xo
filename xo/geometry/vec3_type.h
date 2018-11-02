@@ -58,9 +58,9 @@ namespace xo
 	};
 
 	/// template instantiations
-	typedef vec3_< real_t > vec3;
-	typedef vec3_< float > vec3f;
-	typedef vec3_< double > vec3d;
+	using vec3 = vec3_< real_t >;
+	using vec3f = vec3_< float >;
+	using vec3d = vec3_< double >;
 
 	template< typename T > struct prop_node_cast< vec3_<T> > {
 		static vec3_<T> from( const prop_node& pn ) { return vec3_<T>( pn ); }

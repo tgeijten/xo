@@ -10,7 +10,7 @@
 
 namespace xo
 {
-	typedef std::uint64_t hash_t;
+	using hash_t = std::uint64_t;
 
 	constexpr hash_t fnv1a_64_prime = 0x100000001B3ull;
 	constexpr hash_t fnv1a_64_basis = 0xCBF29CE484222325ull;

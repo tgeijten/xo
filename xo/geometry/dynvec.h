@@ -46,8 +46,8 @@ namespace xo
 	};
 
 	/// template instantiations
-	typedef dynvec< float > dynvecf;
-	typedef dynvec< double > dynvecd;
+	using dynvecf = dynvec< float >;
+	using dynvecd = dynvec< double >;
 
 	template< typename T > bool operator==( const dynvec<T>& v1, const dynvec<T>& v2 ) {
 		return std::equal( v1.begin(), v1.end(), v2.begin(), v2.end() );
