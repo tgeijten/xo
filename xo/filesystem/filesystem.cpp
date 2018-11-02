@@ -10,9 +10,11 @@
 #ifdef XO_COMP_MSVC
 #	include <conio.h>
 #	include <shlobj.h>
+#   include <direct.h>
 #	pragma warning( disable: 4996 )
+#else
+#   include <unistd.h>
 #endif
-#include <direct.h>
 
 namespace xo
 {
@@ -36,7 +38,7 @@ namespace xo
 		return get_known_windows_folder( FOLDERID_LocalAppData );
 #else
 		string homeDir = std::getenv( "HOME" );
-		return homeDir + "/.config";
+		return path{homeDir + "/.config"};
 #endif
 	}
 
@@ -90,7 +92,7 @@ namespace xo
 		return GetFileAttributes( path( p ).make_preferred().c_str() ) != INVALID_FILE_ATTRIBUTES;
 #else
 		struct stat info;
-		return stat( path, &info ) == 0;
+		return stat( p.c_str(), &info ) == 0;
 #endif
 	}
 

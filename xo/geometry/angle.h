@@ -47,6 +47,7 @@ namespace xo
 
 		/// scalar multiplication and division
 		template< typename TS > angle_& operator*=( const TS& s ) { value *= T(s); return *this; }
+		angle_ operator*( const angle_& s ) const { return angle_( value * s.value ); }
 		template< typename TS > angle_ operator*( const TS& s ) const { return angle_( value * T(s) ); }
 		template< typename TS > angle_& operator/=( const TS& s ) { value /= T(s); return *this; }
 		template< typename TS > angle_ operator/( const TS& s ) const { return angle_( value / T(s) ); }

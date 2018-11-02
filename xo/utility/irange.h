@@ -1,6 +1,8 @@
 #pragma once
 
-#include <xutility>
+#ifdef XO_COMP_MSVC
+#   include <xutility>
+#endif
 #include "sfinae.h"
 
 namespace xo
@@ -18,7 +20,7 @@ namespace xo
 			iterator( T v ) : value_( v ) { xo_assert_msg( is_whole( v ), "irange requires whole numbers" ); }
 			T value_;
 			T operator++() { return ++value_; }
-			T operator++( int ) { return value++; }
+			T operator++( int ) { return value_++; }
 			iterator operator+( const T& offset ) { return iterator( value_ + offset ); }
 
 			bool operator==( const iterator& other ) { return other.value_ == value_; }

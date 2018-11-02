@@ -11,6 +11,6 @@ namespace xo
 		prop_node_serializer_xml( prop_node& pn, error_code* ec = nullptr, path file_folder = path() ) : prop_node_serializer( pn, ec, file_folder ) {}
 
 		virtual std::istream& read_stream( std::istream& str ) override;
-		virtual std::ostream& write_stream( std::ostream& str ) override;
+		virtual std::ostream& write_stream( std::ostream& str ) const override;
 	};
 }

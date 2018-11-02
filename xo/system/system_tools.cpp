@@ -5,6 +5,8 @@
 #	include <conio.h>
 #	include <shlobj.h>
 #	pragma warning( disable: 4996 )
+#else
+#   include <cxxabi.h>
 #endif
 
 #include <fstream>
@@ -113,7 +115,7 @@ namespace xo
 		default: xo_error( "Unsupported thread priority: " + to_str( p ) );
 		}
 #else
-		log::warning( "set_thread_priority() unavailable for this platform, setting ignored")
+		log::warning( "set_thread_priority() unavailable for this platform, setting ignored");
 #endif
 	}
 }

@@ -4,6 +4,8 @@
 #include <type_traits>
 #include <iosfwd>
 
+#include <xo/numerical/constants.h>
+
 namespace xo
 {
 	template< typename T, typename E = void > struct optional

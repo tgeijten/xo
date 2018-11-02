@@ -14,7 +14,7 @@ namespace xo
 		virtual ~prop_node_serializer() {}
 
 		virtual std::istream& read_stream( std::istream& str ) = 0;
-		virtual std::ostream& write_stream( std::ostream& str ) = 0;
+		virtual std::ostream& write_stream( std::ostream& str ) const = 0;
 
 		prop_node load_file( const path& filename, error_code* ec = nullptr );
 		void save_file( const prop_node& pn, const path& filename, error_code* ec = nullptr );
@@ -26,5 +26,5 @@ namespace xo
 	};
 
 	inline std::istream& operator>>( std::istream& str, prop_node_serializer& pns ) { return pns.read_stream( str ); }
-	inline std::ostream& operator<<( std::ostream& str, prop_node_serializer& pns ) { return pns.write_stream( str ); }
+	inline std::ostream& operator<<( std::ostream& str, const prop_node_serializer& pns ) { return pns.write_stream( str ); }
 }

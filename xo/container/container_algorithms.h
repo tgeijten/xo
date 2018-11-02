@@ -5,7 +5,9 @@
 
 #include "xo/system/assert.h"
 #include "xo/utility/types.h"
-#include <xstddef>
+#ifdef XO_COMP_MSVC
+#   include <xstddef>
+#endif
 
 namespace xo
 {
@@ -43,7 +45,7 @@ namespace xo
 	template< typename I > typename std::iterator_traits< I >::value_type median_slow( I b, I e ) {
 		auto n = e - b;
 		xo_assert( n > 0 );
-		std::vector< std::remove_cv< std::iterator_traits< I >::value_type >::type > v( n / 2 + 1 );
+		std::vector< typename std::remove_cv< typename std::iterator_traits< I >::value_type >::type > v( n / 2 + 1 );
 		std::partial_sort_copy( b, e, v.begin(), v.end() );
 		if ( n % 2 == 1 ) return v[ n / 2 ];
 		else return ( v[ n / 2 ] + v[ n / 2 - 1 ] ) / std::iterator_traits< I >::value_type( 2 );

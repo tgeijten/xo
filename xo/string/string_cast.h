@@ -7,15 +7,15 @@
 namespace xo
 {
 	/// convert any type to string
-	template< typename T > string to_str( const T& value ) { return string_cast<T>::to( value ); }
-	template< typename T > T from_str( const string& s, T default_value ) { return string_cast<T>::from( s ); }
+	template< typename T > string to_str( const T& value );
+	template< typename T > T from_str( const string& s, T default_value );
 
 	// specializations
 	template<> inline float from_str( const string& s, float default_value ) { char* p; auto v = std::strtof( s.c_str(), &p ); return p != s.c_str() ? v : default_value; }
-	inline string to_str( const float& value ) { char buf[ 32 ]; sprintf_s( buf, sizeof( buf ), "%g", value ); return string( buf ); }
+	inline string to_str( const float& value ) { char buf[ 32 ]; std::snprintf( buf, sizeof( buf ), "%g", value ); return string( buf ); }
 
 	template<> inline double from_str( const string& s, double default_value ) { char* p; auto v = std::strtod( s.c_str(), &p ); return p != s.c_str() ? v : default_value; }
-	inline string to_str( const double& value ) { char buf[ 32 ]; sprintf_s( buf, sizeof( buf ), "%g", value ); return string( buf ); }
+	inline string to_str( const double& value ) { char buf[ 32 ]; std::snprintf( buf, sizeof( buf ), "%g", value ); return string( buf ); }
 
 	template<> inline bool from_str( const string& s, bool default_value ) { return ( s == "1" || s == "true" ); }
 	inline string to_str( const bool& value ) { return string( value ? "1" : "0" ); }
@@ -23,7 +23,7 @@ namespace xo
 	template<> inline int from_str( const string& s, int default_value ) { char* p; auto v = int( std::strtol( s.c_str(), &p, 10 ) ); return p != s.c_str() ? v : default_value; }
 	inline string to_str( const int& value ) { return std::to_string( value ); }
 
-	template<> inline unsigned int from_str( const string& s, unsigned int default_value ) { char* p; auto v = unsigned int( std::strtol( s.c_str(), &p, 10 ) ); return p != s.c_str() ? v : default_value; }
+	template<> inline unsigned int from_str( const string& s, unsigned int default_value ) { char* p; auto v = (unsigned int)( std::strtol( s.c_str(), &p, 10 ) ); return p != s.c_str() ? v : default_value; }
 	inline string to_str( const unsigned int& value ) { return std::to_string( value ); }
 
 	template<> inline long from_str( const string& s, long default_value ) { char* p; auto v = std::strtol( s.c_str(), &p, 10 ); return p != s.c_str() ? v : default_value; }
@@ -57,4 +57,7 @@ namespace xo
 		}
 		return s;
 	}
+
+	template< typename T > string to_str( const T& value ) { return string_cast<T>::to( value ); }
+	template< typename T > T from_str( const string& s, T default_value ) { return string_cast<T>::from( s ); }
 }
