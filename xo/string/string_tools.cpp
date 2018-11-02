@@ -112,7 +112,7 @@ namespace xo
 		xo_assert_msg( str.find_first_of( ";" ) == string::npos, "pattern_match patterns cannot contain ';' on MSVC" );
 		return PathMatchSpecEx( str.c_str(), pattern.c_str(), PMSF_NORMAL ) == S_OK;
 #else
-		return fnmatch( p.c_str(), str.c_str(), FNM_NOESCAPE ) == 0;
+		return fnmatch( pattern.c_str(), str.c_str(), FNM_NOESCAPE ) == 0;
 #endif
 	}
 

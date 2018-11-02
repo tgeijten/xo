@@ -1,7 +1,10 @@
 #pragma once
 
 #include "xo/system/platform.h"
-#include <xutility>
+#ifdef XO_COMP_MSVC
+#   include <xutility>
+#endif
+#include <iterator>
 
 namespace xo
 {
@@ -21,9 +24,9 @@ namespace xo
 		pointer_iterator( const pointer_iterator& o ) : value_( o.value_ ) {}
 		pointer_iterator& operator=( const pointer_iterator& o ) { value_ = o.value_; return *this; }
 		pointer_iterator& operator++() { ++value_; return *this; }
-		pointer_iterator operator++( int ) { pointer_iterator tmp( value_ ); ++value; return tmp; }
+		pointer_iterator operator++( int ) { pointer_iterator tmp( value_ ); ++value_; return tmp; }
 		pointer_iterator& operator--() { --value_; return *this; }
-		pointer_iterator operator--( int ) { pointer_iterator tmp( value_ ); --value; return tmp; }
+		pointer_iterator operator--( int ) { pointer_iterator tmp( value_ ); --value_; return tmp; }
 		pointer_iterator operator+( int ofs ) { return pointer_iterator( value_ + ofs ); }
 		difference_type operator-( const pointer_iterator& other ) { return difference_type( value_ - other.value_ ); }
 		bool operator==( const pointer_iterator& other ) const { return value_ == other.value_; }

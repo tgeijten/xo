@@ -10,6 +10,6 @@ namespace xo
 		using prop_node_serializer::prop_node_serializer;
 
 		virtual std::istream& read_stream( std::istream& str ) override;
-		virtual std::ostream& write_stream( std::ostream& str ) override;
+		virtual std::ostream& write_stream( std::ostream& str ) const override;
 	};
 }

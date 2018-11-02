@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <vector>
 #include "xo/system/assert.h"
+#include "xo/string/string_cast.h"
 
 namespace xo
 {
