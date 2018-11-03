@@ -11,9 +11,9 @@ namespace xo
 	class file_storage : public storage< T, L >
 	{
 	public:
-		file_storage( const path& filename ) : storage(), filename_( filename ) {}
+		file_storage( const path& filename ) : storage< T, L >(), filename_( filename ) {}
 		virtual ~file_storage() {
-			if ( !empty() )
+			if ( !this->empty() )
 				std::ofstream( filename_.str() ) << *this;
 		}
 	private:
@@ -62,13 +62,13 @@ namespace xo
 		f[ str + ".z" ] = q.z;
 	}
 
-	template< typename T > void read( typename const storage<T>::const_frame& f, const string& str, vec3_<T>& v ) {
+	template< typename T > void read( const typename storage<T>::const_frame& f, const string& str, vec3_<T>& v ) {
 		v.x = f[ str + ".x" ];
 		v.y = f[ str + ".y" ];
 		v.z = f[ str + ".z" ];
 	}
 
-	template< typename T > void read( typename const storage<T>::const_frame& f, const string& str, quat_<T>& q ) {
+	template< typename T > void read( const typename storage<T>::const_frame& f, const string& str, quat_<T>& q ) {
 		q.w = f[ str + ".w" ];
 		q.x = f[ str + ".x" ];
 		q.y = f[ str + ".y" ];
