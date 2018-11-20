@@ -32,10 +32,7 @@ int main( int argc, char* argv[] )
 
 	try
 	{
-		xo::alignment_test();
-		//xo::wrap_test();
-		//xo::filter_test();
-		//xo::delay_test();
+
 
 		xo::timer_test();
 

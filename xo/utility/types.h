@@ -8,7 +8,7 @@ namespace xo
 	using real_t = double;
 
 	// TODO: move these types elsewhere (and perhaps use std::chrono)
-	using seconds_t = real_t;
+	using seconds_t = double;
 	using nanoseconds_t = long long;
 	using microseconds_t = long long;
 	using milliseconds_t = long long;
