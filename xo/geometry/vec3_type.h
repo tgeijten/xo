@@ -61,6 +61,7 @@ namespace xo
 	using vec3f = vec3_< float >;
 	using vec3d = vec3_< double >;
 
+	// TODO: move this to a different file
 	template< typename T > struct prop_node_cast< vec3_<T> > {
 		static vec3_<T> from( const prop_node& pn ) {
 			vec3_<T> v( pn.get( "x", T() ) ), y( pn.get( "y", T() ) ), z( pn.get( "z", T() ) );
