@@ -10,7 +10,6 @@ namespace xo
 	{
 	public:
 		quat_() : w( 1 ), x( 0 ), y( 0 ), z( 0 ) {}
-		quat_( const prop_node& pn ) : w( pn.get<T>( "w" ) ), x( pn.get<T>( "x" ) ), y( pn.get<T>( "y" ) ), z( pn.get<T>( "z" ) ) {}
 		quat_( T w, T x, T y, T z ) : w( w ), x( x ), y( y ), z( z ) {}
 		template< typename T2 > quat_( const quat_<T2>& o ) : w( T( o.w ) ), x( T( o.x ) ), y( T( o.y ) ), z( T( o.z ) ) {}
 
@@ -39,7 +38,11 @@ namespace xo
 	using quatd = quat_< double >;
 
 	template< typename T > struct prop_node_cast< quat_<T> > {
-		static quat_<T> from( const prop_node& pn ) { return quat_<T>( pn ); }
+		static quat_<T> from( const prop_node& pn ) {
+			if ( pn.size() == 4 )
+				return quat_<T>( pn.get<T>( "w" ), pn.get<T>( "x" ), pn.get<T>( "y" ), pn.get<T>( "z" ) );
+			else return quat_from_euler( pn.get< vec3_< angle_< angle_unit::degrees, T > > >() );
+		}
 		static prop_node to( const quat_<T>& q ) { return static_cast< prop_node >( q ); }
 	};
 }

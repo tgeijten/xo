@@ -16,7 +16,6 @@ namespace xo
 		vec3_( T px, T py, T pz ) : x( px ), y( py ), z( pz ) {}
 		vec3_( T v ) : x( v ), y( v ), z( v ) {}
 		template< typename T2 > vec3_( const vec3_<T2>& o ) : x( T( o.x ) ), y( T( o.y ) ), z( T( o.z ) ) {}
-		vec3_( const prop_node& pn );
 
 		/// assignment
 		template< typename T2 > vec3_<T>& operator=( const vec3_<T2>& o ) { x = T( o.x ); y = T( o.y ); z = T( o.z ); return *this; }
@@ -63,22 +62,20 @@ namespace xo
 	using vec3d = vec3_< double >;
 
 	template< typename T > struct prop_node_cast< vec3_<T> > {
-		static vec3_<T> from( const prop_node& pn ) { return vec3_<T>( pn ); }
+		static vec3_<T> from( const prop_node& pn ) {
+			vec3_<T> v( pn.get( "x", T() ) ), y( pn.get( "y", T() ) ), z( pn.get( "z", T() ) );
+			if ( pn.size() == 3 && pn.get_key( 0 ).empty() && pn.get_key( 1 ).empty() && pn.get_key( 2 ).empty() )
+			{
+				v.x = pn.get<T>( 0 );
+				v.y = pn.get<T>( 1 );
+				v.z = pn.get<T>( 2 );
+			}
+			else if ( pn.size() == 0 && pn.has_value() )
+			{
+				std::stringstream( pn.get_value().c_str() ) >> v.x >> v.y >> v.z;
+			}
+			return v;
+		}
 		static prop_node to( const vec3_<T>& vec ) { return static_cast<prop_node>( vec ); }
 	};
-
-	template< typename T >
-	xo::vec3_<T>::vec3_( const prop_node& pn ) : x( pn.get( "x", T() ) ), y( pn.get( "y", T() ) ), z( pn.get( "z", T() ) )
-	{
-		if ( pn.size() == 3 && pn.get_key( 0 ).empty() && pn.get_key( 1 ).empty() && pn.get_key( 2 ).empty() )
-		{
-			x = pn.get<T>( 0 );
-			y = pn.get<T>( 1 );
-			z = pn.get<T>( 2 );
-		}
-		else if ( pn.size() == 0 && pn.has_value() )
-		{
-			std::stringstream( pn.get_value().c_str() ) >> x >> y >> z;
-		}
-	}
 }
