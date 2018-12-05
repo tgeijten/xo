@@ -27,6 +27,7 @@ namespace xo
 		template< EnumT index > flag_set& clear() { data_ &= ~storage_bit( index ); return *this; }
 
 		flag_set& set( std::initializer_list< EnumT > flags ) { for ( auto f : flags ) set( f ); return *this; }
+		flag_set& set( std::initializer_list< EnumT > flags, bool value ) { for ( auto f : flags ) set( f, value ); return *this; }
 		flag_set& clear( std::initializer_list< EnumT > flags ) { for ( auto f : flags ) clear( f ); return *this; }
 
 		void clear() { data_ = StorageT(0); }
