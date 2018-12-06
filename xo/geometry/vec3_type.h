@@ -64,15 +64,13 @@ namespace xo
 	// TODO: move this to a different file
 	template< typename T > struct prop_node_cast< vec3_<T> > {
 		static vec3_<T> from( const prop_node& pn ) {
-			vec3_<T> v( pn.get( "x", T() ) ), y( pn.get( "y", T() ) ), z( pn.get( "z", T() ) );
-			if ( pn.size() == 3 && pn.get_key( 0 ).empty() && pn.get_key( 1 ).empty() && pn.get_key( 2 ).empty() )
-			{
+			vec3_<T> v( pn.get( "x", T() ), pn.get( "y", T() ), pn.get( "z", T() ) );
+			if ( pn.size() == 3 && pn.get_key( 0 ).empty() && pn.get_key( 1 ).empty() && pn.get_key( 2 ).empty() ) {
 				v.x = pn.get<T>( 0 );
 				v.y = pn.get<T>( 1 );
 				v.z = pn.get<T>( 2 );
 			}
-			else if ( pn.size() == 0 && pn.has_value() )
-			{
+			else if ( pn.size() == 0 && pn.has_value() ) {
 				std::stringstream( pn.get_value().c_str() ) >> v.x >> v.y >> v.z;
 			}
 			return v;
