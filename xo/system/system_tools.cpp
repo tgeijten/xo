@@ -18,6 +18,8 @@
 #include <sys/stat.h>
 #include <iomanip>
 
+std::atomic_bool sent_thread_priority_warning(false);
+
 namespace xo
 {
 	version XO_VERSION = version( 0, 1, 0 );
@@ -115,7 +117,11 @@ namespace xo
 		default: xo_error( "Unsupported thread priority: " + to_str( p ) );
 		}
 #else
-		log::warning( "set_thread_priority() unavailable for this platform, setting ignored");
+		// TODO: https://en.cppreference.com/w/cpp/thread/thread/native_handle
+		if (!sent_thread_priority_warning) {
+			log::warning( "set_thread_priority() unavailable for this platform, setting ignored");
+			sent_thread_priority_warning = true;
+		}
 #endif
 	}
 }
