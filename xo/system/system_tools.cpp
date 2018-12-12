@@ -18,8 +18,6 @@
 #include <sys/stat.h>
 #include <iomanip>
 
-std::atomic_bool sent_thread_priority_warning(false);
-
 namespace xo
 {
 	version XO_VERSION = version( 0, 1, 0 );
@@ -53,7 +51,7 @@ namespace xo
 			log::critical( message );
 
 		// crash!
-		*(int*)(0) = 123;
+		*(volatile int*)(0) = 123;
 	}
 
 	XO_API void sleep( int ms )
@@ -117,11 +115,36 @@ namespace xo
 		default: xo_error( "Unsupported thread priority: " + to_str( p ) );
 		}
 #else
-		// TODO: https://en.cppreference.com/w/cpp/thread/thread/native_handle
-		if (!sent_thread_priority_warning) {
-			log::warning( "set_thread_priority() unavailable for this platform, setting ignored");
-			sent_thread_priority_warning = true;
+		/*
+		sched_param sch_params;
+		int policy;
+		if (pthread_getschedparam(pthread_self(), &policy, &sch_params)) {
+			log::warning("Failed to set thread priority.");
+			return;
 		}
+		switch (p)
+		{
+			// http://man7.org/linux/man-pages/man2/setpriority.2.html
+			case thread_priority::idle:
+				sch_params.sched_priority = 19; break;
+			case thread_priority::lowest:
+				sch_params.sched_priority = 18; break;
+			case thread_priority::low:
+				sch_params.sched_priority = 10; break;
+			case thread_priority::normal:
+				sch_params.sched_priority = 5; break;
+			case thread_priority::high:
+				sch_params.sched_priority = -5; break;
+			case thread_priority::highest:
+				sch_params.sched_priority = -19; break;
+			case thread_priority::realtime:
+				sch_params.sched_priority = -20; break;
+			default: xo_error( "Unsupported thread priority: " + to_str( p ) );
+		}
+		if (pthread_setschedparam(pthread_self(), policy, &sch_params)) {
+		    log::warning("Failed to set thread priority.");
+		}
+		*/
 #endif
 	}
 }
