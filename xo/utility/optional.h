@@ -6,6 +6,7 @@
 
 namespace xo
 {
+	/// optional value that works with any value type
 	template< typename T, typename E = void > struct optional
 	{
 		using value_type = T;
@@ -18,10 +19,13 @@ namespace xo
 		const T& operator*() const { return value_; }
 		const T* operator->() const { return &value_; }
 		void reset() { has_value_ = false; }
+		const T& value() const { xo_error_if( !*this, "xo::optional has no value" ); return value_; }
+	private:
 		T value_;
 		bool has_value_;
 	};
 
+	/// optional value for integrals that uses sentinel to represent no value
 	template< typename T > struct optional< T, typename std::enable_if< std::is_integral<T>::value >::type >
 	{
 		using value_type = T;
@@ -32,9 +36,12 @@ namespace xo
 		const T& operator*() const { return value_; }
 		const T* operator->() const { return &value_; }
 		void reset() { value_ = const_sentinel<T>(); }
+		const T& value() const { xo_error_if( !*this, "xo::optional has no value" ); return value_; }
+	private:
 		T value_;
 	};
 
+	/// optional value for floating points that uses NaN to represent no value
 	template< typename T > struct optional< T, typename std::enable_if< std::is_floating_point<T>::value >::type >
 	{
 		using value_type = T;
@@ -45,6 +52,8 @@ namespace xo
 		const T& operator*() const { return value_; }
 		const T* operator->() const { return &value_; }
 		void reset() { value_ = std::numeric_limits<T>::quiet_NaN(); }
+		const T& value() const { xo_error_if( !*this, "xo::optional has no value" ); return value_; }
+	private:
 		T value_;
 	};
 
