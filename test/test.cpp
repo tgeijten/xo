@@ -1,5 +1,3 @@
-#define XO_ENABLE_PROFILER
-
 #include "test.h"
 #include "math_test.h"
 #include "buffer_test.h"

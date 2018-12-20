@@ -34,7 +34,7 @@ namespace xo
 	profiler::section* profiler::start_section( const char* name )
 	{
 		auto t = now();
-		xo_assert_msg( instance_thread_ == std::this_thread::get_id(), "Invalid thread ID" );
+		//xo_assert_msg( instance_thread_ == std::this_thread::get_id(), "Invalid thread ID" );
 		current_section_ = acquire_section( name, current_section_->id );
 		current_section_->epoch = t;
 #ifdef XO_PROFILER_MEASURE_OVERHEAD
@@ -48,7 +48,7 @@ namespace xo
 #ifdef XO_PROFILER_MEASURE_OVERHEAD
 		auto t1 = now();
 #endif
-		xo_assert_msg( instance_thread_ == std::this_thread::get_id(), "Invalid thread ID" );
+		//xo_assert_msg( instance_thread_ == std::this_thread::get_id(), "Invalid thread ID" );
 		auto* prev_section = current_section_;
 		current_section_ = &sections_[ prev_section->parent_id ];
 
