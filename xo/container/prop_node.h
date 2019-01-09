@@ -27,12 +27,12 @@ namespace xo
 	class XO_API prop_node
 	{
 	public:
-		typedef string key_t;
-		typedef string value_t;
-		typedef std::pair< key_t, prop_node > pair_t;
-		typedef std::vector< pair_t > container_t;
-		typedef container_t::iterator iterator;
-		typedef container_t::const_iterator const_iterator;
+		using key_t = string;
+		using value_t = string;
+		using pair_t = std::pair< key_t, prop_node >;
+		using container_t = std::vector< pair_t >;
+		using iterator = container_t::iterator;
+		using const_iterator = container_t::const_iterator;
 
 		/// constructors
 		prop_node() : accessed_flag( false ) {}
@@ -256,8 +256,8 @@ namespace xo
 	inline std::ostream& operator<<( std::ostream& str, const prop_node& pn ) { return to_stream( str, pn ); }
 }
 
-#define IS_PROP_NODE_CONSTRUCTABLE( _class_name_ ) \
-template<> struct ::xo::is_prop_node_constructable< _class_name_ > { static const bool value = true; };
+#define IS_PROP_NODE_CONSTRUCTABLE( _class_ ) \
+template<> struct ::xo::is_prop_node_constructable< _class_ > { static const bool value = true; };
 
 #ifdef XO_COMP_MSVC
 #	pragma warning( pop )

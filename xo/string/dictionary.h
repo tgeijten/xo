@@ -9,7 +9,7 @@ namespace xo
 	class dictionary
 	{
 	public:
-		typedef std::pair< T, string > pair_t;
+		using pair_t = std::pair< T, string >;
 		dictionary( std::initializer_list< pair_t > l ) : data( l ) {}
 
 		/// lookup name of element e

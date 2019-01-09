@@ -19,10 +19,10 @@ namespace xo
 #if defined XO_USE_WINDOWS_PERFORMANCE_COUNTER
 	struct windows_performance_counter_clock
 	{
-		typedef long long rep;
-		typedef std::nano period;
-		typedef std::chrono::duration< rep, period > duration;
-		typedef std::chrono::time_point< windows_performance_counter_clock > time_point;
+		using rep = long long;
+		using period = std::nano;
+		using duration = std::chrono::duration< rep, period >;
+		using time_point = std::chrono::time_point< windows_performance_counter_clock >;
 		static const bool is_steady = true;
 		static time_point now();
 	};

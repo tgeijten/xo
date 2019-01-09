@@ -14,7 +14,7 @@ namespace xo
 	class XO_API stopwatch
 	{
 	public:
-		typedef std::pair< std::string, seconds_t > measure_t;
+		using measure_t = std::pair< std::string, seconds_t >;
 
 		stopwatch() : internal_measure_( 0 ), timer_() { epoch_ = timer_.seconds(); }
 		~stopwatch() {}

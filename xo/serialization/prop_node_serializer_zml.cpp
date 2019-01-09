@@ -6,7 +6,6 @@
 namespace xo
 {
 	using str_replace_vec = std::vector< std::pair< string, string > >;
-
 	void replace_all( string& s, const str_replace_vec& rvec )
 	{
 		for ( auto& r : rvec )
@@ -32,11 +31,11 @@ namespace xo
 				if ( !str.seek_past( "*/" ) )
 					return zml_error( str, ec, "Could not find matching */" ), string();
 			}
-			else return trim_str( t );
+			else return t;
 		}
 	}
 
-	void read_zml_layer( char_stream& str, prop_node& parent, const string& close, error_code* ec, const path& folder, str_replace_vec& vars )
+	void read_zml_layer( char_stream& str, prop_node& parent, const string& close, error_code* ec, const path& folder, const prop_node& root )
 	{
 		prop_node merge_pn;
 		for ( string t = get_zml_token( str, ec ); t != close; t = get_zml_token( str, ec ) )
@@ -44,18 +43,12 @@ namespace xo
 			if ( t.empty() ) // check if the stream has ended while expecting a close tag
 				return zml_error( str, ec, "Unexpected end of stream" );
 
-			// check directive statement
-			if ( t[ 0 ] == '#' )
+			if ( t[ 0 ] == '#' || t == "<--" ) // check directive statement
 			{
-				if ( t == "#include" )
+				if ( t == "#include" || t == "<--" )
 					parent.append( load_zml( folder / path( get_zml_token( str, ec ) ), ec ) );
 				else if ( t == "#merge" )
 					merge_pn.merge( load_zml( folder / path( get_zml_token( str, ec ) ), ec ) );
-				else if ( t == "#set" )
-				{
-					auto key = '(' + get_zml_token( str, ec ) + ')'; // do this first because order of evaluation
-					vars.emplace_back( std::move( key ), get_zml_token( str, ec ) );
-				}
 				else return zml_error( str, ec, "Unknown directive: " + t );
 			}
 			else
@@ -66,27 +59,30 @@ namespace xo
 					// read label
 					if ( !isalpha( t[ 0 ] ) )
 						return zml_error( str, ec, "Invalid label " + t );
-
-					replace_all( t, vars );
 					parent.push_back( t );
 
-					// read =
+					// read = or :
 					t = get_zml_token( str, ec );
-					if ( t == "=" )
+					if ( t == "=" || t == ": " )
 						t = get_zml_token( str, ec );
 					else if ( t != "{" && t != "[" )
-						return zml_error( str, ec, "Expected '=', '{' or '['" );
+						return zml_error( str, ec, "Expected '=', ':', '{' or '['" );
 				}
 				else parent.push_back( "" ); // add array child
 
-											 // read value
+				// parse value element after
 				if ( t == "{" ) // new group
-					read_zml_layer( str, parent.back().second, "}", ec, folder, vars );
+					read_zml_layer( str, parent.back().second, "}", ec, folder, root );
 				else if ( t == "[" ) // new array
-					read_zml_layer( str, parent.back().second, "]", ec, folder, vars );
-				else // value
+					read_zml_layer( str, parent.back().second, "]", ec, folder, root );
+				else if ( str_begins_with( t, "@" ) )
 				{
-					replace_all( t, vars );
+					if ( auto ref_pn = root.try_get_query( t.substr( 1 ) ) )
+						parent.back().second.set( *ref_pn );
+					else return zml_error( str, ec, "Could not find " + t );
+				}
+				else
+				{
 					parent.back().second.set_value( std::move( t ) );
 				}
 			}
@@ -98,13 +94,12 @@ namespace xo
 
 	prop_node parse_zml( char_stream& str, error_code* ec, const path& folder )
 	{
-		str.set_operators( { "=", "{", "}", "[", "]", ";", "//", "/*", "*/" } );
+		str.set_operators( { "=", ": ", "{", "}", "[", "]", ";", "//", "/*", "*/" } );
 		str.set_delimiter_chars( " \n\r\t\v" );
-		str.set_quotation_chars( "\"" );
+		str.set_quotation_chars( "\"'" );
 
 		prop_node root;
-		str_replace_vec defines;
-		read_zml_layer( str, root, "", ec, folder, defines );
+		read_zml_layer( str, root, "", ec, folder, root );
 		return root;
 	}
 
@@ -131,7 +126,7 @@ namespace xo
 		if ( level > 0 )
 			str << string( level - 1, '\t' );
 
-		write_zml_kvp( str, label, pn, " = " );
+		write_zml_kvp( str, label, pn, ": " );
 
 		if ( pn.size() > 0 )
 		{

@@ -15,7 +15,6 @@ namespace xo
 		double value;
 	};
 
-
 	template<> struct prop_node_cast< custom_struct > {
 		static custom_struct from( const prop_node& pn )
 		{

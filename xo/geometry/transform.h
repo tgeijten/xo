@@ -11,7 +11,6 @@ namespace xo
 	struct transform_
 	{
 		transform_() : p(), q() {}
-		transform_( const prop_node& pn ) : p( pn[ "p" ] ), q( pn[ "q" ] ) {}
 		transform_( vec3_<T> pos, quat_<T> ori ) : p( pos ), q( ori ) {}
 		transform_( vec3_<T> pos ) : p( pos ), q( quat_<T>::identity() ) {}
 		transform_( quat_<T> ori ) : p( vec3_<T>::zero() ), q( ori ) {}
@@ -36,11 +35,11 @@ namespace xo
 		static transform_<T> identity() { return transform_<T>( vec3_<T>::zero(), quat_<T>::identity() ); }
 	};
 
-	typedef transform_< float > transformf;
-	typedef transform_< double > transformd;
+	using transformf = transform_< float >;
+	using transformd = transform_< double >;
 
 	template< typename T > struct prop_node_cast<transform_<T>> {
-		static transform_<T> from( const prop_node& pn ) { return transform_<T>( pn ); }
+		static transform_<T> from( const prop_node& pn ) { return transform_<T>( pn.get< vec3_<T> >( "p" ), pn.get< quat_<T> >( "q" ) ); }
 		static prop_node to( const transform_<T>& vec ) { return static_cast<prop_node>( vec ); }
 	};
 }

@@ -6,13 +6,13 @@
 namespace xo
 {
 	// TODO: do we really need this?
-	typedef double real_t;
+	using real_t = double;
 
 	// TODO: move these types elsewhere (and perhaps use std::chrono)
-	typedef real_t seconds_t;
-	typedef long long nanoseconds_t;
-	typedef long long microseconds_t;
-	typedef long long milliseconds_t;
+	using seconds_t = double;
+	using nanoseconds_t = long long;
+	using microseconds_t = long long;
+	using milliseconds_t = long long;
 
 	typedef size_t index_t;
 	const size_t no_size = ~size_t( 0 );

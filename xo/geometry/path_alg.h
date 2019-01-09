@@ -19,20 +19,30 @@ namespace xo
 	{
 		auto s = std::size( path );
 		xo_assert( s >= 2 );
+
+		// check if this matches the first existing point
+		if ( xo::less_or_equal( insert_len, 0.0 ) )
+			return 0;
+
 		for ( index_t idx = 1; idx < s; ++idx )
 		{
-			if ( insert_len <= 0 )
-				return idx;
-
 			auto svec = path[ idx ] - path[ idx - 1 ];
 			auto slen = length( svec );
-			if ( insert_len < slen )
+
+			if ( xo::equal( insert_len, slen ) )
 			{
+				// return existing point
+				return idx;
+			}
+			else if ( insert_len < slen )
+			{
+				// new point inside this segment
 				path.insert( path.begin() + idx, path[ idx - 1 ] + ( insert_len / slen ) * svec );
 				return idx;
 			}
 			insert_len -= slen;
 		}
-		return no_index;
+
+		return s - 1; // return last point
 	}
 }

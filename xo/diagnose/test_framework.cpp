@@ -40,12 +40,11 @@ namespace xo
 		auto level = num_failed > 0 ? log::error_level : log::info_level;
 		log::message( level, "Test results: ", num_tests, " performed, ", num_failed, " failed, ", num_passed, " passed" );
 
-		return num_failed > 0 ? -1 : 0;
+		return num_failed;
 	}
 
 	xo::test_framework& test_framework::get_instance()
 	{
 		return test_;
 	}
-
 }
