@@ -23,7 +23,7 @@ namespace xo
 	version XO_VERSION = version( 0, 1, 0 );
 	version get_xo_version() { return XO_VERSION; }
 
-	char wait_for_key()
+	XO_API char wait_for_key()
 	{
 #ifdef XO_COMP_MSVC
 			return _getch();
