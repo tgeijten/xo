@@ -105,7 +105,8 @@ namespace xo
 
 	prop_node parse_zml( const char* str, error_code* ec )
 	{
-		return parse_zml( char_stream( str ), ec, path() );
+		char_stream stream( str );
+		return parse_zml( stream, ec, path() );
 	}
 
 	void write_zml_kvp( std::ostream& str, const string& label, const prop_node& pn, const char* equals_str = " = " )
@@ -179,18 +180,19 @@ namespace xo
 	{
 		xo_assert( read_pn_ );
 		// TODO: more efficient. parser should be able to take any stream type.
-		*read_pn_ = parse_zml( char_stream( string( std::istreambuf_iterator<char>( str ), {} ) ), ec_, file_folder_ );
+		char_stream stream( string( std::istreambuf_iterator<char>( str ), {} ) );
+		*read_pn_ = parse_zml( stream, ec_, file_folder_ );
 		return str;
 	}
 
-	std::ostream& prop_node_serializer_zml::write_stream( std::ostream& str )
+	std::ostream& prop_node_serializer_zml::write_stream( std::ostream& str ) const
 	{
 		xo_assert( write_pn_ );
 		write_zml_node( str, "", *write_pn_, 0 );
 		return str;
 	}
 
-	std::ostream& prop_node_serializer_zml_concise::write_stream( std::ostream& str )
+	std::ostream& prop_node_serializer_zml_concise::write_stream( std::ostream& str ) const
 	{
 		xo_assert( write_pn_ );
 		write_zml_node_concise( str, "", *write_pn_, 0 );
@@ -199,6 +201,7 @@ namespace xo
 
 	XO_API prop_node load_zml( const path& filename, error_code* ec, path parent_folder )
 	{
-		return parse_zml( char_stream( filename ), ec, filename.parent_path() );
+		char_stream stream( filename );
+		return parse_zml( stream, ec, filename.parent_path() );
 	}
 }

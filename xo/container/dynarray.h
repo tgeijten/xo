@@ -13,8 +13,8 @@ namespace xo
 	class dynarray
 	{
 	public:
-		using iterator = typename pointer_iterator< T >;
-		using const_iterator = typename pointer_iterator< const T >;
+		using iterator = pointer_iterator< T >;
+		using const_iterator = pointer_iterator< const T >;
 
 		dynarray() : data_( nullptr ), end_( nullptr ) {}
 		dynarray( size_t n, const T& v = T() ) : data_( new T[ n ] ), end_( data_.get() + n ) { assign( v ); }

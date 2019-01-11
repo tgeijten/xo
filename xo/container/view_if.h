@@ -11,8 +11,8 @@ namespace xo
 			iterator operator++( int ) { auto keepit = *this; ++pos_; next_match(); return keepit; }
 			bool operator==( const iterator& other ) { return pos_ == other.pos_; }
 			bool operator!=( const iterator& other ) { return pos_ != other.pos_; }
-			typename const It::value_type& operator*() const { return *pos_; }
-			typename const It::value_type* operator->() const { return &( *pos_ ); }
+			const typename It::value_type& operator*() const { return *pos_; }
+			const typename It::value_type* operator->() const { return &( *pos_ ); }
 			const view_if& cv_;
 			It pos_;
 		};

@@ -4,6 +4,8 @@
 #include <type_traits>
 #include <iosfwd>
 
+#include <xo/numerical/constants.h>
+
 namespace xo
 {
 	/// optional value that works with any value type

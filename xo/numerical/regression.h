@@ -69,7 +69,7 @@ namespace xo
 	linear_function< typename std::remove_const< typename std::iterator_traits< ItY >::value_type >::type > repeated_median_regression( ItX xb, ItX xe, ItY yb, ItY ye )
 	{
 		// Implementation of the algorithm described in [Siegel 1982]
-		using T = std::remove_const< std::iterator_traits< typename ItY >::value_type >::type;
+		using T = typename std::remove_const< typename std::iterator_traits< ItY >::value_type >::type;
 		auto n = xe - xb;
 		xo_assert_msg( n > 1 && n == ye - yb, "Input ranges must be > 1 and of equal size for x and y" );
 

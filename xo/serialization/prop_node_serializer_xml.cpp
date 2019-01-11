@@ -64,7 +64,7 @@ namespace xo
 		return str;
 	}
 
-	std::ostream& prop_node_serializer_xml::write_stream( std::ostream& str )
+	std::ostream& prop_node_serializer_xml::write_stream( std::ostream& str ) const
 	{
 		rapidxml::xml_document<> doc;
 		set_rapid_xml_node( doc, &doc, *write_pn_ );

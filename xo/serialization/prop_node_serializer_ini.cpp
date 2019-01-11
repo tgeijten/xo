@@ -3,7 +3,7 @@
 
 namespace xo
 {
-	std::ostream& prop_node_serializer_ini::write_stream( std::ostream& str )
+	std::ostream& prop_node_serializer_ini::write_stream( std::ostream& str ) const
 	{
 		xo_assert( write_pn_ );
 		for ( auto& e : *write_pn_ )

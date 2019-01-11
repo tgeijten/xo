@@ -6,7 +6,7 @@
 namespace xo
 {
 	/// find element in a container
-	template< typename C > typename auto find( C& cont, const typename C::value_type& e )
+	template< typename C > auto find( C& cont, const typename C::value_type& e )
 	{ auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( *it == e ) break; return it; }
 
 	/// find element in a container
@@ -38,7 +38,7 @@ namespace xo
 	{ for ( ; ib != ie; ++ib, ++ob ) *ob = *ib; }
 
 	/// append a container to another
-	template< typename C1, typename C2 > C1& append( C1& c1, C2& c2 )
+	template< typename C1, typename C2 > C1& append( C1& c1, const C2& c2 )
 	{ c1.insert( c1.end(), c2.begin(), c2.end() ); return c1; }
 
 	template< typename C > index_t find_index( const C& cont, const typename C::value_type& e ) {

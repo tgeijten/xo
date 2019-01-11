@@ -10,9 +10,16 @@
 #ifdef XO_COMP_MSVC
 #	include <conio.h>
 #	include <shlobj.h>
+#   include <direct.h>
 #	pragma warning( disable: 4996 )
+#else
+#   include <unistd.h>
 #endif
-#include <direct.h>
+
+#ifdef __APPLE__
+#	include <mach-o/dyld.h>
+#endif
+
 
 namespace xo
 {
@@ -36,7 +43,7 @@ namespace xo
 		return get_known_windows_folder( FOLDERID_LocalAppData );
 #else
 		string homeDir = std::getenv( "HOME" );
-		return homeDir + "/.config";
+		return path{homeDir + "/.config"};
 #endif
 	}
 
@@ -55,6 +62,19 @@ namespace xo
 		char buf[ 1024 ];
 		GetModuleFileName( 0, buf, sizeof( buf ) );
 		return path( buf ).parent_path();
+#elif defined(__linux__)
+		char buf[ 1024 ];
+		readlink("/proc/self/file", buf, sizeof( buf ));
+		return path( buf ).parent_path();
+#elif defined(__APPLE__)
+		uint32_t bufferSize = 1024;
+		std::vector<char> buf(bufferSize + 1);
+		if (_NSGetExecutablePath(buf.data(), &bufferSize))
+		{
+			buf.resize(bufferSize);
+			_NSGetExecutablePath(buf.data(), &bufferSize);
+		}
+		return path( buf.data() ).parent_path();
 #else
 		return "";
 #endif
@@ -90,7 +110,7 @@ namespace xo
 		return GetFileAttributes( path( p ).make_preferred().c_str() ) != INVALID_FILE_ATTRIBUTES;
 #else
 		struct stat info;
-		return stat( path, &info ) == 0;
+		return stat( p.c_str(), &info ) == 0;
 #endif
 	}
 
@@ -201,8 +221,14 @@ namespace xo
 			return result.st_mtime;
 		else xo_error( "Could not query " + p.string() );
 #	endif
+
+#else
+	struct stat attr;
+	if ( stat(p.c_str(), &attr) == 0 )
+		return attr.st_mtime;
+	else
+		xo_error( "Could not query " + p.string() );
 #endif
-		XO_NOT_IMPLEMENTED;
 	}
 
 }
