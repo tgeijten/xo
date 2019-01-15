@@ -40,8 +40,10 @@ namespace xo
 	/// split a string into a vector of strings
 	XO_API std::vector< string > split_str( const string& s, const string& sep_chars );
 
-	/// get the string left / right of a delimiter
+	/// get the string left of a delimiter or full string if not occurring
 	XO_API string left_of_str( const string& s, const string& sep_chars );
+
+	/// get the string right of a delimiter or empty string if not occurring
 	XO_API string right_of_str( const string& s, const string& sep_chars );
 
 	/// replace a substring in a string
