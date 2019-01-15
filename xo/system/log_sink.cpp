@@ -1,5 +1,6 @@
 #include "log_sink.h"
 #include <iostream>
+#include "xo/filesystem/filesystem.h"
 #include "system_tools.h"
 
 namespace xo
@@ -51,8 +52,12 @@ namespace xo
 	log::console_sink::console_sink( level l ) : stream_sink( l, std::cout )
 	{}
 
-	log::file_sink::file_sink( level l, const path& file ) : file_stream_( file.str() ), stream_sink( l, file_stream_ )
-	{}
+	log::file_sink::file_sink( level l, const path& file ) : file_stream_(), stream_sink( l, file_stream_ )
+	{
+		if ( file.has_parent_path() )
+			create_directories( file.parent_path() );
+		file_stream_.open( file.str() );
+	}
 
 	void log::file_sink::send_log_message( level l, const string& msg )
 	{
