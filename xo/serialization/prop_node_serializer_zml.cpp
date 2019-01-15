@@ -126,7 +126,7 @@ namespace xo
 		if ( level > 0 )
 			str << string( level - 1, '\t' );
 
-		write_zml_kvp( str, label, pn, ": " );
+		write_zml_kvp( str, label, pn, " = " );
 
 		if ( pn.size() > 0 )
 		{
@@ -134,7 +134,7 @@ namespace xo
 			bool is_array = find_if( pn, [&]( const prop_node::pair_t& n ) { return !n.first.empty(); } ) == pn.end();
 			auto depth = pn.count_layers();
 
-			if ( depth == 1 && pn.size() <= 4 )
+			if ( depth == 1 && pn.size() <= 3 )
 			{
 				// single line children
 				if ( level > 0 ) str << ( is_array ? " [ " : " { " );
