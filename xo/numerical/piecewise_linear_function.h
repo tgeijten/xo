@@ -16,7 +16,7 @@ namespace xo
 
 		T operator()( const T& x ) const
 		{
-			SCONE_ASSERT( data_.size() >= 2 );
+			xo_assert( data_.size() >= 2 );
 
 			auto it1 = data_.lower_bound( x );
 			if ( it1 == data_.end() )

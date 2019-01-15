@@ -16,7 +16,7 @@ namespace xo
 
 		T operator()( const T& x ) const
 		{
-			SCONE_ASSERT( !data_.empty() );
+			xo_assert( !data_.empty() );
 
 			auto it = data_.upper_bound( x );
 			if ( it == data_.end() )
