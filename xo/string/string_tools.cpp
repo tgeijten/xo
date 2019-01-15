@@ -50,13 +50,15 @@ namespace xo
 
 	XO_API string left_of_str( const string& s, const string& sep_chars )
 	{
-		return s.substr( 0, s.find_first_of( sep_chars.c_str() ) );
+		return s.substr( 0, s.find_last_of( sep_chars.c_str() ) );
 	}
 
 	XO_API string right_of_str( const string& s, const string& sep_chars )
 	{
 		auto pos = s.find_last_of( sep_chars.c_str() );
-		return pos != string::npos ? s.substr( pos + 1 ) : s;
+		if ( pos != string::npos )
+			return s.substr( pos + 1 );
+		else return string();
 	}
 
 	XO_API string& replace_str( string& s, const string& find_str, const string& replace_with )
