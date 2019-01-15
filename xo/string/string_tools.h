@@ -49,7 +49,10 @@ namespace xo
 	/// replace a substring in a string
 	XO_API string& replace_str( string& s, const string& find_str, const string& replace_with );
 
+	/// convert string to lower case
 	inline string to_lower( string&& s ) { for ( char& c : s ) c = std::tolower( c ); return s; }
+
+	/// convert string to upper case
 	inline string to_upper( string&& s ) { for ( char& c : s ) c = std::toupper( c ); return s; }
 
 	/// split string into trimmed key / value pair
