@@ -109,9 +109,9 @@ namespace xo
 	{
 		switch ( type_ )
 		{
-		case shape_type::sphere: return ( 4.0f / 3.0f ) * const_pi<float>() * cubed( radius() );
+		case shape_type::sphere: return ( 4.0f / 3.0f ) * numconstf::pi() * cubed( radius() );
 		case shape_type::box: return x_ * y_ * z_;
-		case shape_type::cylinder: return const_pi<float>() * squared( radius() ) * height();
+		case shape_type::cylinder: return numconstf::pi() * squared( radius() ) * height();
 		default: xo_error( "Cannot compute volume for " + name() );
 		}
 	}

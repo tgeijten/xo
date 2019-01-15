@@ -1,6 +1,6 @@
 #pragma once
 
-#include "xo/numerical/constants.h"
+#include "xo/numerical/numconst.h"
 #include <cmath> // TODO: get rid of this header
 
 namespace xo

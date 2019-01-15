@@ -1,6 +1,6 @@
 #include "debug_storage.h"
 #include "xo/container/storage.h"
-#include "xo/numerical/constants.h"
+#include "xo/numerical/numconst.h"
 #include <fstream>
 
 namespace xo

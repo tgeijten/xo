@@ -4,7 +4,7 @@
 #include <type_traits>
 #include <iosfwd>
 
-#include <xo/numerical/constants.h>
+#include <xo/numerical/numconst.h>
 
 namespace xo
 {

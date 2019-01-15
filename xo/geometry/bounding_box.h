@@ -1,7 +1,7 @@
 #pragma once
 
 #include "vec3_type.h"
-#include "xo/numerical/constants.h"
+#include "xo/numerical/numconst.h"
 
 namespace xo
 {
