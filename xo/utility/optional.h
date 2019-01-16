@@ -4,7 +4,7 @@
 #include <type_traits>
 #include <iosfwd>
 
-#include <xo/numerical/numconst.h>
+#include <xo/numerical/constants.h>
 
 namespace xo
 {
@@ -31,13 +31,13 @@ namespace xo
 	template< typename T > struct optional< T, typename std::enable_if< std::is_integral<T>::value >::type >
 	{
 		using value_type = T;
-		optional() : value_( const_sentinel<T>() ) {}
+		optional() : value_( constants<T>::sentinel() ) {}
 		optional( const T& v ) : value_( v ) {}
 		optional< T >& operator=( const T& v ) { value_ = v; return *this; }
-		explicit operator bool() const { return value_ != const_sentinel<T>(); }
+		explicit operator bool() const { return value_ != constants<T>::sentinel(); }
 		const T& operator*() const { return value_; }
 		const T* operator->() const { return &value_; }
-		void reset() { value_ = const_sentinel<T>(); }
+		void reset() { value_ = constants<T>::sentinel(); }
 		const T& value() const { xo_error_if( !*this, "xo::optional has no value" ); return value_; }
 	private:
 		T value_;

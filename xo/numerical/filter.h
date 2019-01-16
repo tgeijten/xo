@@ -37,7 +37,7 @@ namespace xo
 	{
 		// https://stackoverflow.com/questions/20924868/calculate-coefficients-of-2nd-order-butterworth-low-pass-filter
 		iir_filter< T, 2 > f;
-		const T ita = T(1) / std::tan( const_pi<T>() * cutoff_ratio );
+		const T ita = T(1) / std::tan( constants<T>::pi() * cutoff_ratio );
 		const T q = sqrt( T(2) );
 		f.b0_ = T(1) / ( T(1) + q * ita + ita * ita );
 		f.b_[ 0 ] = T(2) * f.b0_;

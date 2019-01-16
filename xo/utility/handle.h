@@ -9,7 +9,7 @@ namespace xo
 	{
 		handle() : value( T( -1 ) ) {}
 		explicit handle( T v ) : value( v ) {}
-		explicit handle( size_t v ) : value( T( v ) ) { xo_error_if( v < const_lowest<T>() || v >= const_max<T>(), "handle cannot hold value " + to_str( v ) ); }
+		explicit handle( size_t v ) : value( T( v ) ) { xo_error_if( v < constants<T>::lowest() || v >= constants<T>::max(), "handle cannot hold value " + to_str( v ) ); }
 
 		explicit operator bool() const { return value != T( -1 ); }
 		explicit operator T() const { return value; }

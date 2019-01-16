@@ -1,14 +1,14 @@
 #pragma once
 
 #include "vec3_type.h"
-#include "xo/numerical/numconst.h"
+#include "xo/numerical/constants.h"
 
 namespace xo
 {
 	template< typename T >
 	struct bounding_box_
 	{
-		bounding_box_() : lower_bounds( const_max<T>() ), upper_bounds( const_lowest<T>() ) {}
+		bounding_box_() : lower_bounds( constants<T>::max() ), upper_bounds( constants<T>::lowest() ) {}
 		bounding_box_( const vec3_<T>& p ) : lower_bounds( p ), upper_bounds( p ) {}
 		bounding_box_( const vec3_<T>& lower, const vec3_<T>& upper ) : lower_bounds( lower ), upper_bounds( upper ) {}
 

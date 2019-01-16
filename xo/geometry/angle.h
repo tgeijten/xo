@@ -1,14 +1,14 @@
 #pragma once
 
-#include "xo/numerical/numconst.h"
-#include <cmath> // TODO: get rid of this header
+#include "xo/numerical/constants.h"
+#include <cmath>
 
 namespace xo
 {
 	enum class angle_unit { degrees, radians };
 
-	template< typename T > T rad_to_deg( T rad_value ) { return ( T( 180 ) / const_pi<T>() ) * rad_value; }
-	template< typename T > T deg_to_rad( T deg_value ) { return ( const_pi<T>() / T( 180 ) ) * deg_value; }
+	template< typename T > T rad_to_deg( T rad_value ) { return ( T( 180 ) / constants<T>::pi() ) * rad_value; }
+	template< typename T > T deg_to_rad( T deg_value ) { return ( constants<T>::pi() / T( 180 ) ) * deg_value; }
 
 	template< angle_unit A, angle_unit B > struct angle_converter
 	{ template< typename T > static const T& convert( const T& v ) { return v; } };
