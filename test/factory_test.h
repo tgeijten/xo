@@ -13,8 +13,8 @@ namespace xo
 	void factory_test()
 	{
 		factory< FA, prop_node > fact;
-		fact.register_class< FB >( "B" );
-		fact.register_class< FC >( "C" );
+		fact.register_type< FB >( "B" );
+		fact.register_type< FC >( "C" );
 
 		prop_node pn;
 

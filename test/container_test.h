@@ -85,5 +85,11 @@ namespace xo
 			t.add_row( stringf( "C%d", i ) );
 		}
 		XO_TEST( t( "R1", "C1" ) == 1.0 );
+
+		circular_frame_buffer< double, string > cb;
+		cb.add_channel( "test" );
+		cb.add_frame();
+		cb.add_frame();
+		cb.get_interpolated_value( 0, 0, 0.5 );
 	}
 }
