@@ -13,9 +13,9 @@ namespace xo
 		static factory< prop_node_serializer > f;
 		if ( f.empty() )
 		{
-			f.register_class< prop_node_serializer_xml >( "xml" );
-			f.register_class< prop_node_serializer_ini >( "ini" );
-			f.register_class< prop_node_serializer_zml >( "zml" );
+			f.register_type< prop_node_serializer_xml >( "xml" );
+			f.register_type< prop_node_serializer_ini >( "ini" );
+			f.register_type< prop_node_serializer_zml >( "zml" );
 		}
 		return f;
 	}

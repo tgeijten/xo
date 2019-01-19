@@ -15,14 +15,14 @@ namespace xo
 	public:
 		using create_func_t = std::function< std::unique_ptr< T >( Args... ) >;
 
-		/// register class U
+		/// register type U
 		template< typename U >
-		void register_class( const std::string& name = clean_type_name<U>() ) {
+		void register_type( const std::string& name = clean_type_name<U>() ) {
 			func_map_[ name ] = []( Args... args ) { return std::unique_ptr< T >( new U( args... ) ); };
 		}
 
-		/// unregister class type
-		void unregister_class( const std::string& type ) {
+		/// unregister type
+		void unregister_type( const std::string& type ) {
 			auto it = func_map_.find( type );
 			xo_error_if( it == func_map_.end(), "Unknown type: " + type );
 			func_map_.erase( it );
