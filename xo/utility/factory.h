@@ -7,6 +7,9 @@
 #include "xo/system/system_tools.h"
 #include "xo/container/flat_map.h"
 
+#define XO_FACTORY_REGISTER( _factory_, _type_ ) auto register_##_type_ = xo::make_type_resistrant< _type_ >( _factory_ )
+#define XO_FACTORY_REGISTER_NAME( _factory_, _type_, _name_ ) auto register_##_type_ = xo::make_type_resistrant< _type_ >( _factory_, _name_ )
+
 namespace xo
 {
 	template< typename T, typename... Args >
@@ -17,45 +20,53 @@ namespace xo
 
 		/// register type U
 		template< typename U >
-		void register_type( const std::string& name = clean_type_name<U>() ) {
-			func_map_[ name ] = []( Args... args ) { return std::unique_ptr< T >( new U( args... ) ); };
+		void register_type( const std::string& type_id = clean_type_name<U>() ) {
+			xo_error_if( func_map_.has_key( type_id ), "Type already registered: " + type_id );
+			func_map_[ type_id ] = []( Args... args ) { return std::unique_ptr< T >( new U( args... ) ); };
 		}
 
 		/// unregister type
-		void unregister_type( const std::string& type ) {
-			auto it = func_map_.find( type );
-			xo_error_if( it == func_map_.end(), "Unknown type: " + type );
+		void unregister_type( const std::string& type_id ) {
+			auto it = func_map_.find( type_id );
+			xo_error_if( it == func_map_.end(), "Unknown type: " + type_id );
 			func_map_.erase( it );
 		}
 
 		/// create instance of type
-		std::unique_ptr< T > create( const std::string& type, Args... args ) {
-			auto it = func_map_.find( type );
-			xo_error_if( it == func_map_.end(), "Unknown type: " + type );
+		std::unique_ptr< T > create( const std::string& type_id, Args... args ) {
+			auto it = func_map_.find( type_id );
+			xo_error_if( it == func_map_.end(), "Unknown type: " + type_id );
 			return it->second( args... );
 		}
 
 		/// try create instance of type, return nullptr if not found
-		std::unique_ptr< T > try_create( const std::string& type, Args... args ) {
-			auto it = func_map_.find( type );
+		std::unique_ptr< T > try_create( const std::string& type_id, Args... args ) {
+			auto it = func_map_.find( type_id );
 			return it != func_map_.end() ? it->second( args... ) : nullptr;
 		}
 
 		bool empty() const { return func_map_.empty(); }
-		bool has_type( const std::string& type ) const { return func_map_.find( type ) != func_map_.end(); }
+		bool has_type( const std::string& type_id ) const { return func_map_.find( type_id ) != func_map_.end(); }
 
 	private:
 		xo::flat_map< std::string, create_func_t > func_map_;
 	};
 
-	template< typename F, typename C >
-	class scoped_factory_registrant {
+	template< typename T, typename F >
+	class scoped_type_registrant {
 	public:
-		scoped_factory_registrant( F& f, const string& name = clean_type_name<C>() ) : factory_( f ), name_( name )
-		{ factory_.register_class<C>( name_ ); }
-		~scoped_factory_registrant() { factory_.unregister_class( name_ ); }
+		scoped_type_registrant( F& f, const string& name = clean_type_name<T>() ) : factory_( f ), name_( name ) { factory_.register_type<T>( name_ ); }
+		~scoped_type_registrant() { factory_.unregister_type( name_ ); }
 	private:
 		F& factory_;
 		string name_;
 	};
+
+	template< typename T, typename F > scoped_type_registrant< T, F > make_type_resistrant( F& f ) {
+		return typename scoped_type_registrant< T, F >( f, clean_type_name<T>() );
+	}
+
+	template< typename T, typename F > scoped_type_registrant< T, F > make_type_resistrant( F& f, const string& type_id ) {
+		return typename scoped_type_registrant< T, F >( f, type_id );
+	}
 }
