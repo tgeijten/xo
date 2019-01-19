@@ -55,7 +55,7 @@ namespace xo
 	template< typename T, typename F >
 	class scoped_type_registrant {
 	public:
-		scoped_type_registrant( F& f, const string& name = clean_type_name<T>() ) : factory_( f ), name_( name ) { factory_.register_type<T>( name_ ); }
+		scoped_type_registrant( F& f, const string& name = clean_type_name<T>() ) : factory_( f ), name_( name ) { factory_.template register_type<T>( name_ ); }
 		~scoped_type_registrant() { factory_.unregister_type( name_ ); }
 	private:
 		F& factory_;
@@ -63,10 +63,10 @@ namespace xo
 	};
 
 	template< typename T, typename F > scoped_type_registrant< T, F > make_type_resistrant( F& f ) {
-		return typename scoped_type_registrant< T, F >( f, clean_type_name<T>() );
+		return scoped_type_registrant< T, F >( f, clean_type_name<T>() );
 	}
 
 	template< typename T, typename F > scoped_type_registrant< T, F > make_type_resistrant( F& f, const string& type_id ) {
-		return typename scoped_type_registrant< T, F >( f, type_id );
+		return scoped_type_registrant< T, F >( f, type_id );
 	}
 }
