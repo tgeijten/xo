@@ -5,6 +5,7 @@
 
 namespace xo
 {
+	// TODO: deprecate? is this needed next to circular_deque?
 	template< typename T, typename L = void >
 	class circular_frame_buffer
 	{
@@ -32,9 +33,9 @@ namespace xo
 
 		/// get the interpolated value of a specific frame / channel
 		T get_interpolated_value( index_t frame0, index_t channel, T pos ) {
-			xo_assert( frame0 >= frame_count() - frame_buf_size_ && frame0 < frame_count() && channel < this->channel_count() );
-			index_t ofs0 = ( frame0 % frame_buf_size_ ) * this->channel_count() + channel;
-			index_t ofs1 = ( ( frame0 + 1 ) % frame_buf_size_ ) * this->channel_count() + channel;
+			xo_assert( frame0 >= frame_size() - frame_buf_size_ && frame0 < frame_size() && channel < this->channel_size() );
+			index_t ofs0 = ( frame0 % frame_buf_size_ ) * this->channel_size() + channel;
+			index_t ofs1 = ( ( frame0 + 1 ) % frame_buf_size_ ) * this->channel_size() + channel;
 			return ( T( 1 ) - pos ) * data_[ ofs0 ] + pos * data_[ ofs1 ];
 		}
 
