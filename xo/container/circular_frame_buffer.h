@@ -33,7 +33,7 @@ namespace xo
 
 		/// get the interpolated value of a specific frame / channel
 		T get_interpolated_value( index_t frame0, index_t channel, T pos ) {
-			xo_assert( frame0 >= frame_size() - frame_buf_size_ && frame0 < frame_size() && channel < this->channel_size() );
+			xo_assert( ( frame0 < frame_size() ) && ( channel < this->channel_size() ) );
 			index_t ofs0 = ( frame0 % frame_buf_size_ ) * this->channel_size() + channel;
 			index_t ofs1 = ( ( frame0 + 1 ) % frame_buf_size_ ) * this->channel_size() + channel;
 			return ( T( 1 ) - pos ) * data_[ ofs0 ] + pos * data_[ ofs1 ];

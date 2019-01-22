@@ -20,6 +20,9 @@
 #include "serializer_test.h"
 #include "regression_test.h"
 #include "alignment_test.h"
+#include "xo/diagnose/debug_tools.h"
+#include "xo/numerical/functions.h"
+#include "performance_test.h"
 
 using xo::string;
 
@@ -30,8 +33,7 @@ int main( int argc, char* argv[] )
 
 	try
 	{
-
-
+		xo::performance_test();
 		xo::timer_test();
 
 #ifdef XO_ENABLE_PROFILER

@@ -82,12 +82,12 @@ namespace xo
 		for ( int i = 0; i < 10; ++i )
 		{
 			t.add_column( stringf( "C%d", i ) );
-			t.add_row( stringf( "C%d", i ) );
+			t.add_row( stringf( "R%d", i ) );
+			t( stringf( "R%d", i ), stringf( "C%d", i ) ) = i;
 		}
 		XO_TEST( t( "R1", "C1" ) == 1.0 );
 
-		circular_frame_buffer< double, string > cb;
-		cb.add_channel( "test" );
+		circular_frame_buffer< double, string > cb( 1, 10 );
 		cb.add_frame();
 		cb.add_frame();
 		cb.get_interpolated_value( 0, 0, 0.5 );

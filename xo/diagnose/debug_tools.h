@@ -8,7 +8,7 @@
 namespace xo
 {
 	template< typename T >
-	void output_function( const path& file, T min, T max, T( *func )( T ), int samples = 101 )
+	void write_function( const path& file, T min, T max, T ( *func )( T ), int samples = 101 )
 	{
 		std::ofstream of( file.c_str() );
 		of << std::setprecision( 6 );
