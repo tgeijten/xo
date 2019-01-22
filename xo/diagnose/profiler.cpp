@@ -4,8 +4,6 @@
 #include "xo/system/log_sink.h"
 #include "profiler_config.h"
 
-#define XO_PROFILER_MEASURE_OVERHEAD
-
 namespace xo
 {
 	profiler profiler::instance_;

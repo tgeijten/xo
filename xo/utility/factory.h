@@ -7,8 +7,10 @@
 #include "xo/system/system_tools.h"
 #include "xo/container/flat_map.h"
 
-#define XO_FACTORY_REGISTER( _factory_, _type_ ) auto register_##_type_ = xo::make_type_resistrant< _type_ >( _factory_ )
-#define XO_FACTORY_REGISTER_NAME( _factory_, _type_, _name_ ) auto register_##_type_ = xo::make_type_resistrant< _type_ >( _factory_, _name_ )
+#define XO_FACTORY_REGISTRANT( _factory_, _type_ ) \
+	auto _type_##_registrant = ::xo::make_type_resistrant< _type_ >( _factory_ )
+#define XO_FACTORY_REGISTRANT_NAMED( _factory_, _type_, _name_ ) \
+	auto _name_##_registrant = xo::make_type_resistrant< _type_ >( _factory_, #_name_ )
 
 namespace xo
 {
