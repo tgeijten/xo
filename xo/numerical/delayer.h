@@ -9,6 +9,7 @@ namespace xo
 	{
 		delayer( float delay = 1.0f, const T& init_value = T() ) : window_( delay / ( N - 1 ) ), data_{ init_value }, idx_( 0 ), time_( 0 ) {
 			static_assert( N >= 2, "xo::delayer resolution parameter must be >= 2" );
+			xo_assert( delay > 0 );
 		}
 
 		void add_sample( const T& value, float delta_time ) {
@@ -39,6 +40,7 @@ namespace xo
 	{
 		smooth_delayer( float delay = 1.0f, const T& init_value = T() ) : window_( delay / ( N - 0.5f ) ), data_{ init_value }, idx_( 0 ), time_( 0 ), inter_( 0 ) {
 			static_assert( N >= 2, "xo::delayer resolution parameter must be >= 2" );
+			xo_assert( delay > 0 );
 		}
 
 		void add_sample( const T& value, float delta_time ) {
