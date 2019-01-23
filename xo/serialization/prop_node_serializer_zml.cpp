@@ -43,13 +43,17 @@ namespace xo
 			if ( t.empty() ) // check if the stream has ended while expecting a close tag
 				return zml_error( str, ec, "Unexpected end of stream" );
 
-			if ( t[ 0 ] == '#' || t == "<--" ) // check directive statement
+			if ( t[ 0 ] == '#' || t == "<<<" ) // check directive statement
 			{
-				if ( t == "#include" || t == "<--" )
-					parent.append( load_zml( folder / path( get_zml_token( str, ec ) ), ec ) );
+				auto filename = path( get_zml_token( str, ec ) );
+				if ( t == "#include" || t == "<<<" )
+					parent.append( load_zml( folder / filename, ec ) );
 				else if ( t == "#merge" )
 					merge_pn.merge( load_zml( folder / path( get_zml_token( str, ec ) ), ec ) );
 				else return zml_error( str, ec, "Unknown directive: " + t );
+
+				if ( t == "<<<" && get_zml_token( str, ec ) != ">>>" )
+					zml_error( str, ec, "Could not find matching '>>>'" );
 			}
 			else
 			{
