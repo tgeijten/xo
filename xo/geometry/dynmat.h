@@ -1,5 +1,7 @@
 #pragma once
 
+#include "dynvec.h"
+
 namespace xo
 {
 	template< typename T >
