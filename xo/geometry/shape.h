@@ -15,6 +15,7 @@ namespace xo
 {
 	enum class shape_type { undefined, sphere, box, capsule, cylinder, cone, plane };
 
+	// TODO: use std::variant
 	class XO_API shape
 	{
 	public:
@@ -51,6 +52,9 @@ namespace xo
 	};
 
 	XO_API shape_type get_shape_type( const string& s );
+
+	inline shape make_sphere( float radius ) { return shape( shape_type::sphere, radius ); }
+	inline shape make_box( float xdim, float ydim, float zdim ) { return shape( shape_type::box, xdim, ydim, zdim ); }
 }
 
 #if defined(_MSC_VER)
