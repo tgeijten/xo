@@ -1,8 +1,8 @@
 #pragma once
 
 #include "xo/utility/types.h"
-#include "xo/container/prop_node.h"
-#include <iosfwd>
+#include "xo/container/prop_node.h" // TODO: get rid of this header
+#include <iosfwd> // TODO: get rid of this header
 
 namespace xo
 {
@@ -71,6 +71,7 @@ namespace xo
 				v.z = pn.get<T>( 2 );
 			}
 			else if ( pn.size() == 0 && pn.has_value() ) {
+				// TODO: use char_stream instead, check performance / sizeof first
 				std::stringstream( pn.get_value().c_str() ) >> v.x >> v.y >> v.z;
 			}
 			return v;

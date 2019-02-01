@@ -184,7 +184,7 @@ namespace xo
 
 	XO_API string load_string( const path& filename, error_code* ec )
 	{
-		// this method uses a stringbuf, which may be slower but is more stable
+		// this method uses a stringbuf, which requires an extra copy (C++ suckiness)
 		std::ifstream ifstr( filename.str() );
 		if ( !ifstr.good() )
 			return set_error_or_throw( ec, "Could not open " + filename.str() ), "";
@@ -230,5 +230,4 @@ namespace xo
 		xo_error( "Could not query " + p.string() );
 #endif
 	}
-
 }
