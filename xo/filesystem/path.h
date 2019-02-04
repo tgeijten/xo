@@ -27,7 +27,6 @@ namespace xo
 
 		static char preferred_separator();
 
-		const string& str() const { return data_; }
 		const string& string() const { return data_; }
 		const char* c_str() const { return data_.c_str(); }
 
@@ -65,7 +64,7 @@ namespace xo
 	inline bool operator<( const path& p1, const path& p2 ) { return p1.string() < p2.string(); }
 
 	template<> inline path from_str( const string& s, path d ) { return path( s ); }
-	inline string to_str( const path& value ) { return value.str(); }
+	inline string to_str( const path& value ) { return value.string(); }
 }
 
 #ifdef XO_COMP_MSVC

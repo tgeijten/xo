@@ -11,7 +11,7 @@ namespace xo
 		auto_storage_writer( const path& filename ) : filename_( filename ) {}
 		~auto_storage_writer() {
 			if ( !storage_.empty() )
-				std::ofstream( filename_.str() ) << storage_;
+				std::ofstream( filename_.string() ) << storage_;
 		}
 
 		void write( const L& label, T value ) {

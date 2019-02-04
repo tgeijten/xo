@@ -95,17 +95,17 @@ namespace xo
 
 	xo::path& path::operator/=( const path& p )
 	{
-		return *this /= p.str();
+		return *this /= p.string();
 	}
 
 	path operator/( const path& p1, const string& p2 )
 	{
-		return p1.has_filename() ? path( p1.str() + path::preferred_separator() + p2 ) : path( p1.str() + p2 );
+		return p1.has_filename() ? path( p1.string() + path::preferred_separator() + p2 ) : path( p1.string() + p2 );
 	}
 
 	xo::path operator/( const path& p1, const path& p2 )
 	{
-		return p1 / p2.str();
+		return p1 / p2.string();
 	}
 
 	path operator/( const path& p1, const char* p2 )
@@ -115,22 +115,22 @@ namespace xo
 
 	xo::path operator+( const path& p1, const string& p2 )
 	{
-		return path( p1.str() + p2 );
+		return path( p1.string() + p2 );
 	}
 
 	path operator+( const string& p1, const path& p2 )
 	{
-		return path( p1 + p2.str() );
+		return path( p1 + p2.string() );
 	}
 
 	bool operator!=( const path& p1, const path& p2 )
 	{
-		return p1.str() != p2.str();
+		return p1.string() != p2.string();
 	}
 
 	bool operator==( const path& p1, const path& p2 )
 	{
-		return p1.str() == p2.str();
+		return p1.string() == p2.string();
 	}
 
 }

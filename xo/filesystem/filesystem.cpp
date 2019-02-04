@@ -92,8 +92,8 @@ namespace xo
 #else
 		if ( overwrite || !file_exists( to ) )
 		{
-			std::ifstream src( from.str(), std::ios::binary );
-			std::ofstream dst( to.str(), std::ios::binary );
+			std::ifstream src( from.string(), std::ios::binary );
+			std::ofstream dst( to.string(), std::ios::binary );
 			if ( src.good() && dst.good() )
 			{
 				dst << src.rdbuf();
@@ -116,7 +116,7 @@ namespace xo
 
 	XO_API bool file_exists( const path& file )
 	{
-		std::ifstream ifs( file.str() );
+		std::ifstream ifs( file.string() );
 		return ifs.good();
 	}
 
@@ -185,9 +185,9 @@ namespace xo
 	XO_API string load_string( const path& filename, error_code* ec )
 	{
 		// this method uses a stringbuf, which requires an extra copy (C++ suckiness)
-		std::ifstream ifstr( filename.str() );
+		std::ifstream ifstr( filename.string() );
 		if ( !ifstr.good() )
-			return set_error_or_throw( ec, "Could not open " + filename.str() ), "";
+			return set_error_or_throw( ec, "Could not open " + filename.string() ), "";
 
 		std::stringstream buf;
 		buf << ifstr.rdbuf();

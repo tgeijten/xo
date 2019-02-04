@@ -14,7 +14,7 @@ namespace xo
 		file_storage( const path& filename ) : storage< T, L >(), filename_( filename ) {}
 		virtual ~file_storage() {
 			if ( !this->empty() )
-				std::ofstream( filename_.str() ) << *this;
+				std::ofstream( filename_.string() ) << *this;
 		}
 	private:
 		path filename_;
