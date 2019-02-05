@@ -60,17 +60,20 @@ namespace xo
 				// check if we're reading an array or if this is a label
 				if ( close != "]" )
 				{
-					// read label
-					if ( !isalpha( t[ 0 ] ) )
-						return zml_error( str, ec, "Invalid label " + t );
-					parent.push_back( t );
+					if ( t != "{" && t != "[" )
+					{
+						// read label
+						if ( !isalpha( t[ 0 ] ) )
+							return zml_error( str, ec, "Invalid label " + t );
+						parent.push_back( t );
 
-					// read = or :
-					t = get_zml_token( str, ec );
-					if ( t == "=" || t == ": " )
+						// read = or :
 						t = get_zml_token( str, ec );
-					else if ( t != "{" && t != "[" )
-						return zml_error( str, ec, "Expected '=', ':', '{' or '['" );
+						if ( t == "=" || t == ": " )
+							t = get_zml_token( str, ec );
+						else if ( t != "{" && t != "[" )
+							return zml_error( str, ec, "Expected '=', ':', '{' or '['" );
+					}
 				}
 				else parent.push_back( "" ); // add array child
 
@@ -113,10 +116,11 @@ namespace xo
 		return parse_zml( stream, ec, path() );
 	}
 
-	void write_zml_kvp( std::ostream& str, const string& label, const prop_node& pn, const char* equals_str = " = " )
+	void write_zml_kvp( std::ostream& str, const string& label, const prop_node& pn, const char* equals_str, bool inside_array )
 	{
 		bool show_label = !label.empty();
 		bool show_value = !pn.get_value().empty() || pn.size() == 0;
+		xo_error_if( !show_label && show_value && !inside_array, "Value without label outside array" );
 		if ( show_label )
 			str << try_quoted( label, ";{}[]#" );
 		if ( show_label && show_value )
@@ -125,12 +129,12 @@ namespace xo
 			str << try_quoted( pn.get_value(), ";{}[]#" );
 	}
 
-	void write_zml_node( std::ostream& str, const string& label, const prop_node& pn, int level )
+	void write_zml_node( std::ostream& str, const string& label, const prop_node& pn, int level, bool inside_array )
 	{
 		if ( level > 0 )
 			str << string( level - 1, '\t' );
 
-		write_zml_kvp( str, label, pn, " = " );
+		write_zml_kvp( str, label, pn, " = ", inside_array );
 
 		if ( pn.size() > 0 )
 		{
@@ -145,7 +149,7 @@ namespace xo
 				for ( auto it = pn.begin(); it != pn.end(); ++it )
 				{
 					if ( it != pn.begin() ) str << " ";
-					write_zml_node( str, it->first, it->second, 0 );
+					write_zml_node( str, it->first, it->second, 0, is_array );
 				}
 				if ( level > 0 ) str << ( is_array ? " ]" : " }" );
 			}
@@ -155,7 +159,7 @@ namespace xo
 				if ( level > 0 ) str << ( is_array ? " [" : " {" ) << std::endl;
 				for ( auto it = pn.begin(); it != pn.end(); ++it )
 				{
-					write_zml_node( str, it->first, it->second, level + 1 );
+					write_zml_node( str, it->first, it->second, level + 1, is_array );
 					str << std::endl;
 				}
 				if ( level > 0 ) str << string( level - 1, '\t' ) << ( is_array ? "]" : "}" );
@@ -163,9 +167,9 @@ namespace xo
 		}
 	}
 
-	void write_zml_node_concise( std::ostream& str, const string& label, const prop_node& pn, int level )
+	void write_zml_node_concise( std::ostream& str, const string& label, const prop_node& pn, int level, bool inside_array )
 	{
-		write_zml_kvp( str, label, pn, "=" );
+		write_zml_kvp( str, label, pn, "=", inside_array );
 		if ( pn.size() > 0 )
 		{
 			// add children, either array or group
@@ -174,7 +178,7 @@ namespace xo
 			for ( auto it = pn.begin(); it != pn.end(); ++it )
 			{
 				if ( it != pn.begin() ) str << " ";
-				write_zml_node_concise( str, it->first, it->second, level + 1 );
+				write_zml_node_concise( str, it->first, it->second, level + 1, inside_array );
 			}
 			if ( level > 0 ) str << ( is_array ? ']' : '}' );
 		}
@@ -192,14 +196,14 @@ namespace xo
 	std::ostream& prop_node_serializer_zml::write_stream( std::ostream& str ) const
 	{
 		xo_assert( write_pn_ );
-		write_zml_node( str, "", *write_pn_, 0 );
+		write_zml_node( str, "", *write_pn_, 0, false );
 		return str;
 	}
 
 	std::ostream& prop_node_serializer_zml_concise::write_stream( std::ostream& str ) const
 	{
 		xo_assert( write_pn_ );
-		write_zml_node_concise( str, "", *write_pn_, 0 );
+		write_zml_node_concise( str, "", *write_pn_, 0, false );
 		return str;
 	}
 
