@@ -1,7 +1,5 @@
 file (GLOB TEST_FILES "*.h" "*.cpp")
 
-source_group("" FILES ${TEST_FILES})
-
 include_directories(${XO_INCLUDE_DIR})
 add_executable(xo_test ${TEST_FILES})
 
