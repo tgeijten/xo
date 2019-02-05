@@ -8,6 +8,12 @@
 #	pragma warning( disable: 4251 )
 #endif
 
+namespace std {
+	namespace filesystem {
+		class path;
+	}
+}
+
 namespace xo
 {
 	class XO_API path
@@ -17,6 +23,7 @@ namespace xo
 		path( const path& p ) : data_( p.data_ ) {}
 		path( path&& p ) : data_( std::move( p.data_ ) ) {}
 		path( const char* p ) : data_( p ) {}
+		path( std::filesystem::path& p );
 		explicit path( const string& p ) : data_( p ) {}
 		explicit path( string&& p ) : data_( std::move( p ) ) {}
 

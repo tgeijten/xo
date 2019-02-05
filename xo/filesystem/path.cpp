@@ -1,8 +1,14 @@
 #include "path.h"
 
+#include <filesystem>
+
 namespace xo
 {
 	const size_t path::npos = string::npos;
+
+	path::path( std::filesystem::path& p ) :
+		data_( p.string() )
+	{}
 
 	char path::preferred_separator()
 	{
