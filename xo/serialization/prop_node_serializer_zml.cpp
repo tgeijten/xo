@@ -24,12 +24,16 @@ namespace xo
 			string t = str.get_token();
 			if ( t == ";" || t == "#" || t == "//" ) // single line comment: skip rest of line
 			{
+				if ( t == "#" && str.peekc() == '{' ) // multiline comment
+					if ( !str.seek_past( "#}" ) )
+						return zml_error( str, ec, "Could not find matching '#}'" ), string();
+
 				str.get_line();
 			}
-			else if ( t == "/*" ) // could be a comment
+			else if ( t == "/*" ) // multiline comment
 			{
 				if ( !str.seek_past( "*/" ) )
-					return zml_error( str, ec, "Could not find matching */" ), string();
+					return zml_error( str, ec, "Could not find matching '*/'" ), string();
 			}
 			else return t;
 		}
@@ -43,17 +47,17 @@ namespace xo
 			if ( t.empty() ) // check if the stream has ended while expecting a close tag
 				return zml_error( str, ec, "Unexpected end of stream" );
 
-			if ( t[ 0 ] == '#' || t == "<<<" ) // check directive statement
+			if ( t[ 0 ] == '#' || t == "<<" ) // check directive statement
 			{
 				auto filename = path( get_zml_token( str, ec ) );
-				if ( t == "#include" || t == "<<<" )
+				if ( t == "#include" || t == "<<" )
 					parent.append( load_zml( folder / filename, ec ) );
 				else if ( t == "#merge" )
 					merge_pn.merge( load_zml( folder / path( get_zml_token( str, ec ) ), ec ) );
 				else return zml_error( str, ec, "Unknown directive: " + t );
 
-				if ( t == "<<<" && get_zml_token( str, ec ) != ">>>" )
-					zml_error( str, ec, "Could not find matching '>>>'" );
+				if ( t == "<<" && get_zml_token( str, ec ) != ">>" )
+					zml_error( str, ec, "Could not find matching '>>'" );
 			}
 			else
 			{
