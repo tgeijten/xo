@@ -21,8 +21,9 @@ use_precompiled_headers( XO_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/stdafx.h" "${CM
 
 add_library(xo SHARED ${XO_SOURCES} )
 
-set_property(TARGET xo PROPERTY CXX_STANDARD 17)
-set_property(TARGET xo PROPERTY CXX_STANDARD_REQUIRED ON)
+set_target_properties(xo PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+
+target_include_directories(xo PUBLIC ${XO_INCLUDE_DIR})
 
 if (UNIX)
     target_link_libraries(xo pthread)
@@ -34,8 +35,6 @@ if (MSVC)
 	source_group("${xolib}" FILES ${XO_${xolib}} )
 	endforeach()
 endif()
-
-include_directories(${XO_INCLUDE_DIR})
 
 if (MSVC)
 	target_compile_definitions( xo PRIVATE XO_EXPORTS )
