@@ -53,7 +53,7 @@ namespace xo
 		bool has_type( const std::string& type_id ) const { return func_map_.find( type_id ) != func_map_.end(); }
 
 		const_iterator begin() const { return func_map_.begin(); }
-		const_iterator end() const { return func_map_.begin(); }
+		const_iterator end() const { return func_map_.end(); }
 		const_iterator find( const std::string& type ) { return func_map_.find( type ); }
 
 	private:
