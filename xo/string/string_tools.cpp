@@ -48,17 +48,18 @@ namespace xo
 		return strings;
 	}
 
-	XO_API string left_of_str( const string& s, const string& sep_chars )
+	XO_API std::pair< string, string > split_str_at_first( const string& s, const string& sep_chars )
 	{
-		return s.substr( 0, s.find_last_of( sep_chars.c_str() ) );
+		if ( auto pos = s.find_first_of( sep_chars.c_str() ); pos != string::npos )
+			return { s.substr( 0, pos ), s.substr( pos + 1 ) };
+		else return { s, string() };
 	}
 
-	XO_API string right_of_str( const string& s, const string& sep_chars )
+	XO_API std::pair< string, string > split_str_at_last( const string& s, const string& sep_chars )
 	{
-		auto pos = s.find_last_of( sep_chars.c_str() );
-		if ( pos != string::npos )
-			return s.substr( pos + 1 );
-		else return string();
+		if ( auto pos = s.find_last_of( sep_chars.c_str() ); pos != string::npos )
+			return { s.substr( 0, pos ), s.substr( pos + 1 ) };
+		else return { s, string() };
 	}
 
 	XO_API string& replace_str( string& s, const string& find_str, const string& replace_with )
@@ -263,5 +264,4 @@ namespace xo
 		if ( n != string::npos ) return str.substr( n + 1, string::npos );
 		else return str;
 	}
-
 }

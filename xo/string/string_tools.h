@@ -5,6 +5,7 @@
 #include "xo/numerical/math.h"
 #include <vector>
 #include <cctype>
+#include <utility>
 
 #define xo_varstr( var_ ) ( ::std::string( #var_ ) + '=' + ::xo::to_str( ( var_ ) ) )
 
@@ -40,11 +41,11 @@ namespace xo
 	/// split a string into a vector of strings
 	XO_API std::vector< string > split_str( const string& s, const string& sep_chars );
 
-	/// get the string left of a delimiter or full string if not occurring
-	XO_API string left_of_str( const string& s, const string& sep_chars );
+	/// split string into pair at first occurrence of sep_char, second is empty if not occurring
+	XO_API std::pair< string, string > split_str_at_first( const string& s, const string& sep_chars );
 
-	/// get the string right of a delimiter or empty string if not occurring
-	XO_API string right_of_str( const string& s, const string& sep_chars );
+	/// split string into pair at first occurrence of sep_char, second is empty if not occurring
+	XO_API std::pair< string, string > split_str_at_last( const string& s, const string& sep_chars );
 
 	/// replace a substring in a string
 	XO_API string& replace_str( string& s, const string& find_str, const string& replace_with );
