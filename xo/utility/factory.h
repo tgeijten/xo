@@ -31,21 +31,21 @@ namespace xo
 
 		/// unregister type
 		void unregister_type( const std::string& type_id ) {
-			auto it = find( type_id );
+			auto it = func_map_.find( type_id );
 			xo_error_if( it == end(), "Unknown type: " + type_id );
 			func_map_.erase( it );
 		}
 
 		/// create instance of type
 		std::unique_ptr< T > create( const std::string& type_id, Args... args ) {
-			auto it = find( type_id );
+			auto it = func_map_.find( type_id );
 			xo_error_if( it == end(), "Unknown type: " + type_id );
 			return it->second( args... );
 		}
 
 		/// try create instance of type, return nullptr if not found
 		std::unique_ptr< T > try_create( const std::string& type_id, Args... args ) {
-			auto it = find( type_id );
+			auto it = func_map_.find( type_id );
 			return it != end() ? it->second( args... ) : nullptr;
 		}
 
@@ -54,7 +54,6 @@ namespace xo
 
 		const_iterator begin() const { return func_map_.begin(); }
 		const_iterator end() const { return func_map_.end(); }
-		const_iterator find( const std::string& type ) { return func_map_.find( type ); }
 
 	private:
 		container_t func_map_;
