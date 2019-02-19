@@ -9,6 +9,7 @@
 
 namespace xo
 {
+	/// dynamically sized array
 	template< typename T >
 	class dynarray
 	{
