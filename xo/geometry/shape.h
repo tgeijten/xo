@@ -5,6 +5,7 @@
 #include "bounding_box.h"
 #include "transform.h"
 #include "xo/string/dictionary.h"
+#include <array>
 
 #if defined(_MSC_VER)
 #	pragma warning( push )
@@ -31,7 +32,7 @@ namespace xo
 		vec3f dim() const;
 		vec3f half_dim() const;
 		float volume() const;
-		vec3f corner( index_t idx ) const;
+		std::array< vec3f, 8 > corners() const;
 		bounding_boxf bounding_box( const transformf& t ) const;
 		float x() const { return x_; }
 		float y() const { return y_; }

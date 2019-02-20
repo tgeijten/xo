@@ -116,14 +116,20 @@ namespace xo
 		}
 	}
 
-	vec3f shape::corner( index_t idx ) const
+	std::array< vec3f, 8 > shape::corners() const
 	{
-		xo_assert( type_ == shape_type::box && idx < 8 );
-		return vec3f(
-			x_ * ( ( idx & 1 ) ? 0.5f : -0.5f ),
-			y_ * ( ( idx & 2 ) ? 0.5f : -0.5f ),
-			z_ * ( ( idx & 5 ) ? 0.5f : -0.5f )
-		);
+		return std::array< vec3f, 8 >{
+			{
+			{ x_ * -0.5f, y_ * -0.5f, z_ * -0.5f },
+			{ x_ * 0.5f, y_ * -0.5f, z_ * -0.5f },
+			{ x_ * -0.5f, y_ * 0.5f, z_ * -0.5f },
+			{ x_ * 0.5f, y_ * 0.5f, z_ * -0.5f },
+			{ x_ * -0.5f, y_ * -0.5f, z_ * 0.5f },
+			{ x_ * 0.5f, y_ * -0.5f, z_ * 0.5f },
+			{ x_ * -0.5f, y_ * 0.5f, z_ * 0.5f },
+			{ x_ * 0.5f, y_ * 0.5f, z_ * 0.5f },
+			}
+		};
 	}
 
 	bounding_boxf shape::bounding_box( const transformf& t ) const
@@ -133,7 +139,9 @@ namespace xo
 		case shape_type::box:
 		{
 			bounding_boxf bb;
-			for ( index_t i = 0; i < 8; ++i ) bb += t.p + t.q * corner( i );
+			auto clist = corners();
+			for ( index_t i = 0; i < 8; ++i )
+				bb += t * clist[ i ];
 			return bb;
 		}
 		case shape_type::sphere:
