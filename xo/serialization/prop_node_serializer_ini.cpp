@@ -1,5 +1,5 @@
 #include "prop_node_serializer_ini.h"
-#include "../system/error_code.h"
+#include "xo/system/error_code.h"
 
 namespace xo
 {
