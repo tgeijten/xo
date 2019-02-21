@@ -81,11 +81,8 @@ namespace xo
 	{ return !( v1 == v2 ); }
 
 	/// Normalize a vec3, returns length
-	template< typename T > T normalize( vec3_<T>& v ) {
-		T l = length( v );
-		if ( l > constants<T>::epsilon() ) { T s = inv( l ); v.x *= s; v.y *= s; v.z *= s; }
-		return l;
-	}
+	template< typename T > T normalize( vec3_<T>& v )
+	{ T l = length( v ); if ( l > constants<T>::epsilon() ) v /= l; return l; }
 
 	/// clamp a value so that it is between min and max
 	template< typename T > vec3_<T>& clamp( vec3_<T>& v, const T& lb, const T& ub )

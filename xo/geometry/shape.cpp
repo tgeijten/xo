@@ -36,13 +36,13 @@ namespace xo
 		case shape_type::box:
 		{
 			auto d = pn.get< vec3f >( "dim" );
-			x_ = d.x, y_ = d.y, z_ = d.z;
+			x_ = d.x; y_ = d.y; z_ = d.z;
 			break;
 		}
 		case shape_type::plane:
 		{
 			auto n = pn.get< vec3f >( "normal" );
-			x_ = n.x, y_ = n.y, z_ = n.z;
+			x_ = n.x; y_ = n.y; z_ = n.z;
 			break;
 		}
 
@@ -118,6 +118,7 @@ namespace xo
 
 	std::array< vec3f, 8 > shape::corners() const
 	{
+		xo_assert( type_ == shape_type::box );
 		return std::array< vec3f, 8 >{
 			{
 			{ x_ * -0.5f, y_ * -0.5f, z_ * -0.5f },

@@ -117,7 +117,7 @@ namespace xo
 	}
 
 	/// Normalize
-	template< typename T > void normalize( dynvec<T>& v ) { T l = length( v ); if ( l > epsilon<T>() ) { v /= l; } }
+	template< typename T > T normalize( dynvec<T>& v ) { T l = length( v ); if ( l > epsilon<T>() ) { v /= l; } return l; }
 	template< typename T > dynvec<T> normalized( dynvec<T> v ) { normalize( v ); return v; }
 
 	/// Dot product
