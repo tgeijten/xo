@@ -19,8 +19,15 @@
 #	define xo_assert_msg( expression_, message_ ) \
 		if (!(expression_)) xo_error( "Assertion Failure in " + std::string( __FUNCTION__ ) + "(): "#expression_" (" + std::string( message_ ) + ")" )
 #else
-	#define xo_assert( expression_ )
-	#define xo_assert_msg( expression_, message_ )
+#	define xo_assert( expression_ )
+#	define xo_debug_assert( expression_ )
+#	define xo_assert_msg( expression_, message_ )
+#endif
+
+#ifndef NDEBUG
+#	define xo_debug_assert( expression_ ) xo_assert( expression_ )
+#else
+#	define xo_debug_assert( expression_ )
 #endif
 
 #define xo_error_if( condition_, message_ ) \
