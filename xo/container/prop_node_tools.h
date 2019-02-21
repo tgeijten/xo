@@ -5,6 +5,7 @@
 #include "xo/system/log.h"
 
 #define INIT_PROP( _pn_, _var_, _default_ ) _var_ = _pn_.get< decltype( _var_ ) >( ::xo::tidy_identifier( #_var_ ), decltype( _var_ )( _default_ ) )
+#define TRY_INIT_PROP( _pn_, _var_ ) if ( auto c = _pn_.try_get_child( ::xo::tidy_identifier( #_var_ ) ) ) _var_ = c->get< decltype( _var_ ) >();
 #define INIT_PROP_NAMED( _pn_, _var_, _name_, _default_ ) _var_ = _pn_.get< decltype( _var_ ) >( _name_, _default_ )
 #define INIT_PROP_REQUIRED( _pn_, _var_ ) _var_ = _pn_.get< decltype( _var_ ) >( ::xo::tidy_identifier( #_var_ ) )
 #define INIT_PROP_NAMED_REQUIRED( _pn_, _var_, _name_ ) _var_ = _pn_.get< decltype( _var_ ) >( _name_ )
