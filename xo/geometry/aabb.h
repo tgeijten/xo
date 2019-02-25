@@ -6,13 +6,13 @@
 namespace xo
 {
 	template< typename T >
-	struct bounding_box_
+	struct aabb_
 	{
-		bounding_box_() : lower_bounds( constants<T>::max() ), upper_bounds( constants<T>::lowest() ) {}
-		bounding_box_( const vec3_<T>& p ) : lower_bounds( p ), upper_bounds( p ) {}
-		bounding_box_( const vec3_<T>& lower, const vec3_<T>& upper ) : lower_bounds( lower ), upper_bounds( upper ) {}
+		aabb_() : lower_bounds( constants<T>::max() ), upper_bounds( constants<T>::lowest() ) {}
+		aabb_( const vec3_<T>& p ) : lower_bounds( p ), upper_bounds( p ) {}
+		aabb_( const vec3_<T>& lower, const vec3_<T>& upper ) : lower_bounds( lower ), upper_bounds( upper ) {}
 
-		bounding_box_<T>& operator+=( const vec3_<T>& v ) {
+		aabb_<T>& operator+=( const vec3_<T>& v ) {
 			set_if_smaller( lower_bounds.x, v.x );
 			set_if_smaller( lower_bounds.y, v.y );
 			set_if_smaller( lower_bounds.z, v.z );
@@ -22,7 +22,7 @@ namespace xo
 			return *this;
 		}
 
-		bounding_box_<T>& operator+=( const bounding_box_<T>& bb ) {
+		aabb_<T>& operator+=( const aabb_<T>& bb ) {
 			set_if_smaller( lower_bounds.x, bb.lower_bounds.x );
 			set_if_smaller( lower_bounds.y, bb.lower_bounds.y );
 			set_if_smaller( lower_bounds.z, bb.lower_bounds.z );
@@ -36,6 +36,6 @@ namespace xo
 		vec3_<T> upper_bounds;
 	};
 
-	using bounding_boxf = bounding_box_< float >;
-	using bounding_boxd = bounding_box_< double >;
+	using aabbf = aabb_< float >;
+	using aabbd = aabb_< double >;
 }

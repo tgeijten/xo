@@ -15,7 +15,7 @@
 #include "xo/time/timer.h"
 #include "xo/system/system_tools.h"
 #include "xo/diagnose/test_framework.h"
-#include "xo/geometry/bounding_box.h"
+#include "xo/geometry/aabb.h"
 #include "xo/numerical/math.h"
 #include "xo/numerical/regression.h"
 #include "xo/utility/irange.h"
@@ -31,7 +31,7 @@ double sin_func( double x ) { return std::sin( x ); }
 
 void math_test()
 {
-	bounding_boxf bb;
+	aabbf bb;
 	bb += vec3f( -1, 2, -3 );
 	bb += vec3f( 3, -2, 1 );
 	XO_TEST( bb.lower_bounds == vec3f( -1, -2, -3 ) );

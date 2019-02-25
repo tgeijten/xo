@@ -23,13 +23,18 @@
 #include "xo/diagnose/debug_tools.h"
 #include "xo/numerical/functions.h"
 #include "performance_test.h"
+#include <variant>
 
-using xo::string;
+using namespace xo;
 
 int main( int argc, char* argv[] )
 {
-	xo::log::stream_sink str( xo::log::info_level, std::cout );
-	xo::log::add_sink( &str );
+	log::stream_sink str( log::info_level, std::cout );
+	log::add_sink( &str );
+
+	std::variant< float, vec3f, std::string > x;
+	auto y = sizeof( x );
+	auto z = sizeof( string );
 
 	try
 	{

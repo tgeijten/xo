@@ -4,8 +4,8 @@
 
 namespace xo
 {
-	const long double XO_PI_LONG_DOUBLE = 3.141592653589793238L;
-	const long double XO_E_LONG_DOUBLE = 2.71828182845904523536L;
+	constexpr long double XO_PI_LONG_DOUBLE = 3.141592653589793238L;
+	constexpr long double XO_E_LONG_DOUBLE = 2.71828182845904523536L;
 
 	template< typename T >
 	struct constants
@@ -27,4 +27,7 @@ namespace xo
 	using constantsd = constants< double >;
 	using constantsf = constants< float >;
 	using constantsi = constants< int >;
+
+	constexpr float pi_f = constants< float >::pi();
+	constexpr double pi_d = constants< double >::pi();
 }

@@ -2,9 +2,9 @@
 
 #include "xo/system/platform.h"
 #include "vec3_type.h"
-#include "bounding_box.h"
+#include "aabb.h"
 #include "transform.h"
-#include "xo/string/dictionary.h"
+#include <variant>
 #include <array>
 
 #if defined(_MSC_VER)
@@ -14,48 +14,90 @@
 
 namespace xo
 {
-	enum class shape_type { undefined, sphere, box, capsule, cylinder, cone, plane };
-
-	// TODO: use std::variant
-	class XO_API shape
+	struct XO_API sphere
 	{
-	public:
-		shape( shape_type t = shape_type::undefined, float x_radius = 0, float y_height = 0, float z = 0 );
-		shape( const prop_node& pn );
+		float radius_;
 
-		// shape properties
-		shape_type type() const { return type_; }
-		const string& name() const;
-		float radius() const;
-		float height() const;
-		float half_height() const;
-		vec3f dim() const;
-		vec3f half_dim() const;
-		float volume() const;
-		std::array< vec3f, 8 > corners() const;
-		bounding_boxf bounding_box( const transformf& t ) const;
-		float x() const { return x_; }
-		float y() const { return y_; }
-		float z() const { return z_; }
-
-		// physical properties
-		// TODO: move this out of here!
-		float compute_mass( float density ) const;
-		vec3f compute_inertia( float density ) const;
-
-		// modify shape
-		void scale( float factor );
-		void scale( const vec3f& factor );
-
-	private:
-		shape_type type_;
-		float x_, y_, z_;
+		float volume() const { return ( 4.0f / 3.0f ) * constantsf::pi() * cubed( radius_ ); }
+		vec3f dim() const { return vec3f( radius_ ); }
 	};
 
-	XO_API shape_type get_shape_type( const string& s );
+	struct XO_API box
+	{
+		vec3f half_dim_;
 
-	inline shape make_sphere( float radius ) { return shape( shape_type::sphere, radius ); }
-	inline shape make_box( float xdim, float ydim, float zdim ) { return shape( shape_type::box, xdim, ydim, zdim ); }
+		float volume() const { return 8.0f * half_dim_.x * half_dim_.y * half_dim_.z; }
+		vec3f dim() const { return 2.0f * half_dim_; }
+		std::array< vec3f, 8 > corners() const;
+	};
+
+	struct XO_API cylinder
+	{
+		float radius_;
+		float height_;
+
+		float volume() const { return pi_f * squared( radius_ ) * height_; }
+		vec3f dim() const { return vec3f( radius_, radius_, height_ ); }
+	};
+
+	struct XO_API capsule
+	{
+		float radius_;
+		float height_;
+
+		float volume() const { return pi_f * squared( radius_ ) * ( ( 4.0f / 3.0f ) * ( radius_ + height_ ) ); }
+		vec3f dim() const { return vec3f( radius_, radius_, height_ ); }
+	};
+
+	struct XO_API cone
+	{
+		float radius_;
+		float height_;
+
+		float volume() const { return pi_f * squared( radius_ ) * height_ / 3.0f; }
+		vec3f dim() const { return vec3f( radius_, radius_, height_ ); }
+	};
+
+	struct XO_API plane
+	{
+		vec3f normal_;
+
+		float volume() const { return 0.0; }
+		vec3f dim() const { XO_NOT_IMPLEMENTED; }
+	};
+
+	enum class shape_type : size_t { sphere, box, cylinder, capsule, cone, plane };
+	using shape = std::variant< sphere, box, cylinder, capsule, cone, plane >;
+
+	XO_API shape make_shape( const prop_node& pn );
+
+	XO_API float volume( const shape& s );
+
+	inline void scale( sphere& s, float f ) { s.radius_ *= f; }
+	inline void scale( box& s, float f ) { s.half_dim_ *= f; }
+	inline void scale( cylinder& s, float f ) { s.radius_ *= f; s.height_ *= f; }
+	inline void scale( capsule& s, float f ) { s.radius_ *= f; s.height_ *= f; }
+	inline void scale( cone& s, float f ) { s.radius_ *= f; s.height_ *= f; }
+	inline void scale( plane& s, float f ) { }
+	XO_API void scale( shape& s, float f );
+
+	XO_API vec3f dim( const shape& s );
+
+	XO_API aabbf aabb( const sphere& s, const transformf& t );
+	XO_API aabbf aabb( const box& s, const transformf& t );
+	XO_API aabbf aabb( const cylinder& s, const transformf& t );
+	XO_API aabbf aabb( const capsule& s, const transformf& t );
+	XO_API aabbf aabb( const cone& s, const transformf& t );
+	XO_API aabbf aabb( const plane& s, const transformf& t );
+	XO_API aabbf aabb( const shape& s, const transformf& t );
+
+	XO_API vec3f inertia( const sphere& s, float density );
+	XO_API vec3f inertia( const box& s, float density );
+	XO_API vec3f inertia( const cylinder& s, float density );
+	XO_API vec3f inertia( const capsule& s, float density );
+	XO_API vec3f inertia( const cone& s, float density );
+	XO_API vec3f inertia( const plane& s, float density );
+	XO_API vec3f inertia( const shape& s, float density );
 }
 
 #if defined(_MSC_VER)
