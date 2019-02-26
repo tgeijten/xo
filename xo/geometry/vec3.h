@@ -25,14 +25,14 @@ namespace xo
 	{ v.x = -v.x; v.y = -v.y; v.z = -v.z; return v; }
 
 	/// Scalar multiplication
+	template< typename T, typename TS > vec3_<T>& operator*=( vec3_<T>& v, TS s )
+	{ v.x *= T(s); v.y *= T(s); v.z *= T(s); return v; }
+	/// Scalar multiplication
 	template< typename T, typename TS > vec3_<T> operator*( TS s, vec3_<T> v )
-	{ v.x *= s; v.y *= s; v.z *= s; return v; }
+	{ return v *= s; }
 	/// Scalar multiplication
 	template< typename T, typename TS > vec3_<T> operator*( vec3_<T> v, TS s )
-	{ v.x *= s; v.y *= s; v.z *= s; return v; }
-	/// Scalar multiplication
-	template< typename T, typename TS > vec3_<T>& operator*=( vec3_<T>& v, TS s )
-	{ v.x *= s; v.y *= s; v.z *= s; return v; }
+	{ return v *= s; }
 
 	/// Scalar division
 	template< typename T > vec3_<T> operator/( vec3_<T> v, T s )

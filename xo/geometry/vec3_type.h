@@ -56,7 +56,6 @@ namespace xo
 	};
 
 	/// template instantiations
-	using vec3 = vec3_< real_t >;
 	using vec3f = vec3_< float >;
 	using vec3d = vec3_< double >;
 

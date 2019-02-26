@@ -33,7 +33,6 @@ namespace xo
 		static quat_<T> identity() { return quat_<T>( T(1), T(0), T(0), T(0) ); }
 	};
 		
-	using quat = quat_< real_t >;
 	using quatf = quat_< float >;
 	using quatd = quat_< double >;
 

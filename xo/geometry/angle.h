@@ -78,10 +78,8 @@ namespace xo
 	// alias names
 	template < typename T > using radian_ = angle_< angle_unit::radians, T >;
 	template < typename T > using degree_ = angle_< angle_unit::degrees, T >;
-	using radian = radian_< real_t >;
 	using radianf = radian_< float >;
 	using radiand = radian_< double >;
-	using degree = degree_< real_t >;
 	using degreef = degree_< float >;
 	using degreed = degree_< double >;
 

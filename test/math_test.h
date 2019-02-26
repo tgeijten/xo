@@ -70,17 +70,17 @@ void optional_test()
 
 void function_test()
 {
-	regular_piecewise_linear_function< real_t > func( -constants<real_t>::pi(), constants<real_t>::pi(), 128, sin_func );
+	regular_piecewise_linear_function< double > func( -constants<double>::pi(), constants<double>::pi(), 128, sin_func );
 
 	std::ofstream ostr( "test.txt" );
-	for ( real_t x = -2 * constants<real_t>::pi(); x < 2 * constants<real_t>::pi(); x += 0.1 )
+	for ( double x = -2 * constants<double>::pi(); x < 2 * constants<double>::pi(); x += 0.1 )
 		ostr << x << "\t" << func( x ) << endl;
 
 	timer t;
-	real_t result = 0.0, verify_result = 0.0;
+	double result = 0.0, verify_result = 0.0;
 	for ( int i = 0; i < 10000; ++i )
 	{
-		for ( real_t x = -constants<real_t>::pi(); x <= constants<real_t>::pi(); x += 0.001 )
+		for ( double x = -constants<double>::pi(); x <= constants<double>::pi(); x += 0.001 )
 		{
 			result += func( x );
 			verify_result += sin_func( x );
@@ -117,7 +117,7 @@ void angle_test()
 	XO_TEST( equal( rad_vec[ 0 ].value, radianf( degreef( 10 ) ).value ) );
 
 
-	auto qtest = quat_from_euler( degree( 180.0 ), degree( 180 ), degree( 180 ).radian().degree(), euler_order::xyz );
+	auto qtest = quat_from_euler( degreed( 180.0 ), degreed( 180 ), degreed( 180 ).radian().degree(), euler_order::xyz );
 	auto qtest2 = quat_from_axis_angle( vec3_<float>::unit_x(), a6_df );
 
 	//xo_logvar4( a1.value, a2.value, a3.value, a4.value );

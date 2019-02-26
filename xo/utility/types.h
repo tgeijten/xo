@@ -1,13 +1,9 @@
 #pragma once
 
-#include "xo/system/build_config.h"
 #include <stddef.h>
 
 namespace xo
 {
-	// TODO: do we really need this?
-	using real_t = double;
-
 	// TODO: move these types elsewhere (and perhaps use std::chrono)
 	using seconds_t = double;
 	using nanoseconds_t = long long;
