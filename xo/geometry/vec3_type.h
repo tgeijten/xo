@@ -60,6 +60,10 @@ namespace xo
 	using vec3f = vec3_< float >;
 	using vec3d = vec3_< double >;
 
+	// export float and double instances
+	template struct XO_API vec3_< float >;
+	template struct XO_API vec3_< double >;
+
 	// TODO: move this to a different file
 	template< typename T > struct prop_node_cast< vec3_<T> > {
 		static vec3_<T> from( const prop_node& pn ) {

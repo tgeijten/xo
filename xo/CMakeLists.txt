@@ -3,6 +3,7 @@ SET ( XO_LIB_NAMES
 	diagnose
 	filesystem
 	geometry
+	shape
 	numerical
 	serialization
 	string

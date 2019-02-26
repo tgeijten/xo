@@ -15,7 +15,7 @@
 #include "xo/time/timer.h"
 #include "xo/system/system_tools.h"
 #include "xo/diagnose/test_framework.h"
-#include "xo/geometry/aabb.h"
+#include "xo/shape/aabb.h"
 #include "xo/numerical/math.h"
 #include "xo/numerical/regression.h"
 #include "xo/utility/irange.h"

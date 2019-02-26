@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vec3_type.h"
+#include "xo/geometry/vec3_type.h"
 #include "xo/numerical/constants.h"
 
 namespace xo
