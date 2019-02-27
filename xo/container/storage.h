@@ -15,6 +15,7 @@ namespace xo
 	class storage
 	{
 	public:
+		using container_type = std::vector< T >;
 		using value_type = T;
 		using label_type = L;
 
@@ -42,10 +43,10 @@ namespace xo
 
 		/// add a channel with data, resize buffer if needed
 		index_t add_channel( L label, const std::vector< T >& data ) {
-			resize( std::max( frame_size(), data.size() ), channel_size() + 1 );
+			resize( std::max( frame_size(), std::size( data ) ), channel_size() + 1 );
 			labels_.set( channel_size() - 1, label );
 			auto cidx = channel_size() - 1;
-			for ( index_t fidx = 0; fidx < data.size(); ++fidx ) ( *this )( fidx, cidx ) = data[ fidx ];
+			for ( index_t fidx = 0; fidx < std::size( data ); ++fidx ) ( *this )( fidx, cidx ) = data[ fidx ];
 			return cidx;
 		}
 
@@ -72,10 +73,10 @@ namespace xo
 
 		/// add frame to storage
 		frame add_frame( const std::vector< T >& data ) {
-			xo_assert( data.size() == channel_size() );
+			xo_assert( std::size( data ) == channel_size() );
 			data_.resize( data_.size() + channel_size() );
 			++frame_size_;
-			std::copy( data.begin(), data.end(), data_.end() - channel_size() );
+			std::copy( std::begin( data ), std::end( data ), data_.end() - channel_size() );
 			return back();
 		}
 
@@ -118,7 +119,7 @@ namespace xo
 			if ( nchannels > channel_size() ) {
 				if ( frame_size() > 1 ) {
 					// reorganize existing data
-					std::vector< T > new_data( nchannels * nframes, value );
+					container_type new_data( nchannels * nframes, value );
 					for ( index_t fi = 0; fi < frame_size(); ++fi )
 						for ( index_t ci = 0; ci < channel_size(); ++ci )
 							new_data[ nchannels * fi + ci ] = data_[ channel_size() * fi + ci ];
@@ -137,13 +138,13 @@ namespace xo
 		}
 
 		const label_vector< L >& labels() const { return labels_; }
-		const std::vector< T >& data() const { return data_; }
-		std::vector< T >& data() { return data_; }
+		const container_type& data() const { return data_; }
+		container_type& data() { return data_; }
 
 	private:
 		size_t frame_size_;
 		label_vector< L > labels_;
-		std::vector< T > data_;
+		container_type data_;
 	};
 
 	template< typename T, typename L > std::ostream& operator<<( std::ostream& str, const storage< T, L >& buf ) {
