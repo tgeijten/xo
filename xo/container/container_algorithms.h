@@ -31,12 +31,10 @@ namespace xo
 	}
 
 	template< typename C > typename C::const_iterator min_element( const C& cont ) {
-		xo_assert( !std::empty( cont ) );
 		return std::min_element( std::begin( cont ), std::end( cont ) );
 	}
 
 	template< typename C > typename C::const_iterator max_element( const C& cont ) {
-		xo_assert( !std::empty( cont ) );
 		return std::max_element( std::begin( cont ), std::end( cont ) );
 	}
 

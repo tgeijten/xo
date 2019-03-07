@@ -47,15 +47,13 @@ namespace xo
 		else return first;
 	}
 
-	template< typename T, typename L  > void write( storage<T, L>& sto, const string& str, const vec3_<T>& v ) {
-		auto f = sto.back();
+	template< typename T > void write( typename storage<T>::frame& f, const string& str, const vec3_<T>& v ) {
 		f[ str + ".x" ] = v.x;
 		f[ str + ".y" ] = v.y;
 		f[ str + ".z" ] = v.z;
 	}
 
-	template< typename T, typename L  > void write( storage<T, L>& sto, const string& str, const quat_<T>& q ) {
-		auto f = sto.back();
+	template< typename T > void write( typename storage<T>::frame& f, const string& str, const quat_<T>& q ) {
 		f[ str + ".w" ] = q.w;
 		f[ str + ".x" ] = q.x;
 		f[ str + ".y" ] = q.y;

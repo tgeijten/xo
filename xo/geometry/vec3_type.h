@@ -41,7 +41,6 @@ namespace xo
 
 		/// container methods
 		size_t size() const { return 3; }
-		bool empty() const { return false; }
 
 		/// static initializers
 		static vec3_<T> zero() { return vec3_<T>( T(0), T(0), T(0) ); }
