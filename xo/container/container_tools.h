@@ -50,6 +50,10 @@ namespace xo
 	/// get index of last element
 	template< typename C > index_t back_index( const C& cont ) { return size( cont ) > 0 ? size( cont ) - 1 : no_index; }
 
+	/// emplace back, return index
+	template< typename C, typename... Args> index_t emplace_back_get_index( C& c, Args&&... a )
+	{ c.emplace_back( std::forward< Args >( args )... ); return c.size() - 1; }
+	
 	/// get index of element in vector
 	template< typename T > index_t index_of( const T& e, const std::vector< T >& v ) { return index_t( &e - v.data() ); }
 }
