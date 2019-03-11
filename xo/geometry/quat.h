@@ -7,6 +7,8 @@
 #include "xo/system/assert.h"
 #include "xo/numerical/compare.h"
 #include <ostream>
+#include "mat33_type.h"
+#include "axes_type.h"
 
 namespace xo
 {
@@ -113,7 +115,7 @@ namespace xo
 	}
 
 	/// get Euler angles from quat
-	// TODO: add Euler order as argument
+	// #TODO: add Euler order as argument
 	template< typename T > vec3_< radian_< T > > euler_from_quat( const quat_<T>& q )
 	{ return vec3_< radian_< T > >( pitch( q ), yaw( q ), roll( q ) ); }
 
@@ -213,6 +215,28 @@ namespace xo
 		}
 
 		return q;
+	}
+
+	/// Get quaternion using three axis vectors
+	template< typename T > axes_<T> axes_from_quat( const quat_<T>& q ) {
+		auto tx = q.x + q.x;
+		auto ty = q.y + q.y;
+		auto tz = q.z + q.z;
+		auto twx = tx * q.w;
+		auto twy = ty * q.w;
+		auto twz = tz * q.w;
+		auto txx = tx * q.x;
+		auto txy = ty * q.x;
+		auto txz = tz * q.x;
+		auto tyy = ty * q.y;
+		auto tyz = tz * q.y;
+		auto tzz = tz * q.z;
+
+		return axes_<T>{
+			{ 1.0f - ( tyy + tzz ), txy + twz, txz - twy }
+			{ txy - twz, 1.0f - ( txx + tzz ), tyz + twx }
+			{ txz + twy, tyz - twx, 1.0f - ( txx + tyy ) }
+		};
 	}
 
 	/// Stream output
