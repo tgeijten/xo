@@ -66,7 +66,7 @@ namespace xo
 	template< typename T, XO_ENABLE_IF_INTEGRAL > irange_step< T > make_irange( T b, T e, T s ) { return irange_step< T >( b, e, s ); }
 	template< typename T, XO_ENABLE_IF_INTEGRAL > irange_step< T > make_irange( const irange< T >& r, T s ) { return irange_step< T >( r, s ); }
 
-	/// make integer range from containter
-	template< typename C > auto make_range( const C& cont ) { return irange< size_t >( 0, size( cont ) ); }
-	template< typename C > auto make_range( const C& cont, size_t step ) { return irange_step< size_t >( 0, size( cont ), step ); }
+	/// make index range from container
+	template< typename C > auto index_range( const C& cont ) { return irange< size_t >( 0, size( cont ) ); }
+	template< typename C > auto index_range( const C& cont, size_t step ) { return irange_step< size_t >( 0, size( cont ), step ); }
 }
