@@ -7,9 +7,15 @@ namespace xo
 	template< typename ID, typename T = uint32_t >
 	struct handle
 	{
-		handle() : value( T( -1 ) ) {}
+		constexpr T invalid_v = T( -1 );
+
+		handle() : value( invalid_v ) {}
 		explicit handle( T v ) : value( v ) {}
-		explicit handle( size_t v ) : value( T( v ) ) { xo_error_if( v < constants<T>::lowest() || v >= constants<T>::max(), "handle cannot hold value " + to_str( v ) ); }
+		template< typename U > handle( U v ) : value( T( v ) ) { xo_error_if( v < constants<T>::lowest() || v >= constants<T>::max(), "handle cannot hold value " + to_str( v ) ); }
+		handle( const handle& o ) = delete;
+		handle& operator=( const handle& o ) = delete;
+		handle( handle&& o ) { value = o.value; o.value = invalid_v; }
+		handle& operator=( handle&& o ) { value = o.value; o.value = invalid_v; return *this; }
 
 		explicit operator bool() const { return value != T( -1 ); }
 		explicit operator T() const { return value; }
