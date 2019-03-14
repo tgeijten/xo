@@ -7,7 +7,7 @@ namespace xo
 	template< typename ID, typename T = uint32_t >
 	struct handle
 	{
-		constexpr T invalid_v = T( -1 );
+		const T invalid_v = T( -1 );
 
 		handle() : value( invalid_v ) {}
 		explicit handle( T v ) : value( v ) {}
