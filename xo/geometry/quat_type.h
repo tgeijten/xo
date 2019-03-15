@@ -2,6 +2,7 @@
 
 #include "xo/utility/types.h"
 #include "xo/container/prop_node.h"
+#include "angle.h"
 
 namespace xo
 {

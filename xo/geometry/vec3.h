@@ -2,6 +2,7 @@
 
 #include "vec3_type.h"
 #include "angle.h"
+#include "xo/numerical/compare.h"
 #include <cmath> // TODO: get rid of this header
 
 namespace xo
