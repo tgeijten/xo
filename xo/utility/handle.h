@@ -12,8 +12,8 @@ namespace xo
 		template< typename U > handle( U v ) : value( T( v ) ) { xo_error_if( v < constants<T>::lowest() || v >= constants<T>::max(), "handle cannot hold value " + to_str( v ) ); }
 		handle( const handle& ) = default;
 		handle& operator=( const handle& ) = default;
-		handle( handle&& o ) { value = o.value; o.value = invalid_value; }
-		handle& operator=( handle&& o ) { value = o.value; o.value = invalid_value; return *this; }
+		handle( handle&& o ) : value( o.value ) { o.value = invalid_value; }
+		handle& operator=( handle&& o ) { std::swap( value, o.value ); return *this; }
 
 		explicit operator bool() const { return value != invalid_value; }
 		explicit operator T() const { return value; }
