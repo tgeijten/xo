@@ -39,6 +39,21 @@ namespace xo
 
 	inline std::ostream& operator<<( std::ostream& str, const color c ) { return str << c.r << ' ' << c.g << ' ' << c.b << ' ' << c.a; }
 	inline std::istream& operator>>( std::istream& str, color& c ) { return str >> c.r >> c.g >> c.b >> c.a; }
+
+	inline color::color( const xo::prop_node& pn )
+	{
+		if ( pn.has_value() )
+			*this = make_from_hex( static_cast<unsigned int>( std::stoul( pn.get_value(), 0, 16 ) ) );
+		else if ( pn.has_any_key( { "h", "s", "v" } ) )
+			*this = make_from_hsv( pn.get<float>( "h", 0 ), pn.get<float>( "s", 1 ), pn.get<float>( "v", 1 ) );
+		else if ( pn.size() >= 3 )
+		{
+			if ( auto rr = pn.try_get< float >( "r" ) ) r = *rr; else r = pn.get<float>( 0 );
+			if ( auto gg = pn.try_get< float >( "g" ) ) g = *gg; else g = pn.get<float>( 1 );
+			if ( auto bb = pn.try_get< float >( "b" ) ) b = *bb; else b = pn.get<float>( 2 );
+		}
+		else xo_error( "Could not read color from prop_node" );
+	}
 }
 
 IS_PROP_NODE_CONSTRUCTABLE( xo::color );

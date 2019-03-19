@@ -2,7 +2,7 @@
 
 #include "color.h"
 
-namespace vis
+namespace xo
 {
 	struct color_gradient
 	{
