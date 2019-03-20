@@ -4,6 +4,7 @@
 #include "xo/numerical/bounds.h"
 #include "xo/filesystem/filesystem.h"
 #include "assert.h"
+#include "xo/utility/optional.h"
 
 namespace xo
 {

@@ -4,6 +4,10 @@
 
 namespace xo
 {
+	// forward declaration of common xo classes
+	class prop_node;
+	class path;
+
 	// TODO: move these types elsewhere (and perhaps use std::chrono)
 	using seconds_t = double;
 	using nanoseconds_t = long long;
