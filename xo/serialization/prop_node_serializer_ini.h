@@ -4,7 +4,7 @@
 
 namespace xo
 {
-	struct prop_node_serializer_ini : prop_node_serializer
+	struct XO_API prop_node_serializer_ini : prop_node_serializer
 	{
 		// inherit constructors from base class
 		using prop_node_serializer::prop_node_serializer;
