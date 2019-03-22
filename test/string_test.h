@@ -67,5 +67,17 @@ namespace xo
 		XO_TEST( path( "X:/test" ) / "bla" == "X:/test/bla" );
 		XO_TEST( path( "X:/test/" ) / "bla" == "X:/test/bla" );
 		XO_TEST( path( "X:\\test\\bla" ).make_preferred() == "X:/test/bla" );
+
+		index_t idx = 123;
+		int i = -10;
+		double d = 1.0 / 3.0;
+		float f = 1.0f / 3.0f;
+		fruit fr = peer;
+
+		auto sidx = to_str( idx );
+		auto si = to_str( i );
+		auto sd = to_str( d );
+		auto sf = to_str( f );
+		auto sfr = to_str( fr );
 	}
 }
