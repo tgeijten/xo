@@ -41,16 +41,6 @@ namespace xo
 		static string to( const T& v ) { return string_cast< int >::to( static_cast< int >( v ) ); }
 	};
 
-	///// make string out of container of elements
-	//template< typename C > string to_str( const C& c, const string& delim ) {
-	//	string s;
-	//	for ( auto it = std::begin( c ); it != std::end( c ); ++it ) {
-	//		if ( it != c.begin() ) s += delim;
-	//		s += to_str( *it );
-	//	}
-	//	return s;
-	//}
-
 	template< typename T > string to_str( const T& value ) { return string_cast<T>::to( value ); }
 	template< typename T > T from_str( const string& s, T default_value ) { return string_cast<T>::from( s ); }
 }
