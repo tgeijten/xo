@@ -2,7 +2,7 @@
 
 #include <iosfwd>
 
-#include "xo/utility/types.h"
+#include "xo/xo_types.h"
 #include "xo/serialization/prop_node_serializer.h"
 #include "xo/utility/factory.h"
 

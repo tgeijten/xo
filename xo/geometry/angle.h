@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iosfwd>
-#include "xo/utility/types.h"
+#include "xo/xo_types.h"
 #include "xo/numerical/constants.h"
 #include <cmath>
 

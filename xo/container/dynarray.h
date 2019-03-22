@@ -1,6 +1,6 @@
 #pragma once
 
-#include "xo/utility/types.h"
+#include "xo/xo_types.h"
 #include "xo/utility/pointer_iterator.h"
 #include "xo/utility/pointer_types.h"
 

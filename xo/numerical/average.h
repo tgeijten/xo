@@ -1,6 +1,6 @@
 #pragma once
 
-#include "xo/utility/types.h"
+#include "xo/xo_types.h"
 
 namespace xo
 {

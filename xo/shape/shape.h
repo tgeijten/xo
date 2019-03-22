@@ -1,7 +1,7 @@
 #pragma once
 
 #include "xo/system/platform.h"
-#include "xo/utility/types.h"
+#include "xo/xo_types.h"
 #include "sphere.h"
 #include "box.h"
 #include "cylinder.h"

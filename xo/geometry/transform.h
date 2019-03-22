@@ -1,6 +1,6 @@
 #pragma once
 
-#include "xo/utility/types.h"
+#include "xo/xo_types.h"
 #include "xo/geometry/vec3.h"
 #include "xo/geometry/quat.h"
 #include "xo/container/prop_node.h"

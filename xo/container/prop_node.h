@@ -1,7 +1,7 @@
 #pragma once
 
 #include "xo/system/platform.h"
-#include "xo/utility/types.h"
+#include "xo/xo_types.h"
 #include "xo/system/assert.h"
 #include "xo/string/string_type.h"
 #include "xo/string/string_cast.h"

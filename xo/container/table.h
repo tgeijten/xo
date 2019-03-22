@@ -1,6 +1,6 @@
 #pragma once
 
-#include "xo/utility/types.h"
+#include "xo/xo_types.h"
 #include <iosfwd>
 #include <vector>
 #include "xo/container/container_tools.h"

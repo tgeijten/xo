@@ -1,5 +1,5 @@
 #pragma once
-#include "xo/utility/types.h"
+#include "xo/xo_types.h"
 #include "xo/string/string_tools.h"
 #include "xo/diagnose/test_framework.h"
 #include "xo/filesystem/path.h"

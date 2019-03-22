@@ -1,7 +1,7 @@
 #pragma once
 
 #include "timer.h"
-#include "xo/utility/types.h"
+#include "xo/xo_types.h"
 #include "xo/string/string_type.h"
 
 #ifdef XO_COMP_MSVC

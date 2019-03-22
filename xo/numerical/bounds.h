@@ -1,6 +1,6 @@
 #pragma once
 
-#include "xo/utility/types.h"
+#include "xo/xo_types.h"
 #include "xo/container/prop_node_cast.h"
 #include "xo/string/string_cast.h"
 #include "xo/numerical/math.h"

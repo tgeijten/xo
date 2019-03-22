@@ -1,6 +1,6 @@
 #pragma once
 
-#include "types.h"
+#include "xo/xo_types.h"
 #include "xo/container/prop_node.h"
 #include "xo/system/platform.h"
 #include <iosfwd>

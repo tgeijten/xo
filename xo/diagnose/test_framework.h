@@ -1,7 +1,7 @@
 #pragma once
 
 #include "xo/system/platform.h"
-#include "xo/utility/types.h"
+#include "xo/xo_types.h"
 #include <string>
 
 #define XO_TEST( operation ) { try { xo::test_framework::get_instance().test( #operation, operation ); } catch( const std::exception& e ) { xo::test_framework::get_instance().test( #operation, false, e.what() ); } }

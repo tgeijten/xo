@@ -2,4 +2,4 @@
 
 #include "xo/system/build_config.h"
 #include "xo/system/platform.h"
-#include "xo/utility/types.h"
+#include "xo/xo_types.h"

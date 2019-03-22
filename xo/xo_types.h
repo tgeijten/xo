@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stddef.h>
-
 namespace xo
 {
 	// forward declaration of common xo classes

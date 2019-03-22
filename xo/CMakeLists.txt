@@ -12,10 +12,14 @@ SET ( XO_LIB_NAMES
 	utility
 	)
 
+SET ( XO_ROOT xo_types.h )
+
 foreach(xolib ${XO_LIB_NAMES})
   file(GLOB XO_${xolib} ${xolib}/*.h ${xolib}/*.cpp)
   list(APPEND XO_SOURCES ${XO_${xolib}})
 endforeach()
+
+list ( APPEND XO_SOURCES ${XO_ROOT} )
 
 include( PrecompiledHeaders )
 use_precompiled_headers( XO_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/stdafx.h" "${CMAKE_CURRENT_SOURCE_DIR}/stdafx.cpp" 256 )
@@ -32,7 +36,7 @@ if (UNIX)
 endif()
 
 if (MSVC)
-	source_group("" FILES ${PRECOMPILED_HEADER_FILES})
+	source_group( "" FILES ${PRECOMPILED_HEADER_FILES} ${XO_ROOT} )
 	foreach(xolib ${XO_LIB_NAMES})
 	source_group("${xolib}" FILES ${XO_${xolib}} )
 	endforeach()

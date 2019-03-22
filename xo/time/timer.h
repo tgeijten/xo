@@ -1,6 +1,6 @@
 #pragma once
 
-#include "xo/utility/types.h"
+#include "xo/xo_types.h"
 #include "xo/system/platform.h"
 
 #include <chrono> // #TODO: try to move this to cpp

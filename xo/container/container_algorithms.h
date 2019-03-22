@@ -4,7 +4,7 @@
 #include <algorithm>
 
 #include "xo/system/assert.h"
-#include "xo/utility/types.h"
+#include "xo/xo_types.h"
 #ifdef XO_COMP_MSVC
 #   include <xstddef>
 #endif
