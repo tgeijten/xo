@@ -51,7 +51,6 @@ namespace xo
 		float sat = 1.0f / ( 1.0f + idx / standard_hue.size() );
 		float pbr = perceived_brightness( make_from_hsv( hue, sat, 1.0f ) );
 		float val = xo::clamped( brightness / pbr, brightness, 1.0f );
-		//xo::log::debug( "color ", idx, ": perceived=", pbr, " value=", val );
 		return make_from_hsv( hue, sat, val );
 	}
 
