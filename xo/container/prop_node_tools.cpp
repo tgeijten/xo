@@ -1,4 +1,5 @@
 #include "prop_node_tools.h"
+#include "xo/system/log.h"
 
 namespace xo
 {

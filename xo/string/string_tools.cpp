@@ -16,11 +16,43 @@
 #include <fstream>
 #include <algorithm>
 #include "xo/system/error_code.h"
-#include <string.h>
+#include "xo/numerical/math.h"
+#include <cctype>
+#include "xo/system/assert.h"
 
 namespace xo
 {
 	int to_str_precision_value = 4;
+
+	string left_str( const string& str, int n )
+	{
+		if ( n >= 0 ) return str.substr( 0, size_t( n ) ); else return str.substr( 0, size_t( max( 0, int( str.size() ) + n ) ) );
+	}
+
+	string mid_str( const string& str, index_t pos, size_t n /*= string::npos */ )
+	{
+		return str.substr( pos, n );
+	}
+
+	string right_str( const string& str, int n )
+	{
+		if ( n >= 0 ) return str.substr( str.size() - n, string::npos ); else return str.substr( size_t( -n ), string::npos );
+	}
+
+	index_t in_str( const string& str, const string& substr, index_t p /*= 0 */ )
+	{
+		return str.find( substr, p );
+	}
+
+	bool str_begins_with( const string& str, const string& substr )
+	{
+		return str.find( substr ) == 0;
+	}
+
+	bool str_ends_with( const string& str, const string& substr )
+	{
+		return str.size() >= substr.size() && ( str.find( substr ) == str.size() - substr.size() );
+	}
 
 	XO_API string trim_str( const string& s, const char* space_chars )
 	{
@@ -69,6 +101,20 @@ namespace xo
 		return s;
 	}
 
+	string to_lower( string&& s )
+	{
+		for ( char& c : s )
+			c = std::tolower( c );
+		return s;
+	}
+
+	string to_upper( string&& s )
+	{
+		for ( char& c : s )
+			c = std::toupper( c );
+		return s;
+	}
+
 	XO_API std::pair< string, string > make_key_value_str( const string& s, const string& sep_char )
 	{
 		auto pos = s.find_first_of( sep_char.c_str() );
@@ -77,20 +123,20 @@ namespace xo
 		else return make_pair( trim_str( s.substr( 0, pos ) ), trim_str( mid_str( s, pos + 1 ) ) );
 	}
 
-	XO_API string concatenate_str( std::initializer_list< string > string_list, const string& delim )
-	{
-		string str;
-		bool first = true;
-		for ( auto& element : string_list )
-		{
-			if ( !element.empty() )
-			{
-				if ( !first ) str += delim; else first = false;
-				str += element;
-			}
-		}
-		return str;
-	}
+	//XO_API string concatenate_str( std::initializer_list< string > string_list, const string& delim )
+	//{
+	//	string str;
+	//	bool first = true;
+	//	for ( auto& element : string_list )
+	//	{
+	//		if ( !element.empty() )
+	//		{
+	//			if ( !first ) str += delim; else first = false;
+	//			str += element;
+	//		}
+	//	}
+	//	return str;
+	//}
 
 	string stringf( const char* format, ... )
 	{

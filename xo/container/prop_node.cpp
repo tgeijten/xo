@@ -1,5 +1,8 @@
 #include "prop_node.h"
+
 #include "xo/serialization/prop_node_serializer_zml.h"
+#include "xo/numerical/math.h"
+#include "xo/string/string_tools.h"
 
 #include <iomanip>
 
@@ -12,12 +15,18 @@ namespace xo
 
 	size_t prop_node::count_layers() const
 	{
-		size_t d = 0; for ( auto& c : children ) d = max( d, c.second.count_layers() + 1 ); return d;
+		size_t d = 0;
+		for ( auto& c : children )
+			d = max( d, c.second.count_layers() + 1 );
+		return d;
 	}
 
 	size_t prop_node::count_children() const
 	{
-		size_t n = size(); for ( auto& c : children ) n += c.second.count_children(); return n;
+		size_t n = size();
+		for ( auto& c : children )
+			n += c.second.count_children();
+		return n;
 	}
 
 	void prop_node::merge( const prop_node& other, bool overwrite )

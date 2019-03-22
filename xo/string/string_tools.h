@@ -1,36 +1,33 @@
 #pragma once
 
-#include "xo/string/string_type.h"
 #include "xo/system/platform.h"
-#include "xo/numerical/math.h"
-#include <vector>
-#include <cctype>
+#include "xo/utility/types.h"
+#include "xo/string/string_type.h"
+
 #include <utility>
+#include <vector>
 
 #define xo_varstr( var_ ) ( ::std::string( #var_ ) + '=' + ::xo::to_str( ( var_ ) ) )
 
 namespace xo
 {
 	/// get left n characters; if n < 0, get string WITHOUT the left n characters
-	inline string left_str( const string& str, int n )
-	{ if ( n >= 0 ) return str.substr( 0, size_t( n ) ); else return str.substr( 0, size_t( max( 0, int(str.size()) + n ) ) ); }
+	XO_API string left_str( const string& str, int n );
 
 	/// get middle n characters, starting from pos
-	inline string mid_str( const string& str, index_t pos, size_t n = string::npos ) { return str.substr( pos, n ); }
+	XO_API string mid_str( const string& str, index_t pos, size_t n = string::npos );
 
 	/// get right n characters; if n < 0, get string WITHOUT the right n characters
-	inline string right_str( const string& str, int n )
-	{ if ( n >= 0 ) return str.substr( str.size() - n, string::npos ); else return str.substr( size_t( -n ), string::npos ); }
+	XO_API string right_str( const string& str, int n );
 
 	/// get index of a substring in a string
-	inline index_t in_str( const string& str, const string& substr, index_t p = 0 ) { return str.find( substr, p ); }
+	XO_API index_t in_str( const string& str, const string& substr, index_t p = 0 );
 
 	/// check if a string ends with a string
-	inline bool str_begins_with( const string& str, const string& substr ) { return str.find( substr ) == 0; }
+	XO_API bool str_begins_with( const string& str, const string& substr );
 
 	/// check if a string ends with a string
-	inline bool str_ends_with( const string& str, const string& substr )
-	{ return str.size() >= substr.size() && ( str.find( substr ) == str.size() - substr.size() ); }
+	XO_API bool str_ends_with( const string& str, const string& substr );
 
 	/// remove leading and trailing spaces and newlines
 	XO_API string trim_str( const string& str, const char* trim_chars = " \t\r\n\f\v" );
@@ -51,15 +48,15 @@ namespace xo
 	XO_API string& replace_str( string& s, const string& find_str, const string& replace_with );
 
 	/// convert string to lower case
-	inline string to_lower( string&& s ) { for ( char& c : s ) c = std::tolower( c ); return s; }
+	XO_API string to_lower( string&& s );
 
 	/// convert string to upper case
-	inline string to_upper( string&& s ) { for ( char& c : s ) c = std::toupper( c ); return s; }
+	XO_API string to_upper( string&& s );
 
 	/// split string into trimmed key / value pair
 	XO_API std::pair< string, string > make_key_value_str( const string& s, const string& sep_char = "=" );
 
-	XO_API string concatenate_str( std::initializer_list< string > lst, const string& delim = "" );
+	//XO_API string concatenate_str( std::initializer_list< string > lst, const string& delim = "" );
 
 	/// get formatted string (printf style)
 	XO_API string stringf( const char* format, ... );

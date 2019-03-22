@@ -2,7 +2,6 @@
 
 #include "platform.h"
 #include "xo/string/string_type.h"
-#include "assert.h"
 
 namespace xo
 {

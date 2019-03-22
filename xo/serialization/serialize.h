@@ -2,12 +2,13 @@
 
 #include <iosfwd>
 
-#include "xo/container/prop_node.h"
-#include "prop_node_serializer.h"
+#include "xo/utility/types.h"
+#include "xo/serialization/prop_node_serializer.h"
 #include "xo/utility/factory.h"
-#include "char_stream.h"
+
+//#include "char_stream.h"
 #include "xo/geometry/angle.h"
-#include "xo/utility/pointer_type.h"
+#include "xo/utility/pointer_types.h"
 #include <string>
 
 namespace xo
@@ -23,9 +24,4 @@ namespace xo
 
 	XO_API void save_file( const prop_node& pn, const path& filename, error_code* ec = nullptr );
 	XO_API void save_file( const prop_node& pn, const path& filename, const std::string& file_type, error_code* ec = nullptr );
-
-	/// streaming
-	template< angle_unit U, typename T > std::ostream& operator<<( std::ostream& str, const angle_<U, T>& a ) { return ( str << a.value ); }
-	template< angle_unit U, typename T > std::istream& operator>>( std::istream& str, angle_<U, T>& a ) { return ( str >> a.value ); }
-	template< angle_unit U, typename T > char_stream& operator>>( char_stream& str, angle_<U, T>& a ) { return ( str >> a.value ); }
 }

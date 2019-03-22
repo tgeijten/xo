@@ -2,7 +2,7 @@
 
 #include "timer.h"
 #include "xo/utility/types.h"
-#include "xo/container/prop_node.h"
+#include "xo/string/string_type.h"
 
 #ifdef XO_COMP_MSVC
 #	pragma warning( push )

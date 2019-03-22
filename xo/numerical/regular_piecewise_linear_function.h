@@ -2,7 +2,7 @@
 
 #include <functional>
 #include <memory>
-#include "math.h"
+#include "xo/numerical/math.h"
 
 namespace xo
 {

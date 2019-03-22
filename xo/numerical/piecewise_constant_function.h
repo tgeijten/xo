@@ -31,6 +31,6 @@ namespace xo
 		size_t size() const { return data_.size(); }
 
 	private:
-		flat_map< T, T > data_;
+		container_t data_;
 	};
 }

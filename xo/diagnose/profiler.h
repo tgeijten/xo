@@ -3,7 +3,6 @@
 #include "xo/utility/types.h"
 #include "xo/system/system_tools.h"
 #include "xo/time/timer.h"
-#include "xo/container/prop_node.h"
 
 #ifdef XO_COMP_MSVC
 #	pragma warning( push )

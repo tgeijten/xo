@@ -4,6 +4,7 @@
 #include "prop_node_serializer_ini.h"
 #include "prop_node_serializer_zml.h"
 #include <fstream>
+#include "xo/container/prop_node.h"
 
 namespace xo
 {

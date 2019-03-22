@@ -5,7 +5,6 @@
 #include <vector>
 #include "xo/container/buffer_access.h"
 #include "xo/system/assert.h"
-// TODO not on UNIX #include <xtr1common>
 
 namespace xo
 {

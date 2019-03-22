@@ -1,5 +1,8 @@
 #include "prop_node_serializer_ini.h"
+
 #include "xo/system/error_code.h"
+#include "xo/container/prop_node.h"
+#include "xo/string/string_tools.h"
 
 namespace xo
 {

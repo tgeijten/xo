@@ -2,6 +2,7 @@
 #include "xo/string/string_tools.h"
 #include "xo/system/system_tools.h"
 #include "xo/filesystem/filesystem.h"
+#include "xo/filesystem/path.h"
 #include <cstring>
 #include <algorithm>
 

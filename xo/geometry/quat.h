@@ -6,7 +6,6 @@
 #include "xo/geometry/angle.h"
 #include "xo/system/assert.h"
 #include "xo/numerical/compare.h"
-#include <ostream>
 #include "mat33_type.h"
 #include "axes_type.h"
 
@@ -238,8 +237,4 @@ namespace xo
 			{ txz + twy, tyz - twx, 1.0f - ( txx + tyy ) }
 		};
 	}
-
-	/// Stream output
-	template< typename T > std::ostream& operator<<( std::ostream& str, const quat_<T>& v )
-	{ str << v.w << ' ' << v.x << ' ' << v.y << ' ' << v.z; return str; }
 }

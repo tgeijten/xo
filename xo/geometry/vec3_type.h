@@ -2,7 +2,7 @@
 
 #include "xo/utility/types.h"
 #include "xo/container/prop_node.h" // TODO: get rid of this header
-#include <iosfwd> // TODO: get rid of this header
+#include "xo/string/string_cast.h"
 
 namespace xo
 {
@@ -78,5 +78,12 @@ namespace xo
 			return v;
 		}
 		static prop_node to( const vec3_<T>& vec ) { return static_cast<prop_node>( vec ); }
+	};
+
+	// string_cast specialization
+	// #TODO: get rid of std::stringstream
+	template< typename T > struct string_cast< vec3_<T> > {
+		static vec3_<T> from( const string& s ) { vec3_<T> v; std::stringstream str( s ); str >> v.x >> v.y, v.z; return v; }
+		static string to( const vec3_<T>& v ) { std::ostringstream str; str << v.x << ' ' << v.y << ' ' << v.z; return str.str(); }
 	};
 }

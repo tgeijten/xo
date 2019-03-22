@@ -2,6 +2,7 @@
 
 #include "xo/geometry/vec3_type.h"
 #include "xo/numerical/constants.h"
+#include "xo/numerical/math.h"
 
 namespace xo
 {

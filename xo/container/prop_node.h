@@ -1,12 +1,17 @@
 #pragma once
 
 #include "xo/system/platform.h"
+#include "xo/utility/types.h"
 #include "xo/system/assert.h"
-#include "xo/string/string_tools.h"
+#include "xo/string/string_type.h"
 #include "xo/string/string_cast.h"
+#include "xo/string/string_tools.h"
 #include "xo/utility/optional.h"
 #include "xo/container/view_if.h"
-#include "xo/container/container_tools.h"
+#include "xo/container/prop_node_cast.h"
+
+#include <vector>
+#include <utility>
 
 #ifdef XO_COMP_MSVC
 #	pragma warning( push )
@@ -19,9 +24,6 @@ namespace xo
 
 	/// make a prop_node with a value
 	template< typename T > prop_node make_prop_node( const T& value );
-
-	/// forward declare prop_node_cast
-	template< typename T, typename E = void > struct prop_node_cast;
 
 	/// prop_node class
 	class XO_API prop_node
@@ -193,9 +195,15 @@ namespace xo
 		const pair_t& back() const { return children.back(); }
 		pair_t& back() { return children.back(); }
 
-		/// access selection of a specific type
-		auto select( const string& key ) const { return make_view_if( begin(), end(), [=]( const pair_t& kvp ) { return kvp.first == key; } ); }
-		auto select_pattern( const string& pattern ) const { return make_view_if( begin(), end(), [=]( const pair_t& kvp ) { return pattern_match( kvp.first, pattern ); } ); }
+		/// access selection with specific key
+		auto select( const string& key ) const {
+			return make_view_if( begin(), end(), [=]( const pair_t& kvp ) { return kvp.first == key; } );
+		}
+
+		/// access items with specific pattern
+		auto select_pattern( const string& pattern ) const {
+			return make_view_if( begin(), end(), [=]( const pair_t& kvp ) { return pattern_match( kvp.first, pattern ); } );
+		}
 
 		/// erase a child
 		iterator erase( const_iterator it ) { return children.erase( it ); }
@@ -226,14 +234,19 @@ namespace xo
 
 	template< typename T > struct prop_node_cast<std::vector<T>> {
 		static std::vector<T> from( const prop_node& pn ) {
-			std::vector<T> vec; for ( auto& p : pn ) vec.push_back( p.second.get<T>() ); return vec;
+			std::vector<T> vec;
+			for ( auto& p : pn )
+				vec.push_back( p.second.get<T>() );
+			return vec;
 		}
 		static prop_node to( const std::vector<T>& vec ) {
-			prop_node pn; for ( size_t i = 0; i < vec.size(); ++i ) pn.push_back( stringf( "item%d", i ), make_prop_node( vec[ i ] ) ); return pn;
+			prop_node pn;
+			for ( size_t i = 0; i < vec.size(); ++i )
+				pn.push_back( "", make_prop_node( vec[ i ] ) );
+			return pn;
 		}
 	};
 
-	template< typename T > struct is_prop_node_constructable { static const bool value = false; };
 	template< typename T > struct prop_node_cast<T, typename std::enable_if< is_prop_node_constructable< T >::value >::type> {
 		static T from( const prop_node& pn ) { return T( pn ); }
 		static prop_node to( const T& value ) { xo_error( "Cannot convert this class to prop_node" ); }
@@ -255,9 +268,6 @@ namespace xo
 	XO_API std::ostream& to_stream( std::ostream& str, const prop_node& pn, int depth = 0, int key_align = 0 );
 	inline std::ostream& operator<<( std::ostream& str, const prop_node& pn ) { return to_stream( str, pn ); }
 }
-
-#define IS_PROP_NODE_CONSTRUCTABLE( _class_ ) \
-template<> struct ::xo::is_prop_node_constructable< _class_ > { static const bool value = true; };
 
 #ifdef XO_COMP_MSVC
 #	pragma warning( pop )

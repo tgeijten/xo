@@ -1,9 +1,10 @@
 #pragma once
 
 #include "xo/system/prerequisites.h"
-#include <random>
-#include "xo/utility/sfinae.h"
+#include "xo/utility/sfinae_tools.h"
 #include "bounds.h"
+
+#include <random> // #TODO: try to get rid of this header
 
 #ifdef XO_COMP_MSVC
 #	pragma warning( push )
@@ -22,8 +23,8 @@ namespace xo
 		template< typename T, XO_ENABLE_IF_INTEGRAL > T uni( T min, T max ) { return std::uniform_int_distribution<T>( min, max )( engine ); }
 		template< typename T, XO_ENABLE_IF_INTEGRAL > T uni( const xo::bounds< T >& b ) { return std::uniform_int_distribution<T>( b.lower, b.upper )( engine ); }
 		template< typename T, XO_ENABLE_IF_FLOATING_POINT  > T norm( T mean, T stdev ) { return std::normal_distribution<T>( mean, stdev )( engine ); }
-	private:
 
+	private:
 		std::default_random_engine engine;
 	};
 

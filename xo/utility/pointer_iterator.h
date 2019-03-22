@@ -1,9 +1,6 @@
 #pragma once
 
 #include "xo/system/platform.h"
-#ifdef XO_COMP_MSVC
-#   include <xutility>
-#endif
 #include <iterator>
 
 namespace xo

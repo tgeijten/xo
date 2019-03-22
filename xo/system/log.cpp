@@ -3,8 +3,6 @@
 #include "log_sink.h"
 
 #include <stdarg.h>
-#include <iomanip>
-#include <iostream>
 #include <vector>
 
 namespace xo
@@ -67,6 +65,53 @@ namespace xo
 		bool test_log_level( level l )
 		{
 			return l >= lowest_log_level;
+		}
+
+		void messagef( level l, const char* format, ... )
+		{
+			va_list va; va_start( va, format ); log_vstring( l, format, va ); va_end( va );
+		}
+
+		void tracef( const char* format, ... )
+		{
+			if constexpr ( XO_STATIC_LOG_LEVEL <= trace_level ) {
+				va_list va; va_start( va, format ); log_vstring( trace_level, format, va ); va_end( va );
+			}
+		}
+
+		void debugf( const char* format, ... )
+		{
+			if constexpr ( XO_STATIC_LOG_LEVEL <= debug_level ) {
+				va_list va; va_start( va, format ); log_vstring( debug_level, format, va ); va_end( va );
+			}
+		}
+
+		void infof( const char* format, ... )
+		{
+			if constexpr ( XO_STATIC_LOG_LEVEL <= info_level ) {
+				va_list va; va_start( va, format ); log_vstring( info_level, format, va ); va_end( va );
+			}
+		}
+
+		void warningf( const char* format, ... )
+		{
+			if constexpr ( XO_STATIC_LOG_LEVEL <= warning_level ) {
+				va_list va; va_start( va, format ); log_vstring( warning_level, format, va ); va_end( va );
+			}
+		}
+
+		void errorf( const char* format, ... )
+		{
+			if constexpr ( XO_STATIC_LOG_LEVEL <= error_level ) {
+				va_list va; va_start( va, format ); log_vstring( error_level, format, va ); va_end( va );
+			}
+		}
+
+		void criticalf( const char* format, ... )
+		{
+			if constexpr ( XO_STATIC_LOG_LEVEL <= critical_level ) {
+				va_list va; va_start( va, format ); log_vstring( critical_level, format, va ); va_end( va );
+			}
 		}
 	}
 }

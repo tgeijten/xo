@@ -1,13 +1,9 @@
 #include "shape.h"
 
-#include "xo/container/prop_node_tools.h"
-#include "xo/string/dictionary.h"
 #include "xo/utility/hash.h"
-#include <variant>
 
 namespace xo
 {
-
 	shape make_shape( const prop_node& pn )
 	{
 		switch ( hash( pn[ "type" ].get_value() ) )

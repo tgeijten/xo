@@ -1,6 +1,6 @@
 #pragma once
 
-#include <xo/system/assert.h>
+#include "xo/system/assert.h"
 
 namespace xo
 {

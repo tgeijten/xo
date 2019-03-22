@@ -3,6 +3,8 @@
 #include <thread>
 #include "xo/system/log_sink.h"
 #include "profiler_config.h"
+#include "xo/numerical/math.h"
+#include "xo/container/prop_node.h"
 
 namespace xo
 {

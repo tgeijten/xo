@@ -53,7 +53,4 @@ namespace xo
 	/// emplace back, return index
 	template< typename C, typename... Args> index_t emplace_back_get_index( C& c, Args&&... a )
 	{ c.emplace_back( std::forward< Args >( args )... ); return c.size() - 1; }
-	
-	/// get index of element in vector
-	template< typename T > index_t index_of( const T& e, const std::vector< T >& v ) { return index_t( &e - v.data() ); }
 }

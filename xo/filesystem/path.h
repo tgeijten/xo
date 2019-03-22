@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iosfwd>
+#include "xo/string/string_type.h"
 #include "xo/system/platform.h"
 #include "xo/string/string_cast.h"
 
@@ -56,7 +58,7 @@ namespace xo
 
 	private:
 		size_t last_separator_pos() const;
-		xo::string data_;
+		std::string data_;
 	};
 
 	XO_API path operator/( const path& p1, const path& p2 );
@@ -70,8 +72,10 @@ namespace xo
 	inline std::ostream& operator<<( std::ostream& str, const path& p ) { return str << p.string(); }
 	inline bool operator<( const path& p1, const path& p2 ) { return p1.string() < p2.string(); }
 
-	template<> inline path from_str( const string& s, path d ) { return path( s ); }
-	inline string to_str( const path& value ) { return value.string(); }
+	template<> struct string_cast< path, void > {
+		static path from( const string& s ) { return path( s ); }
+		static string to( const path& v ) { return v.string(); }
+	};
 }
 
 #ifdef XO_COMP_MSVC

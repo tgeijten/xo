@@ -1,11 +1,8 @@
 #pragma once
 
-#include <type_traits>
-
 #include "xo/utility/types.h"
 #include "xo/utility/pointer_iterator.h"
-#include "xo/container/container_tools.h"
-#include "xo/utility/pointer_type.h"
+#include "xo/utility/pointer_types.h"
 
 namespace xo
 {

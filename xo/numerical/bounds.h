@@ -1,6 +1,9 @@
 #pragma once
 
-#include "xo/serialization/serialize.h"
+#include "xo/utility/types.h"
+#include "xo/container/prop_node_cast.h"
+#include "xo/string/string_cast.h"
+#include "xo/numerical/math.h"
 
 namespace xo
 {

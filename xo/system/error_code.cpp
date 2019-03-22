@@ -1,5 +1,6 @@
 #include "error_code.h"
 #include "log.h"
+#include "assert.h"
 
 namespace xo
 {

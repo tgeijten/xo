@@ -1,8 +1,9 @@
 #include "prop_node_serializer.h"
 
-#include "xo/system/error_code.h"
-
 #include <fstream>
+
+#include "xo/system/error_code.h"
+#include "xo/container/prop_node.h"
 
 namespace xo
 {
@@ -10,11 +11,11 @@ namespace xo
 		read_pn_( nullptr ), write_pn_( nullptr ), ec_( nullptr ), file_folder_()
 	{}
 
-	prop_node_serializer::prop_node_serializer( const prop_node& pn, error_code* ec, path file_folder ) :
+	prop_node_serializer::prop_node_serializer( const prop_node& pn, error_code* ec, const path& file_folder ) :
 		read_pn_( nullptr ), write_pn_( &pn ), ec_( ec ), file_folder_( file_folder )
 	{}
 
-	prop_node_serializer::prop_node_serializer( prop_node& pn, error_code* ec, path file_folder ) :
+	prop_node_serializer::prop_node_serializer( prop_node& pn, error_code* ec, const path& file_folder ) :
 		read_pn_( &pn ), write_pn_( &pn ), ec_( ec ), file_folder_( file_folder )
 	{}
 

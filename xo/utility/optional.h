@@ -1,12 +1,10 @@
 #pragma once
 
 #include "xo/utility/types.h"
+#include <xo/numerical/constants.h>
 
-#include <limits>
 #include <type_traits>
 #include <iosfwd>
-
-#include <xo/numerical/constants.h>
 
 namespace xo
 {

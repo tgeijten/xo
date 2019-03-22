@@ -1,7 +1,6 @@
 #pragma once
 
-#include "xo/container/prop_node.h"
-#include "xo/system/error_code.h"
+#include "xo/utility/types.h"
 #include "xo/filesystem/path.h"
 
 namespace xo
@@ -9,8 +8,8 @@ namespace xo
 	struct XO_API prop_node_serializer
 	{
 		prop_node_serializer();
-		prop_node_serializer( const prop_node& pn, error_code* ec = nullptr, path file_folder = path() );
-		prop_node_serializer( prop_node& pn, error_code* ec = nullptr, path file_folder = path() );
+		prop_node_serializer( const prop_node& pn, error_code* ec = nullptr, const path& file_folder = path() );
+		prop_node_serializer( prop_node& pn, error_code* ec = nullptr, const path& file_folder = path() );
 		virtual ~prop_node_serializer() {}
 
 		virtual std::istream& read_stream( std::istream& str ) = 0;

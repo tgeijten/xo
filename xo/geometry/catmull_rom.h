@@ -1,5 +1,8 @@
 #pragma once
 
+#include "vec3.h"
+#include <vector>
+
 namespace xo
 {
 	template< typename P >

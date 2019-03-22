@@ -111,12 +111,4 @@ namespace xo
 	// TODO: move to somewhere else
 	template< angle_unit U, typename T > vec3_<T> vec3_from_polar( T radius, angle_<U, T> inclination, angle_<U, T> azimuth )
 	{ return vec3_<T>( radius * sin( inclination ) * sin( azimuth ) , radius * cos( inclination ), radius * sin( inclination ) * cos( azimuth ) ); }
-
-	/// stream out
-	template< typename T > std::ostream& operator<<( std::ostream& str, const vec3_<T>& v )
-	{ str << v.x << ' ' << v.y << ' ' << v.z; return str; }
-
-	/// stream in
-	template< typename T > std::istream& operator>>( std::istream& str, vec3_<T>& v )
-	{ str >> v.x >> v.y >> v.z; return str; }
 }

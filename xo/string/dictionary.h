@@ -2,6 +2,7 @@
 
 #include "xo/utility/types.h"
 #include "xo/system/assert.h"
+#include "xo/container/container_tools.h"
 
 namespace xo
 {

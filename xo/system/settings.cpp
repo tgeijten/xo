@@ -5,6 +5,7 @@
 #include "xo/filesystem/filesystem.h"
 #include "assert.h"
 #include "xo/utility/optional.h"
+#include "xo/container/container_tools.h"
 
 namespace xo
 {

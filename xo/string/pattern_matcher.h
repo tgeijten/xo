@@ -24,10 +24,6 @@ namespace xo
 		template< typename T > bool operator()( const T& str ) const { return operator()( static_cast< const string& >( *str ) ); }
 		template< typename T > bool operator()( const T* str ) const { return operator()( static_cast< const string& >( *str ) ); }
 
-		// template< typename It > It find_match( It begin, It end ) const {
-		// 	while ( begin != end && !match( static_cast< const string& >( *begin ) ) ) ++begin;
-		// }
-
 	private:
 		std::vector< string > patterns;
 	};

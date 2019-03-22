@@ -18,7 +18,8 @@ namespace rapidxml {
 }
 
 #include <contrib/rapidxml-1.13/rapidxml_print.hpp>
-#include <streambuf>
+
+#include "xo/container/prop_node.h"
 
 namespace xo
 {

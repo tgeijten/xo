@@ -3,8 +3,8 @@
 #include "xo/numerical/constants.h"
 #include "xo/numerical/math.h"
 #include "xo/geometry/vec3_type.h"
-#include "aabb.h"
 #include "xo/geometry/transform.h"
+#include "xo/shape/aabb.h"
 
 namespace xo
 {

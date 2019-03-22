@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xo/numerical/compare.h"
+
 namespace xo
 {
 	template< typename P >
@@ -21,7 +23,7 @@ namespace xo
 		xo_assert( s >= 2 );
 
 		// check if this matches the first existing point
-		if ( xo::less_or_equal( insert_len, 0.0 ) )
+		if ( less_or_equal( insert_len, 0.0 ) )
 			return 0;
 
 		for ( index_t idx = 1; idx < s; ++idx )
@@ -29,7 +31,7 @@ namespace xo
 			auto svec = path[ idx ] - path[ idx - 1 ];
 			auto slen = length( svec );
 
-			if ( xo::equal( insert_len, slen ) )
+			if ( equal( insert_len, slen ) )
 			{
 				// return existing point
 				return idx;

@@ -3,7 +3,7 @@
 #ifdef XO_COMP_MSVC
 #   include <xutility>
 #endif
-#include "sfinae.h"
+#include "sfinae_tools.h"
 
 namespace xo
 {

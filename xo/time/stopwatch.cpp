@@ -1,4 +1,7 @@
 #include "stopwatch.h"
+#include "xo/container/container_tools.h"
+#include "xo/string/string_tools.h"
+#include "xo/container/prop_node.h"
 
 namespace xo
 {
@@ -13,7 +16,7 @@ namespace xo
 		internal_measure_ += epoch_ - now;
 	}
 
-	xo::prop_node stopwatch::get_report( int decimals )
+	prop_node stopwatch::get_report( int decimals )
 	{
 		auto old_precision = set_to_str_precision( decimals );
 

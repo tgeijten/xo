@@ -3,7 +3,7 @@
 #include "xo/utility/types.h"
 #include "xo/system/platform.h"
 
-#include <chrono>
+#include <chrono> // #TODO: try to move this to cpp
 
 #if defined (_MSC_VER ) && ( _MSC_VER <= 1800 ) // MSVC 2013 and lower do not have proper chrono support
 #	define XO_USE_WINDOWS_PERFORMANCE_COUNTER

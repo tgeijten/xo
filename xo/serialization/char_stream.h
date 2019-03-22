@@ -2,12 +2,11 @@
 
 #include <vector>
 
-#include "xo/system/platform.h"
 #include "xo/utility/types.h"
+#include "xo/system/platform.h"
 #include "xo/string/string_type.h"
 #include "xo/system/assert.h"
 #include "xo/system/error_code.h"
-#include "xo/filesystem/path.h"
 #include "xo/container/flag_set.h"
 #include "xo/utility/optional.h"
 
@@ -16,8 +15,6 @@
 #	pragma warning( disable: 4251 )
 #endif
 
-#define XO_WHITESPACE_CHARS " \t\r\n\f\v"
-
 namespace xo
 {
 	/// blazing-fast class for reading text stream-style
@@ -25,13 +22,13 @@ namespace xo
 	{
 	public:
 		/// construct char_stream using given zero terminated char buffer
-		explicit char_stream( const char* buf, string delim_chars = XO_WHITESPACE_CHARS, string quote_chars = "\"", std::vector< string > operators = {} );
+		explicit char_stream( const char* buf, string delim_chars = whitespace_characters, string quote_chars = "\"", std::vector< string > operators = {} );
 
 		/// construct char_stream from rvalue string
-		explicit char_stream( string&& other, string delim_chars = XO_WHITESPACE_CHARS, string quote_chars = "\"", std::vector< string > operators = {} );
+		explicit char_stream( string&& other, string delim_chars = whitespace_characters, string quote_chars = "\"", std::vector< string > operators = {} );
 
 		/// construct char_stream with contents read from file
-		explicit char_stream( const path& filename, string delim_chars = XO_WHITESPACE_CHARS, string quote_chars = "\"", std::vector< string > operators = {} );
+		explicit char_stream( const path& filename, string delim_chars = whitespace_characters, string quote_chars = "\"", std::vector< string > operators = {} );
 
 		~char_stream() {}
 

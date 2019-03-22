@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xo/system/assert.h"
+
 namespace xo
 {
 	struct cone

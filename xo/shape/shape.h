@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xo/system/platform.h"
+#include "xo/utility/types.h"
 #include "sphere.h"
 #include "box.h"
 #include "cylinder.h"
@@ -7,9 +9,7 @@
 #include "cone.h"
 #include "plane.h"
 #include "aabb.h"
-#include "xo/system/platform.h"
-#include "xo/geometry/transform.h"
-#include "xo/geometry/vec3_type.h"
+
 #include <variant>
 
 namespace xo
