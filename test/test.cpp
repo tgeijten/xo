@@ -24,6 +24,7 @@
 #include "xo/numerical/functions.h"
 #include "performance_test.h"
 #include <variant>
+#include "view_if_test.h"
 
 using namespace xo;
 
@@ -72,6 +73,7 @@ int main( int argc, char* argv[] )
 		xo::regression_test();
 		sw.add_measure( "regression" );
 
+		xo::view_if_test();
 		xo::optional_test();
 		xo::clamp_test();
 		xo::linear_regression_test();
