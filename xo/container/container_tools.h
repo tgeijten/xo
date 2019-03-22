@@ -2,6 +2,7 @@
 
 #include "xo/system/assert.h"
 #include "xo/xo_types.h"
+#include <string>
 
 namespace xo
 {
@@ -45,6 +46,19 @@ namespace xo
 		auto it = find( cont, e );
 		if ( it == std::end( cont ) ) return no_index;
 		else return it - std::begin( cont );
+	}
+
+	/// convert elements in a container to a string
+	template< typename C > std::string container_to_str( const C& cont, const std::string& delim = " " ) {
+		std::string str;
+		for ( auto& e : cont ) {
+			auto estr = to_str( e );
+			if ( !estr.empty() ) {
+				if ( !str.empty() ) str += delim;
+				str += estr;
+			}
+		}
+		return str;
 	}
 
 	/// get index of last element

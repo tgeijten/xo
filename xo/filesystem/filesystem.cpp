@@ -19,6 +19,7 @@
 #ifdef __APPLE__
 #	include <mach-o/dyld.h>
 #endif
+#include "xo/container/container_tools.h"
 
 
 namespace xo
@@ -149,7 +150,7 @@ namespace xo
 		for ( auto& f : filenames )
 			if ( file_exists( f ) )
 				return f;
-		xo_error( "Could not find " + to_str( filenames, " or " ) + " in " + xo::current_path().string() );
+		xo_error( "Could not find " + container_to_str( filenames, " or " ) + " in " + xo::current_path().string() );
 	}
 
 	XO_API bool create_directories( const path& folder )

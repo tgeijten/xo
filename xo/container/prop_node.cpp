@@ -74,7 +74,7 @@ namespace xo
 		for ( auto& key : keys )
 			if ( auto c = try_get_child( key ) )
 				return *c;
-		xo_error( "Could not find any key: " + to_str( keys, " or " ) );
+		xo_error( "Could not find any key: " + concatenate_str( keys, " or " ) );
 	}
 
 	const prop_node* prop_node::try_get_any_child( std::initializer_list< key_t > keys ) const
