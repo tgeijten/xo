@@ -4,7 +4,7 @@
 #	define XO_STATIC_LOG_LEVEL trace_level
 #endif
 
-#include "xo/system/platform.h"
+#include "xo/system/xo_api.h"
 #include "xo/string/string_type.h"
 #include "xo/system/log_level.h"
 #include "xo/string/string_cast.h"

@@ -2,7 +2,7 @@
 
 #include <cstdint>
 #include <string>
-#include "xo/system/platform.h"
+#include "xo/system/xo_api.h"
 
 #ifdef XO_COMP_MSVC
 #	pragma warning( disable: 4307 )

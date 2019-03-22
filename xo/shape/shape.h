@@ -1,6 +1,6 @@
 #pragma once
 
-#include "xo/system/platform.h"
+#include "xo/system/xo_api.h"
 #include "xo/xo_types.h"
 #include "sphere.h"
 #include "box.h"

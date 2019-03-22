@@ -1,5 +1,5 @@
 #pragma once
 
-#include "xo/system/build_config.h"
-#include "xo/system/platform.h"
+#include "xo/system/xo_config.h"
+#include "xo/system/xo_api.h"
 #include "xo/xo_types.h"

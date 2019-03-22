@@ -1,6 +1,6 @@
 #pragma once
 
-#include "xo/system/platform.h"
+#include "xo/system/xo_api.h"
 #include "xo/system/error_code.h"
 #include "xo/system/version.h"
 #include "xo/filesystem/path.h"

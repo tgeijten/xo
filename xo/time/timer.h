@@ -1,7 +1,7 @@
 #pragma once
 
 #include "xo/xo_types.h"
-#include "xo/system/platform.h"
+#include "xo/system/xo_api.h"
 
 #include <chrono> // #TODO: try to move this to cpp
 

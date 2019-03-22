@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "xo/xo_types.h"
-#include "xo/system/platform.h"
+#include "xo/system/xo_api.h"
 #include "xo/string/string_type.h"
 #include "xo/system/assert.h"
 #include "xo/system/error_code.h"

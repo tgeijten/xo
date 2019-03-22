@@ -1,6 +1,6 @@
 #pragma once
 
-#include "platform.h"
+#include "xo_api.h"
 #include "xo/string/string_type.h"
 
 namespace xo

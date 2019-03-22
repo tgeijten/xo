@@ -2,7 +2,7 @@
 
 #include <iosfwd>
 #include "xo/string/string_type.h"
-#include "xo/system/platform.h"
+#include "xo/system/xo_api.h"
 #include "xo/string/string_cast.h"
 
 #ifdef XO_COMP_MSVC

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "xo/system/build_config.h"
+#include "xo/system/xo_config.h"
 #include <string>
 
 #if XO_USE_EXCEPTIONS
