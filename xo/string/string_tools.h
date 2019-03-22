@@ -6,6 +6,7 @@
 
 #include <utility>
 #include <vector>
+#include <initializer_list>
 
 #define xo_varstr( var_ ) ( ::std::string( #var_ ) + '=' + ::xo::to_str( ( var_ ) ) )
 
@@ -56,7 +57,8 @@ namespace xo
 	/// split string into trimmed key / value pair
 	XO_API std::pair< string, string > make_key_value_str( const string& s, const string& sep_char = "=" );
 
-	//XO_API string concatenate_str( std::initializer_list< string > lst, const string& delim = "" );
+	/// concatenate strings with delimiters
+	XO_API string concatenate_str( std::initializer_list< string > lst, const string& delim = "" );
 
 	/// get formatted string (printf style)
 	XO_API string stringf( const char* format, ... );

@@ -54,7 +54,7 @@ namespace xo
 		return str.size() >= substr.size() && ( str.find( substr ) == str.size() - substr.size() );
 	}
 
-	XO_API string trim_str( const string& s, const char* space_chars )
+	string trim_str( const string& s, const char* space_chars )
 	{
 		auto left = s.find_first_not_of( space_chars );
 		if ( left == string::npos ) return string( "" ); // string has no non-whitespace characters
@@ -62,13 +62,13 @@ namespace xo
 		return s.substr( left, 1 + right - left );
 	}
 
-	XO_API string trim_right_str( const string& s, const char* space_chars )
+	string trim_right_str( const string& s, const char* space_chars )
 	{
 		auto right = s.find_last_not_of( space_chars );
 		return s.substr( 0, 1 + right );
 	}
 
-	XO_API std::vector< string > split_str( const string& s, const string& sep_chars )
+	std::vector< string > split_str( const string& s, const string& sep_chars )
 	{
 		std::vector< string > strings;
 		size_t ofs = s.find_first_not_of( sep_chars.c_str(), 0 );
@@ -80,21 +80,21 @@ namespace xo
 		return strings;
 	}
 
-	XO_API std::pair< string, string > split_str_at_first( const string& s, const string& sep_chars )
+	std::pair< string, string > split_str_at_first( const string& s, const string& sep_chars )
 	{
 		if ( auto pos = s.find_first_of( sep_chars.c_str() ); pos != string::npos )
 			return { s.substr( 0, pos ), s.substr( pos + 1 ) };
 		else return { s, string() };
 	}
 
-	XO_API std::pair< string, string > split_str_at_last( const string& s, const string& sep_chars )
+	std::pair< string, string > split_str_at_last( const string& s, const string& sep_chars )
 	{
 		if ( auto pos = s.find_last_of( sep_chars.c_str() ); pos != string::npos )
 			return { s.substr( 0, pos ), s.substr( pos + 1 ) };
 		else return { s, string() };
 	}
 
-	XO_API string& replace_str( string& s, const string& find_str, const string& replace_with )
+	string& replace_str( string& s, const string& find_str, const string& replace_with )
 	{
 		for ( auto pos = s.find( find_str ); pos != string::npos; pos = s.find( find_str ) )
 			s.replace( pos, find_str.size(), replace_with );
@@ -115,7 +115,7 @@ namespace xo
 		return s;
 	}
 
-	XO_API std::pair< string, string > make_key_value_str( const string& s, const string& sep_char )
+	std::pair< string, string > make_key_value_str( const string& s, const string& sep_char )
 	{
 		auto pos = s.find_first_of( sep_char.c_str() );
 		if ( pos == string::npos )
@@ -123,20 +123,20 @@ namespace xo
 		else return make_pair( trim_str( s.substr( 0, pos ) ), trim_str( mid_str( s, pos + 1 ) ) );
 	}
 
-	//XO_API string concatenate_str( std::initializer_list< string > string_list, const string& delim )
-	//{
-	//	string str;
-	//	bool first = true;
-	//	for ( auto& element : string_list )
-	//	{
-	//		if ( !element.empty() )
-	//		{
-	//			if ( !first ) str += delim; else first = false;
-	//			str += element;
-	//		}
-	//	}
-	//	return str;
-	//}
+	string concatenate_str( std::initializer_list< string > string_list, const string& delim )
+	{
+		string str;
+		bool first = true;
+		for ( auto& element : string_list )
+		{
+			if ( !element.empty() )
+			{
+				if ( !first ) str += delim; else first = false;
+				str += element;
+			}
+		}
+		return str;
+	}
 
 	string stringf( const char* format, ... )
 	{
@@ -173,13 +173,13 @@ namespace xo
 		return false;
 	}
 
-	XO_API int set_to_str_precision( int p )
+	int set_to_str_precision( int p )
 	{ int old = to_str_precision_value; to_str_precision_value = p; return old; }
 
-	XO_API int to_str_precision()
+	int to_str_precision()
 	{ return to_str_precision_value; }
 
-	XO_API string encode_char( char c )
+	string encode_char( char c )
 	{
 		if ( c == '\"' )
 			return "\\\"";
@@ -198,7 +198,7 @@ namespace xo
 		else return string( 1, c ); // nothing to encode
 	}
 
-	XO_API char decode_char( const char* buf, size_t buf_size, int* len )
+	char decode_char( const char* buf, size_t buf_size, int* len )
 	{
 		xo_error_if( buf_size == 0, "Invalid buffer size" );
 		*len = 0;
@@ -232,7 +232,7 @@ namespace xo
 		}
 	}
 
-	XO_API string quoted( const string& s )
+	string quoted( const string& s )
 	{
 		string sout = "\"";
 		for ( const char& c : s )
@@ -245,7 +245,7 @@ namespace xo
 		return sout;
 	}
 
-	XO_API bool needs_quotes( const string& s, const char* special_chars )
+	bool needs_quotes( const string& s, const char* special_chars )
 	{
 		for ( const char& c : s )
 			if ( c < 33 || c == '\"' || strchr( special_chars, c ) )
@@ -253,14 +253,14 @@ namespace xo
 		return s.empty();
 	}
 
-	XO_API string try_quoted( const string& s, const char* special_chars )
+	string try_quoted( const string& s, const char* special_chars )
 	{
 		if ( needs_quotes( s, special_chars ) )
 			return quoted( s );
 		else return s;
 	}
 
-	XO_API string try_unquoted( const string& s )
+	string try_unquoted( const string& s )
 	{
 		if ( s.empty() || s.front() != '\"' || s.back() != '\"' )
 			return s; // no quotes
@@ -279,7 +279,7 @@ namespace xo
 		return sout;
 	}
 
-	XO_API string get_filename_ext( const string& str )
+	string get_filename_ext( const string& str )
 	{
 		size_t n = str.find_last_of( '.' );
 		if ( n != string::npos ) {
@@ -290,21 +290,21 @@ namespace xo
 		return string(); // no extension found
 	}
 
-	XO_API string get_filename_without_ext( const string& str )
+	string get_filename_without_ext( const string& str )
 	{
 		auto ext_len = get_filename_ext( str ).size();
 		if ( ext_len > 0 ) ++ext_len; // add dot
 		return str.substr( 0, str.size() - ext_len );
 	}
 
-	XO_API string get_filename_folder( const string& str )
+	string get_filename_folder( const string& str )
 	{
 		size_t n = str.find_last_of( "/\\" );
 		if ( n != string::npos ) return str.substr( 0, n + 1 );
 		else return str;
 	}
 
-	XO_API string get_filename_without_folder( const string& str )
+	string get_filename_without_folder( const string& str )
 	{
 		size_t n = str.find_last_of( "/\\" );
 		if ( n != string::npos ) return str.substr( n + 1, string::npos );
