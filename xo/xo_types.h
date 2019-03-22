@@ -8,6 +8,11 @@ namespace xo
 	struct error_code;
 	class char_stream;
 
+	template< typename T > struct vec3_;
+	template< typename T > struct quat_;
+	template< typename T > struct transform_;
+	template< typename T > class bounds;
+
 	// character defaults
 	constexpr const char* whitespace_characters = " \t\r\n\f\v";
 

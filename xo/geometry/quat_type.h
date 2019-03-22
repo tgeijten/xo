@@ -1,8 +1,8 @@
 #pragma once
 
 #include "xo/xo_types.h"
-#include "xo/container/prop_node.h"
 #include "angle.h"
+#include "xo/container/prop_node.h"
 
 namespace xo
 {

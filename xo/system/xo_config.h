@@ -9,3 +9,7 @@
 #		define XO_USE_ASSERT 1
 #	endif
 #endif
+
+#ifndef XO_STATIC_LOG_LEVEL
+#	define XO_STATIC_LOG_LEVEL trace_level
+#endif
