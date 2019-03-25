@@ -73,7 +73,7 @@ namespace xo
 
 	template< typename T > bool xo::settings::set( const string& id, T value )
 	{
-		return try_set( id, make_prop_node( value ) );
+		return try_set( id, to_prop_node( value ) );
 	}
 }
 

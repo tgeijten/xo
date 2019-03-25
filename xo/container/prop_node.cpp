@@ -42,7 +42,7 @@ namespace xo
 		}
 	}
 
-	const xo::prop_node& prop_node::get_child( const key_t& key ) const
+	const prop_node& prop_node::get_child( const key_t& key ) const
 	{
 		for ( auto& c : children )
 			if ( c.first == key )
@@ -50,7 +50,7 @@ namespace xo
 		xo_error( "Could not find key: " + key );
 	}
 
-	xo::prop_node& prop_node::get_child( const key_t& key )
+	prop_node& prop_node::get_child( const key_t& key )
 	{
 		for ( auto& c : children )
 			if ( c.first == key )
@@ -58,13 +58,13 @@ namespace xo
 		xo_error( "Could not find key: " + key );
 	}
 
-	const xo::prop_node& prop_node::get_child( index_t idx ) const
+	const prop_node& prop_node::get_child( index_t idx ) const
 	{
 		xo_error_if( idx >= size(), "Invalid index: " + to_str( idx ) );
 		return children[ idx ].second;
 	}
 
-	xo::prop_node& prop_node::get_child( index_t idx )
+	prop_node& prop_node::get_child( index_t idx )
 	{
 		xo_error_if( idx >= size(), "Invalid index: " + to_str( idx ) );
 		return children[ idx ].second;
@@ -86,21 +86,21 @@ namespace xo
 		return nullptr;
 	}
 
-	xo::prop_node& prop_node::get_or_add_child( const key_t& key )
+	prop_node& prop_node::get_or_add_child( const key_t& key )
 	{
 		if ( auto c = try_get_child( key ) )
 			return *c;
 		else return push_back( key );
 	}
 
-	const xo::prop_node::key_t& prop_node::get_key( index_t idx ) const
+	const prop_node::key_t& prop_node::get_key( index_t idx ) const
 	{
 		xo_assert( idx < size() );
 		access();
 		return children[ idx ].first;
 	}
 
-	const xo::prop_node* prop_node::try_get_query_key( const key_t& key ) const
+	const prop_node* prop_node::try_get_query_key( const key_t& key ) const
 	{
 		if ( auto* c = try_get_child( key ) )
 			return c;
@@ -114,7 +114,7 @@ namespace xo
 		else return nullptr;
 	}
 
-	const xo::prop_node* prop_node::try_get_query( const key_t& key, const char delim ) const
+	const prop_node* prop_node::try_get_query( const key_t& key, const char delim ) const
 	{
 		auto p = key.find_first_of( delim );
 		if ( p == string::npos )
@@ -170,8 +170,8 @@ namespace xo
 		int width = 0;
 		for ( auto& child : pn )
 		{
-			width = xo::max( width, depth * 2 + int( child.first.size() ) );
-			width = xo::max( width, get_align_width( child.second, depth + 1 ) );
+			width = max( width, depth * 2 + int( child.first.size() ) );
+			width = max( width, get_align_width( child.second, depth + 1 ) );
 		}
 		return width;
 	}

@@ -44,18 +44,6 @@ namespace xo
 		return to_str( v.lower ) + ' ' + to_str( v.upper );
 	}
 
-	//template< typename T > std::ostream& operator<<( std::ostream& str, const bounds< T >& v ) {
-	//	return str << v.lower << ' ' << v.upper;
-	//}
-
-	//template< typename T > std::istream& operator>>( std::istream& str, bounds< T >& v ) {
-	//	return str >> v.lower >> v.upper;
-	//}
-
-	//template< typename T > char_stream& operator>>( char_stream& str, bounds< T >& v ) {
-	//	return str >> v.lower >> v.upper;
-	//}
-
 	template< typename T > xo::bounds<T>::bounds( const prop_node& pn ) {
 		if ( pn.has_value() ) {
 			lower = from_str( pn.get_value(), constants<T>::lowest() );

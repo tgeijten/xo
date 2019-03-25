@@ -26,7 +26,7 @@ namespace xo
 	prop_node get_rapid_xml_node( rapidxml::xml_node<>* node )
 	{
 		// make new prop_node
-		prop_node pn = make_prop_node( node->value() );
+		prop_node pn = to_prop_node( node->value() );
 
 		// add attributes
 		for ( rapidxml::xml_attribute<>* attr = node->first_attribute(); attr; attr = attr->next_attribute() )

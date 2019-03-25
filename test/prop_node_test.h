@@ -15,17 +15,18 @@ namespace xo
 		double value;
 	};
 
+	inline prop_node to_prop_node( const custom_struct& value )
+	{
+		prop_node pn;
+		pn.set( "name", value.name );
+		pn.set( "value", value.value );
+		return pn;
+	}
+
 	template<> struct prop_node_cast< custom_struct > {
 		static custom_struct from( const prop_node& pn )
 		{
 			return custom_struct( pn.get<string>( "name" ), pn.get<double>( "value" ) );
-		}
-		static prop_node to( const custom_struct& value )
-		{
-			prop_node pn;
-			pn.set( "name", value.name );
-			pn.set( "value", value.value );
-			return pn;
 		}
 	};
 

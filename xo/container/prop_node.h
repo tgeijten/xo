@@ -22,11 +22,6 @@
 
 namespace xo
 {
-	class prop_node;
-
-	/// make a prop_node with a value
-	template< typename T > prop_node make_prop_node( const T& value );
-
 	/// prop_node class
 	class XO_API prop_node
 	{
@@ -52,7 +47,7 @@ namespace xo
 		/// assignment operators
 		prop_node& operator=( const prop_node& other ) = default;
 		prop_node& operator=( prop_node&& other ) = default;
-		template< typename T > prop_node& operator=( const T& v ) { *this = prop_node_cast<T>::to( v ); return *this; }
+		template< typename T > prop_node& operator=( const T& v ) { *this = to_prop_node( v ); return *this; }
 
 		/// equality operators
 		bool operator==( const prop_node& other ) const;
@@ -122,7 +117,7 @@ namespace xo
 		/// set the value of this node
 		prop_node& set( prop_node&& pn ) { *this = std::move( pn ); return *this; }
 		prop_node& set( const prop_node& pn ) { *this = pn; return *this; }
-		template< typename T > prop_node& set( const T& v ) { *this = prop_node_cast<T>::to( v ); return *this; }
+		template< typename T > prop_node& set( const T& v ) { *this = to_prop_node( v ); return *this; }
 
 		/// set the value of this node
 		template< typename T > prop_node& set_value( const T& v ) { value = to_str( v ); return *this; }
@@ -137,7 +132,7 @@ namespace xo
 		{ return get_or_add_query( query, delim ).set( v ); }
 
 		/// add a node with a value
-		template< typename T > prop_node& push_back( const key_t& key, const T& value ) { children.emplace_back( key, make_prop_node( value ) ); return children.back().second; }
+		template< typename T > prop_node& push_back( const key_t& key, const T& value ) { children.emplace_back( key, to_prop_node( value ) ); return children.back().second; }
 		prop_node& push_back( const key_t& key, const prop_node& pn ) { children.emplace_back( key, pn ); return children.back().second; }
 		prop_node& push_back( const key_t& key, prop_node&& pn ) { children.emplace_back( key, std::move( pn ) ); return children.back().second; }
 		prop_node& push_back( const key_t& key ) { children.emplace_back( key, prop_node() ); return children.back().second; }
@@ -231,7 +226,7 @@ namespace xo
 	/// prop_node_cast and specializations
 	template<> struct prop_node_cast<prop_node> {
 		static prop_node from( const prop_node& pn ) { return pn; }
-		static prop_node to( const prop_node& value ) { return value; }
+		//static prop_node to( const prop_node& value ) { return value; }
 	};
 
 	template< typename T > struct prop_node_cast<std::vector<T>> {
@@ -241,32 +236,33 @@ namespace xo
 				vec.push_back( p.second.get<T>() );
 			return vec;
 		}
-		static prop_node to( const std::vector<T>& vec ) {
-			prop_node pn;
-			for ( size_t i = 0; i < vec.size(); ++i )
-				pn.push_back( "", make_prop_node( vec[ i ] ) );
-			return pn;
-		}
 	};
 
 	template< typename T > struct prop_node_cast<T, typename std::enable_if< is_prop_node_constructable< T >::value >::type> {
 		static T from( const prop_node& pn ) { return T( pn ); }
-		static prop_node to( const T& value ) { xo_error( "Cannot convert this class to prop_node" ); }
+		//static prop_node to( const T& value ) { xo_error( "Cannot convert this class to prop_node" ); }
 	};
 
 	template< std::size_t N > struct prop_node_cast<char[ N ]> {
 		static const char* from( const prop_node& pn ) { xo_error( "Cannot convert prop_node to string literal" ); }
-		static prop_node to( const char* value ) { return prop_node( string( value ) ); }
+		//static prop_node to( const char* value ) { return prop_node( string( value ) ); }
 	};
 
 	template< typename T, typename E > struct prop_node_cast {
 		static T from( const prop_node& pn ) { return from_str( pn.get_value(), T() ); }
-		static prop_node to( const T& value ) { return prop_node( to_str( value ) ); }
+		//static prop_node to( const T& value ) { return prop_node( to_str( value ) ); }
 	};
 
-	template< typename T > prop_node make_prop_node( const T& value ) { return prop_node_cast<T>::to( value ); }
+	template< typename T > prop_node to_prop_node( const T& value ) { return prop_node( to_str( value ) ); }
 
-	/// stream operator
+	template< typename T > prop_node to_prop_node( const std::vector<T>& vec ) {
+		prop_node pn;
+		for ( size_t i = 0; i < vec.size(); ++i )
+			pn.push_back( "", to_prop_node( vec[ i ] ) );
+		return pn;
+	}
+
+	/// convert prop_node to string
 	XO_API string to_str( const prop_node& pn );
 }
 
