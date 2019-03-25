@@ -12,7 +12,6 @@
 #include <vector>
 #include <utility>
 #include <initializer_list>
-#include <type_traits>
 
 #ifdef XO_COMP_MSVC
 #	pragma warning( push )
