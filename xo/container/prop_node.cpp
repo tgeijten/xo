@@ -1,6 +1,7 @@
 #include "prop_node.h"
 
 #include "xo/serialization/prop_node_serializer_zml.h"
+#include "xo/container/container_tools.h"
 #include "xo/numerical/math.h"
 #include "xo/string/string_tools.h"
 
@@ -28,6 +29,11 @@ namespace xo
 		for ( auto& c : children )
 			n += c.second.count_children();
 		return n;
+	}
+
+	bool prop_node::is_array() const
+	{
+		return find_if( *this, [&]( const prop_node::pair_t& n ) { return !n.first.empty(); } ) == end();
 	}
 
 	void prop_node::merge( const prop_node& other, bool overwrite )

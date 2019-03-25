@@ -10,7 +10,6 @@ namespace xo
 {
 	struct custom_struct
 	{
-		custom_struct( const string& n, double v ) : name( n ), value ( v ) {}
 		string name;
 		double value;
 	};
@@ -23,12 +22,12 @@ namespace xo
 		return pn;
 	}
 
-	template<> struct prop_node_cast< custom_struct > {
-		static custom_struct from( const prop_node& pn )
-		{
-			return custom_struct( pn.get<string>( "name" ), pn.get<double>( "value" ) );
-		}
-	};
+	inline bool from_prop_node( const prop_node& pn, custom_struct& cs )
+	{
+		cs.name = pn.get<string>( "name" );
+		cs.value = pn.get<double>( "value" );
+		return true;
+	}
 
 	void prop_node_test()
 	{
@@ -52,7 +51,7 @@ namespace xo
 		pn.push_back( "duplicate", 2 );
 
 		std::vector< custom_struct > vec;
-		for ( int i = 1; i <= 3; ++i ) vec.push_back( custom_struct( stringf( "name%d", i ), i * 1.5 ) );
+		for ( int i = 1; i <= 3; ++i ) vec.push_back( custom_struct{ stringf( "name%d", i ), i * 1.5 } );
 		pn.push_back( "vec_test", vec );
 
 		std::vector< vec3f > vec2;

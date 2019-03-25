@@ -30,5 +30,5 @@ namespace xo
 
 	inline bool is_pattern( const string& s ) { return s.find_first_of( "*?" ) != string::npos; }
 
-	IS_PROP_NODE_CONSTRUCTABLE( pattern_matcher );
+	inline bool from_prop_node( const prop_node& pn, pattern_matcher& v ) { v = pattern_matcher( pn ); return true; }
 }

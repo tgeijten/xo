@@ -34,14 +34,24 @@ namespace xo
 	using quatf = quat_< float >;
 	using quatd = quat_< double >;
 
-	template< typename T > struct prop_node_cast< quat_<T> > {
-		static quat_<T> from( const prop_node& pn ) {
-			if ( pn.size() == 4 )
-				return quat_<T>( pn.get<T>( "w" ), pn.get<T>( "x" ), pn.get<T>( "y" ), pn.get<T>( "z" ) );
-			else return quat_from_euler( pn.get< vec3_< angle_< angle_unit::degrees, T > > >() );
+	template< typename T > prop_node to_prop_node( const quat_<T>& q ) {
+		return prop_node().set( "w", w ).set( "x", x ).set( "y", y ).set( "z", z );
+	}
+
+	template< typename T > bool from_prop_node( const prop_node& pn, quat_<T>& q ) {
+		if ( pn.size() == 4 )
+		{
+			q.w = pn.get<T>( "w" );
+			q.x = pn.get<T>( "x" );
+			q.y = pn.get<T>( "y" );
+			q.z = pn.get<T>( "z" );
+			return true;
 		}
-		static prop_node to( const quat_<T>& q ) {
-			return prop_node().set( "w", w ).set( "x", x ).set( "y", y ).set( "z", z );
+		else if ( vec3_< angle_< angle_unit::degrees, T > > v; from_prop_node( pn, v ) )
+		{
+			q = quat_from_euler( v );
+			return true;
 		}
+		else return false;
 	};
 }

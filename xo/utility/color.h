@@ -35,6 +35,5 @@ namespace xo
 	XO_API color make_from_hsv( float H, float S, float V );
 	XO_API color make_unique_color( index_t i, float brightness = 0.6 );
 	XO_API color make_from_hex( unsigned int x );
+	XO_API bool from_prop_node( const prop_node& pn, color& c );
 }
-
-IS_PROP_NODE_CONSTRUCTABLE( xo::color );

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "xo/xo_types.h"
-#include "xo/container/prop_node_cast.h"
 #include "xo/string/string_cast.h"
 #include "xo/numerical/math.h"
 
@@ -12,7 +11,6 @@ namespace xo
 	{
 	public:
 		bounds() : lower(), upper() {};
-		bounds( const prop_node& props );
 		template< typename U > bounds( const U& lower_bound, const U& upper_bound ) : lower( T( lower_bound ) ), upper( T( upper_bound ) ) {};
 		template< typename U > bounds( const bounds< U >& other ) : lower( T( other.lower ) ), upper( T( other.upper ) ) {};
 		template< typename U > bounds( const U& value ) : lower( T( value ) ), upper( T( value ) ) {};
@@ -44,26 +42,23 @@ namespace xo
 		return to_str( v.lower ) + ' ' + to_str( v.upper );
 	}
 
-	template< typename T > xo::bounds<T>::bounds( const prop_node& pn ) :
-		lower( constants<T>::lowest() ),
-		upper( constants<T>::max() )
-	{
+	template< typename T > bool from_prop_node( const prop_node& pn, bounds<T>& v ) {
 		if ( pn.has_value() ) {
-			from_str( pn.get_value(), lower );
-			auto p = pn.get_value().find( ".." );
-			if ( p != string::npos )
-				from_str( pn.get_value().substr( p + 2 ), upper );
-			else upper = lower; // single value
+			if ( from_str( pn.get_value(), v.lower ) )
+			{
+				auto p = pn.get_value().find( ".." );
+				if ( p != string::npos )
+					return from_str( pn.get_value().substr( p + 2 ), v.upper );
+				else v.upper = v.lower; // single value
+				return true;
+			}
+			else return false;
 		}
 		else if ( pn.size() >= 2 ) {
-			lower = pn.get_any< T >( { "min", "lower" }, pn.get< T >( 0 ) );
-			upper = pn.get_any<T>( { "max", "upper" }, pn.get< T >( 1 ) );
+			v.lower = pn.get_any<T>( { "min", "lower" }, pn.get<T>( 0 ) );
+			v.upper = pn.get_any<T>( { "max", "upper" }, pn.get<T>( 1 ) );
+			return true;
 		}
-		else xo_error( "Cannot read bounds from prop_node" );
+		else return false;
 	}
-
-	// TODO: make a generic version of IS_PROP_NODE_CONSTRUCTABLE;
-	IS_PROP_NODE_CONSTRUCTABLE( boundsd );
-	IS_PROP_NODE_CONSTRUCTABLE( boundsf );
-	IS_PROP_NODE_CONSTRUCTABLE( boundsi );
 }

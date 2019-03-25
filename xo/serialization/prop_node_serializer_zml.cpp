@@ -147,7 +147,7 @@ namespace xo
 		if ( pn.size() > 0 )
 		{
 			// check if this is an array
-			bool is_array = find_if( pn, [&]( const prop_node::pair_t& n ) { return !n.first.empty(); } ) == pn.end();
+			bool is_array = pn.is_array();
 			auto depth = pn.count_layers();
 
 			if ( depth == 1 && pn.size() <= 3 )
