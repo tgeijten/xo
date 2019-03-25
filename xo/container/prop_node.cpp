@@ -106,8 +106,8 @@ namespace xo
 			return c;
 		else if ( key.size() > 0 && key[ 0 ] == '#' )
 		{
-			auto idx = from_str( key.substr( 1 ), 0 );
-			if ( idx > 0 && idx <= size() )
+			auto idx = no_index;
+			if ( from_str( key.substr( 1 ), idx ) && idx >= 1 && idx <= size() )
 				return &children[ idx - 1 ].second;
 			else return nullptr;
 		}
@@ -219,7 +219,7 @@ namespace xo
 	string to_str( const prop_node& pn )
 	{
 		std::ostringstream str;
-		to_stream( str, 0, 0, 0 );
+		to_stream( str, pn, 0, 0 );
 		return str.str();
 	}
 }

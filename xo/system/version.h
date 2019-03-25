@@ -1,8 +1,8 @@
 #pragma once
 
+#include "xo/system/xo_api.h"
 #include "xo/xo_types.h"
-#include "xo/string/string_cast.h"
-#include "xo/string/string_tools.h"
+#include "xo/string/string_type.h"
 
 namespace xo
 {
@@ -28,29 +28,6 @@ namespace xo
 	inline bool operator==( const version& v1, const version& v2 ) { return v1.to_int100() == v2.to_int100(); }
 	inline bool operator!=( const version& v1, const version& v2 ) { return v1.to_int100() != v2.to_int100(); }
 
-	inline string to_str( const version& v )
-	{
-		string s = stringf( "%d.%d.%d", v.major, v.minor, v.patch );
-		if ( v.build > 0 ) s += stringf( ".%d", v.build );
-		if ( !v.postfix.empty() ) s += ' ' + v.postfix;
-		return s;
-
-	}
-
-	inline version from_str( const string& s, const version& def )
-	{
-		if ( auto vs = split_str( s, ". " ); vs.size() > 3 )
-		{
-			version ver;
-			ver.major = from_str( vs[ 0 ], ver.major );
-			ver.minor = from_str( vs[ 1 ], ver.minor );
-			ver.patch = from_str( vs[ 2 ], ver.patch );
-			if ( vs.size() >= 3 )
-				ver.build = from_str( vs[ 3 ], ver.build );
-			if ( vs.size() >= 4 )
-				ver.postfix = vs[ 4 ]; // #TODO: this method is incorrect when postfix contains delimiters
-			return ver;
-		}
-		else return def;
-	}
+	XO_API string to_str( const version& v );
+	XO_API bool from_str( const string& s, version& ver );
 }

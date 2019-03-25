@@ -136,5 +136,5 @@ namespace xo
 	//template< angle_unit U, typename T > char_stream& operator>>( char_stream& str, angle_<U, T>& a ) { return ( str >> a.value ); }
 
 	template< angle_unit U, typename T > string to_str( const angle_<U, T>& a ) { return to_str( a.value ); }
-	template< angle_unit U, typename T > angle_<U, T> from_str( const string& str, const angle_<U, T>& def_value ) { return angle_<U, T>( from_str( str, def_value.value ) ); }
+	template< angle_unit U, typename T > bool from_str( const string& str, angle_<U, T>& v ) { return from_str( str, v.value ); }
 }

@@ -20,6 +20,7 @@
 #include <sys/stat.h>
 #include <iomanip>
 #include <sstream>
+#include "assert.h"
 
 namespace xo
 {

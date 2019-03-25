@@ -71,7 +71,7 @@ namespace xo
 	inline bool operator<( const path& p1, const path& p2 ) { return p1.string() < p2.string(); }
 
 	inline string to_str( const path& p ) { return p.string(); }
-	inline path from_str( const string& s, const path& default_value ) { return path( s ); }
+	inline bool from_str( const string& s, path& v ) { v = path( s ); return true; }
 }
 
 #ifdef XO_COMP_MSVC

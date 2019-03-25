@@ -44,12 +44,15 @@ namespace xo
 		return to_str( v.lower ) + ' ' + to_str( v.upper );
 	}
 
-	template< typename T > xo::bounds<T>::bounds( const prop_node& pn ) {
+	template< typename T > xo::bounds<T>::bounds( const prop_node& pn ) :
+		lower( constants<T>::lowest() ),
+		upper( constants<T>::max() )
+	{
 		if ( pn.has_value() ) {
-			lower = from_str( pn.get_value(), constants<T>::lowest() );
+			from_str( pn.get_value(), lower );
 			auto p = pn.get_value().find( ".." );
 			if ( p != string::npos )
-				upper = from_str( pn.get_value().substr( p + 2 ), constants<T>::max() );
+				from_str( pn.get_value().substr( p + 2 ), upper );
 			else upper = lower; // single value
 		}
 		else if ( pn.size() >= 2 ) {
