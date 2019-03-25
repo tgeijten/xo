@@ -62,7 +62,7 @@ namespace xo
 
 	template< typename T > string to_str( const vec3_<T>& v ) { return to_str( v.x ) + ' ' + to_str( v.y ) + ' ' + to_str( v.z ); }
 	template< typename T > bool from_str( const string& s, vec3_<T>& v ) {
-		if ( auto vs = split_str( s, " ,\t" ); vs.size() >= 3 )
+		if ( auto vs = split_str( s, " \t" ); vs.size() >= 3 )
 			return from_str( vs[ 0 ], v.x ) && from_str( vs[ 1 ], v.y ) && from_str( vs[ 2 ], v.z );
 		else return false;
 	}

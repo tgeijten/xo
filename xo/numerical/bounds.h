@@ -34,25 +34,27 @@ namespace xo
 		T upper;
 	};
 
-	using boundsf = bounds< float >;
-	using boundsd = bounds< double >;
-	using boundsi = bounds< int >;
+	using boundsf = bounds<float>;
+	using boundsd = bounds<double>;
+	using boundsi = bounds<int>;
 
-	template< typename T > string to_str( const bounds< T >& v ) {
+	template< typename T > string to_str( const bounds<T>& v ) {
 		return to_str( v.lower ) + ' ' + to_str( v.upper );
+	}
+
+	template< typename T > bool from_str( const string& s, bounds<T>& v ) {
+		if ( from_str( s, v.lower ) )
+		{
+			if ( auto p = s.find( ".." ); p != string::npos )
+				return from_str( s.substr( p + 2 ), v.upper );
+			else { v.upper = v.lower; return true; }
+		}
+		else return false;
 	}
 
 	template< typename T > bool from_prop_node( const prop_node& pn, bounds<T>& v ) {
 		if ( pn.has_value() ) {
-			if ( from_str( pn.get_value(), v.lower ) )
-			{
-				auto p = pn.get_value().find( ".." );
-				if ( p != string::npos )
-					return from_str( pn.get_value().substr( p + 2 ), v.upper );
-				else v.upper = v.lower; // single value
-				return true;
-			}
-			else return false;
+			return from_str( pn.get_value(), v );
 		}
 		else if ( pn.size() >= 2 ) {
 			v.lower = pn.get_any<T>( { "min", "lower" }, pn.get<T>( 0 ) );
