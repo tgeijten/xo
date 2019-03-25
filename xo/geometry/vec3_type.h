@@ -76,12 +76,11 @@ namespace xo
 			v.x = pn.get<T>( 0 );
 			v.y = pn.get<T>( 1 );
 			v.z = pn.get<T>( 2 );
-			return true;
 		}
 		else if ( pn.size() == 0 && pn.has_value() ) {
 			return from_str( pn.get_value(), v );
 		}
-		else return false;
+		return true;
 	};
 
 	/// convert to prop_node
