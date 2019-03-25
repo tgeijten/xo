@@ -12,6 +12,8 @@
 
 #include <vector>
 #include <utility>
+#include <initializer_list>
+#include <type_traits>
 
 #ifdef XO_COMP_MSVC
 #	pragma warning( push )
@@ -265,9 +267,7 @@ namespace xo
 	template< typename T > prop_node make_prop_node( const T& value ) { return prop_node_cast<T>::to( value ); }
 
 	/// stream operator
-	XO_API std::ostream& to_stream( std::ostream& str, const prop_node& pn, int depth = 0, int key_align = 0 );
 	XO_API string to_str( const prop_node& pn );
-	//inline std::ostream& operator<<( std::ostream& str, const prop_node& pn ) { return to_stream( str, pn ); }
 }
 
 #ifdef XO_COMP_MSVC

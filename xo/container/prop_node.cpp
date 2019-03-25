@@ -129,7 +129,7 @@ namespace xo
 		return const_cast<prop_node*>( const_cast<const prop_node*>( this )->try_get_query( key, delim ) );
 	}
 
-	xo::prop_node& prop_node::get_or_add_query( const key_t& key, const char delim )
+	prop_node& prop_node::get_or_add_query( const key_t& key, const char delim )
 	{
 		auto p = key.find_first_of( delim );
 		if ( p == string::npos )
@@ -176,6 +176,25 @@ namespace xo
 		return width;
 	}
 
+	bool prop_node::operator==( const prop_node& other ) const
+	{
+		if ( value != other.value )
+			return false;
+
+		if ( size() != other.size() )
+			return false;
+
+		for ( size_t i = 0; i < children.size(); ++i )
+		{
+			if ( children[i].first != other.children[i].first )
+				return false;
+			if ( children[i].second != other.children[i].second )
+				return false;
+		}
+
+		return true;
+	}
+
 	std::ostream& to_stream( std::ostream& str, const prop_node& pn, int depth, int align )
 	{
 		if ( align == 0 )
@@ -200,26 +219,7 @@ namespace xo
 	string to_str( const prop_node& pn )
 	{
 		std::ostringstream str;
-		to_stream( str, 0, 0 );
+		to_stream( str, 0, 0, 0 );
 		return str.str();
-	}
-
-	bool prop_node::operator==( const prop_node& other ) const
-	{
-		if ( value != other.value )
-			return false;
-
-		if ( size() != other.size() )
-			return false;
-
-		for ( size_t i = 0; i < children.size(); ++i )
-		{
-			if ( children[i].first != other.children[i].first )
-				return false;
-			if ( children[i].second != other.children[i].second )
-				return false;
-		}
-
-		return true;
 	}
 }

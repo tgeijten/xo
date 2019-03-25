@@ -3,6 +3,7 @@
 #include "xo/xo_types.h"
 #include "xo/container/prop_node.h" // TODO: get rid of this header
 #include "xo/string/string_cast.h"
+#include "xo/string/string_tools.h"
 
 namespace xo
 {

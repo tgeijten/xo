@@ -1,10 +1,9 @@
 #pragma once
 
 #include "xo/xo_types.h"
-#include <xo/numerical/constants.h>
+#include "xo/numerical/constants.h"
 
-#include <type_traits>
-#include <iosfwd>
+#include <type_traits> // #TODO: consider version without this header (using specialization)
 
 namespace xo
 {
@@ -60,10 +59,4 @@ namespace xo
 		T value_;
 		bool has_value_;
 	};
-
-	//template< typename T, typename E > std::istream& operator>>( std::istream& str, optional< T, E >& v )
-	//{ T tmp; str >> tmp; if ( !str.fail() ) v = tmp; return str; }
-
-	//template< typename T, typename E > std::ostream& operator<<( std::ostream& str, const optional< T, E >& v )
-	//{ if ( v ) return str << *v; else return str << "(null)"; }
 }
