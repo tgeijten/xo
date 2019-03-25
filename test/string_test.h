@@ -5,6 +5,7 @@
 #include "xo/filesystem/path.h"
 #include "xo/string/dictionary.h"
 #include "xo/utility/hash.h"
+#include <sstream>
 
 namespace xo
 {
@@ -79,5 +80,8 @@ namespace xo
 		auto sd = to_str( d );
 		auto sf = to_str( f );
 		auto sfr = to_str( fr );
+
+		std::stringstream str;
+		str << fr;
 	}
 }

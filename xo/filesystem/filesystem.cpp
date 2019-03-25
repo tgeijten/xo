@@ -1,6 +1,7 @@
 #include "filesystem.h"
 
 #include <fstream>
+#include <sstream>
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -190,9 +191,9 @@ namespace xo
 		if ( !ifstr.good() )
 			return set_error_or_throw( ec, "Could not open " + filename.string() ), "";
 
-		std::stringstream buf;
-		buf << ifstr.rdbuf();
-		return buf.str();
+		std::stringstream str;
+		str << ifstr.rdbuf();
+		return str.str();
 	}
 
 	XO_API bool current_path( const path& p )

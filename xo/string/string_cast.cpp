@@ -41,6 +41,11 @@ namespace xo
 		return std::to_string( value );
 	}
 
+	XO_API string to_str( size_t value )
+	{
+		return std::to_string( value );
+	}
+
 	string to_str( const char* value )
 	{
 		return string( value );

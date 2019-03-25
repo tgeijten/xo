@@ -72,18 +72,22 @@ namespace xo
 				v.z = pn.get<T>( 2 );
 			}
 			else if ( pn.size() == 0 && pn.has_value() ) {
-				// TODO: use char_stream instead, check performance / sizeof first
-				std::stringstream( pn.get_value().c_str() ) >> v.x >> v.y >> v.z;
+				v = from_str( pn.get_value(), vec3_<T>::zero() );
 			}
 			return v;
 		}
 		static prop_node to( const vec3_<T>& vec ) { return static_cast<prop_node>( vec ); }
 	};
 
-	// string_cast specialization
-	// #TODO: get rid of std::stringstream
-	template< typename T > struct string_cast< vec3_<T> > {
-		static vec3_<T> from( const string& s ) { vec3_<T> v; std::stringstream str( s ); str >> v.x >> v.y, v.z; return v; }
-		static string to( const vec3_<T>& v ) { std::ostringstream str; str << v.x << ' ' << v.y << ' ' << v.z; return str.str(); }
-	};
+	template< typename T > string to_str( const vec3_<T>& v ) { return to_str( v.x ) + ' ' + to_str( v.y ) + ' ' + to_str( v.z ); }
+	template< typename T > vec3_<T> from_str( const string& s, const vec3_<T>& default_value ) {
+		vec3_<T> v = default_value;
+		if ( auto vs = split_str( s, " ,\t" ); vs.size() == 3 )
+		{
+			v.x = from_str( vs[ 0 ], v.x );
+			v.y = from_str( vs[ 1 ], v.y );
+			v.z = from_str( vs[ 2 ], v.z );
+		}
+		return default_value;
+	}
 }

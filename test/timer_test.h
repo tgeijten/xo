@@ -20,7 +20,7 @@ namespace xo
 			delta += tick2 - tick1;
 		}
 		
-		xo::log::info( std::setprecision( 3 ), "Time measure takes ", (double)delta / samples, "ns" );
+		xo::log::info( "Time measure takes ", (double)delta / samples, "ns" );
 	};
 
 	std::vector< double > work_result;

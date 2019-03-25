@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iosfwd>
 #include "xo/string/string_type.h"
 #include "xo/system/xo_api.h"
 #include "xo/string/string_cast.h"
@@ -69,13 +68,10 @@ namespace xo
 	XO_API bool operator==( const path& p1, const path& p2 );
 	XO_API bool operator!=( const path& p1, const path& p2 );
 
-	inline std::ostream& operator<<( std::ostream& str, const path& p ) { return str << p.string(); }
 	inline bool operator<( const path& p1, const path& p2 ) { return p1.string() < p2.string(); }
 
-	template<> struct string_cast< path, void > {
-		static path from( const string& s ) { return path( s ); }
-		static string to( const path& v ) { return v.string(); }
-	};
+	inline string to_str( const path& p ) { return p.string(); }
+	inline path from_str( const string& s, const path& default_value ) { return path( s ); }
 }
 
 #ifdef XO_COMP_MSVC

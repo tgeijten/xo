@@ -1,8 +1,8 @@
 #pragma once
 
-#include <iosfwd>
 #include "xo/xo_types.h"
 #include "xo/numerical/constants.h"
+#include "xo/string/string_cast.h"
 #include <cmath>
 
 namespace xo
@@ -130,8 +130,11 @@ namespace xo
 	template< angle_unit U, typename T > T acos( const angle_<U, T>& a ) { return std::acos( a.rad_value() ); }
 	template< angle_unit U, typename T > T atan( const angle_<U, T>& a ) { return std::atan( a.rad_value() ); }
 
-	/// streaming
-	template< angle_unit U, typename T > std::ostream& operator<<( std::ostream& str, const angle_<U, T>& a ) { return ( str << a.value ); }
-	template< angle_unit U, typename T > std::istream& operator>>( std::istream& str, angle_<U, T>& a ) { return ( str >> a.value ); }
-	template< angle_unit U, typename T > char_stream& operator>>( char_stream& str, angle_<U, T>& a ) { return ( str >> a.value ); }
+	///// streaming
+	//template< angle_unit U, typename T > std::ostream& operator<<( std::ostream& str, const angle_<U, T>& a ) { return ( str << a.value ); }
+	//template< angle_unit U, typename T > std::istream& operator>>( std::istream& str, angle_<U, T>& a ) { return ( str >> a.value ); }
+	//template< angle_unit U, typename T > char_stream& operator>>( char_stream& str, angle_<U, T>& a ) { return ( str >> a.value ); }
+
+	template< angle_unit U, typename T > string to_str( const angle_<U, T>& a ) { return to_str( a.value ); }
+	template< angle_unit U, typename T > angle_<U, T> from_str( const string& str, const angle_<U, T>& def_value ) { return angle_<U, T>( from_str( str, def_value.value ) ); }
 }

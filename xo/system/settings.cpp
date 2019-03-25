@@ -49,7 +49,7 @@ namespace xo
 			// check if the setting is within a specified 'range'
 			if ( auto range = schema_node->try_get< bounds< double > >( "range" ) )
 			{
-				auto dvalue = from_str< double >( value.get_value(), schema_node->get< double >( "default" ) );
+				auto dvalue = from_str( value.get_value(), schema_node->get< double >( "default" ) );
 				if ( !range->is_within( dvalue ) )
 				{
 					log::warning( "Invalid value for ", id, ": ", dvalue, ", restricting to range ", *range );

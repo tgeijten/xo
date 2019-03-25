@@ -1,12 +1,9 @@
 #pragma once
 
-#include <iosfwd>
-
 #include "xo/xo_types.h"
 #include "xo/serialization/prop_node_serializer.h"
 #include "xo/utility/factory.h"
 
-//#include "char_stream.h"
 #include "xo/geometry/angle.h"
 #include "xo/utility/pointer_types.h"
 #include <string>

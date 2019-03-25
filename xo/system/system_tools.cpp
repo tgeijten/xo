@@ -1,5 +1,4 @@
 #include "system_tools.h"
-#include "xo/string/string_tools.h"
 
 #ifdef XO_COMP_MSVC
 #	include <conio.h>
@@ -9,14 +8,18 @@
 #   include <cxxabi.h>
 #endif
 
-#include <fstream>
+#include "xo/string/string_tools.h"
+#include "xo/string/string_cast_enum.h"
 #include "xo/system/log.h"
+
+#include <fstream>
 #include <chrono>
 #include <thread>
 #include <cstdio>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <iomanip>
+#include <sstream>
 
 namespace xo
 {

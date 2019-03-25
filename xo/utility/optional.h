@@ -61,9 +61,9 @@ namespace xo
 		bool has_value_;
 	};
 
-	template< typename T, typename E > std::istream& operator>>( std::istream& str, optional< T, E >& v )
-	{ T tmp; str >> tmp; if ( !str.fail() ) v = tmp; return str; }
+	//template< typename T, typename E > std::istream& operator>>( std::istream& str, optional< T, E >& v )
+	//{ T tmp; str >> tmp; if ( !str.fail() ) v = tmp; return str; }
 
-	template< typename T, typename E > std::ostream& operator<<( std::ostream& str, const optional< T, E >& v )
-	{ if ( v ) return str << *v; else return str << "(null)"; }
+	//template< typename T, typename E > std::ostream& operator<<( std::ostream& str, const optional< T, E >& v )
+	//{ if ( v ) return str << *v; else return str << "(null)"; }
 }

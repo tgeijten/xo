@@ -1,6 +1,8 @@
 #include "color.h"
-#include "xo/system/log_sink.h"
+
 #include <array>
+
+#include "xo/system/log_sink.h"
 #include "xo/numerical/math.h"
 
 namespace xo

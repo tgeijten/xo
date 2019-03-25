@@ -1,9 +1,8 @@
 #pragma once
 
+#include "xo/system/xo_api.h"
 #include "xo/xo_types.h"
 #include "xo/container/prop_node.h"
-#include "xo/system/xo_api.h"
-#include <iosfwd>
 
 namespace xo
 {
@@ -36,9 +35,6 @@ namespace xo
 	XO_API color make_from_hsv( float H, float S, float V );
 	XO_API color make_unique_color( index_t i, float brightness = 0.6 );
 	XO_API color make_from_hex( unsigned int x );
-
-	inline std::ostream& operator<<( std::ostream& str, const color c ) { return str << c.r << ' ' << c.g << ' ' << c.b << ' ' << c.a; }
-	inline std::istream& operator>>( std::istream& str, color& c ) { return str >> c.r >> c.g >> c.b >> c.a; }
 }
 
 IS_PROP_NODE_CONSTRUCTABLE( xo::color );

@@ -5,6 +5,7 @@
 #include "xo/string/string_tools.h"
 
 #include <iomanip>
+#include <sstream>
 
 namespace xo
 {
@@ -194,6 +195,13 @@ namespace xo
 		}
 
 		return str;
+	}
+
+	string to_str( const prop_node& pn )
+	{
+		std::ostringstream str;
+		to_stream( str, 0, 0 );
+		return str.str();
 	}
 
 	bool prop_node::operator==( const prop_node& other ) const
