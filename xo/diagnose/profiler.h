@@ -33,7 +33,7 @@ namespace xo
 		void end_section();
 		tick_t now() const { return timer_.nanoseconds(); }
 		prop_node report();
-		static profiler& instance() { return instance_; }
+		static profiler& instance();
 
 	private:
 		profiler();
@@ -51,7 +51,6 @@ namespace xo
 
 		std::vector< section > sections_;
 		timer_v1 timer_;
-		static profiler instance_;
 		section* current_section_;
 		tick_t overhead_estimate;
 

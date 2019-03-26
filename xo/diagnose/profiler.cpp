@@ -8,7 +8,6 @@
 
 namespace xo
 {
-	profiler profiler::instance_;
 	std::thread::id instance_thread_;
 
 	profiler::profiler() : current_section_( nullptr )
@@ -102,6 +101,12 @@ namespace xo
 		prop_node pn;
 		report_section( root(), pn );
 		return pn;
+	}
+
+	xo::profiler& profiler::instance()
+	{
+		static profiler instance;
+		return instance;
 	}
 
 	void profiler::report_section( section* s, prop_node& pn )
