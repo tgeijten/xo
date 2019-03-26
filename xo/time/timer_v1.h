@@ -28,7 +28,7 @@ namespace xo
 	};
 #endif
 
-	class XO_API timer
+	class XO_API timer_v1
 	{
 	public:
 #if defined XO_USE_WINDOWS_PERFORMANCE_COUNTER
@@ -38,7 +38,7 @@ namespace xo
 		using timer_t = std::chrono::high_resolution_clock;
 		using tick_t = long long;
 #endif
-		timer() : epoch( timer_t::now() ) {}
+		timer_v1() : epoch( timer_t::now() ) {}
 		void reset() { epoch = timer_t::now(); }
 
 		seconds_t seconds() const { return std::chrono::duration< double, std::ratio< 1 > >( elapsed() ).count(); }

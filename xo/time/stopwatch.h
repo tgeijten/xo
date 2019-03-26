@@ -26,7 +26,7 @@ namespace xo
 		prop_node get_report( int decimals = 6 );
 		
 	private:
-		timer timer_;
+		timer_v1 timer_;
 		std::vector< measure_t > measures_;
 		seconds_t internal_measure_;
 		seconds_t epoch_;

@@ -50,7 +50,7 @@ namespace xo
 		std::vector< section* > get_children( size_t parent_id );
 
 		std::vector< section > sections_;
-		timer timer_;
+		timer_v1 timer_;
 		static profiler instance_;
 		section* current_section_;
 		tick_t overhead_estimate;

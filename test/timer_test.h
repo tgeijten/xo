@@ -11,7 +11,7 @@ namespace xo
 	{
 		long long delta = 0;
 		long long prev = 0;
-		timer t;
+		timer_v1 t;
 		const int samples = 10000000;
 		for ( int i = 0; i < samples; ++i )
 		{

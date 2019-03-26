@@ -76,7 +76,7 @@ void function_test()
 	for ( double x = -2 * constants<double>::pi(); x < 2 * constants<double>::pi(); x += 0.1 )
 		ostr << x << "\t" << func( x ) << endl;
 
-	timer t;
+	timer_v1 t;
 	double result = 0.0, verify_result = 0.0;
 	for ( int i = 0; i < 10000; ++i )
 	{

@@ -143,7 +143,7 @@ namespace xo
 	void profiler::init_overhead_estimate()
 	{
 #ifdef XO_PROFILER_MEASURE_OVERHEAD
-		timer t;
+		timer_v1 t;
 		tick_t t1, t2;
 		t1 = now();
 		for ( int i = 0; i < 9999; ++i )

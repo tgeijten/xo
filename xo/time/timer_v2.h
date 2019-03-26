@@ -5,9 +5,9 @@
 
 namespace xo
 {
-	struct XO_API timerv2
+	struct XO_API timer_v2
 	{
-		timerv2();
+		timer_v2();
 		time operator()() const;
 
 		void reset();
