@@ -2,7 +2,7 @@
 
 #include "xo/xo_types.h"
 #include "xo/system/system_tools.h"
-#include "xo/time/timer.h"
+#include "xo/time/timer_v1.h"
 
 #ifdef XO_COMP_MSVC
 #	pragma warning( push )

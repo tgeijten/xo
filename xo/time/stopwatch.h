@@ -1,6 +1,6 @@
 #pragma once
 
-#include "timer.h"
+#include "timer_v1.h"
 #include "xo/xo_types.h"
 #include "xo/string/string_type.h"
 
