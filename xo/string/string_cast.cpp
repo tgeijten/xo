@@ -111,7 +111,12 @@ namespace xo
 		return std::to_string( value );
 	}
 
-	string to_str( size_t value )
+	string to_str( long long value )
+	{
+		return std::to_string( value );
+	}
+
+	string to_str( unsigned long long value )
 	{
 		return std::to_string( value );
 	}

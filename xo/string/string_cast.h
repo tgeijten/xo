@@ -24,7 +24,8 @@ namespace xo
 	XO_API string to_str( unsigned int value );
 	XO_API string to_str( long value );
 	XO_API string to_str( unsigned long value );
-	XO_API string to_str( size_t value );
+	XO_API string to_str( long long value );
+	XO_API string to_str( unsigned long long value );
 	inline string to_str( const char* value ) { return string( value ); }
 	inline string to_str( string value ) { return value; }
 }
