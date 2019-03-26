@@ -4,19 +4,24 @@ namespace xo
 {
 	struct time
 	{
-		constexpr time( unsigned long long nanoseconds ) : ns( nanoseconds ) {}
-		double seconds() const { return double( ns ) / 1e9; }
-		long long milliseconds() const { return ns / 1'000'000; }
-		long long microseconds() const { return ns / 1'000; }
-		long long nanoseconds() const { return ns; }
+		constexpr time( unsigned long long nanoseconds = 0 ) : internal_( nanoseconds ) {}
+		double seconds() const { return double( internal_ ) / 1e9; }
+		long long milliseconds() const { return internal_ / 1'000'000; }
+		long long microseconds() const { return internal_ / 1'000; }
+		long long nanoseconds() const { return internal_; }
 
-		bool operator<( time o ) const { return ns < o.ns; }
-		bool operator>( time o ) const { return ns > o.ns; }
-		bool operator==( time o ) const { return ns == o.ns; }
-		bool operator!=( time o ) const { return ns != o.ns; }
+		bool operator<( time o ) const { return internal_ < o.internal_; }
+		bool operator>( time o ) const { return internal_ > o.internal_; }
+		bool operator==( time o ) const { return internal_ == o.internal_; }
+		bool operator!=( time o ) const { return internal_ != o.internal_; }
+
+		time operator-( time o ) { return internal_ - o.internal_; }
+		time operator+( time o ) { return internal_ + o.internal_; }
+		time& operator-=( time o ) { internal_ -= o.internal_; return *this; }
+		time& operator+=( time o ) { internal_ += o.internal_; return *this; }
 
 	private:
-		unsigned long long ns;
+		unsigned long long internal_;
 	};
 
 	inline namespace literals {

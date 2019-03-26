@@ -2,12 +2,9 @@
 
 #include "xo/xo_types.h"
 #include "xo/system/xo_api.h"
+#include "xo/system/xo_config.h"
 
 #include <chrono> // #TODO: try to move this to cpp
-
-#if defined (_MSC_VER ) && ( _MSC_VER <= 1800 ) // MSVC 2013 and lower do not have proper chrono support
-#	define XO_USE_WINDOWS_PERFORMANCE_COUNTER
-#endif
 
 #ifdef XO_COMP_MSVC
 #	pragma warning( push )
@@ -16,7 +13,7 @@
 
 namespace xo
 {
-#if defined XO_USE_WINDOWS_PERFORMANCE_COUNTER
+#if XO_USE_WINDOWS_PERFORMANCE_COUNTER
 	struct windows_performance_counter_clock
 	{
 		using rep = long long;
@@ -31,7 +28,7 @@ namespace xo
 	class XO_API timer_v1
 	{
 	public:
-#if defined XO_USE_WINDOWS_PERFORMANCE_COUNTER
+#if XO_USE_WINDOWS_PERFORMANCE_COUNTER
 		using timer_t = windows_performance_counter_clock;
 		using tick_t = windows_performance_counter_clock::rep;
 #else
