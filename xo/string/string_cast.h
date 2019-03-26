@@ -14,7 +14,6 @@ namespace xo
 	XO_API bool from_str( const string& s, long& v );
 	XO_API bool from_str( const string& s, unsigned long& v );
 	XO_API bool from_str( const string& s, size_t& v );
-	XO_API bool from_str( const string& s, const char*& v );
 	XO_API bool from_str( const string& s, string& v );
 
 	/// convert data to string
@@ -26,6 +25,6 @@ namespace xo
 	XO_API string to_str( long value );
 	XO_API string to_str( unsigned long value );
 	XO_API string to_str( size_t value );
-	XO_API string to_str( const char* value );
+	inline string to_str( const char* value ) { return string( value ); }
 	inline string to_str( string value ) { return value; }
 }

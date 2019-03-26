@@ -116,11 +116,6 @@ namespace xo
 		return std::to_string( value );
 	}
 
-	string to_str( const char* value )
-	{
-		return string( value );
-	}
-
 	string to_str( const version& v )
 	{
 		string s = stringf( "%d.%d.%d", v.major, v.minor, v.patch );
