@@ -5,7 +5,7 @@
 
 namespace xo
 {
-	struct time
+	struct XO_API time
 	{
 		using storage_t = long long;
 

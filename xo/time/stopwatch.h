@@ -1,6 +1,6 @@
 #pragma once
 
-#include "timer_v2.h"
+#include "timer.h"
 #include "xo/xo_types.h"
 #include "xo/string/string_type.h"
 
@@ -26,7 +26,7 @@ namespace xo
 		prop_node get_report( int decimals = 6 );
 		
 	private:
-		timer_v2 timer_;
+		timer timer_;
 		std::vector< measure_t > measures_;
 		time internal_measure_;
 		time epoch_;

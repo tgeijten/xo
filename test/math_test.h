@@ -12,7 +12,7 @@
 #include "xo/container/flag_set.h"
 #include "xo/numerical/regular_piecewise_linear_function.h"
 #include <fstream>
-#include "xo/time/timer_v2.h"
+#include "xo/time/timer.h"
 #include "xo/system/system_tools.h"
 #include "xo/diagnose/test_framework.h"
 #include "xo/shape/aabb.h"
@@ -76,7 +76,7 @@ void function_test()
 	for ( double x = -2 * constants<double>::pi(); x < 2 * constants<double>::pi(); x += 0.1 )
 		ostr << x << "\t" << func( x ) << endl;
 
-	timer_v2 t;
+	timer t;
 	double result = 0.0, verify_result = 0.0;
 	for ( int i = 0; i < 10000; ++i )
 	{

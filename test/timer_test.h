@@ -4,7 +4,7 @@
 #include "xo/system/log.h"
 #include "xo/diagnose/profiler_config.h"
 #include <iomanip>
-#include "xo/time/timer_v2.h"
+#include "xo/time/timer.h"
 
 namespace xo
 {
@@ -21,7 +21,7 @@ namespace xo
 		}
 		log::info( "Time v1 measure takes ", (double)delta / samples, "ns" );
 
-		timer_v2 t2;
+		timer t2;
 		time delta2;
 		for ( int i = 0; i < samples; ++i )
 		{

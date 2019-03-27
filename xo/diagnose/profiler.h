@@ -2,7 +2,7 @@
 
 #include "xo/xo_types.h"
 #include "xo/system/system_tools.h"
-#include "xo/time/timer_v2.h"
+#include "xo/time/timer.h"
 
 #ifdef XO_COMP_MSVC
 #	pragma warning( push )
@@ -50,7 +50,7 @@ namespace xo
 		std::vector< section* > get_children( size_t parent_id );
 
 		std::vector< section > sections_;
-		timer_v2 timer_;
+		timer timer_;
 		section* current_section_;
 		tick_t overhead_estimate;
 

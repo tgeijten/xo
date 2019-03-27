@@ -1,4 +1,4 @@
-#include "timer_v2.h"
+#include "timer.h"
 
 #include "xo/system/xo_config.h"
 
@@ -47,16 +47,16 @@ namespace xo
 	}
 #endif
 
-	timer_v2::timer_v2() :
+	timer::timer() :
 		epoch_( get_tick_count() )
 	{}
 
-	time timer_v2::operator()() const
+	time timer::operator()() const
 	{
 		return get_time_from_ticks( get_tick_count() - epoch_ );
 	}
 
-	void timer_v2::reset()
+	void timer::reset()
 	{
 		epoch_ = get_tick_count();
 	}
