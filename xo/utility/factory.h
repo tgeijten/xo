@@ -70,7 +70,7 @@ namespace xo
 	};
 
 	template< typename T, typename F > scoped_type_registrant< T, F > make_type_resistrant( F& f ) {
-		return scoped_type_registrant< T, F >( f, clean_type_name<T>() );
+		return scoped_type_registrant< T, F >( f, get_clean_type_name<T>() );
 	}
 
 	template< typename T, typename F > scoped_type_registrant< T, F > make_type_resistrant( F& f, const string& type_id ) {

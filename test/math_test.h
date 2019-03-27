@@ -87,7 +87,7 @@ void function_test()
 		}
 	}
 	auto duration = t();
-	XO_TEST_MSG( equal( result, verify_result, 0.01 ), stringf( "diff=%f duration=%f", result - verify_result, duration.seconds() ) );
+	XO_TEST_MSG( equal( result, verify_result, 0.01 ), stringf( "diff=%f duration=%f", result - verify_result, duration ) );
 }
 
 void angle_test()

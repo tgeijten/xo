@@ -38,12 +38,12 @@ namespace xo
 		timer_v1() : epoch( timer_t::now() ) {}
 		void reset() { epoch = timer_t::now(); }
 
-		seconds_t seconds() const { return std::chrono::duration< double, std::ratio< 1 > >( elapsed() ).count(); }
+		double seconds() const { return std::chrono::duration< double, std::ratio< 1 > >( elapsed() ).count(); }
 		double minutes() const { return std::chrono::duration< double, std::ratio< 60 > >( elapsed() ).count(); }
 		double hours() const { return std::chrono::duration< double, std::ratio< 3600 > >( elapsed() ).count(); }
-		milliseconds_t milliseconds() const { return std::chrono::duration_cast< std::chrono::milliseconds >( elapsed() ).count(); }
-		microseconds_t microseconds() const { return std::chrono::duration_cast< std::chrono::microseconds >( elapsed() ).count(); }
-		nanoseconds_t nanoseconds() const { return std::chrono::duration_cast< std::chrono::nanoseconds >( elapsed() ).count(); }
+		long long milliseconds() const { return std::chrono::duration_cast< std::chrono::milliseconds >( elapsed() ).count(); }
+		long long microseconds() const { return std::chrono::duration_cast< std::chrono::microseconds >( elapsed() ).count(); }
+		long long nanoseconds() const { return std::chrono::duration_cast< std::chrono::nanoseconds >( elapsed() ).count(); }
 		tick_t ticks() const { return elapsed().count(); }
 
 	private:
