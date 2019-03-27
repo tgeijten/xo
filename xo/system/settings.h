@@ -5,11 +5,6 @@
 #include "xo/filesystem/path.h"
 #include "xo/system/version.h"
 
-#if defined(_MSC_VER)
-#	pragma warning( push )
-#	pragma warning( disable: 4251 )
-#endif
-
 namespace xo
 {
 	class XO_API settings
@@ -76,7 +71,3 @@ namespace xo
 		return try_set( id, to_prop_node( value ) );
 	}
 }
-
-#if defined(_MSC_VER)
-#	pragma warning( pop )
-#endif

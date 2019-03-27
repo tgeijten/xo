@@ -9,11 +9,6 @@
 #include "xo/container/flag_set.h"
 #include "xo/utility/optional.h"
 
-#ifdef XO_COMP_MSVC
-#	pragma warning( push )
-#	pragma warning( disable: 4251 )
-#endif
-
 namespace xo
 {
 	/// blazing-fast class for reading text stream-style
@@ -92,7 +87,3 @@ namespace xo
 		flag_set< buffer_flag > buffer_flags;
 	};
 }
-
-#ifdef XO_COMP_MSVC
-#	pragma warning( pop )
-#endif

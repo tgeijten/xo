@@ -6,11 +6,6 @@
 
 #include <random> // #TODO: try to get rid of this header
 
-#ifdef XO_COMP_MSVC
-#	pragma warning( push )
-#	pragma warning( disable: 4251 )
-#endif
-
 namespace xo
 {
 	struct XO_API random_number_generator
@@ -33,7 +28,3 @@ namespace xo
 	template< typename T, XO_ENABLE_IF_INTEGRAL > T rand_uni_int( T min, T max ) { return global_random_number_generator().uni( min, max ); }
 	template< typename T, XO_ENABLE_IF_FLOATING_POINT > T rand_norm( T mean, T stdev ) { return global_random_number_generator().norm( mean, stdev ); }
 }
-
-#ifdef XO_COMP_MSVC
-#	pragma warning( pop )
-#endif

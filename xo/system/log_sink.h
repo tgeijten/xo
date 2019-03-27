@@ -5,11 +5,6 @@
 #include "xo/filesystem/path.h"
 #include <fstream>
 
-#ifdef XO_COMP_MSVC
-#	pragma warning( push )
-#	pragma warning( disable: 4251 )
-#endif
-
 namespace xo
 {
 	namespace log
@@ -57,7 +52,3 @@ namespace xo
 		};
 	}
 }
-
-#ifdef XO_COMP_MSVC
-#	pragma warning( pop )
-#endif

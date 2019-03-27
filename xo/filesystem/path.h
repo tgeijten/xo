@@ -4,11 +4,6 @@
 #include "xo/string/string_type.h"
 #include "xo/string/string_cast.h"
 
-#ifdef XO_COMP_MSVC
-#	pragma warning( push )
-#	pragma warning( disable: 4251 )
-#endif
-
 namespace std {
 	namespace filesystem {
 		class path;
@@ -73,7 +68,3 @@ namespace xo
 	inline string to_str( const path& p ) { return p.string(); }
 	inline bool from_str( const string& s, path& v ) { v = path( s ); return true; }
 }
-
-#ifdef XO_COMP_MSVC
-#	pragma warning( pop )
-#endif

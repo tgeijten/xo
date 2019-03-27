@@ -4,11 +4,6 @@
 
 #include <chrono> // #TODO: try to move this to cpp
 
-#ifdef XO_COMP_MSVC
-#	pragma warning( push )
-#	pragma warning( disable: 4251 )
-#endif
-
 namespace xo
 {
 #if XO_USE_WINDOWS_PERFORMANCE_COUNTER
@@ -49,7 +44,3 @@ namespace xo
 		timer_t::duration elapsed() const { return timer_t::now() - epoch; }
 	};
 }
-
-#ifdef XO_COMP_MSVC
-#	pragma warning( pop )
-#endif

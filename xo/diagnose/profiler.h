@@ -5,11 +5,6 @@
 #include "xo/time/timer.h"
 #include <thread>
 
-#ifdef XO_COMP_MSVC
-#	pragma warning( push )
-#	pragma warning( disable: 4251 )
-#endif
-
 namespace xo
 {
 	class XO_API profiler
@@ -63,7 +58,3 @@ namespace xo
 		~scoped_section_profiler() { profiler::instance().end_section(); }
 	};
 }
-
-#ifdef XO_COMP_MSVC
-#	pragma warning( pop )
-#endif

@@ -4,11 +4,6 @@
 #include "xo/xo_types.h"
 #include "xo/string/string_type.h"
 
-#ifdef XO_COMP_MSVC
-#	pragma warning( push )
-#	pragma warning( disable: 4251 )
-#endif
-
 namespace xo
 {
 	class XO_API stopwatch
@@ -32,7 +27,3 @@ namespace xo
 		time epoch_;
 	};
 }
-
-#ifdef XO_COMP_MSVC
-#	pragma warning( pop )
-#endif

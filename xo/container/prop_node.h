@@ -13,11 +13,6 @@
 #include <utility>
 #include <initializer_list>
 
-#ifdef XO_COMP_MSVC
-#	pragma warning( push )
-#	pragma warning( disable: 4251 )
-#endif
-
 namespace xo
 {
 	/// prop_node class
@@ -257,7 +252,3 @@ namespace xo
 	/// convert prop_node to string
 	XO_API string to_str( const prop_node& pn );
 }
-
-#ifdef XO_COMP_MSVC
-#	pragma warning( pop )
-#endif
