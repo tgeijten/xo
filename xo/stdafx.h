@@ -1,11 +1,9 @@
 #pragma once
 
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <string>
 #include <vector>
+#include <utility>
 #include <algorithm>
 #include <memory>
-#include <iostream>
 #include <limits>
-#include <type_traits>
+#include <initializer_list>

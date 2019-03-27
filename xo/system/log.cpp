@@ -4,6 +4,7 @@
 
 #include <stdarg.h>
 #include <vector>
+#include <iostream>
 
 namespace xo
 {
