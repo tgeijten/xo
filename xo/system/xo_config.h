@@ -23,10 +23,10 @@
 #endif
 
 #ifdef NDEBUG
-constexpr bool XO_IS_DEBUG_BUILD = false;
+#	define XO_IS_DEBUG_BUILD false
 #else
-#define XO_DEBUG
-constexpr bool XO_IS_DEBUG_BUILD = true;
+#	define XO_DEBUG
+#	define XO_IS_DEBUG_BUILD true
 #endif
 
 #if defined (XO_COMP_MSVC) && !defined( XO_DISABLE_WINDOWS_PERFORMANCE_COUNTER )
