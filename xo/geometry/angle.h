@@ -1,14 +1,13 @@
 #pragma once
 
 #include "xo/xo_types.h"
+#include "xo/geometry/angle_type.h"
 #include "xo/numerical/constants.h"
 #include "xo/string/string_cast.h"
 #include <cmath>
 
 namespace xo
 {
-	enum class angle_unit { degrees, radians };
-
 	template< typename T > T rad_to_deg( T rad_value ) { return ( T( 180 ) / constants<T>::pi() ) * rad_value; }
 	template< typename T > T deg_to_rad( T deg_value ) { return ( constants<T>::pi() / T( 180 ) ) * deg_value; }
 
@@ -130,11 +129,7 @@ namespace xo
 	template< angle_unit U, typename T > T acos( const angle_<U, T>& a ) { return std::acos( a.rad_value() ); }
 	template< angle_unit U, typename T > T atan( const angle_<U, T>& a ) { return std::atan( a.rad_value() ); }
 
-	///// streaming
-	//template< angle_unit U, typename T > std::ostream& operator<<( std::ostream& str, const angle_<U, T>& a ) { return ( str << a.value ); }
-	//template< angle_unit U, typename T > std::istream& operator>>( std::istream& str, angle_<U, T>& a ) { return ( str >> a.value ); }
-	//template< angle_unit U, typename T > char_stream& operator>>( char_stream& str, angle_<U, T>& a ) { return ( str >> a.value ); }
-
+	/// string conversion
 	template< angle_unit U, typename T > string to_str( const angle_<U, T>& a ) { return to_str( a.value ); }
 	template< angle_unit U, typename T > bool from_str( const string& str, angle_<U, T>& v ) { return from_str( str, v.value ); }
 }

@@ -19,4 +19,7 @@ namespace xo
 	// xo index type
 	typedef size_t index_t;
 	const index_t no_index = ~index_t( 0 );
+
+	inline namespace literals {}
+	namespace log {}
 }
