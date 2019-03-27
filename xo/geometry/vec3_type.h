@@ -85,6 +85,10 @@ namespace xo
 
 	/// convert to prop_node
 	template< typename T > prop_node to_prop_node( const vec3_<T>& v ) {
-		return prop_node().set( "x", v.x ).set( "y", v.y ).set( "z", v.z );
+		prop_node pn;
+		pn.set( "x", v.x );
+		pn.set( "y", v.y );
+		pn.set( "z", v.z );
+		return pn;
 	}
 }

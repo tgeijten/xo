@@ -3,6 +3,7 @@
 #include "xo/system/xo_api.h"
 #include "xo/xo_types.h"
 #include "xo/system/assert.h"
+#include "xo/system/system_tools.h"
 #include "xo/string/string_type.h"
 #include "xo/string/string_cast.h"
 #include "xo/string/string_tools.h"
@@ -51,13 +52,13 @@ namespace xo
 		bool operator==( const prop_node& other ) const;
 		bool operator!=( const prop_node& other ) const { return !( *this == other ); }
 
-		/// get the value of this node
-		template< typename T > T get() const { access(); T r; if ( from_prop_node( *this, r ) ) return r; else xo_error( "Could not convert prop_node" ); }
+		/// get the value of this node, throws if conversion fails
+		template< typename T > T get() const { access(); return from_prop_node<T>( *this ); }
 
-		/// get the value of a child node
-		template< typename T > T get( const key_t& key ) const { return get_child( key ).get< T >(); }
+		/// get the value of a child node, throws if value does not exist
+		template< typename T > T get( const key_t& key ) const{ return get_child( key ).get< T >(); }
 
-		/// get the value of a child node
+		/// get the value of a child node, throws if value does not exist
 		template< typename T > T get( index_t idx ) const { return get_child( idx ).get< T >(); }
 
 		/// get the value of a child node, or a default value if it doesn't exist
@@ -232,6 +233,12 @@ namespace xo
 	template< typename T > bool from_prop_node( const prop_node& pn, T& v ) {
 		return from_str( pn.get_value(), v ); 
 	};
+
+	template< typename T > T from_prop_node( const prop_node& pn ) {
+		if ( T v; from_prop_node( pn, v ) )
+			return v;
+		else xo_error( "Could not convert prop_node to " + get_type_name<T>() );
+	}
 
 	template< typename T > prop_node to_prop_node( const std::vector<T>& vec ) {
 		prop_node pn;

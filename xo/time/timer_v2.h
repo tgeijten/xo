@@ -10,16 +10,17 @@
 
 namespace xo
 {
-	struct XO_API timer_v2
-	{
-		timer_v2();
-		time operator()() const;
+	namespace v2 {
+		struct XO_API timer
+		{
+			timer();
+			time operator()() const;
+			void reset();
 
-		void reset();
-
-	private:
-		time epoch_;
-	};
+		private:
+			long long epoch_;
+		};
+	}
 }
 
 #ifdef XO_COMP_MSVC

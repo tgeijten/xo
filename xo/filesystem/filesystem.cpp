@@ -82,12 +82,12 @@ namespace xo
 #endif
 	}
 
-	XO_API path temp_directory_path()
+	path temp_directory_path()
 	{
 		return std::getenv( "TMP" );
 	}
 
-	XO_API bool copy_file( const path& from, const path& to, bool overwrite )
+	bool copy_file( const path& from, const path& to, bool overwrite )
 	{
 #ifdef XO_COMP_MSVC
 		return CopyFile( from.c_str(), to.c_str(), overwrite ) == TRUE;
@@ -106,7 +106,12 @@ namespace xo
 #endif
 	}
 
-	XO_API bool exists( const path& p )
+	bool remove( const path& file )
+	{
+		return std::remove( file.c_str() ) == 0;
+	}
+
+	bool exists( const path& p )
 	{
 #ifdef XO_COMP_MSVC
 		return GetFileAttributes( path( p ).make_preferred().c_str() ) != INVALID_FILE_ATTRIBUTES;
@@ -116,13 +121,13 @@ namespace xo
 #endif
 	}
 
-	XO_API bool file_exists( const path& file )
+	bool file_exists( const path& file )
 	{
 		std::ifstream ifs( file.string() );
 		return ifs.good();
 	}
 
-	XO_API bool folder_exists( const path& folder )
+	bool folder_exists( const path& folder )
 	{
 #ifdef XO_COMP_MSVC
 		DWORD dwAttrib = GetFileAttributes( path( folder ).make_preferred().c_str() );
@@ -146,7 +151,7 @@ namespace xo
 		return xo::optional< xo::path >();
 	}
 
-	XO_API path find_file( std::initializer_list< path > filenames )
+	path find_file( std::initializer_list< path > filenames )
 	{
 		for ( auto& f : filenames )
 			if ( file_exists( f ) )
@@ -154,7 +159,7 @@ namespace xo
 		xo_error( "Could not find " + container_to_str( filenames, " or " ) + " in " + xo::current_path().string() );
 	}
 
-	XO_API bool create_directories( const path& folder )
+	bool create_directories( const path& folder )
 	{
 		// make sure parent folders exist
 		if ( folder.has_parent_path() && !folder_exists( folder.parent_path() ) )
@@ -167,7 +172,7 @@ namespace xo
 #endif
 	}
 
-	XO_API path create_unique_folder( const path& folder, int max_attempts )
+	path create_unique_folder( const path& folder, int max_attempts )
 	{
 		path unique_folder = folder;
 		bool success = false;
@@ -184,7 +189,7 @@ namespace xo
 		return unique_folder;
 	}
 
-	XO_API string load_string( const path& filename, error_code* ec )
+	string load_string( const path& filename, error_code* ec )
 	{
 		// this method uses a stringbuf, which requires an extra copy (C++ suckiness)
 		std::ifstream ifstr( filename.string() );
@@ -196,12 +201,12 @@ namespace xo
 		return str.str();
 	}
 
-	XO_API bool current_path( const path& p )
+	bool current_path( const path& p )
 	{
 		return chdir( p.c_str() ) == 0;
 	}
 
-	XO_API path current_path()
+	path current_path()
 	{
 		char* buf = getcwd( NULL, 0 );
 		path p( buf );
@@ -209,7 +214,7 @@ namespace xo
 		return p;
 	}
 
-	XO_API std::time_t last_write_time( const path& p )
+	std::time_t last_write_time( const path& p )
 	{
 #ifdef XO_COMP_MSVC
 #	ifdef _USE_32BIT_TIME_T

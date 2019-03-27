@@ -3,7 +3,6 @@
 #include "xo/system/xo_api.h"
 #include "xo/system/error_code.h"
 #include "xo/system/version.h"
-#include "xo/filesystem/path.h"
 
 namespace xo
 {
@@ -13,8 +12,9 @@ namespace xo
 	XO_API void crash( const string& message = "" );
 	XO_API void sleep( int milliseconds );
 	XO_API string tidy_identifier( const string& id );
-	XO_API string clean_type_name( const char* name );
-	template< typename T > string clean_type_name() { return clean_type_name( typeid( T ).name() ); }
+	XO_API string tidy_type_name( string name );
+	template< typename T > string get_type_name() { return string( typeid( T ).name() ); }
+	template< typename T > string get_clean_type_name() { return tidy_type_name( get_type_name<T>() ); }
 
 	enum class thread_priority { idle, lowest, low, normal, high, highest, realtime };
 	XO_API void set_thread_priority( thread_priority p );

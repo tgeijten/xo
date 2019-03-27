@@ -24,7 +24,7 @@ namespace xo
 
 		/// register type U
 		template< typename U >
-		void register_type( const std::string& type_id = clean_type_name<U>() ) {
+		void register_type( const std::string& type_id = get_clean_type_name<U>() ) {
 			xo_error_if( func_map_.has_key( type_id ), "Type already registered: " + type_id );
 			func_map_[ type_id ] = []( Args... args ) { return std::unique_ptr< T >( new U( args... ) ); };
 		}

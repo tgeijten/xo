@@ -36,11 +36,6 @@ namespace xo
 #endif
 	}
 
-	XO_API bool remove( const path& file )
-	{
-		return std::remove( file.c_str() ) == 0;
-	}
-
 	XO_API string get_date_time_str( const char* format )
 	{
 		auto in_time_t = std::chrono::system_clock::to_time_t( std::chrono::system_clock::now() );
@@ -73,18 +68,16 @@ namespace xo
 		else return trim_str( id, "_" ); // remove underscores
 	}
 
-	XO_API string clean_type_name( const char* name )
+	XO_API string tidy_type_name( string name )
 	{
-#ifdef XO_COMP_MSVC
-		string str = name;
-#else
+#ifndef XO_COMP_MSVC
 		int status;
 		char* cleanType = abi::__cxa_demangle( name, 0, 0, &status );
-		std::string str = std::string( cleanType );
+		name = std::string( cleanType );
 		free( cleanType );
 #endif
-		size_t pos = str.find_last_of( ": " );
-		return ( pos != std::string::npos ) ? str.substr( pos + 1 ) : str;
+		size_t pos = name.find_last_of( ": " );
+		return ( pos != std::string::npos ) ? name.substr( pos + 1 ) : name;
 	}
 
 #ifdef XO_COMP_MSVC
