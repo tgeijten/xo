@@ -3,7 +3,7 @@
 #include "xo/system/xo_config.h"
 #include <string>
 
-#if XO_USE_EXCEPTIONS
+#ifndef XO_DISABLE_EXCEPTIONS
 #	include <stdexcept>
 #	define xo_error( message_ ) \
 		throw std::runtime_error( message_ )
@@ -12,7 +12,7 @@
 		{ std::cout << message_ << std::endl; exit( -1 ) }
 #endif
 
-#if XO_USE_ASSERT
+#ifndef XO_DISABLE_ASSERT
 #	define xo_assert( expression_ ) \
 		if (!(expression_)) xo_error( "Assertion Failure in " + std::string( __FUNCTION__ ) + "(): "#expression_ )
 

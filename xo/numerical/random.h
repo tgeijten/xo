@@ -1,6 +1,6 @@
 #pragma once
 
-#include "xo/system/prerequisites.h"
+#include "xo/system/xo_config.h"
 #include "xo/utility/sfinae_tools.h"
 #include "bounds.h"
 

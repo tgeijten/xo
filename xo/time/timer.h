@@ -1,6 +1,6 @@
 #pragma once
 
-#include "xo/system/xo_api.h"
+#include "xo/system/xo_config.h"
 #include "xo/time/time.h"
 
 namespace xo

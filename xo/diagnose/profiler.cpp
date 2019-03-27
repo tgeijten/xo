@@ -8,8 +8,6 @@
 
 namespace xo
 {
-	std::thread::id instance_thread_;
-
 	profiler::profiler() : current_section_( nullptr )
 	{
 		reset();
@@ -105,8 +103,8 @@ namespace xo
 
 	xo::profiler& profiler::instance()
 	{
-		static profiler instance;
-		return instance;
+		static profiler inst;
+		return inst;
 	}
 
 	void profiler::report_section( section* s, prop_node& pn )
@@ -127,7 +125,7 @@ namespace xo
 			report_section( c, pn[ s->name ] );
 	}
 
-	profiler::tick_t profiler::exclusive_time( section* s )
+	time profiler::exclusive_time( section* s )
 	{
 		auto t = s->total_time;
 		for ( auto& cs : sections_ )
@@ -136,7 +134,7 @@ namespace xo
 		return t;
 	}
 
-	profiler::tick_t profiler::total_overhead( section* s )
+	time profiler::total_overhead( section* s )
 	{
 		auto t = s->overhead;
 		for ( auto& cs : sections_ )
@@ -149,7 +147,7 @@ namespace xo
 	{
 #ifdef XO_PROFILER_MEASURE_OVERHEAD
 		timer t;
-		tick_t t1, t2;
+		time t1, t2;
 		t1 = now();
 		for ( int i = 0; i < 9999; ++i )
 			t2 = now();
@@ -157,13 +155,14 @@ namespace xo
 #else
 		clear();
 		int samples = 10000;
-		auto t1 = instance().now();
+		timer t;
+		auto t1 = t();
 		for ( int i = 0; i < samples; ++i )
 		{
 			start_section( "test_section1" );
 			end_section();
 		}
-		auto t2 = instance().now();
+		auto t2 = t();
 		overhead_estimate = ( t2 - t1 ) / samples;
 #endif
 	}

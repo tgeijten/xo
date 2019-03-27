@@ -1,25 +1,40 @@
 #pragma once
 
-#ifndef XO_USE_EXCEPTIONS
-#	define XO_USE_EXCEPTIONS 1
-#endif
+/// These definitions can be added to the precompiler:
+//#define XO_DISABLE_EXCEPTIONS
+//#define XO_DISABLE_ASSERT
+//#define XO_DISABLE_LOG
+//#define XO_ENABLE_PROFILER
 
-#ifndef XO_USE_WINDOWS_PERFORMANCE_COUNTER
-#	if defined (_MSC_VER) && (_MSC_VER <= 1800) // MSVC 2013 and lower do not have proper chrono support
-#		define XO_USE_WINDOWS_PERFORMANCE_COUNTER 1
-#	elif defined (XO_COMP_MSVC) // prefer windows performance counter, as it's faster than std::chrono::high_resolution_clock
-#		define XO_USE_WINDOWS_PERFORMANCE_COUNTER 1
+#if defined(_MSC_VER)
+#	define XO_COMP_MSVC
+#	ifdef XO_EXPORTS
+#		define XO_API __declspec(dllexport)
 #	else
-#		define XO_USE_WINDOWS_PERFORMANCE_COUNTER 0
+#		define XO_API __declspec(dllimport)
 #	endif
+#	define _CRT_SECURE_NO_WARNINGS
+#else
+#	define XO_API
 #endif
 
-#if XO_USE_EXCEPTIONS
-#	ifndef XO_USE_ASSERT
-#		define XO_USE_ASSERT 1
-#	endif
+#ifdef NDEBUG
+constexpr bool XO_IS_DEBUG_BUILD = false;
+#else
+#define XO_DEBUG
+constexpr bool XO_IS_DEBUG_BUILD = true;
+#endif
+
+#if defined (XO_COMP_MSVC) && !defined( XO_DISABLE_WINDOWS_PERFORMANCE_COUNTER )
+#	define XO_USE_WINDOWS_PERFORMANCE_COUNTER 1 // prefer windows performance counter, as it's faster than std::chrono::high_resolution_clock
+#else
+#	define XO_USE_WINDOWS_PERFORMANCE_COUNTER 0
 #endif
 
 #ifndef XO_STATIC_LOG_LEVEL
-#	define XO_STATIC_LOG_LEVEL trace_level
+#	ifdef XO_DISABLE_LOG
+#		define XO_STATIC_LOG_LEVEL never_log_level
+#	else
+#		define XO_STATIC_LOG_LEVEL trace_level
+#	endif
 #endif

@@ -1,7 +1,7 @@
 #pragma once
 
+#include "xo/system/xo_config.h"
 #include "xo/string/string_type.h"
-#include "xo/system/xo_api.h"
 #include "xo/string/string_cast.h"
 
 #ifdef XO_COMP_MSVC

@@ -15,7 +15,7 @@ namespace xo
 		static constexpr T two_pi() { return T( 2 ) * T( XO_PI_LONG_DOUBLE ); }
 		static constexpr T e() { return T( XO_E_LONG_DOUBLE ); }
 		static constexpr T epsilon() { return std::numeric_limits< T >::epsilon(); }
-		static constexpr T ample_epsilon() { return T( 4 * std::numeric_limits< T >::epsilon() ); }
+		static constexpr T ample_epsilon() { return T( 8 * std::numeric_limits< T >::epsilon() ); }
 		static constexpr T max() { return std::numeric_limits<T>::max(); }
 		static constexpr T min() { return std::numeric_limits<T>::min(); }
 		static constexpr T lowest() { return std::numeric_limits<T>::lowest(); }

@@ -4,6 +4,7 @@
 
 #ifdef XO_ENABLE_PROFILER
 #	include "xo/diagnose/profiler.h"
+#	include "xo/system/log.h"
 #	define XO_PROFILE_FUNCTION ::xo::scoped_section_profiler _PROFILE_SECTION_( __FUNCTION__ )
 #	define XO_PROFILE_SCOPE( scope_name_arg ) ::xo::scoped_section_profiler _PROFILE_SECTION_( scope_name_arg )
 inline void xo_profiler_reset() { ::xo::profiler::instance().reset(); }

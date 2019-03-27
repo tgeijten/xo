@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xo/system/xo_config.h"
+
 namespace xo
 {
 	// forward declaration of common xo classes

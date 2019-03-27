@@ -1,6 +1,5 @@
 #pragma once
 
-#include "xo/system/xo_api.h"
 #include "xo/xo_types.h"
 #include "xo/system/assert.h"
 #include "xo/system/system_tools.h"

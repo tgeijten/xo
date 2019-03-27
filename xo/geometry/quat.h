@@ -37,22 +37,22 @@ namespace xo
 	template< typename T > quat_<T>& operator*=( quat_<T>& q1, const quat_<T>& q2 ) { q1 = q1 * q2; return q1; }
 
 	/// get length of a quat
-	template< typename T > T length( quat_<T> q )
+	template< typename T > T length( const quat_<T>& q )
 	{ return sqrt( q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z ); }
 
-	template< typename T > T squared_length( quat_<T> q )
+	template< typename T > T squared_length( const quat_<T>& q )
 	{ return q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z; }
 
 	/// test if a quat is of unit length
-	template< typename T > bool is_normalized( quat_<T> q )
-	{ return equal( q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z, T(1) ); }
+	template< typename T > bool is_normalized( const quat_<T>& q )
+	{ return std::abs( squared_length( q ) - T(1) ) <= constants<T>::ample_epsilon();}
 
 	/// normalize quaternion, return length
 	template< typename T > T normalize( quat_<T>& q ) {
-		T l = length( q );
-		if ( l > constants<T>::epsilon() )
-		{ T invl = inv( l ); q.x *= invl; q.y *= invl; q.z *= invl; q.w *= invl; }
-		return l;
+		T len = length( q );
+		xo_assert( len > constants<T>::epsilon() );
+		T s = inv( len ); q.x *= s; q.y *= s; q.z *= s; q.w *= s;
+		return len;
 	}
 
 	/// get normalized quaternion
@@ -163,7 +163,7 @@ namespace xo
 
 	/// Get rotation vector from quaternion
 	template< typename T > vec3_<T> rotation_vector_from_quat( const quat_<T>& q ) {
-		xo_assert( is_normalized( q ) );
+		xo_assert_msg( is_normalized( q ), "squared_length = " + to_str( squared_length( q ) ) );
 		T l = sqrt( q.x * q.x + q.y * q.y + q.z * q.z );
 		if ( l > constants<T>::ample_epsilon() ) {
 			T f = T(2) * std::acos( q.w ) / l;
@@ -174,7 +174,7 @@ namespace xo
 
 	/// Get axis angle from quaternion
 	template< typename T > std::pair< vec3_<T>, radian_<T> > axis_angle_from_quat( const quat_<T>& q ) {
-		xo_assert( is_normalized( q ) );
+		xo_assert_msg( is_normalized( q ), "squared_length = " + to_str( squared_length( q ) ) );
 		T l = sqrt( q.x * q.x + q.y * q.y + q.z * q.z );
 		if ( l > constants<T>::ample_epsilon() ) {
 			T s = T(1) / l;

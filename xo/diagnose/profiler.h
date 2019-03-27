@@ -3,6 +3,7 @@
 #include "xo/xo_types.h"
 #include "xo/system/system_tools.h"
 #include "xo/time/timer.h"
+#include <thread>
 
 #ifdef XO_COMP_MSVC
 #	pragma warning( push )
@@ -14,24 +15,22 @@ namespace xo
 	class XO_API profiler
 	{
 	public:
-		using tick_t = time;
-
 		struct section
 		{
 			section( const char* n, size_t i, size_t pi ) : name( n ), id( i ), parent_id( pi ), total_time( 0 ), overhead( 0 ), count( 0 ) {}
 			const char* name;
 			size_t id;
 			size_t parent_id;
-			tick_t total_time;
-			tick_t overhead;
+			time total_time;
+			time overhead;
 			size_t count;
-			tick_t epoch;
+			time epoch;
 		};
 
 		void reset();
 		section* start_section( const char* name );
 		void end_section();
-		tick_t now() const { return timer_(); }
+		time now() const { return timer_(); }
 		prop_node report();
 		static profiler& instance();
 
@@ -40,8 +39,8 @@ namespace xo
 		void clear();
 
 		void report_section( section* s, prop_node& pn );
-		tick_t exclusive_time( section* s );
-		tick_t total_overhead( section* s );
+		time exclusive_time( section* s );
+		time total_overhead( section* s );
 		section* root() { return &sections_.front(); }
 		section* find_section( size_t id );
 		section* find_section( const char* name, size_t parent_id );
@@ -52,7 +51,8 @@ namespace xo
 		std::vector< section > sections_;
 		timer timer_;
 		section* current_section_;
-		tick_t overhead_estimate;
+		time overhead_estimate;
+		std::thread::id instance_thread_;
 
 		void init_overhead_estimate();
 	};

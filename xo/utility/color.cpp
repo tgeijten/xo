@@ -4,6 +4,7 @@
 
 #include "xo/system/log_sink.h"
 #include "xo/numerical/math.h"
+#include "xo/container/prop_node.h"
 
 namespace xo
 {
