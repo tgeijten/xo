@@ -21,7 +21,7 @@ namespace xo
 		}
 		log::info( "Time v1 measure takes ", (double)delta / samples, "ns" );
 
-		v2::timer t2;
+		timer_v2 t2;
 		time delta2;
 		for ( int i = 0; i < samples; ++i )
 		{
