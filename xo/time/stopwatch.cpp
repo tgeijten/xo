@@ -7,12 +7,12 @@ namespace xo
 {
 	void stopwatch::add_measure( const string& s )
 	{
-		auto now = timer_.seconds();
+		auto now = timer_();
 		auto iter = xo::find_if( measures_, [&]( measure_t& m ) { return m.first == s; } );
 		if ( iter == measures_.end() )
 			measures_.push_back( make_pair( s, now - epoch_ ) );
 		else iter->second += now - epoch_;
-		epoch_ = timer_.seconds();
+		epoch_ = timer_();
 		internal_measure_ += epoch_ - now;
 	}
 

@@ -2,7 +2,7 @@
 
 #include "xo/xo_types.h"
 #include "xo/system/system_tools.h"
-#include "xo/time/timer_v1.h"
+#include "xo/time/timer_v2.h"
 
 #ifdef XO_COMP_MSVC
 #	pragma warning( push )
@@ -14,7 +14,7 @@ namespace xo
 	class XO_API profiler
 	{
 	public:
-		using tick_t = nanoseconds_t;
+		using tick_t = time;
 
 		struct section
 		{
@@ -31,7 +31,7 @@ namespace xo
 		void reset();
 		section* start_section( const char* name );
 		void end_section();
-		tick_t now() const { return timer_.nanoseconds(); }
+		tick_t now() const { return timer_(); }
 		prop_node report();
 		static profiler& instance();
 
@@ -50,7 +50,7 @@ namespace xo
 		std::vector< section* > get_children( size_t parent_id );
 
 		std::vector< section > sections_;
-		timer_v1 timer_;
+		timer_v2 timer_;
 		section* current_section_;
 		tick_t overhead_estimate;
 

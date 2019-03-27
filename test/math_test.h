@@ -12,7 +12,7 @@
 #include "xo/container/flag_set.h"
 #include "xo/numerical/regular_piecewise_linear_function.h"
 #include <fstream>
-#include "xo/time/timer_v1.h"
+#include "xo/time/timer_v2.h"
 #include "xo/system/system_tools.h"
 #include "xo/diagnose/test_framework.h"
 #include "xo/shape/aabb.h"
@@ -76,7 +76,7 @@ void function_test()
 	for ( double x = -2 * constants<double>::pi(); x < 2 * constants<double>::pi(); x += 0.1 )
 		ostr << x << "\t" << func( x ) << endl;
 
-	timer_v1 t;
+	timer_v2 t;
 	double result = 0.0, verify_result = 0.0;
 	for ( int i = 0; i < 10000; ++i )
 	{
@@ -86,8 +86,8 @@ void function_test()
 			verify_result += sin_func( x );
 		}
 	}
-	auto duration = t.seconds();
-	XO_TEST_MSG( equal( result, verify_result, 0.01 ), stringf( "diff=%f duration=%f", result - verify_result, duration ) );
+	auto duration = t();
+	XO_TEST_MSG( equal( result, verify_result, 0.01 ), stringf( "diff=%f duration=%f", result - verify_result, duration.seconds() ) );
 }
 
 void angle_test()

@@ -111,12 +111,12 @@ namespace xo
 
 	void profiler::report_section( section* s, prop_node& pn )
 	{
-		double root_total = root()->total_time / 1e6;
-		double total = s->total_time / 1e6;
+		double root_total = root()->total_time.millisecondsd();
+		double total = s->total_time.millisecondsd();
 		double rel_total = 100.0 * total / root_total;
-		double ex = exclusive_time( s ) / 1e6;
+		double ex = exclusive_time( s ).millisecondsd();
 		double rel_ex = 100.0 * ex / root_total;
-		double over = total_overhead( s ) / 1e6;
+		double over = total_overhead( s ).millisecondsd();
 		double rel_over = 100.0 * over / total;
 
 		pn[ s->name ] = stringf( "%6.0fms %6.2f%% (%5.2f%% exclusive ~%.0f%% overhead)", total, rel_total, rel_ex, clamped( rel_over, 0.0, 100.0 ) );
@@ -129,7 +129,7 @@ namespace xo
 
 	profiler::tick_t profiler::exclusive_time( section* s )
 	{
-		nanoseconds_t t = s->total_time;
+		auto t = s->total_time;
 		for ( auto& cs : sections_ )
 			if ( cs.parent_id == s->id )
 				t -= cs.total_time;
@@ -138,7 +138,7 @@ namespace xo
 
 	profiler::tick_t profiler::total_overhead( section* s )
 	{
-		nanoseconds_t t = s->overhead;
+		auto t = s->overhead;
 		for ( auto& cs : sections_ )
 			if ( cs.parent_id == s->id )
 				t += total_overhead( &cs );
@@ -148,7 +148,7 @@ namespace xo
 	void profiler::init_overhead_estimate()
 	{
 #ifdef XO_PROFILER_MEASURE_OVERHEAD
-		timer_v1 t;
+		timer_v2 t;
 		tick_t t1, t2;
 		t1 = now();
 		for ( int i = 0; i < 9999; ++i )

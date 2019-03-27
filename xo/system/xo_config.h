@@ -7,6 +7,8 @@
 #ifndef XO_USE_WINDOWS_PERFORMANCE_COUNTER
 #	if defined (_MSC_VER) && (_MSC_VER <= 1800) // MSVC 2013 and lower do not have proper chrono support
 #		define XO_USE_WINDOWS_PERFORMANCE_COUNTER 1
+#	elif defined (XO_COMP_MSVC) // prefer windows performance counter, as it's faster than std::chrono::high_resolution_clock
+#		define XO_USE_WINDOWS_PERFORMANCE_COUNTER 1
 #	else
 #		define XO_USE_WINDOWS_PERFORMANCE_COUNTER 0
 #	endif
