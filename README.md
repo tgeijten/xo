@@ -31,10 +31,10 @@ Library for debugging, testing and performance analysis.
 * **`xo/diagnose/test_framework.h`** Framework for unit testing
 
 ## filesystem
-A library with basic functionality found in the C++17 filesystem library.
+A light-weight subset of the C++17 filesystem library.
 
-* **`xo/filesystem/filesystem.h`**
-* **`xo/filesystem/path.h`**
+* **`xo/filesystem/filesystem.h`** Basic file operations
+* **`xo/filesystem/path.h`** Class for storing paths
 
 ## geometry
 A library for efficient and flexible 3d geometry.
@@ -45,14 +45,12 @@ A library for efficient and flexible 3d geometry.
 * **`xo/geometry/dynmat.h`**
 * **`xo/geometry/dynvec.h`**
 * **`xo/geometry/mat33.h`**
-* **`xo/geometry/mat33_type.h`**
 * **`xo/geometry/path_alg.h`**
-* **`xo/geometry/quat.h`**
-* **`xo/geometry/quat_type.h`**
-* **`xo/geometry/transform.h`**
+* **`xo/geometry/quat.h`** Quaternion class
+* **`xo/geometry/transform.h`** 3D Transformation class (translation + rotation)
 * **`xo/geometry/vec.h`**
-* **`xo/geometry/vec3.h`**
-* **`xo/geometry/vec4.h`**
+* **`xo/geometry/vec3.h`** 3D Vector class
+* **`xo/geometry/vec4.h`** 4D Vector class
 
 ## numerical
 Library for dealing with numbers.
