@@ -5,7 +5,6 @@ A **lightweight** c++17 utility library. Originally intended to be a less bulky 
 ## container
 Library with various efficient containers and tools.
 
-* **`xo/container/buffer_access.h`** 
 * **`xo/container/circular_deque.h`** A deque stored in a ring buffer
 * **`xo/container/circular_frame_buffer.h`**
 * **`xo/container/container_algorithms.h`**
@@ -13,7 +12,6 @@ Library with various efficient containers and tools.
 * **`xo/container/dynarray.h`** An array with run-time allocation
 * **`xo/container/flag_set.h`** Container type for storing flags
 * **`xo/container/flat_map.h`** A map stored in a flat datastructure
-* **`xo/container/label_vector.h`**
 * **`xo/container/prop_node.h`** A hierarchical container that can contain any type
 * **`xo/container/prop_node_tools.h`**
 * **`xo/container/small_vector.h`**
@@ -42,7 +40,6 @@ A library with basic functionality found in the C++17 filesystem library.
 A library for efficient and flexible 3d geometry.
 
 * **`xo/geometry/angle.h`** Class for representing angles in radians or degrees, with efficient conversion between types
-* **`xo/geometry/angle_type.h`**
 * **`xo/geometry/axes_type.h`**
 * **`xo/geometry/catmull_rom.h`** Catmull-Rom spline implementation
 * **`xo/geometry/dynmat.h`**
@@ -55,10 +52,7 @@ A library for efficient and flexible 3d geometry.
 * **`xo/geometry/transform.h`**
 * **`xo/geometry/vec.h`**
 * **`xo/geometry/vec3.h`**
-* **`xo/geometry/vec3_type.h`**
 * **`xo/geometry/vec4.h`**
-* **`xo/geometry/vec4_type.h`**
-* **`xo/geometry/vec_alg.h`**
 
 ## numerical
 Library for dealing with numbers.
@@ -79,16 +73,11 @@ Library for dealing with numbers.
 * **`xo/numerical/random.h`**
 * **`xo/numerical/regression.h`**
 * **`xo/numerical/regular_piecewise_linear_function.h`**
-* **`xo/numerical/result_type.h`**
 
 ## serialization
 Library for input / output to serial streams of data.
 
 * **`xo/serialization/char_stream.h`**
-* **`xo/serialization/prop_node_serializer.h`**
-* **`xo/serialization/prop_node_serializer_ini.h`**
-* **`xo/serialization/prop_node_serializer_xml.h`**
-* **`xo/serialization/prop_node_serializer_zml.h`**
 * **`xo/serialization/serialize.h`**
 
 ## shape
@@ -125,16 +114,13 @@ System related tools such as logging and versioning.
 * **`xo/system/system_tools.h`**
 * **`xo/system/type_class.h`**
 * **`xo/system/version.h`** Class for storing version numbers
-* **`xo/system/xo_config.h`**
 
 ## time
 Library for dealing with time.
 
-* **`xo/time/date_time.h`**
 * **`xo/time/stopwatch.h`**
 * **`xo/time/time.h`**
 * **`xo/time/timer.h`**
-* **`xo/time/timer_v1.h`**
 
 ## utility
 Several utilities that don't fit in any other library.
