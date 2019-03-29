@@ -5,18 +5,18 @@ A **lightweight** utility library for **c++**. Originally intended to be a less 
 ## container
 Library with various efficient containers and tools.
 
-| Class / File | Description |
-| ------------ | ----------- |
-| circular_deque | A deque stored in a ring buffer |
-| dynarray | An array with run-time allocation |
-| flag_set | A set for enum-based flags |
-| flat_map | A map stored in an array-like datastructure |
-| local_vector | A vector stored on the stack |
-| prop_node | A hierarchical container that can contain any type |
-| sorted_vector | A vector with sorted elements |
-| container_tools.h | Various algorithms that operate on containers |
-| storage | A table with data |
-| view_if | Iterate through a vector based on specific condition |
+Class / File | Description
+------------ | -----------
+circular_deque | A deque stored in a ring buffer
+dynarray | An array with run-time allocation
+flag_set | A set for enum-based flags
+flat_map | A map stored in an array-like datastructure
+local_vector | A vector stored on the stack
+prop_node | A hierarchical container that can contain any type
+sorted_vector | A vector with sorted elements
+container_tools.h | Various algorithms that operate on containers
+storage | A table with data
+view_if | Iterate through a vector based on specific condition
 
 ## diagnose
 Library for debugging, testing and performance analysis.
