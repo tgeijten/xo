@@ -5,23 +5,23 @@ A **lightweight** c++17 utility library. Originally intended to be a less bulky 
 ## container
 Library with various efficient containers and tools.
 
-* `**xo/container/buffer_access.h`** 
-* `**xo/container/circular_deque.h`** A deque stored in a ring buffer
-* `**xo/container/circular_frame_buffer.h`**
-* `**xo/container/container_algorithms.h`**
-* `**xo/container/container_tools.h`**
-* `**xo/container/dynarray.h`** An array with run-time allocation
-* `**xo/container/flag_set.h`** Container type for storing flags
-* `**xo/container/flat_map.h`** A map stored in a flat datastructure
-* `**xo/container/label_vector.h`**
-* `**xo/container/prop_node.h`** A hierarchical container that can contain any type
-* `**xo/container/prop_node_tools.h`**
-* `**xo/container/small_vector.h`**
-* `**xo/container/sorted_vector.h`** A vector with sorted elements
-* `**xo/container/storage.h`** A container for storing columns of data
-* `**xo/container/storage_tools.h`**
-* `**xo/container/table.h`**
-* `**xo/container/view_if.h`** Iterate through elements of a cotainer that match a specific condition
+* **`xo/container/buffer_access.h`** 
+* **`xo/container/circular_deque.h`** A deque stored in a ring buffer
+* **`xo/container/circular_frame_buffer.h`**
+* **`xo/container/container_algorithms.h`**
+* **`xo/container/container_tools.h`**
+* **`xo/container/dynarray.h`** An array with run-time allocation
+* **`xo/container/flag_set.h`** Container type for storing flags
+* **`xo/container/flat_map.h`** A map stored in a flat datastructure
+* **`xo/container/label_vector.h`**
+* **`xo/container/prop_node.h`** A hierarchical container that can contain any type
+* **`xo/container/prop_node_tools.h`**
+* **`xo/container/small_vector.h`**
+* **`xo/container/sorted_vector.h`** A vector with sorted elements
+* **`xo/container/storage.h`** A container for storing columns of data
+* **`xo/container/storage_tools.h`**
+* **`xo/container/table.h`**
+* **`xo/container/view_if.h`** Iterate through elements of a cotainer that match a specific condition
 
 ## diagnose
 Library for debugging, testing and performance analysis.
