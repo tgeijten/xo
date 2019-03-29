@@ -1,6 +1,6 @@
 # xo
 
-A **lightweight** utility library for **c++**. Originally intended to be a less bulky replacement for **boost**. It contains the following libraries:
+A **lightweight** c++17 utility library. Originally intended to be a less bulky replacement for **boost**. It contains the following libraries:
 
 ## container
 Library with various efficient containers and tools.
