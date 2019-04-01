@@ -35,7 +35,7 @@ namespace xo
 	bool from_str( const string& s, unsigned int& v )
 	{
 		char* p;
-		v = (unsigned int)( std::strtol( s.c_str(), &p, 10 ) );
+		v = (unsigned int)( std::strtoul( s.c_str(), &p, 10 ) );
 		return p != s.c_str();
 	}
 
@@ -53,23 +53,18 @@ namespace xo
 		return p != s.c_str();
 	}
 
-	bool from_str( const string& s, size_t& v )
+	bool from_str( const string& s, long long& v )
 	{
 		char* p;
-		v = std::strtoul( s.c_str(), &p, 10 );
+		v = std::strtoll( s.c_str(), &p, 10 );
 		return p != s.c_str();
 	}
 
-	bool from_str( const string& s, const char*& v )
+	bool from_str( const string& s, unsigned long long& v )
 	{
-		v = s.c_str();
-		return true;
-	}
-
-	bool from_str( const string& s, string& v )
-	{
-		v = s;
-		return true;
+		char* p;
+		v = std::strtoull( s.c_str(), &p, 10 );
+		return p != s.c_str();
 	}
 
 	string to_str( float value )

@@ -12,9 +12,11 @@ namespace xo
 	XO_API bool from_str( const string& s, int& v );
 	XO_API bool from_str( const string& s, unsigned int& v );
 	XO_API bool from_str( const string& s, long& v );
+	XO_API bool from_str( const string& s, long long& v );
 	XO_API bool from_str( const string& s, unsigned long& v );
-	XO_API bool from_str( const string& s, size_t& v );
-	XO_API bool from_str( const string& s, string& v );
+	XO_API bool from_str( const string& s, unsigned long long& v );
+	inline bool from_str( const string& s, const char*& v ) { v = s.c_str(); return true; }
+	inline bool from_str( const string& s, string& v ) { v = s; return true; }
 
 	/// convert data to string
 	XO_API string to_str( float value );
