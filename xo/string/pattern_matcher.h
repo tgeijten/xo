@@ -10,7 +10,7 @@ namespace xo
 	{
 	public:
 		pattern_matcher() {}
-		pattern_matcher( const prop_node& pn ) : patterns( split_str( pn.get_value(), ";" ) ) {}
+		pattern_matcher( const prop_node& pn ) : patterns( split_str( pn.get<string>(), ";" ) ) {}
 		pattern_matcher( const char* pattern, const char* delimeters = ";" ) : patterns( split_str( pattern, delimeters ) ) {}
 		pattern_matcher( const string& pattern, const char* delimeters = ";" ) : patterns( split_str( pattern, delimeters ) ) {}
 

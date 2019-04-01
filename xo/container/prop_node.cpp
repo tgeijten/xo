@@ -213,7 +213,7 @@ namespace xo
 
 			str << std::left << std::setw( align ) << key_str;
 			if ( child.second.has_value() || child.second.size() == 0 )
-				str << std::setw( 0 ) << " = " << child.second.get_value();
+				str << std::setw( 0 ) << " = " << child.second.raw_value();
 			str << std::endl;
 
 			to_stream( str, child.second, depth + 1, align );

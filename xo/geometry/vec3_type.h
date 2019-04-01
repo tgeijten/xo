@@ -78,7 +78,7 @@ namespace xo
 			v.z = pn.get<T>( 2 );
 		}
 		else if ( pn.size() == 0 && pn.has_value() ) {
-			return from_str( pn.get_value(), v );
+			return from_str( pn.raw_value(), v );
 		}
 		return true;
 	};

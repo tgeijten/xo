@@ -45,7 +45,7 @@ namespace xo
 	void set_rapid_xml_node( rapidxml::xml_document<>& doc, rapidxml::xml_node<>* xmlnode, const prop_node& pn )
 	{
 		if ( pn.has_value() )
-			xmlnode->value( pn.get_value().c_str() );
+			xmlnode->value( pn.raw_value().c_str() );
 
 		for ( auto& child : pn )
 		{

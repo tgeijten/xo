@@ -107,8 +107,8 @@ namespace xo
 		/// clear value and keys
 		void clear() { value.clear(); children.clear(); }
 
-		/// access value_t value
-		const value_t& get_value() const { access(); return value; }
+		/// get raw value_t reference, does not set access flag
+		const value_t& raw_value() const { return value; }
 
 		/// set the value of this node
 		prop_node& set( prop_node&& pn ) { *this = std::move( pn ); return *this; }
@@ -225,7 +225,7 @@ namespace xo
 	}
 
 	template< typename T > bool from_prop_node( const prop_node& pn, T& v ) {
-		return from_str( pn.get_value(), v ); 
+		return from_str( pn.raw_value(), v ); 
 	};
 
 	template< typename T > T from_prop_node( const prop_node& pn ) {

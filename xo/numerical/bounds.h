@@ -54,7 +54,7 @@ namespace xo
 
 	template< typename T > bool from_prop_node( const prop_node& pn, bounds<T>& v ) {
 		if ( pn.has_value() ) {
-			return from_str( pn.get_value(), v );
+			return from_str( pn.raw_value(), v );
 		}
 		else if ( pn.size() >= 2 ) {
 			v.lower = pn.get_any<T>( { "min", "lower" }, pn.get<T>( 0 ) );

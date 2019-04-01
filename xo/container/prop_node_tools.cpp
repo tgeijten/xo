@@ -13,7 +13,7 @@ namespace xo
 				if ( !n.second.is_accessed() )
 				{
 					if ( n.second.has_value() )
-						str += " = " + n.second.get_value();
+						str += " = " + n.second.raw_value();
 					str += " *";
 				}
 				log::message( level, str );

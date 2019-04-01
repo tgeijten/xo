@@ -127,14 +127,14 @@ namespace xo
 	void write_zml_kvp( std::ostream& str, const string& label, const prop_node& pn, const char* equals_str, bool inside_array )
 	{
 		bool show_label = !label.empty();
-		bool show_value = !pn.get_value().empty() || pn.size() == 0;
+		bool show_value = !pn.raw_value().empty() || pn.size() == 0;
 		xo_error_if( !show_label && show_value && !inside_array, "Value without label outside array" );
 		if ( show_label )
 			str << try_quoted( label, ";{}[]#" );
 		if ( show_label && show_value )
 			str << equals_str;
 		if ( show_value )
-			str << try_quoted( pn.get_value(), ";{}[]#" );
+			str << try_quoted( pn.raw_value(), ";{}[]#" );
 	}
 
 	void write_zml_node( std::ostream& str, const string& label, const prop_node& pn, int level, bool inside_array )

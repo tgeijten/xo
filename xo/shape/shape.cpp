@@ -6,7 +6,7 @@ namespace xo
 {
 	shape make_shape( const prop_node& pn )
 	{
-		switch ( hash( pn[ "type" ].get_value() ) )
+		switch ( hash( pn.get<string>( "type" ) ) )
 		{
 		case "sphere"_hash: return sphere{ pn.get<float>( "radius" ) };
 		case "cylinder"_hash: return cylinder{ pn.get<float>( "radius" ), pn.get<float>( "height" ) };

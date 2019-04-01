@@ -15,10 +15,10 @@ namespace xo
 			{
 				str << '[' << e.first << ']' << std::endl;
 				for ( auto& e2 : e.second )
-					str << e2.first << "=" << e2.second.get_value() << std::endl;
+					str << e2.first << "=" << e2.second.raw_value() << std::endl;
 			}
 			else if ( e.second.has_value() ) // main item
-				str << e.first << "=" << e.second.get_value() << std::endl;
+				str << e.first << "=" << e.second.raw_value() << std::endl;
 		}
 		return str;
 	}

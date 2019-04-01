@@ -13,7 +13,7 @@ namespace xo
 	{
 		if ( pn.has_value() )
 		{
-			c = make_from_hex( static_cast<unsigned int>( std::stoul( pn.get_value(), 0, 16 ) ) );
+			c = make_from_hex( static_cast<unsigned int>( std::stoul( pn.get<string>(), 0, 16 ) ) );
 			return true;
 		}
 		else if ( pn.has_any_key( { "h", "s", "v" } ) )
