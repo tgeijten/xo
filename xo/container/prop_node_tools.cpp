@@ -25,6 +25,36 @@ namespace xo
 		}
 	}
 
+	void to_str_unaccessed( const prop_node& pn, string& str, int depth )
+	{
+		if ( pn.size() > 0 )
+		{
+			for ( auto& n : pn )
+			{
+				if ( n.second.count_unaccessed() > 0 )
+				{
+					str += string( depth * 2, ' ' ) + n.first;
+					if ( !n.second.is_accessed() )
+					{
+						if ( n.second.has_value() )
+							str += " = " + n.second.raw_value();
+						str += " *";
+					}
+					str += '\n';
+				}
+				to_str_unaccessed( n.second, str, depth + 1 );
+			}
+		}
+	}
+
+	string to_str_unaccessed( const prop_node& pn )
+	{
+		string str;
+		str.reserve( 1000 );
+		to_str_unaccessed( pn, str, 0 );
+		return str;
+	}
+
 	std::pair< bool, string > find_query_to_node( const prop_node* from, const prop_node* to, const char delim )
 	{
 		if ( from == to )
