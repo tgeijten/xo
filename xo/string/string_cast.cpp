@@ -22,7 +22,11 @@ namespace xo
 
 	bool from_str( const string& s, bool& v )
 	{
-		return v = ( s == "1" || s == "true" ); return true;
+		if ( str_equals_any_of( s, { "1", "true", "yes" } ) )
+		{ v = true; return true; }
+		else if ( str_equals_any_of( s, { "0", "false", "no" } ) )
+		{ v = false; return true; }
+		else return false; // could not extract boolean
 	}
 
 	bool from_str( const string& s, int& v )
