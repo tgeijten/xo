@@ -1,3 +1,5 @@
+#define XO_ENABLE_PROFILER // define to enable global profiler
+
 #include "test.h"
 #include "math_test.h"
 #include "buffer_test.h"
@@ -39,8 +41,8 @@ int main( int argc, char* argv[] )
 
 	try
 	{
-		xo::performance_test();
-		xo::timer_test();
+		//xo::performance_test();
+		//xo::timer_test();
 
 #ifdef XO_ENABLE_PROFILER
 		//xo::profile_test();
@@ -82,9 +84,8 @@ int main( int argc, char* argv[] )
 		xo::angle_test();
 		sw.add_measure( "math" );
 
-		xo_profiler_log_report( xo::log::info_level );
-		auto pn = sw.get_report();
-		xo::log::info( pn );
+		xo::log::info( "Profiler report:\n", xo_profiler_report() );
+		xo::log::info( "Test durations:\n", sw.get_report() );
 	}
 	catch ( std::exception& e )
 	{
