@@ -17,6 +17,7 @@ namespace xo
 			f.register_type< prop_node_serializer_xml >( "xml" );
 			f.register_type< prop_node_serializer_ini >( "ini" );
 			f.register_type< prop_node_serializer_zml >( "zml" );
+			f.register_type< prop_node_serializer_zml >( "zson" );
 		}
 		return f;
 	}
