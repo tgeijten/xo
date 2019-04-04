@@ -96,8 +96,9 @@ namespace xo
 			++count_sp;
 		XO_TEST( count_sp == 3 );
 
-		save_file( pn, "prop_node_test.zml" );
-		auto pn_loaded = load_file( "prop_node_test.zml" );
+		auto filename = temp_directory_path() / "prop_node_test.zml";
+		save_file( pn, filename );
+		auto pn_loaded = load_file( filename );
 
 		XO_TEST( pn == pn_loaded );
 		if ( pn != pn_loaded )
