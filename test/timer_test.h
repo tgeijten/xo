@@ -75,6 +75,6 @@ namespace xo
 		for ( int i = 0; i < 100000; ++i )
 			profile3( i );
 
-		xo_profiler_log_report( log::info_level );
+		log::info( "Profile report:\n", xo_profiler_report() );
 	}
 }
