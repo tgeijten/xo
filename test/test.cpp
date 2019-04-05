@@ -1,4 +1,6 @@
+#ifndef XO_ENABLE_PROFILER
 #define XO_ENABLE_PROFILER // define to enable global profiler
+#endif
 
 #include "test.h"
 #include "math_test.h"
