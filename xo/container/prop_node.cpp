@@ -15,6 +15,13 @@ namespace xo
 		*this = parse_zml( pn );
 	}
 
+	template< typename T > T prop_node::get() const
+    {
+        access();
+        return from_prop_node<T>( *this );
+    }
+
+
 	size_t prop_node::count_layers() const
 	{
 		size_t d = 0;

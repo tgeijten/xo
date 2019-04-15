@@ -47,7 +47,7 @@ namespace xo
 		bool operator!=( const prop_node& other ) const { return !( *this == other ); }
 
 		/// get the value of this node, throws if conversion fails
-		template< typename T > T get() const { access(); return from_prop_node<T>( *this ); }
+		template< typename T > T get() const;
 
 		/// get the value of a child node, throws if value does not exist
 		template< typename T > T get( const key_t& key ) const{ return get_child( key ).get< T >(); }
