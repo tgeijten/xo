@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include "xo/system/xo_config.h"
 
 namespace xo
