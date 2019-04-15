@@ -94,8 +94,8 @@ namespace xo
 #else
 		if ( overwrite || !file_exists( to ) )
 		{
-			std::ifstream src( from.string(), std::ios::binary );
-			std::ofstream dst( to.string(), std::ios::binary );
+			std::ifstream src( from.to_string(), std::ios::binary );
+			std::ofstream dst( to.to_string(), std::ios::binary );
 			if ( src.good() && dst.good() )
 			{
 				dst << src.rdbuf();
@@ -123,7 +123,7 @@ namespace xo
 
 	bool file_exists( const path& file )
 	{
-		std::ifstream ifs( file.string() );
+		std::ifstream ifs( file.to_string() );
 		return ifs.good();
 	}
 
@@ -156,7 +156,7 @@ namespace xo
 		for ( auto& f : filenames )
 			if ( file_exists( f ) )
 				return f;
-		xo_error( "Could not find " + container_to_str( filenames, " or " ) + " in " + xo::current_path().string() );
+		xo_error( "Could not find " + container_to_str( filenames, " or " ) + " in " + xo::current_path().to_string() );
 	}
 
 	bool create_directories( const path& folder )
@@ -192,9 +192,9 @@ namespace xo
 	string load_string( const path& filename, error_code* ec )
 	{
 		// this method uses a stringbuf, which requires an extra copy (C++ suckiness)
-		std::ifstream ifstr( filename.string() );
+		std::ifstream ifstr( filename.to_string() );
 		if ( !ifstr.good() )
-			return set_error_or_throw( ec, "Could not open " + filename.string() ), "";
+			return set_error_or_throw( ec, "Could not open " + filename.to_string() ), "";
 
 		std::stringstream str;
 		str << ifstr.rdbuf();
@@ -234,7 +234,7 @@ namespace xo
 	if ( stat(p.c_str(), &attr) == 0 )
 		return attr.st_mtime;
 	else
-		xo_error( "Could not query " + p.string() );
+		xo_error( "Could not query " + p.to_string() );
 #endif
 	}
 }

@@ -3,12 +3,9 @@
 #include "xo/system/xo_config.h"
 #include "xo/string/string_type.h"
 #include "xo/string/string_cast.h"
+#include <filesystem>
 
-namespace std {
-	namespace filesystem {
-		class path;
-	}
-}
+using std::filesystem::path;
 
 namespace xo
 {
