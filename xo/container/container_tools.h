@@ -66,5 +66,5 @@ namespace xo
 
 	/// emplace back, return index
 	template< typename C, typename... Args> index_t emplace_back_get_index( C& c, Args&&... a )
-	{ c.emplace_back( std::forward< Args >( args )... ); return c.size() - 1; }
+	{ c.emplace_back( std::forward< Args >( a )... ); return c.size() - 1; }
 }
