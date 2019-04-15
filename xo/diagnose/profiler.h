@@ -4,6 +4,7 @@
 #include "xo/system/system_tools.h"
 #include "xo/time/timer.h"
 #include <thread>
+#include <vector>
 
 namespace xo
 {

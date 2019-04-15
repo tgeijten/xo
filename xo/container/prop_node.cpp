@@ -15,6 +15,12 @@ namespace xo
 		*this = parse_zml( pn );
 	}
 
+	template< typename T > prop_node& prop_node::operator=( const T& v )
+    {
+        *this = to_prop_node( v );
+        return *this;
+    }
+
 	template< typename T > T prop_node::get() const
     {
         access();

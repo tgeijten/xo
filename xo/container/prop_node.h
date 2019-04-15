@@ -40,7 +40,7 @@ namespace xo
 		/// assignment operators
 		prop_node& operator=( const prop_node& other ) = default;
 		prop_node& operator=( prop_node&& other ) = default;
-		template< typename T > prop_node& operator=( const T& v ) { *this = to_prop_node( v ); return *this; }
+		template< typename T > prop_node& operator=( const T& v );
 
 		/// equality operators
 		bool operator==( const prop_node& other ) const;
