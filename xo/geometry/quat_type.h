@@ -35,7 +35,12 @@ namespace xo
 	using quatd = quat_< double >;
 
 	template< typename T > prop_node to_prop_node( const quat_<T>& q ) {
-		return prop_node().set( "w", w ).set( "x", x ).set( "y", y ).set( "z", z );
+        prop_node pn;
+        pn.set( "w", q.w );
+        pn.set( "x", q.x );
+        pn.set( "y", q.y );
+        pn.set( "z", q.z );
+        return pn;		
 	}
 
 	template< typename T > bool from_prop_node( const prop_node& pn, quat_<T>& q ) {

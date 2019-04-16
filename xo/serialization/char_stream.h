@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <cstring>
 
 #include "xo/xo_types.h"
 #include "xo/string/string_type.h"

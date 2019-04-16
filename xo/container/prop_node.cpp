@@ -27,7 +27,6 @@ namespace xo
         return from_prop_node<T>( *this );
     }
 
-
 	size_t prop_node::count_layers() const
 	{
 		size_t d = 0;
@@ -43,6 +42,18 @@ namespace xo
 			n += c.second.count_children();
 		return n;
 	}
+
+	template< typename T > prop_node& prop_node::set( const T& v )
+    {
+        *this = to_prop_node( v );
+        return *this;
+    }
+
+	template< typename T > prop_node& prop_node::push_back( const key_t& key, const T& value )
+    {
+        children.emplace_back( key, to_prop_node( value ) );
+        return children.back().second;
+    }
 
 	bool prop_node::is_array() const
 	{

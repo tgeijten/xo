@@ -232,9 +232,9 @@ namespace xo
 		auto tzz = tz * q.z;
 
 		return axes_<T>{
-			{ 1.0f - ( tyy + tzz ), txy + twz, txz - twy }
-			{ txy - twz, 1.0f - ( txx + tzz ), tyz + twx }
-			{ txz + twy, tyz - twx, 1.0f - ( txx + tyy ) }
+			{ 1.0f - ( tyy + tzz ), txy + twz, txz - twy },
+			{ txy - twz, 1.0f - ( txx + tzz ), tyz + twx },
+			{ txz + twy, tyz - twx, 1.0f - ( txx + tyy ) },
 		};
 	}
 }

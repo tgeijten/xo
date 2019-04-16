@@ -21,7 +21,7 @@ namespace xo
 
 	prop_node prop_node_serializer::load_file( const path& filename, error_code* ec )
 	{
-		std::ifstream str( filename.string() );
+		std::ifstream str( filename.to_string() );
 		if ( str )
 		{
 			prop_node pn;
@@ -31,12 +31,12 @@ namespace xo
 			read_stream( str );
 			return *read_pn_;
 		}
-		else return set_error_or_throw( ec, "Cannot open " + filename.string() ), prop_node();
+		else return set_error_or_throw( ec, "Cannot open " + filename.to_string() ), prop_node();
 	}
 
 	void prop_node_serializer::save_file( const prop_node& pn, const path& filename, error_code* ec )
 	{
-		std::ofstream str( filename.string() );
+		std::ofstream str( filename.to_string() );
 		if ( str )
 		{
 			write_pn_ = &pn;
@@ -44,6 +44,6 @@ namespace xo
 			file_folder_ = filename.parent_path();
 			write_stream( str );
 		}
-		else set_error_or_throw( ec, "Cannot open " + filename.string() );
+		else set_error_or_throw( ec, "Cannot open " + filename.to_string() );
 	}
 }

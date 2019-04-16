@@ -113,7 +113,7 @@ namespace xo
 		/// set the value of this node
 		prop_node& set( prop_node&& pn ) { *this = std::move( pn ); return *this; }
 		prop_node& set( const prop_node& pn ) { *this = pn; return *this; }
-		template< typename T > prop_node& set( const T& v ) { *this = to_prop_node( v ); return *this; }
+		template< typename T > prop_node& set( const T& v );
 
 		/// set the value of this node
 		template< typename T > prop_node& set_value( const T& v ) { value = to_str( v ); return *this; }
@@ -128,7 +128,7 @@ namespace xo
 		{ return get_or_add_query( query, delim ).set( v ); }
 
 		/// add a node with a value
-		template< typename T > prop_node& push_back( const key_t& key, const T& value ) { children.emplace_back( key, to_prop_node( value ) ); return children.back().second; }
+		template< typename T > prop_node& push_back( const key_t& key, const T& value );
 		prop_node& push_back( const key_t& key, const prop_node& pn ) { children.emplace_back( key, pn ); return children.back().second; }
 		prop_node& push_back( const key_t& key, prop_node&& pn ) { children.emplace_back( key, std::move( pn ) ); return children.back().second; }
 		prop_node& push_back( const key_t& key ) { children.emplace_back( key, prop_node() ); return children.back().second; }
