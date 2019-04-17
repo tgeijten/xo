@@ -19,6 +19,7 @@
 #include "xo/numerical/math.h"
 #include <cctype>
 #include "xo/system/assert.h"
+#include <cstring>
 
 namespace xo
 {

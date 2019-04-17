@@ -73,7 +73,7 @@ void function_test()
 {
 	regular_piecewise_linear_function< double > func( -constants<double>::pi(), constants<double>::pi(), 128, sin_func );
 
-	std::ofstream ostr( ( xo::temp_directory_path() / "test.txt" ).string() );
+	std::ofstream ostr( ( xo::temp_directory_path() / "test.txt" ).to_string() );
 	for ( double x = -2 * constants<double>::pi(); x < 2 * constants<double>::pi(); x += 0.1 )
 		ostr << x << "\t" << func( x ) << endl;
 

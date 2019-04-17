@@ -59,7 +59,7 @@ namespace xo
 		path p( "X:/appel/taart.txt" );
 		XO_TEST( p.empty() == false );
 		XO_TEST( p.extension() == "txt" );
-		XO_TEST( p.replace_extension( "new_ext" ).string() == "X:/appel/taart.new_ext" );
+		XO_TEST( p.replace_extension( "new_ext" ).to_string() == "X:/appel/taart.new_ext" );
 		XO_TEST( p.filename() == "taart.new_ext");
 		XO_TEST( p.stem() == "taart");
 		XO_TEST( path( "foo/bar.txt" ).stem() == "bar" );

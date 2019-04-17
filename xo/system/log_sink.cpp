@@ -56,7 +56,7 @@ namespace xo
 	{
 		if ( file.has_parent_path() )
 			create_directories( file.parent_path() );
-		file_stream_.open( file.string() );
+		file_stream_.open( file.to_string() );
 	}
 
 	void log::file_sink::send_log_message( level l, const string& msg )
