@@ -93,7 +93,7 @@ namespace xo
 				else if ( str_begins_with( t, "@" ) )
 				{
 					if ( auto ref_pn = root.try_get_query( t.substr( 1 ) ) )
-						parent.back().second.set( *ref_pn );
+						parent.back().second = std::move( *ref_pn );
 					else return zml_error( str, ec, "Could not find " + t );
 				}
 				else

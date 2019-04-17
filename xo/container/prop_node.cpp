@@ -15,17 +15,22 @@ namespace xo
 		*this = parse_zml( pn );
 	}
 
-	template< typename T > prop_node& prop_node::operator=( const T& v )
-    {
-        *this = to_prop_node( v );
-        return *this;
-    }
+	bool prop_node::has_value( const key_t& key ) const
+	{
+		if ( auto c = try_get_child( key ) )
+			return c->has_value();
+		else return false;
+	}
 
-	template< typename T > T prop_node::get() const
-    {
-        access();
-        return from_prop_node<T>( *this );
-    }
+	bool prop_node::has_key( const key_t& key ) const
+	{
+		return try_get_child( key ) != nullptr;
+	}
+
+	bool prop_node::has_any_key( std::initializer_list< key_t > keys ) const
+	{
+		for ( auto& k : keys ) if ( has_key( k ) ) return true; return false;
+	}
 
 	size_t prop_node::count_layers() const
 	{
@@ -58,6 +63,39 @@ namespace xo
 	bool prop_node::is_array() const
 	{
 		return find_if( *this, [&]( const prop_node::pair_t& n ) { return !n.first.empty(); } ) == end();
+	}
+
+	prop_node& prop_node::push_back( const key_t& key, const prop_node& pn )
+	{
+		children.emplace_back( key, pn );
+		return children.back().second;
+	}
+
+	prop_node& prop_node::push_back( const key_t& key, prop_node&& pn )
+	{
+		children.emplace_back( key, std::move( pn ) );
+		return children.back().second;
+	}
+
+	prop_node& prop_node::push_back( const key_t& key )
+	{
+		children.emplace_back( key, prop_node() );
+		return children.back().second;
+	}
+
+	prop_node::iterator prop_node::insert( iterator pos, const_iterator first, const_iterator last )
+	{
+		return children.insert( pos, first, last );
+	}
+
+	prop_node::iterator prop_node::append( const prop_node& other )
+	{
+		return children.insert( children.end(), other.begin(), other.end() );
+	}
+
+	prop_node::iterator prop_node::append( prop_node&& other )
+	{
+		return children.insert( children.end(), std::make_move_iterator( other.begin() ), std::make_move_iterator( other.end() ) );
 	}
 
 	void prop_node::merge( const prop_node& other, bool overwrite )
@@ -144,6 +182,22 @@ namespace xo
 		else return nullptr;
 	}
 
+	const prop_node* prop_node::try_get_child( const key_t& key ) const
+	{
+		for ( auto& c : children )
+			if ( c.first == key )
+				return &c.second;
+		return nullptr;
+	}
+
+	prop_node* prop_node::try_get_child( const key_t& key )
+	{
+		for ( auto& c : children )
+			if ( c.first == key )
+				return &c.second;
+		return nullptr;
+	}
+
 	const prop_node* prop_node::try_get_query( const key_t& key, const char delim ) const
 	{
 		auto p = key.find_first_of( delim );
@@ -193,6 +247,26 @@ namespace xo
 		else if ( auto* c = try_get_query( query.substr( 0, p ) ) )
 			return c->erase_query( mid_str( query, p + 1 ), delim );
 		else return false;
+	}
+
+	bool prop_node::is_accessed() const
+	{
+		return accessed_flag || !has_value();
+	}
+
+	size_t prop_node::count_unaccessed() const
+	{
+		size_t t = is_accessed() ? 0 : 1;
+		for ( auto& c : children )
+			t += c.second.count_unaccessed();
+		return t;
+	}
+
+	void prop_node::set_accessed_recursively( bool access ) const
+	{
+		accessed_flag = access;
+		for ( auto& c : children )
+			c.second.set_accessed_recursively( access );
 	}
 
 	int get_align_width( const prop_node& pn, int depth )
