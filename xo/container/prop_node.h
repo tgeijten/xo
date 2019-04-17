@@ -40,11 +40,7 @@ namespace xo
 		/// assignment operators
 		prop_node& operator=( const prop_node& other ) = default;
 		prop_node& operator=( prop_node&& other ) = default;
-<<<<<<< HEAD
-		template< typename T > prop_node& operator=( const T& v );
-=======
 		template< typename T > prop_node& operator=( const T& v ) { return set( v ); }
->>>>>>> master
 
 		/// equality operators
 		bool operator==( const prop_node& other ) const;
@@ -80,7 +76,7 @@ namespace xo
 		/// set the value of this node
 		prop_node& set( prop_node&& pn ) { return *this = std::move( pn ); }
 		prop_node& set( const prop_node& pn ) { return *this = pn; }
-		template< typename T > prop_node& set( const T& v ) { return *this = to_prop_node( v ); }
+		template< typename T > prop_node& set( const T& v );
 
 		/// set the value of a child node, the node is created if not existing
 		template< typename T > prop_node& set( const key_t& key, const T& v );
@@ -120,36 +116,14 @@ namespace xo
 		/// get raw value_t reference, does not set access flag
 		const value_t& raw_value() const { return value; }
 
-<<<<<<< HEAD
-		/// set the value of this node
-		prop_node& set( prop_node&& pn ) { *this = std::move( pn ); return *this; }
-		prop_node& set( const prop_node& pn ) { *this = pn; return *this; }
-		template< typename T > prop_node& set( const T& v );
-
-		/// set the value of this node
-		template< typename T > prop_node& set_value( const T& v ) { value = to_str( v ); return *this; }
-		prop_node& set_value( value_t&& v ) { value = std::move( v ); return *this; }
-
-		/// set the value of a child node, the node is created if not existing
-		template< typename T > prop_node& set( const key_t& key, const T& v )
-		{ if ( auto c = try_get_child( key ) ) return c->set( v ); else return push_back( key, v ); }
-
-=======
->>>>>>> master
 		/// set the value of a child node, accessing children through delimiter character
 		template< typename T > prop_node& set_query( const key_t& query, const T& v, const char delim = '.' );
 
 		/// add a node with a value
 		template< typename T > prop_node& push_back( const key_t& key, const T& value );
-<<<<<<< HEAD
-		prop_node& push_back( const key_t& key, const prop_node& pn ) { children.emplace_back( key, pn ); return children.back().second; }
-		prop_node& push_back( const key_t& key, prop_node&& pn ) { children.emplace_back( key, std::move( pn ) ); return children.back().second; }
-		prop_node& push_back( const key_t& key ) { children.emplace_back( key, prop_node() ); return children.back().second; }
-=======
 		prop_node& push_back( const key_t& key, const prop_node& pn );
 		prop_node& push_back( const key_t& key, prop_node&& pn );
 		prop_node& push_back( const key_t& key );
->>>>>>> master
 
 		/// insert children
 		iterator insert( iterator pos, const_iterator first, const_iterator last );
@@ -327,6 +301,11 @@ namespace xo
 			return c->get< T >();
 		return optional< T >();
 	}
+
+	template< typename T >
+    prop_node& prop_node::set( const T& v ) {
+         return *this = to_prop_node( v );
+     }
 
 	template< typename T >
 	prop_node& prop_node::set( const key_t& key, const T& v ) {
