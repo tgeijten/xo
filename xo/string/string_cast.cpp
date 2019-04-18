@@ -29,7 +29,7 @@ namespace xo
 		else return false; // could not extract boolean
 	}
 
-	bool from_str( const string& s, int& v )
+	bool from_str( const string& s, int v )
 	{
 		char* p; 
 		v = (int)( std::strtol( s.c_str(), &p, 10 ) );

@@ -9,7 +9,7 @@ namespace xo
 	XO_API bool from_str( const string& s, float& v );
 	XO_API bool from_str( const string& s, double& v );
 	XO_API bool from_str( const string& s, bool& v );
-	XO_API bool from_str( const string& s, int& v );
+	XO_API bool from_str( const string& s, int v );
 	XO_API bool from_str( const string& s, unsigned int& v );
 	XO_API bool from_str( const string& s, long& v );
 	XO_API bool from_str( const string& s, long long& v );
