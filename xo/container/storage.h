@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <string>
+#include <ostream>
 
 namespace xo
 {

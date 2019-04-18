@@ -3,6 +3,7 @@
 #include "xo/xo_types.h"
 #include "xo/string/string_cast.h"
 #include "xo/numerical/math.h"
+#include "xo/container/prop_node.h"
 
 namespace xo
 {

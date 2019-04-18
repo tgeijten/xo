@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xo/system/xo_config.h"
+#include <stddef.h>
 
 namespace xo
 {
