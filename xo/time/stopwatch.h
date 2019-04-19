@@ -3,6 +3,7 @@
 #include "timer.h"
 #include "xo/xo_types.h"
 #include "xo/string/string_type.h"
+#include <vector>
 
 namespace xo
 {

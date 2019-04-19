@@ -1,6 +1,8 @@
 #pragma once
 
 #include <array>
+#include "xo/xo_types.h"
+#include "xo/system/assert.h"
 
 namespace xo
 {
