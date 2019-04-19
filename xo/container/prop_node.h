@@ -76,7 +76,7 @@ namespace xo
 		/// set the value of this node
 		prop_node& set( prop_node&& pn ) { return *this = std::move( pn ); }
 		prop_node& set( const prop_node& pn ) { return *this = pn; }
-		template< typename T > prop_node& set( const T& v ) { return *this = to_prop_node( v ); }
+		template< typename T > prop_node& set( const T& v );
 
 		/// set the value of a child node, the node is created if not existing
 		template< typename T > prop_node& set( const key_t& key, const T& v );
@@ -245,6 +245,11 @@ namespace xo
 	//
 	// prop_node class implementations
 	//
+
+	template< typename T >
+	prop_node& prop_node::set( const T& v ) {
+		return *this = to_prop_node( v );
+	}
 
 	template< typename T >
 	T prop_node::get() const	{
