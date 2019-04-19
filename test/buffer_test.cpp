@@ -12,7 +12,7 @@
 
 namespace xo
 {
-	void buffer_test()
+	XO_TEST_CASE( xo_buffer_test )
 	{
 		// circular_deque test
 		circular_deque< int > cd( 10 );
@@ -21,7 +21,7 @@ namespace xo
 			cd.push_back( i );
 			if ( cd.size() == 10 )
 			{
-				XO_TEST( cd.front() == i - 9 );
+				XO_CHECK( cd.front() == i - 9 );
 				cd.pop_front();
 			}
 		}
@@ -34,7 +34,7 @@ namespace xo
 			cd.push_front( i );
 			if ( cd.size() == 20 )
 			{
-				XO_TEST( cd.back() == i - 19 );
+				XO_CHECK( cd.back() == i - 19 );
 				cd.pop_back();
 			}
 		}

@@ -2,6 +2,7 @@
 
 #include "xo/container/storage.h"
 #include "xo/numerical/filter.h"
+#include "xo/numerical/constants.h"
 #include <fstream>
 
 namespace xo

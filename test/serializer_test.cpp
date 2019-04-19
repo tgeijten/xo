@@ -6,6 +6,7 @@
 #include "xo/diagnose/test_framework.h"
 #include "xo/system/log.h"
 #include "xo/serialization/prop_node_serializer_zml.h"
+#include <sstream>
 
 namespace xo
 {
@@ -39,7 +40,7 @@ namespace xo
 		return root;
 	}
 
-	void serializer_test()
+	XO_TEST_CASE( xo_serializer_test )
 	{
 		prop_node p1 = example_prop_node();
 		prop_node p2;
@@ -48,7 +49,7 @@ namespace xo
 		prop_node_serializer_zml( p1 ).write_stream( str );
 		prop_node_serializer_zml( p2 ).read_stream( str );
 
-		XO_TEST( p1 == p2 );
+		XO_CHECK( p1 == p2 );
 		if ( p1 != p2 )
 		{
 			log::info( p1 );

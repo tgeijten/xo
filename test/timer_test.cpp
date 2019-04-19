@@ -1,9 +1,11 @@
 #pragma once
+
 #include "xo/time/timer_v1.h"
 #include "xo/system/system_tools.h"
 #include "xo/system/log.h"
 #include "xo/diagnose/profiler_config.h"
 #include <iomanip>
+#include <vector>
 #include "xo/time/timer.h"
 
 namespace xo

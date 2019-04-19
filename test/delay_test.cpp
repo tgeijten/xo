@@ -5,6 +5,8 @@
 #include "xo/system/log.h"
 #include "xo/geometry/angle.h"
 #include <cmath>
+#include <fstream>
+#include "xo/string/string_tools.h"
 
 namespace xo
 {

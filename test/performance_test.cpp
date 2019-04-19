@@ -4,6 +4,7 @@
 #include "xo/time/stopwatch.h"
 #include "xo/numerical/functions.h"
 #include "xo/system/log.h"
+#include "xo/container/prop_node.h"
 
 namespace xo
 {

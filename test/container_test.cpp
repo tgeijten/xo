@@ -5,6 +5,10 @@
 #include "xo/container/sorted_vector.h"
 #include <map>
 #include "xo/container/table.h"
+#include "xo/numerical/random.h"
+#include "xo/diagnose/test_framework.h"
+#include "xo/container/container_algorithms.h"
+#include "xo/container/circular_frame_buffer.h"
 
 namespace xo
 {
@@ -16,7 +20,7 @@ namespace xo
 		return s;
 	}
 
-	void container_test()
+	XO_TEST_CASE( xo_containers )
 	{
 		struct sortable
 		{
@@ -39,9 +43,9 @@ namespace xo
 		vm[ "Peer" ] = 2;
 		vm[ "Banaan" ] = 3;
 		vm[ "Peer" ] = 4;
-		XO_TEST( vm[ "Appel" ] == 1 );
-		XO_TEST( vm[ "Peer" ] == 4 );
-		XO_TEST( vm[ "Banaan" ] == 3 );
+		XO_CHECK( vm[ "Appel" ] == 1 );
+		XO_CHECK( vm[ "Peer" ] == 4 );
+		XO_CHECK( vm[ "Banaan" ] == 3 );
 
 		// compare flat map to map
 		flat_map< string, int > map1;
@@ -71,12 +75,12 @@ namespace xo
 		for ( ; it1 != map1.end() && it2 != map2.end(); ++it1, ++it2 )
 			map_equals_flat_map &= it1->first == it2->first;
 
-		XO_TEST( map1.size() == map2.size() );
-		XO_TEST( map_equals_flat_map );
+		XO_CHECK( map1.size() == map2.size() );
+		XO_CHECK( map_equals_flat_map );
 
 		std::vector<double> values{ 7.0, 4.0, 2.0, 3.0 };
-		XO_TEST( average( values ) == 4.0 );
-		XO_TEST( median( values ) == 3.5 );
+		XO_CHECK( average( values ) == 4.0 );
+		XO_CHECK( median( values ) == 3.5 );
 
 		table< double > t;
 		for ( int i = 0; i < 10; ++i )
@@ -85,7 +89,7 @@ namespace xo
 			t.add_row( stringf( "R%d", i ) );
 			t( stringf( "R%d", i ), stringf( "C%d", i ) ) = i;
 		}
-		XO_TEST( t( "R1", "C1" ) == 1.0 );
+		XO_CHECK( t( "R1", "C1" ) == 1.0 );
 
 		circular_frame_buffer< double, string > cb( 1, 10 );
 		cb.add_frame();

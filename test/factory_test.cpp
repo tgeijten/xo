@@ -10,7 +10,7 @@ namespace xo
 	struct FB : FA { FB( const prop_node& pn ) : FA( pn ) { value = 67; } };
 	struct FC : FA { FC( const prop_node& pn ) : FA( pn ) { value = -1; } };
 
-	void factory_test()
+	XO_TEST_CASE( xo_factory_test )
 	{
 		factory< FA, prop_node > fact;
 		fact.register_type< FB >( "B" );
@@ -21,7 +21,7 @@ namespace xo
 		auto b = fact.create( "B", pn );
 		auto c = fact.create( "C", pn );
 
-		XO_TEST( b->value == 67 );
-		XO_TEST( c->value == -1 );
+		XO_CHECK( b->value == 67 );
+		XO_CHECK( c->value == -1 );
 	}
 }
