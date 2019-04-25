@@ -8,16 +8,16 @@ namespace xo
 	struct version
 	{
 	public:
-		version() : major(), minor(), patch(), build(), postfix() {}
+		version() : majorVer(), minorVer(), patch(), build(), postfix() {}
 
 		version( int maj, int min, int bugfix, int bld = 0, string post = "" ) :
-			major( maj ), minor( min ), patch( bugfix ), build( bld ), postfix( post ) {}
+			majorVer( maj ), minorVer( min ), patch( bugfix ), build( bld ), postfix( post ) {}
 
-		int to_int100() const { return major * 10000 + minor * 100 + patch; }
-		bool empty() const { return major == 0 && minor == 0 && patch == 0 && build == 0 && postfix.empty(); }
+		int to_int100() const { return majorVer * 10000 + minorVer * 100 + patch; }
+		bool empty() const { return majorVer == 0 && minorVer == 0 && patch == 0 && build == 0 && postfix.empty(); }
 
-		int major;
-		int minor;
+		int majorVer;
+		int minorVer;
 		int patch;
 		int build;
 		string postfix;
