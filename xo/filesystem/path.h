@@ -30,7 +30,7 @@ namespace xo
 
 		static char preferred_separator();
 
-		const string& string() const { return data_; }
+		const std::string& str() const { return data_; }
 		const char* c_str() const { return data_.c_str(); }
 
 		path& replace_extension( const path& ext = path() );
@@ -63,8 +63,8 @@ namespace xo
 	XO_API bool operator==( const path& p1, const path& p2 );
 	XO_API bool operator!=( const path& p1, const path& p2 );
 
-	inline bool operator<( const path& p1, const path& p2 ) { return p1.string() < p2.string(); }
+	inline bool operator<( const path& p1, const path& p2 ) { return p1.str() < p2.str(); }
 
-	inline string to_str( const path& p ) { return p.string(); }
+	inline string to_str( const path& p ) { return p.str(); }
 	inline bool from_str( const string& s, path& v ) { v = path( s ); return true; }
 }

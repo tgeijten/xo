@@ -50,9 +50,9 @@ namespace xo
 	prop_node load_file( const path& filename, error_code* ec )
 	{
 		prop_node pn;
-		if ( auto s = make_serializer( filename.extension().string(), pn, ec ) )
+		if ( auto s = make_serializer( filename.extension().str(), pn, ec ) )
 			return s->load_file( filename, ec );
-		else return set_error_or_throw( ec, "Unsupported file format for " + filename.string() ), prop_node();
+		else return set_error_or_throw( ec, "Unsupported file format for " + filename.str() ), prop_node();
 	}
 
 	prop_node load_file( const path& filename, const string& file_type, error_code* ec )
@@ -65,9 +65,9 @@ namespace xo
 
 	void save_file( const prop_node& pn, const path& filename, error_code* ec )
 	{
-		if ( auto s = make_serializer( filename.extension().string(), pn, ec ) )
+		if ( auto s = make_serializer( filename.extension().str(), pn, ec ) )
 			s->save_file( pn, filename, ec );
-		else set_error_or_throw( ec, "Could not deduce file format for " + filename.string() );
+		else set_error_or_throw( ec, "Could not deduce file format for " + filename.str() );
 	}
 
 	void save_file( const prop_node& pn, const path& filename, const string& file_type, error_code* ec )
