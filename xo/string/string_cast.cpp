@@ -122,9 +122,9 @@ namespace xo
 
 	string to_str( const version& v )
 	{
-		string s = stringf( "%d.%d.%d", v.major, v.minor, v.patch );
-		if ( v.build > 0 ) s += stringf( ".%d", v.build );
-		if ( !v.postfix.empty() ) s += ' ' + v.postfix;
+		string s = stringf( "%d.%d.%d", v.major_, v.minor_, v.patch_ );
+		if ( v.build_ > 0 ) s += stringf( ".%d", v.build_ );
+		if ( !v.postfix_.empty() ) s += ' ' + v.postfix_;
 		return s;
 	}
 
@@ -133,13 +133,13 @@ namespace xo
 		auto[ numbers, postfix ] = split_str_at_first( s, whitespace_characters );
 		if ( auto vs = split_str( numbers, "." ); vs.size() >= 3 )
 		{
-			if ( from_str( vs[ 0 ], ver.major )
-				&& from_str( vs[ 1 ], ver.minor )
-				&& from_str( vs[ 2 ], ver.patch ) )
+			if ( from_str( vs[ 0 ], ver.major_ )
+				&& from_str( vs[ 1 ], ver.minor_ )
+				&& from_str( vs[ 2 ], ver.patch_ ) )
 			{
 				if ( vs.size() >= 4 )
-					from_str( vs[ 3 ], ver.build );
-				ver.postfix = postfix;
+					from_str( vs[ 3 ], ver.build_ );
+				ver.postfix_ = postfix;
 				return true;
 			}
 		}

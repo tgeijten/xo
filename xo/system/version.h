@@ -8,19 +8,19 @@ namespace xo
 	struct version
 	{
 	public:
-		version() : majorVer(), minorVer(), patch(), build(), postfix() {}
+		version() : major_(), minor_(), patch_(), build_(), postfix_() {}
 
 		version( int maj, int min, int bugfix, int bld = 0, string post = "" ) :
-			majorVer( maj ), minorVer( min ), patch( bugfix ), build( bld ), postfix( post ) {}
+			major_( maj ), minor_( min ), patch_( bugfix ), build_( bld ), postfix_( post ) {}
 
-		int to_int100() const { return majorVer * 10000 + minorVer * 100 + patch; }
-		bool empty() const { return majorVer == 0 && minorVer == 0 && patch == 0 && build == 0 && postfix.empty(); }
+		int to_int100() const { return major_ * 10000 + minor_ * 100 + patch_; }
+		bool empty() const { return major_ == 0 && minor_ == 0 && patch_ == 0 && build_ == 0 && postfix_.empty(); }
 
-		int majorVer;
-		int minorVer;
-		int patch;
-		int build;
-		string postfix;
+		int major_;
+		int minor_;
+		int patch_;
+		int build_;
+		string postfix_;
 	};
 
 	inline bool operator<( const version& v1, const version& v2 ) { return v1.to_int100() < v2.to_int100(); }
