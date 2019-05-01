@@ -1,7 +1,5 @@
 #include "path.h"
 
-#include <filesystem>
-
 namespace xo
 {
 	const size_t path::npos = string::npos;

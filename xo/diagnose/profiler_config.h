@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xo/system/log_level.h"
+#include "xo/container/prop_node.h"
 
 #ifdef XO_ENABLE_PROFILER
 #	include "xo/diagnose/profiler.h"

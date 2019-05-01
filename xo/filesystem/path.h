@@ -4,11 +4,7 @@
 #include "xo/string/string_type.h"
 #include "xo/string/string_cast.h"
 
-namespace std {
-	namespace filesystem {
-		class path;
-	}
-}
+#include <filesystem>
 
 namespace xo
 {
