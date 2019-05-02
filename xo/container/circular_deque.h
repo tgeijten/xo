@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include "xo/container/dynarray.h"
 #include "xo/system/assert.h"
 

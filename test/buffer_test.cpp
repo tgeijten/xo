@@ -1,5 +1,3 @@
-#pragma once
-
 #include <vector>
 #include "xo/geometry/vec3.h"
 #include "xo/system/log.h"

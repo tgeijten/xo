@@ -15,6 +15,7 @@
 #include <sstream>
 #include <fstream>
 #include <algorithm>
+#include <cstring>
 #include "xo/system/error_code.h"
 #include "xo/numerical/math.h"
 #include <cctype>

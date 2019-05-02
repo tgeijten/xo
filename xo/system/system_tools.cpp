@@ -72,7 +72,7 @@ namespace xo
 	{
 #ifndef XO_COMP_MSVC
 		int status;
-		char* cleanType = abi::__cxa_demangle( name, 0, 0, &status );
+		char* cleanType = abi::__cxa_demangle( name.c_str(), 0, 0, &status );
 		name = std::string( cleanType );
 		free( cleanType );
 #endif
