@@ -6,6 +6,7 @@
 #include "xo/diagnose/profiler_config.h"
 #include <iomanip>
 #include <vector>
+#include <cmath>
 #include "xo/time/timer.h"
 
 namespace xo

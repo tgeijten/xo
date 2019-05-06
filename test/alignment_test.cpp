@@ -1,5 +1,3 @@
-#pragma once
-
 #include "xo/system/log.h"
 
 namespace xo
