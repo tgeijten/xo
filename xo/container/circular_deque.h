@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
-#include "xo/container/dynarray.h"
+#include "xo/xo_types.h"
 #include "xo/system/assert.h"
+#include <vector>
 
 namespace xo
 {

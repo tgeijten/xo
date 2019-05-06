@@ -1,12 +1,12 @@
 #pragma once
 
 #include "xo/xo_types.h"
-#include <iosfwd>
-#include <vector>
-#include <ostream>
 #include "xo/container/container_tools.h"
 #include "xo/container/label_vector.h"
 #include "xo/string/string_type.h"
+
+#include <vector>
+#include <ostream>
 
 namespace xo
 {
