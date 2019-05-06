@@ -48,10 +48,10 @@ namespace xo
 	XO_API string& replace_str( string& s, const string& find_str, const string& replace_with );
 
 	/// convert string to lower case
-	XO_API string to_lower( string&& s );
+	XO_API string to_lower( string s );
 
 	/// convert string to upper case
-	XO_API string to_upper( string&& s );
+	XO_API string to_upper( string s );
 
 	/// split string into trimmed key / value pair
 	XO_API std::pair< string, string > make_key_value_str( const string& s, const string& sep_char = "=" );

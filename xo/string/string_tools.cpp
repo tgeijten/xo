@@ -102,14 +102,14 @@ namespace xo
 		return s;
 	}
 
-	string to_lower( string&& s )
+	string to_lower( string s )
 	{
 		for ( char& c : s )
 			c = std::tolower( c );
 		return s;
 	}
 
-	string to_upper( string&& s )
+	string to_upper( string s )
 	{
 		for ( char& c : s )
 			c = std::toupper( c );
