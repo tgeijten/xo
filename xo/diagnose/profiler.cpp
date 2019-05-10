@@ -20,20 +20,35 @@ namespace xo
 	profiler::~profiler()
 	{}
 
-	void profiler::clear_sections()
+	profiler& profiler::instance()
 	{
-		sections_.clear();
-		current_section_ = nullptr;
-		current_section_ = add_section( "TOTAL", no_index );
-		current_section_->epoch = now();
+		static profiler inst( false );
+		return inst;
 	}
 
-	void profiler::start()
+	void profiler::start( const char* label )
 	{
+		xo_error_if( enabled_ || current_section_ != nullptr, "profiler::start() called while profiler was already enabled" );
+
 		instance_thread_ = std::this_thread::get_id();
 		enabled_ = true;
 		init_overhead_estimate();
-		clear_sections();
+		sections_.clear();
+
+		current_section_ = add_section( label, no_index );
+		current_section_->epoch = now();
+	}
+
+	void profiler::stop()
+	{
+		xo_assert_msg( instance_thread_ == std::this_thread::get_id(), "Invalid thread ID" );
+		xo_error_if( !enabled_ || current_section_ != root(), "profiler::stop() was called without call to profiler::start() in same scope" );
+
+		// update root time
+		root()->total_time = now() - root()->epoch;
+		root()->overhead += overhead_estimate;
+		enabled_ = false;
+		current_section_ = nullptr;
 	}
 
 	profiler::section* profiler::start_section( const char* name )
@@ -100,22 +115,17 @@ namespace xo
 		return children;
 	}
 
-	prop_node profiler::report()
+	prop_node profiler::report( double minimum_expand_percentage )
 	{
-		xo_assert_msg( instance_thread_ == std::this_thread::get_id(), "Invalid thread ID" );
-		root()->total_time = now() - root()->epoch;
+		if ( enabled() )
+			stop();
+
 		prop_node pn;
-		report_section( root(), pn );
+		report_section( root(), pn, minimum_expand_percentage );
 		return pn;
 	}
 
-	profiler& profiler::instance()
-	{
-		static profiler inst;
-		return inst;
-	}
-
-	void profiler::report_section( section* s, prop_node& pn )
+	void profiler::report_section( section* s, prop_node& pn, double minimum_expand_percentage )
 	{
 		double root_total = root()->total_time.millisecondsd();
 		double total = s->total_time.millisecondsd();
@@ -127,10 +137,13 @@ namespace xo
 
 		pn[ s->name ] = stringf( "%6.0fms %6.2f%% (%5.2f%% exclusive ~%.0f%% overhead)", total, rel_total, rel_ex, clamped( rel_over, 0.0, 100.0 ) );
 
-		auto children = get_children( s->id );
-		std::sort( children.begin(), children.end(), [&]( section* s1, section* s2 ) { return s1->total_time > s2->total_time; } );
-		for ( auto& c : children )
-			report_section( c, pn[ s->name ] );
+		if ( rel_total >= minimum_expand_percentage )
+		{
+			auto children = get_children( s->id );
+			std::sort( children.begin(), children.end(), [&]( section* s1, section* s2 ) { return s1->total_time > s2->total_time; } );
+			for ( auto& c : children )
+				report_section( c, pn[ s->name ], minimum_expand_percentage );
+		}
 	}
 
 	time profiler::exclusive_time( section* s )
@@ -161,7 +174,8 @@ namespace xo
 			t2 = now();
 		overhead_estimate = ( t2 - t1 ) / 10000;
 #else
-		clear_sections();
+		sections_.clear();
+		current_section_ = add_section( "init_overhead_estimate", no_index );
 		int samples = 10000;
 		timer t;
 		auto t1 = t();
