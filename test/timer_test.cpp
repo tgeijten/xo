@@ -73,7 +73,7 @@ namespace xo
 
 	void profile_test()
 	{
-		xo_profiler_reset();
+		xo_profiler_start();
 
 		for ( int i = 0; i < 100000; ++i )
 			profile3( i );
