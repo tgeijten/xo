@@ -8,12 +8,19 @@
 
 namespace xo
 {
-	profiler::profiler() : current_section_( nullptr )
+	profiler::profiler( bool auto_start ) :
+		current_section_( nullptr ),
+		enabled_( false ),
+		instance_thread_()
 	{
-		reset();
+		if ( auto_start )
+			start();
 	}
 
-	void profiler::clear()
+	profiler::~profiler()
+	{}
+
+	void profiler::clear_sections()
 	{
 		sections_.clear();
 		current_section_ = nullptr;
@@ -21,11 +28,12 @@ namespace xo
 		current_section_->epoch = now();
 	}
 
-	void profiler::reset()
+	void profiler::start()
 	{
 		instance_thread_ = std::this_thread::get_id();
+		enabled_ = true;
 		init_overhead_estimate();
-		clear();
+		clear_sections();
 	}
 
 	profiler::section* profiler::start_section( const char* name )
@@ -59,13 +67,13 @@ namespace xo
 #endif
 	}
 
-	xo::profiler::section* profiler::find_section( size_t id )
+	profiler::section* profiler::find_section( size_t id )
 	{
 		auto it = std::find_if( sections_.begin(), sections_.end(), [&]( section& s ) { return s.id == id; } );
 		return it != sections_.end() ? &( *it ) : nullptr;
 	}
 
-	xo::profiler::section* profiler::find_section( const char* name, size_t parent_id )
+	profiler::section* profiler::find_section( const char* name, size_t parent_id )
 	{
 		auto it = std::find_if( sections_.begin() + parent_id + 1, sections_.end(), [&]( section& s ) { return s.name == name && s.parent_id == parent_id; } );
 		return it != sections_.end() ? &( *it ) : nullptr;
@@ -101,7 +109,7 @@ namespace xo
 		return pn;
 	}
 
-	xo::profiler& profiler::instance()
+	profiler& profiler::instance()
 	{
 		static profiler inst;
 		return inst;
@@ -153,7 +161,7 @@ namespace xo
 			t2 = now();
 		overhead_estimate = ( t2 - t1 ) / 10000;
 #else
-		clear();
+		clear_sections();
 		int samples = 10000;
 		timer t;
 		auto t1 = t();

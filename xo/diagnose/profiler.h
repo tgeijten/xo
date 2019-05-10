@@ -11,9 +11,22 @@ namespace xo
 	class XO_API profiler
 	{
 	public:
+		profiler( bool auto_start = true );
+		~profiler();
+
+		void start();
+		bool enabled() const { return enabled_; }
+		prop_node report();
+
+		static profiler& instance();
+
+		friend struct scope_profiler;
+
+	private:
 		struct section
 		{
-			section( const char* n, size_t i, size_t pi ) : name( n ), id( i ), parent_id( pi ), total_time( 0 ), overhead( 0 ), count( 0 ) {}
+			section( const char* n, size_t i, size_t pi ) :
+				name( n ), id( i ), parent_id( pi ), total_time( 0 ), overhead( 0 ), count( 0 ) {}
 			const char* name;
 			size_t id;
 			size_t parent_id;
@@ -23,17 +36,11 @@ namespace xo
 			time epoch;
 		};
 
-		void reset();
+		time now() const { return timer_(); }
+		void clear_sections();
+		void init_overhead_estimate();
 		section* start_section( const char* name );
 		void end_section();
-		time now() const { return timer_(); }
-		prop_node report();
-		static profiler& instance();
-
-	private:
-		profiler();
-		void clear();
-
 		void report_section( section* s, prop_node& pn );
 		time exclusive_time( section* s );
 		time total_overhead( section* s );
@@ -44,18 +51,21 @@ namespace xo
 		section* add_section( const char* name, size_t parent_id );
 		std::vector< section* > get_children( size_t parent_id );
 
+	private:
 		std::vector< section > sections_;
 		timer timer_;
+		bool enabled_;
 		section* current_section_;
 		time overhead_estimate;
 		std::thread::id instance_thread_;
-
-		void init_overhead_estimate();
 	};
 
-	struct XO_API scoped_section_profiler
+	struct scope_profiler
 	{
-		scoped_section_profiler( const char* name ) { profiler::instance().start_section( name ); }
-		~scoped_section_profiler() { profiler::instance().end_section(); }
+		scope_profiler( const char* name, profiler& p = profiler::instance() ) : profiler_( p )
+		{ if ( profiler_.enabled() ) profiler_.start_section( name ); }
+		~scope_profiler()
+		{ if ( profiler_.enabled() ) profiler_.end_section(); }
+		profiler& profiler_;
 	};
 }
