@@ -3,7 +3,7 @@
 //#define XO_DISABLE_EXCEPTIONS // define to disable exceptions
 //#define XO_DISABLE_ASSERT // define to disable xo_assert
 //#define XO_DISABLE_LOG // define to disable all logging
-//#define XO_ENABLE_PROFILER // define to enable global profiler
+#define XO_ENABLE_PROFILER // define to enable global profiler
 //#define XO_DISABLE_WINDOWS_PERFORMANCE_COUNTER // define to use std::chrono on MSVC
 //#define XO_ENABLE_MSVC_WARNING_4251 // define to not disable warning 4251 on MSVC
 
