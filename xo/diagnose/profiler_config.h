@@ -5,8 +5,8 @@
 #ifdef XO_ENABLE_PROFILER
 #	include "xo/diagnose/profiler.h"
 #	include "xo/container/prop_node.h"
-#	define XO_PROFILE_FUNCTION ::xo::scope_profiler _PROFILE_SECTION_( __FUNCTION__ )
-#	define XO_PROFILE_SCOPE( scope_name_arg ) ::xo::scope_profiler _PROFILE_SECTION_( scope_name_arg )
+#	define XO_PROFILE_FUNCTION ::xo::scope_profiler scope_profiler_instance( __FUNCTION__ )
+#	define XO_PROFILE_SCOPE( scope_name_arg ) ::xo::scope_profiler scope_profiler_instance( scope_name_arg )
 inline void xo_profiler_start() { ::xo::profiler::instance().start(); }
 inline ::xo::prop_node xo_profiler_report() { return ::xo::profiler::instance().report(); }
 #else

@@ -11,7 +11,7 @@ namespace xo
 	class XO_API profiler
 	{
 	public:
-		profiler( bool auto_start = true );
+		profiler( bool auto_start = false );
 		~profiler();
 
 		void start( const char* label = "TOTAL" );
