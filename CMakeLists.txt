@@ -17,9 +17,13 @@ get_filename_component(CONFIG_NAME "${CMAKE_BINARY_DIR}" NAME)
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/bin/${CONFIG_NAME}")
 set(LIBRARY_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/bin/${CONFIG_NAME}")
 
+option(XO_TEST_ENABLED "Build and add xo_test" ON)
+
 # Process source code.
 add_subdirectory(xo)
-add_subdirectory(test)
 
-enable_testing()
-add_test(xo_test "${CMAKE_SOURCE_DIR}/bin/${CONFIG_NAME}/xo_test")
+if (XO_TEST_ENABLED)
+	add_subdirectory(test)
+	enable_testing()
+	add_test(xo_test "${CMAKE_SOURCE_DIR}/bin/${CONFIG_NAME}/xo_test")
+endif()
