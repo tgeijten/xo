@@ -6,6 +6,7 @@
 #include "xo/string/string_tools.h"
 #include "xo/container/prop_node.h"
 #include "xo/container/container_tools.h"
+#include "xo/system/log.h"
 
 namespace xo
 {
@@ -26,18 +27,18 @@ namespace xo
 		while ( true )
 		{
 			string t = str.get_token();
-			if ( t == ";" || t == "#" || t == "//" ) // single line comment: skip rest of line
+			if ( t == "#" )
 			{
-				if ( t == "#" && str.peekc() == '{' ) // multiline comment
-					if ( !str.seek_past( "#}" ) )
-						return zml_error( str, ec, "Could not find matching '#}'" ), string();
-
-				str.get_line();
-			}
-			else if ( t == "/*" ) // multiline comment
-			{
-				if ( !str.seek_past( "*/" ) )
-					return zml_error( str, ec, "Could not find matching '*/'" ), string();
+				int n = 1;
+				while ( str.try_get( '#' ) ) ++n;
+				if ( n >= 3 )
+				{
+					// multiline comment
+					if ( !str.seek_past( "###" ) )
+						return zml_error( str, ec, "Multiline comment '###' has no matching '###'" ), string();
+					while ( str.try_get( '#' ) );
+				}
+				else str.get_line(); // single line comment
 			}
 			else return t;
 		}
@@ -51,17 +52,12 @@ namespace xo
 			if ( t.empty() ) // check if the stream has ended while expecting a close tag
 				return zml_error( str, ec, "Unexpected end of stream" );
 
-			if ( t[ 0 ] == '#' || t == "<<" ) // check directive statement
+			if ( t == "<<" ) // check directive statement
 			{
 				auto filename = path( get_zml_token( str, ec ) );
-				if ( t == "#include" || t == "<<" )
-					parent.append( load_zml( folder / filename, ec ) );
-				else if ( t == "#merge" )
-					merge_pn.merge( load_zml( folder / path( get_zml_token( str, ec ) ), ec ) );
-				else return zml_error( str, ec, "Unknown directive: " + t );
-
-				if ( t == "<<" && get_zml_token( str, ec ) != ">>" )
-					zml_error( str, ec, "Could not find matching '>>'" );
+				parent.append( load_zml( folder / filename, ec ) );
+				if ( get_zml_token( str, ec ) != ">>" )
+					zml_error( str, ec, "'<<' has no find matching '>>'" );
 			}
 			else
 			{
@@ -109,7 +105,7 @@ namespace xo
 
 	prop_node parse_zml( char_stream& str, error_code* ec, const path& folder )
 	{
-		str.set_operators( { "=", ": ", "{", "}", "[", "]", ";", "//", "/*", "*/" } );
+		str.set_operators( { "=", ": ", "{", "}", "[", "]", "#", "<<", ">>" } );
 		str.set_delimiter_chars( " \n\r\t\v" );
 		str.set_quotation_chars( "\"'" );
 
@@ -130,11 +126,11 @@ namespace xo
 		bool show_value = !pn.raw_value().empty() || pn.size() == 0;
 		xo_error_if( !show_label && show_value && !inside_array, "Value without label outside array" );
 		if ( show_label )
-			str << try_quoted( label, ";{}[]#" );
+			str << try_quoted( label, "{}[]#<>\\" );
 		if ( show_label && show_value )
 			str << equals_str;
 		if ( show_value )
-			str << try_quoted( pn.raw_value(), ";{}[]#" );
+			str << try_quoted( pn.raw_value(), "{}[]#<>\\" );
 	}
 
 	void write_zml_node( std::ostream& str, const string& label, const prop_node& pn, int level, bool inside_array )

@@ -59,6 +59,7 @@ namespace xo
 		bool seek( const string& s );
 		bool seek_past( const string& s );
 		bool try_get( const string& s );
+		bool try_get( char c );
 
 		bool good() { return !buffer_flags.any(); }
 		bool eof() { return buffer_flags.get< eof_flag >(); }

@@ -113,7 +113,6 @@ namespace xo
 			}
 			else ++cur_pos_end;
 		}
-		skip_delimiters();
 		test_eof();
 		return s;
 	}
@@ -146,7 +145,6 @@ namespace xo
 		if ( seek( s ) )
 		{
 			cur_pos += s.length();
-			skip_delimiters();
 			test_eof();
 			return true;
 		}
@@ -160,7 +158,6 @@ namespace xo
 		cur_pos = buffer = b;
 		cur_pos_end = nullptr;
 		buffer_end = buffer + len;
-		skip_delimiters();
 	}
 
 	bool char_stream::try_get( const string& s )
@@ -168,6 +165,16 @@ namespace xo
 		if ( strncmp( cur_pos, s.c_str(), s.length() ) == 0 )
 		{
 			cur_pos += s.length();
+			return true;
+		}
+		else return false;
+	}
+
+	bool char_stream::try_get( char c )
+	{
+		if ( *cur_pos == c )
+		{
+			++cur_pos;
 			return true;
 		}
 		else return false;
