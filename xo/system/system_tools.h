@@ -13,6 +13,7 @@ namespace xo
 	XO_API void sleep( int milliseconds );
 	XO_API string tidy_identifier( const string& id );
 	XO_API string tidy_type_name( string name );
+	XO_API string get_computer_name();
 	template< typename T > string get_type_name() { return string( typeid( T ).name() ); }
 	template< typename T > string get_clean_type_name() { return tidy_type_name( get_type_name<T>() ); }
 	template< typename T > string get_type_name( const T& obj ) { return string( typeid( obj ).name() ); }

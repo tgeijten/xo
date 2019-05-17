@@ -80,6 +80,19 @@ namespace xo
 		return ( pos != std::string::npos ) ? name.substr( pos + 1 ) : name;
 	}
 
+	string get_computer_name()
+	{
+#ifdef XO_COMP_MSVC
+		char buf[ 256 ] = "";
+		DWORD len = 256;
+		if ( !GetComputerName( buf, &len ) )
+			return "";
+		else return buf;
+#else
+		return string( "" );
+#endif
+	}
+
 #ifdef XO_COMP_MSVC
 	// helper function for setting priorities on windows
 	void set_win_prio( DWORD priority_class, int priority )
