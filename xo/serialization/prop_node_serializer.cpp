@@ -31,7 +31,7 @@ namespace xo
 			read_stream( str );
 			return *read_pn_;
 		}
-		else return set_error_or_throw( ec, "Cannot open " + filename.str() ), prop_node();
+		else return set_error_or_throw( ec, "Could not open " + filename.str() ), prop_node();
 	}
 
 	void prop_node_serializer::save_file( const prop_node& pn, const path& filename, error_code* ec )
@@ -44,6 +44,6 @@ namespace xo
 			file_folder_ = filename.parent_path();
 			write_stream( str );
 		}
-		else set_error_or_throw( ec, "Cannot open " + filename.str() );
+		else set_error_or_throw( ec, "Could not create " + filename.str() );
 	}
 }
