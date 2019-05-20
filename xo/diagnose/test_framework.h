@@ -35,7 +35,7 @@ namespace xo
 		public:
 			test_case( const char* name, test_func_t func );
 			bool check( bool result, const char* operation, const std::string& message = "" );
-			int run();
+			int run( int* checks = nullptr, int* passed = nullptr, int* failed = nullptr );
 
 		private:
 			test_func_t func_;
