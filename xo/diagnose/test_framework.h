@@ -9,6 +9,9 @@
 	auto _name_##_case = ::xo::test::test_case( #_name_, &_name_ ); \
 	static void _name_( ::xo::test::test_case& XO_ACTIVE_TEST_CASE )
 
+#define XO_TEST_CASE_SKIP( _name_ ) \
+	static void _name_( ::xo::test::test_case& XO_ACTIVE_TEST_CASE )
+
 #define XO_CHECK( _operation_ ) \
 	try { bool _result_ = ( _operation_ ); XO_ACTIVE_TEST_CASE.check( _result_, #_operation_ ); } \
 	catch( std::exception& e ) { XO_ACTIVE_TEST_CASE.check( false, #_operation_, e.what() ); }
