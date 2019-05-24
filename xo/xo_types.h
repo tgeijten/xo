@@ -16,6 +16,10 @@ namespace xo
 	template< typename T > struct transform_;
 	template< typename T > class bounds;
 
+	// simple function type
+	template< typename T > using simple_function_t = T( * )( T );
+
+
 	// character defaults
 	constexpr const char* whitespace_characters = " \t\r\n\f\v";
 
