@@ -47,6 +47,6 @@ namespace xo
 		for ( auto& entry : table )
 			if ( value == entry.first )
 				return entry.second;
-		xo_error( "Could not find " + value );
+		xo_error( "Unexpected value: " + value );
 	}
 }
