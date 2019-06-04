@@ -7,4 +7,15 @@ namespace xo
 {
 	XO_API void set_debug_output( const path& filename );
 	XO_API void write_debug( const string& label, float data );
+
+	template< typename T >
+	void write_function( const path& file, T min, T max, simple_function_t<T>, int samples = 101 ) {
+		std::ofstream of( file.c_str() );
+		of << std::setprecision( 6 );
+		for ( int i = 0; i < samples; ++i )	{
+			T x = min + i * ( max - min ) / ( samples - 1 );
+			T y = func( x );
+			of << x << '\t' << y << std::endl;
+		}
+	}
 }
