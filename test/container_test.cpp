@@ -6,7 +6,7 @@
 #include <map>
 #include "xo/container/table.h"
 #include "xo/numerical/random.h"
-#include "xo/diagnose/test_framework.h"
+#include "xo/system/test_framework.h"
 #include "xo/container/container_algorithms.h"
 #include "xo/container/circular_frame_buffer.h"
 

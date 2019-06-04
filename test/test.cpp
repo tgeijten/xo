@@ -4,7 +4,7 @@
 
 #include "test.h"
 #include "xo/system/log_sink.h"
-#include "xo/diagnose/test_framework.h"
+#include "xo/system/test_framework.h"
 #include "xo/system/system_tools.h"
 
 int main( int argc, char* argv[] )

@@ -2,7 +2,7 @@
 
 #include "xo/container/prop_node.h"
 #include "xo/utility/factory.h"
-#include "xo/diagnose/test_framework.h"
+#include "xo/system/test_framework.h"
 
 namespace xo
 {

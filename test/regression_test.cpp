@@ -3,7 +3,7 @@
 #include "xo/numerical/random.h"
 #include "xo/utility/irange.h"
 #include "xo/numerical/regression.h"
-#include "xo/diagnose/profiler_config.h"
+#include "xo/system/profiler_config.h"
 
 namespace xo
 {

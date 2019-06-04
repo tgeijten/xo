@@ -15,7 +15,7 @@
 #include "xo/numerical/regular_piecewise_linear_function.h"
 #include "xo/time/timer.h"
 #include "xo/system/system_tools.h"
-#include "xo/diagnose/test_framework.h"
+#include "xo/system/test_framework.h"
 #include "xo/shape/aabb.h"
 #include "xo/numerical/math.h"
 #include "xo/numerical/regression.h"

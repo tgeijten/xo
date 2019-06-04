@@ -6,7 +6,7 @@
 #include "xo/geometry/vec3_type.h"
 #include "xo/container/container_tools.h"
 #include "xo/serialization/serialize.h"
-#include "xo/diagnose/test_framework.h"
+#include "xo/system/test_framework.h"
 #include "xo/filesystem/filesystem.h"
 #include "xo/system/log.h"
 

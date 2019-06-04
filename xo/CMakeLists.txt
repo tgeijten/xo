@@ -1,6 +1,5 @@
 SET ( XO_LIB_NAMES
 	container
-	diagnose
 	filesystem
 	geometry
 	shape

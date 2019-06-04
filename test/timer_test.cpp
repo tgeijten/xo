@@ -2,7 +2,7 @@
 
 #include "xo/system/system_tools.h"
 #include "xo/system/log.h"
-#include "xo/diagnose/profiler_config.h"
+#include "xo/system/profiler_config.h"
 #include <iomanip>
 #include <vector>
 #include <cmath>

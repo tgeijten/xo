@@ -6,7 +6,7 @@
 #include "xo/container/circular_frame_buffer.h"
 #include "xo/container/circular_deque.h"
 #include "xo/container/storage.h"
-#include "xo/diagnose/test_framework.h"
+#include "xo/system/test_framework.h"
 
 namespace xo
 {
