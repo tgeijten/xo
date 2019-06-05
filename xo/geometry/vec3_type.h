@@ -14,9 +14,9 @@ namespace xo
 		using iterator = T*;
 		using const_iterator = const T*;
 
-		vec3_() : x(), y(), z() {}
-		vec3_( T px, T py, T pz ) : x( px ), y( py ), z( pz ) {}
-		vec3_( T v ) : x( v ), y( v ), z( v ) {}
+		constexpr vec3_() : x(), y(), z() {}
+		constexpr vec3_( T px, T py, T pz ) : x( px ), y( py ), z( pz ) {}
+		constexpr vec3_( T v ) : x( v ), y( v ), z( v ) {}
 		template< typename T2 > vec3_( const vec3_<T2>& o ) : x( T( o.x ) ), y( T( o.y ) ), z( T( o.z ) ) {}
 
 		/// assignment
