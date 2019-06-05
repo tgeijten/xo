@@ -222,8 +222,9 @@ namespace xo
 	};
 
 	template< typename T > T from_prop_node( const prop_node& pn ) {
-		if ( T v; from_prop_node( pn, v ) )
-			return v;
+		T value;
+		if ( from_prop_node( pn, value ) )
+			return value;
 		else xo_error( "Could not convert prop_node to " + get_type_name<T>() );
 	}
 
@@ -269,7 +270,9 @@ namespace xo
 
 	template< typename T >
 	T prop_node::get( const key_t& key, const T& def ) const {
-		if ( auto c = try_get_child( key ) ) return c->get< T >(); else return def;
+		if ( auto c = try_get_child( key ) )
+			return c->get< T >();
+		else return def;
 	}
 
 	template< typename T >
