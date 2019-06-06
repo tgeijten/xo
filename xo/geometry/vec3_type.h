@@ -42,15 +42,15 @@ namespace xo
 		size_t size() const { return 3; }
 
 		/// static initializers
-		static vec3_<T> zero() { return vec3_<T>( T(0), T(0), T(0) ); }
-		static vec3_<T> unit_x() { return vec3_<T>( T(1), T(0), T(0) ); }
-		static vec3_<T> unit_y() { return vec3_<T>( T(0), T(1), T(0) ); }
-		static vec3_<T> unit_z() { return vec3_<T>( T(0), T(0), T(1) ); }
-		static vec3_<T> neg_unit_x() { return vec3_<T>( T(-1), T(0), T(0) ); }
-		static vec3_<T> neg_unit_y() { return vec3_<T>( T(0), T(-1), T(0) ); }
-		static vec3_<T> neg_unit_z() { return vec3_<T>( T(0), T(0), T(-1) ); }
-		static vec3_<T> uniform( T v ) { return vec3_<T>( v, v, v ); }
-		static vec3_<T> axis( index_t idx ) { return vec3_<T>( T( idx == 0 ), T( idx == 1 ), T( idx == 2 ) ); }
+		static constexpr vec3_<T> zero() { return vec3_<T>( T(0), T(0), T(0) ); }
+		static constexpr vec3_<T> unit_x() { return vec3_<T>( T(1), T(0), T(0) ); }
+		static constexpr vec3_<T> unit_y() { return vec3_<T>( T(0), T(1), T(0) ); }
+		static constexpr vec3_<T> unit_z() { return vec3_<T>( T(0), T(0), T(1) ); }
+		static constexpr vec3_<T> neg_unit_x() { return vec3_<T>( T(-1), T(0), T(0) ); }
+		static constexpr vec3_<T> neg_unit_y() { return vec3_<T>( T(0), T(-1), T(0) ); }
+		static constexpr vec3_<T> neg_unit_z() { return vec3_<T>( T(0), T(0), T(-1) ); }
+		static constexpr vec3_<T> uniform( T v ) { return vec3_<T>( v, v, v ); }
+		static constexpr vec3_<T> axis( index_t idx ) { return vec3_<T>( T( idx == 0 ), T( idx == 1 ), T( idx == 2 ) ); }
 	};
 
 	/// template instantiations

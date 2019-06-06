@@ -10,8 +10,8 @@ namespace xo
 	struct quat_
 	{
 	public:
-		quat_() : w( 1 ), x( 0 ), y( 0 ), z( 0 ) {}
-		quat_( T w, T x, T y, T z ) : w( w ), x( x ), y( y ), z( z ) {}
+		constexpr quat_() : w( 1 ), x( 0 ), y( 0 ), z( 0 ) {}
+		constexpr quat_( T w, T x, T y, T z ) : w( w ), x( x ), y( y ), z( z ) {}
 		template< typename T2 > quat_( const quat_<T2>& o ) : w( T( o.w ) ), x( T( o.x ) ), y( T( o.y ) ), z( T( o.z ) ) {}
 
 		/// assignment
@@ -28,7 +28,7 @@ namespace xo
 		T w, x, y, z;
 
 		/// generate quat with zero rotation
-		static quat_<T> identity() { return quat_<T>( T(1), T(0), T(0), T(0) ); }
+		static constexpr quat_<T> identity() { return quat_<T>( T(1), T(0), T(0), T(0) ); }
 	};
 		
 	using quatf = quat_< float >;
