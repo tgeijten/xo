@@ -7,6 +7,7 @@ namespace xo
 	constexpr long double XO_PI_LONG_DOUBLE = 3.141592653589793238L;
 	constexpr long double XO_E_LONG_DOUBLE = 2.71828182845904523536L;
 
+	// TODO: change to constexpr variables
 	template< typename T >
 	struct constants
 	{
@@ -20,7 +21,7 @@ namespace xo
 		static constexpr T min() { return std::numeric_limits<T>::min(); }
 		static constexpr T lowest() { return std::numeric_limits<T>::lowest(); }
 		static constexpr T NaN() { return std::numeric_limits<T>::quiet_NaN(); }
-		static constexpr T is_signed() { return std::numeric_limits<T>::is_signed; }
+		static constexpr bool is_signed() { return std::numeric_limits<T>::is_signed; }
 		static constexpr T sentinel() { return constants<T>::is_signed() ? constants<T>::lowest() : constants<T>::max(); }
 	};
 
