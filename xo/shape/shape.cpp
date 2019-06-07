@@ -4,16 +4,27 @@
 
 namespace xo
 {
-	shape make_shape( const prop_node& pn )
+	bool from_prop_node( const prop_node& pn, shape& s )
 	{
 		switch ( hash( pn.get<string>( "type" ) ) )
 		{
-		case "sphere"_hash: return sphere{ pn.get<float>( "radius" ) };
-		case "cylinder"_hash: return cylinder{ pn.get<float>( "radius" ), pn.get<float>( "height" ) };
-		case "capsule"_hash: return capsule{ pn.get<float>( "radius" ), pn.get<float>( "height" ) };
-		case "box"_hash: return box{ 0.5f * pn.get<vec3f>( "dim" ) };
-		case "plane"_hash: return plane{ pn.get<vec3f>( "normal" ) };
-		default: xo_error( "Unknown shape type: " + pn.get<string>( "type" ) );
+		case "sphere"_hash:
+			s = sphere{ pn.get<float>( "radius" ) };
+			return true;
+		case "cylinder"_hash:
+			s = cylinder{ pn.get<float>( "radius" ), pn.get<float>( "height" ) };
+			return true;
+		case "capsule"_hash:
+			s = capsule{ pn.get<float>( "radius" ), pn.get<float>( "height" ) };
+			return true;
+		case "box"_hash:
+			s = box{ 0.5f * pn.get<vec3f>( "dim" ) };
+			return true;
+		case "plane"_hash:
+			s = plane{ pn.get<vec3f>( "normal" ) };
+			return true;
+		default:
+			return false;
 		}
 	}
 
