@@ -9,7 +9,6 @@
 #endif
 
 #include "xo/string/string_tools.h"
-#include "xo/string/string_cast_enum.h"
 #include "xo/system/log.h"
 
 #include <fstream>
@@ -122,7 +121,7 @@ namespace xo
 			return set_win_prio( HIGH_PRIORITY_CLASS, THREAD_PRIORITY_HIGHEST );
 		case thread_priority::realtime: // base priority = 25
 			return set_win_prio( REALTIME_PRIORITY_CLASS, THREAD_PRIORITY_NORMAL );
-		default: xo_error( "Unsupported thread priority: " + to_str( p ) );
+		default: xo_error( "Unsupported thread priority" );
 		}
 #else
 		/*

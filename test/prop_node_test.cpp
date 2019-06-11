@@ -2,13 +2,13 @@
 
 #include <iostream>
 #include "xo/container/prop_node_tools.h"
-#include "xo/string/string_cast_enum.h"
 #include "xo/geometry/vec3_type.h"
 #include "xo/container/container_tools.h"
 #include "xo/serialization/serialize.h"
 #include "xo/system/test_framework.h"
 #include "xo/filesystem/filesystem.h"
 #include "xo/system/log.h"
+#include "xo/utility/smart_enum.h"
 
 namespace xo
 {
@@ -33,14 +33,14 @@ namespace xo
 		return true;
 	}
 
+	xo_smart_enum_class( enumclass, value1, value2, value3 );
+	xo_smart_enum( normalenum, value1, value2, value3 );
+
 	XO_TEST_CASE( xo_prop_node_test )
 	{
 		const prop_node literal_pn( "a=appel b=123" );
 		XO_CHECK( literal_pn.get< string >( "a" ) == "appel" );
 		XO_CHECK( literal_pn.get< int >( "b" ) == 123 );
-
-		enum class enumclass { value1, value2, value3 };
-		enum normalenum { value1, value2, value3 };
 
 		enumclass e1 = enumclass::value3;
 		normalenum e2 = value2;

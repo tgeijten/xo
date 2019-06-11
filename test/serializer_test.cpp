@@ -2,7 +2,6 @@
 #include "xo/container/prop_node.h"
 #include "xo/geometry/vec3_type.h"
 #include "xo/serialization/serialize.h"
-#include "xo/string/string_cast_enum.h"
 #include "xo/system/test_framework.h"
 #include "xo/system/log.h"
 #include "xo/serialization/prop_node_serializer_zml.h"
@@ -31,8 +30,8 @@ namespace xo
 		enum normalenum { value1, value2, value3 };
 		enumclass e1 = enumclass::value3;
 		normalenum e2 = value2;
-		pn.push_back( "e1", e1 );
-		pn.push_back( "e2", e2 );
+		pn.push_back( "e1", (int)e1 );
+		pn.push_back( "e2", (int)e2 );
 
 		prop_node root;
 		root.push_back( "root", pn );
