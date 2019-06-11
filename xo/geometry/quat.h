@@ -147,7 +147,7 @@ namespace xo
 			return quat_<T>::identity();
 
 		auto clen = length( c );
-		if ( equal( clen, T() ) ) // check if vectors are 180 deg apart
+		if ( equal( clen, T(0) ) ) // check if vectors are 180 deg apart
 			return quat_<T>( 0, 1, 0, 0 ); // this doesn't work if source is unit_x
 
 		c /= clen;
