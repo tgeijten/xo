@@ -62,34 +62,4 @@ namespace xo
 	template struct XO_API vec3_< double >;
 
 	template< typename T > string to_str( const vec3_<T>& v ) { return to_str( v.x ) + ' ' + to_str( v.y ) + ' ' + to_str( v.z ); }
-	template< typename T > bool from_str( const string& s, vec3_<T>& v ) {
-		if ( auto vs = split_str( s, " \t" ); vs.size() >= 3 )
-			return from_str( vs[ 0 ], v.x ) && from_str( vs[ 1 ], v.y ) && from_str( vs[ 2 ], v.z );
-		else return false;
-	}
-
-	// TODO: move this to a different file?
-	template< typename T > bool from_prop_node( const prop_node& pn, vec3_<T>& v ) {
-		v.x = pn.get( "x", T() );
-		v.y = pn.get( "y", T() );
-		v.z = pn.get( "z", T() );
-		if ( pn.size() >= 3 && pn.is_array() ) {
-			v.x = pn.get<T>( 0 );
-			v.y = pn.get<T>( 1 );
-			v.z = pn.get<T>( 2 );
-		}
-		else if ( pn.size() == 0 && pn.has_value() ) {
-			return from_str( pn.raw_value(), v );
-		}
-		return true;
-	};
-
-	/// convert to prop_node
-	template< typename T > prop_node to_prop_node( const vec3_<T>& v ) {
-		prop_node pn;
-		pn.set( "x", v.x );
-		pn.set( "y", v.y );
-		pn.set( "z", v.z );
-		return pn;
-	}
 }

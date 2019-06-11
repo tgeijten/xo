@@ -1,6 +1,7 @@
 #include "shape.h"
 
 #include "xo/utility/hash.h"
+#include "xo/container/prop_node_tools.h"
 
 namespace xo
 {

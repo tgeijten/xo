@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xo/container/prop_node.h"
+#include "xo/container/prop_node_cast.h"
 #include "xo/system/system_tools.h"
 #include "xo/system/log_level.h"
 

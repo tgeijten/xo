@@ -3,6 +3,7 @@
 #include "xo/xo_types.h"
 #include "angle.h"
 #include "xo/container/prop_node.h"
+#include "euler_angles.h"
 
 namespace xo
 {
@@ -33,25 +34,4 @@ namespace xo
 		
 	using quatf = quat_< float >;
 	using quatd = quat_< double >;
-
-	template< typename T > prop_node to_prop_node( const quat_<T>& q ) {
-		return prop_node().set( "w", q.w ).set( "x", q.x ).set( "y", q.y ).set( "z", q.z );
-	}
-
-	template< typename T > bool from_prop_node( const prop_node& pn, quat_<T>& q ) {
-		if ( pn.size() == 4 )
-		{
-			q.w = pn.get<T>( "w" );
-			q.x = pn.get<T>( "x" );
-			q.y = pn.get<T>( "y" );
-			q.z = pn.get<T>( "z" );
-			return true;
-		}
-		else if ( vec3_< angle_< angle_unit::degrees, T > > v; from_prop_node( pn, v ) )
-		{
-			q = quat_from_euler( v );
-			return true;
-		}
-		else return false;
-	};
 }

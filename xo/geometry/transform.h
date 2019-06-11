@@ -37,10 +37,5 @@ namespace xo
 
 	using transformf = transform_< float >;
 	using transformd = transform_< double >;
-
-	template< typename T > bool from_prop_node( const prop_node& pn, transform_<T>& tf ) {
-		return from_prop_node( pn[ "p" ], tf.p ) && from_prop_node( pn[ "q" ], tf.q );
-	}
-
 }
 

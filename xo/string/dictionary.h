@@ -3,7 +3,6 @@
 #include "xo/xo_types.h"
 #include "xo/system/assert.h"
 #include "xo/container/container_tools.h"
-#include "xo/string/string_cast_enum.h"
 
 namespace xo
 {
@@ -17,7 +16,7 @@ namespace xo
 		/// lookup name of element e
 		const string& operator()( const T& e ) const {
 			auto it = find_if( data, [&]( const pair_t& p ) { return e == p.first; } );
-			xo_error_if( it == data.end(), "Could not find element " + to_str( e ) );
+			xo_error_if( it == data.end(), "Could not find element" );
 			return it->second;
 		}
 
