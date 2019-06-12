@@ -46,7 +46,6 @@ namespace xo
 
 	void read_zml_layer( char_stream& str, prop_node& parent, const string& close, error_code* ec, const path& folder, const prop_node& root )
 	{
-		prop_node merge_pn;
 		for ( string t = get_zml_token( str, ec ); t != close; t = get_zml_token( str, ec ) )
 		{
 			if ( t.empty() ) // check if the stream has ended while expecting a close tag
@@ -98,9 +97,6 @@ namespace xo
 				}
 			}
 		}
-
-		// add children from #merge directive
-		parent.merge( merge_pn, false );
 	}
 
 	prop_node parse_zml( char_stream& str, error_code* ec, const path& folder )
