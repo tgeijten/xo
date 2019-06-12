@@ -4,16 +4,20 @@
 #include "xo/serialization/serialize.h"
 #include "xo/system/test_framework.h"
 #include "xo/system/log.h"
+#include "xo/utility/smart_enum.h"
 #include "xo/serialization/prop_node_serializer_zml.h"
 #include <sstream>
 
 namespace xo
 {
+	xo_smart_enum_class( enumclass, value1, value2, value3 );
+	xo_smart_enum( normalenum, value1, value2, value3 );
+
 	prop_node example_prop_node()
 	{
 		xo::prop_node pn;
 		pn.set( "empty", "" );
-		//pn.set( "key with spaces", "value with spaces\nand \"special\" \001 characters" );
+		pn.set( "key with spaces", "value with spaces\nand \"special\" \001 characters" );
 		pn.push_back( "test", 1.23f );
 		pn.push_back( "duplicate", 1 );
 		pn.push_back( "duplicate", 2 );
@@ -26,12 +30,10 @@ namespace xo
 		for ( int i = 1; i <= 3; ++i ) vec2.push_back( vec3d( i, i * 1.1, i * 1.11 ) );
 		pn.push_back( "vec2_test", vec2 );
 
-		enum class enumclass { value1, value2, value3 };
-		enum normalenum { value1, value2, value3 };
 		enumclass e1 = enumclass::value3;
 		normalenum e2 = value2;
-		pn.push_back( "e1", (int)e1 );
-		pn.push_back( "e2", (int)e2 );
+		pn.push_back( "e1", e1 );
+		pn.push_back( "e2", e2 );
 
 		prop_node root;
 		root.push_back( "root", pn );

@@ -65,13 +65,4 @@ namespace xo
 		}
 		else return false;
 	}
-
-	template< typename T, typename E = std::enable_if_t< std::is_enum_v< T > > >
-	bool from_prop_node( const string& s, T& v ) {
-		if ( int i; from_str( s, i ) ) {
-			v = static_cast<T>( i );
-			return true;
-		}
-		else return false;
-	}
 }
