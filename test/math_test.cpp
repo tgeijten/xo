@@ -71,19 +71,18 @@ namespace xo
 
 	XO_TEST_CASE( xo_function_test )
 	{
-		regular_piecewise_linear_function< double > func( -constants<double>::pi(), constants<double>::pi(), 128, sin_func );
-		timer t;
-		double result = 0.0, verify_result = 0.0;
-		for ( int i = 0; i < 10000; ++i )
+		auto func = regular_piecewise_linear_function< double, 16 >( -constantsd::pi(), constantsd::pi(), sin_func );
+		double diff = 0.0;
+		int n = 0;
+		for ( double x = -constants<double>::pi(); x <= constants<double>::pi(); x += 0.001 )
 		{
-			for ( double x = -constants<double>::pi(); x <= constants<double>::pi(); x += 0.001 )
-			{
-				result += func( x );
-				verify_result += sin_func( x );
-			}
+			++n;
+			auto f1 = func( x );
+			auto f2 = sin_func( x );
+			diff += fabs( f1 - f2 );
 		}
-		auto duration = t();
-		XO_CHECK_MESSAGE( equal( result, verify_result, 0.01 ), stringf( "diff=%f duration=%f", result - verify_result, duration ) );
+		diff /= n;
+		XO_CHECK_MESSAGE( diff < 0.01, stringf( "diff=%f", diff ) );
 	}
 
 	XO_TEST_CASE( xo_angle_test )
