@@ -5,7 +5,7 @@
 namespace xo
 {
 	/// class for defining flags in a bitset
-	// TODO: use smart storage type
+	// #todo: use smart storage type
 	template< typename EnumT, typename StorageT = unsigned int >
 	struct flag_set
 	{

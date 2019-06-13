@@ -33,7 +33,7 @@ namespace xo
 		}
 
 		P operator()( float t ) const {
-			// TODO: make this implementation more efficient
+			// #todo: make this implementation more efficient
 			t = t1 + t * ( t2 - t1 );
 			auto A1 = ( t1 - t ) / ( t1 - t0 ) * p0_ + ( t - t0 ) / ( t1 - t0 ) * p1_;
 			auto A2 = ( t2 - t ) / ( t2 - t1 ) * p1_ + ( t - t1 ) / ( t2 - t1 ) * p2_;

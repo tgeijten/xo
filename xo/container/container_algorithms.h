@@ -72,7 +72,7 @@ namespace xo
 	}
 
 	template< typename C > typename C::value_type top_average( const C& vec, size_t count ) {
-		// TODO: use nth_element for better performance
+		// #todo: use nth_element for better performance
 		C result( count );
 		std::partial_sort_copy( vec.begin(), vec.end(), result.begin(), result.end() );
 		return average( result );

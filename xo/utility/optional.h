@@ -3,7 +3,7 @@
 #include "xo/xo_types.h"
 #include "xo/numerical/constants.h"
 
-#include <type_traits> // #TODO: consider version without this header (using specialization)
+#include <type_traits> // #todo: consider version without this header (using specialization)
 
 namespace xo
 {

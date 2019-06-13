@@ -42,7 +42,7 @@ namespace xo
 
 	void log::stream_sink::send_log_message( level l, const string& msg )
 	{
-		// TODO: make the time prefix an option
+		// #todo: make the time prefix an option
 		auto str = get_date_time_str( "%H:%M:%S " );
 		stream_ << str << msg << std::endl;
 		if ( l >= error_level )

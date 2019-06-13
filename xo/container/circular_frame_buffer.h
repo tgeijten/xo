@@ -5,7 +5,7 @@
 
 namespace xo
 {
-	// TODO: deprecate? is this needed next to circular_deque?
+	// #todo: deprecate? is this needed next to circular_deque?
 	template< typename T, typename L = void >
 	class circular_frame_buffer
 	{

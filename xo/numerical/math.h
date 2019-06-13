@@ -61,7 +61,7 @@ namespace xo
 
 	/// clamp a value so that it is between min and max
 	template< typename T > T& clamp( T& v, const T& min, const T& max )
-	{ if ( v < min ) v = min; else if ( v > max ) v = max; return v; } // TODO: use efficient instructions
+	{ if ( v < min ) v = min; else if ( v > max ) v = max; return v; } // #todo: use efficient instructions
 
 	/// return clamped value that is between min and max
 	template< typename T > T clamped( T v, const T& min, const T& max ) { return clamp( v, min, max ); }

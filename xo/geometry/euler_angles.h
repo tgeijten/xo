@@ -15,8 +15,8 @@ namespace xo
 		quat_<T> qx = quat_<T>( std::cos( hxa ), std::sin( hxa ), T( 0 ), T( 0 ) );
 		quat_<T> qy = quat_<T>( std::cos( hya ), T( 0 ), std::sin( hya ), T( 0 ) );
 		quat_<T> qz = quat_<T>( std::cos( hza ), T( 0 ), T( 0 ), std::sin( hza ) );
-		// #TODO: more efficient
-		// #TODO: verify outcome
+		// #todo: more efficient
+		// #todo: verify outcome
 		switch ( eo )
 		{
 		case xo::euler_order::xyz: return qx * ( qy * qz );
@@ -34,21 +34,21 @@ namespace xo
 		return quat_from_euler( eu.x, eu.y, eu.z, eo );
 	}
 
-	// #TODO: verify / replace
+	// #todo: verify / replace
 	template< typename T > radian_< T > pitch( const quat_<T>& q ) {
 		T tx = T( 2 ) * q.x, tz = T( 2 ) * q.z;
 		T twx = tx * q.w, txx = tx * q.x, tyz = tz * q.y, tzz = tz * q.z;
 		return radian_< T >( atan2( tyz + twx, T( 1 ) - ( txx + tzz ) ) );
 	}
 
-	// #TODO: verify / replace
+	// #todo: verify / replace
 	template< typename T > radian_< T > yaw( const quat_<T>& q ) {
 		T tx = T( 2 ) * q.x, ty = T( 2 ) * q.y, tz = T( 2 ) * q.z;
 		T twy = ty * q.w, txx = tx * q.x, txz = tz * q.x, tyy = ty * q.y;
 		return radian_< T >( atan2( txz + twy, T( 1 ) - ( txx + tyy ) ) );
 	}
 
-	// #TODO: verify / replace
+	// #todo: verify / replace
 	template< typename T > radian_< T > roll( const quat_<T>& q ) {
 		T ty = T( 2 ) * q.y, tz = T( 2 ) * q.z;
 		T twz = tz * q.w, txy = ty * q.x, tyy = ty * q.y, tzz = tz * q.z;
@@ -56,10 +56,10 @@ namespace xo
 	}
 
 	/// get Euler angles from quat
-	// #TODO: add Euler order as argument, use if constexpr
+	// #todo: add Euler order as argument, use if constexpr
 	template< typename T > euler_angles< T > euler_from_quat( const quat_<T>& q )
 	{
-		// #TODO: verify / replace
+		// #todo: verify / replace
 		return euler_angles< T >( pitch( q ), yaw( q ), roll( q ) );
 	}
 

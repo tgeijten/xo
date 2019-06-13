@@ -3,7 +3,7 @@
 #include "vec3_type.h"
 #include "angle.h"
 #include "xo/numerical/compare.h"
-#include <cmath> // TODO: get rid of this header
+#include <cmath> // #todo: get rid of this header
 
 namespace xo
 {
@@ -108,7 +108,7 @@ namespace xo
 	{ return vec3_<T>( v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x ); }
 
 	/// Make vec3 from radius, inclination & azimuth
-	// TODO: move to somewhere else
+	// #todo: move to somewhere else
 	template< angle_unit U, typename T > vec3_<T> vec3_from_polar( T radius, angle_<U, T> inclination, angle_<U, T> azimuth )
 	{ return vec3_<T>( radius * sin( inclination ) * sin( azimuth ) , radius * cos( inclination ), radius * sin( inclination ) * cos( azimuth ) ); }
 }

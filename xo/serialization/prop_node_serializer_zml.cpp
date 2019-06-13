@@ -187,7 +187,7 @@ namespace xo
 	std::istream& prop_node_serializer_zml::read_stream( std::istream& str )
 	{
 		xo_assert( read_pn_ );
-		// TODO: more efficient. parser should be able to take any stream type.
+		// #todo: more efficient. parser should be able to take any stream type.
 		char_stream stream( string( std::istreambuf_iterator<char>( str ), {} ) );
 		*read_pn_ = parse_zml( stream, ec_, file_folder_ );
 		return str;

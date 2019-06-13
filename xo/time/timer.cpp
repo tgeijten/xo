@@ -32,7 +32,7 @@ namespace xo
 
 	time get_time_from_ticks( long long ticks )
 	{
-		return time( ticks * 1'000'000'000 / g_frequency ); // #TODO check if this won't overflow
+		return time( ticks * 1'000'000'000 / g_frequency ); // #todo check if this won't overflow
 	}
 #else
 	long long get_tick_count()

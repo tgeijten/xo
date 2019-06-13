@@ -11,7 +11,7 @@
 namespace xo
 {
 	/// Simple storage class for storing frames with channels of data
-	// TODO: use iterators for frames
+	// #todo: use iterators for frames
 	template< typename T, typename L = std::string >
 	class storage
 	{

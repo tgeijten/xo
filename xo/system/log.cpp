@@ -28,7 +28,7 @@ namespace xo
 			{
 				char buf[ 1024 ];
 				vsnprintf( buf, sizeof( buf ), format, list );
-				log_string( l, string( buf ) ); // TODO: use string_view
+				log_string( l, string( buf ) ); // #todo: use string_view
 			}
 		}
 

@@ -13,7 +13,7 @@
 namespace xo
 {
 	/// blazing-fast class for reading text stream-style
-	class XO_API char_stream // TODO: rename this to char_parser or something
+	class XO_API char_stream // #todo: rename this to char_parser or something
 	{
 	public:
 		/// construct char_stream using given zero terminated char buffer

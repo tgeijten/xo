@@ -4,7 +4,7 @@
 #include "xo/utility/sfinae_tools.h"
 #include "bounds.h"
 
-#include <random> // #TODO: try to get rid of this header
+#include <random> // #todo: try to get rid of this header
 
 namespace xo
 {
