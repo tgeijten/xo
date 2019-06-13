@@ -4,6 +4,7 @@ namespace xo
 {
 	namespace log
 	{
+		// #todo: change to xo::log_level enum class, consider xo_smart_enum_class
 		enum level {
 			always_log_level = 0,
 			trace_level,
