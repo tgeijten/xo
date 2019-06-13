@@ -15,7 +15,7 @@ namespace xo
 			for ( int i = 0; i < N; ++i )
 				y += b_[ i ] * x_[ i ] + a_[ i ] * y_[ i ];
 
-			// shift values, TODO: use index instead for better performance
+			// shift values, #todo: use indices instead for better performance
 			for ( int i = N - 1; i > 0; --i ) {
 				x_[ i ] = x_[ i - 1 ];
 				y_[ i ] = y_[ i - 1 ];
