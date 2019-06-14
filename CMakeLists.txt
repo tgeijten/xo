@@ -18,9 +18,14 @@ set(EXECUTABLE_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/bin/${CONFIG_NAME}")
 set(LIBRARY_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/bin/${CONFIG_NAME}")
 
 option(XO_TEST_ENABLED "Build and add xo_test" ON)
+option(XO_LUA_ENABLED "Add xo_lua" OFF)
 
 # Process source code.
 add_subdirectory(xo)
+
+if (XO_LUA_ENABLED)
+	add_subdirectory(xo_lua)
+endif()
 
 if (XO_TEST_ENABLED)
 	add_subdirectory(xo_test)
