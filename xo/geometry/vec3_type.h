@@ -2,7 +2,6 @@
 
 #include <cmath>
 #include "xo/xo_types.h"
-#include "xo/string/string_cast.h"
 
 namespace xo
 {
@@ -58,10 +57,4 @@ namespace xo
 	/// template instantiations
 	using vec3f = vec3_< float >;
 	using vec3d = vec3_< double >;
-
-	// export float and double instances
-	template struct XO_API vec3_< float >;
-	template struct XO_API vec3_< double >;
-
-	template< typename T > string to_str( const vec3_<T>& v ) { return to_str( v.x ) + ' ' + to_str( v.y ) + ' ' + to_str( v.z ); }
 }

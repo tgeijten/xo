@@ -111,4 +111,8 @@ namespace xo
 	// #todo: move to somewhere else
 	template< angle_unit U, typename T > vec3_<T> vec3_from_polar( T radius, angle_<U, T> inclination, angle_<U, T> azimuth )
 	{ return vec3_<T>( radius * sin( inclination ) * sin( azimuth ) , radius * cos( inclination ), radius * sin( inclination ) * cos( azimuth ) ); }
+
+	/// String conversion
+	template< typename T > string to_str( const vec3_<T>& v )
+	{ return to_str( v.x ) + ' ' + to_str( v.y ) + ' ' + to_str( v.z ); }
 }
