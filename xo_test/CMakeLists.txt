@@ -12,4 +12,8 @@ set_target_properties(xo_test PROPERTIES
     FOLDER "xo" # Place target inside a xo folder in MSVC
 	)
 
+if (MSVC)
+	source_group( "" FILES ${TEST_FILES} )
+endif()
+
 target_compile_definitions( xo_test PRIVATE "$<$<CONFIG:RELWITHDEBINFO>:XO_ENABLE_PROFILER>" )
