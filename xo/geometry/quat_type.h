@@ -1,9 +1,6 @@
 #pragma once
 
 #include "xo/xo_types.h"
-#include "angle.h"
-#include "xo/container/prop_node.h"
-#include "euler_angles.h"
 
 namespace xo
 {
