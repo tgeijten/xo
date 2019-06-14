@@ -22,6 +22,7 @@
 #include "xo/utility/irange.h"
 #include "xo/utility/optional.h"
 #include "xo/filesystem/filesystem.h"
+#include "xo/geometry/euler_angles.h"
 
 using std::cout;
 using std::endl;

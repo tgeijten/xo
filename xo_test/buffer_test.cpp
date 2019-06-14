@@ -7,6 +7,7 @@
 #include "xo/container/circular_deque.h"
 #include "xo/container/storage.h"
 #include "xo/system/test_framework.h"
+#include "xo/string/string_tools.h"
 
 namespace xo
 {

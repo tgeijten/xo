@@ -1,6 +1,6 @@
 #pragma once
 #include "xo/container/prop_node.h"
-#include "xo/geometry/vec3_type.h"
+#include "xo/geometry/vec3.h"
 #include "xo/serialization/serialize.h"
 #include "xo/system/test_framework.h"
 #include "xo/system/log.h"
