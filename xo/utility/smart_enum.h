@@ -28,7 +28,7 @@ namespace smart_enum_detail
 inline std::string to_str( E e ) { return ::smart_enum_detail::to_str( int( e ), VA_STR ); } \
 inline bool from_str( const std::string& str, E& e ) { return ::smart_enum_detail::from_str( str, e, VA_STR ); } \
 inline std::ostream& operator<<( std::ostream& ostr, E e ) { return ostr << to_str( e ); } \
-inline std::istream& operator>>( std::istream& istr, E& e ) { std::string s; istr >> s; if ( !from_str( s, e ) ) istr.setstate( std::ios::failbit ); }
+inline std::istream& operator>>( std::istream& istr, E& e ) { std::string s; istr >> s; if ( !from_str( s, e ) ) istr.setstate( std::ios::failbit ); return istr; }
 
 #define xo_smart_enum( E, ... ) \
 enum E { __VA_ARGS__ }; \

@@ -1,7 +1,9 @@
 #pragma once
 
 #include "xo/xo_types.h"
+#include "xo/filesystem/path.h"
 #include "xo/string/string_type.h"
+#include <fstream>
 #include <iostream>
 #include <iomanip>
 
