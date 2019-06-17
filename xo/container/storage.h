@@ -12,6 +12,7 @@ namespace xo
 {
 	/// Simple storage class for storing frames with channels of data
 	// #todo: use iterators for frames
+	// #todo: use deque for storage, profile results
 	template< typename T, typename L = std::string >
 	class storage
 	{
