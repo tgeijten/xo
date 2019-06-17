@@ -5,6 +5,7 @@
 #include "xo/geometry/angle.h"
 #include "xo/geometry/quat_type.h"
 #include "xo/numerical/bounds.h"
+#include "xo/geometry/euler_angles.h"
 
 namespace xo
 {
