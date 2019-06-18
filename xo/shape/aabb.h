@@ -9,7 +9,10 @@ namespace xo
 	template< typename T >
 	struct aabb_
 	{
-		aabb_() : lower_bounds( constants<T>::max() ), upper_bounds( constants<T>::lowest() ) {}
+		aabb_() :
+			lower_bounds( vec3_<T>::diagonal( constants<T>::max() ) ),
+			upper_bounds( vec3_<T>::diagonal( constants<T>::lowest() ) )
+		{}
 		aabb_( const vec3_<T>& p ) : lower_bounds( p ), upper_bounds( p ) {}
 		aabb_( const vec3_<T>& lower, const vec3_<T>& upper ) : lower_bounds( lower ), upper_bounds( upper ) {}
 

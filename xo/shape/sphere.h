@@ -18,15 +18,15 @@ namespace xo
 	}
 
 	inline aabbf aabb( const sphere& s, const transformf& t ) {
-		return aabbf( t.p - vec3f( s.radius_ ), t.p + vec3f( s.radius_ ) );
+		return aabbf( t.p - vec3f::diagonal( s.radius_ ), t.p + vec3f::diagonal( s.radius_ ) );
 	}
 
 	inline vec3f dim( const sphere& s ) {
-		return vec3f( 2.0f * s.radius_ );
+		return vec3f::diagonal( 2.0f * s.radius_ );
 	}
 
 	inline vec3f inertia( const sphere& s, float density )	{
-		return  vec3f( ( 2.0f / 5.0f ) * volume( s ) * density * squared( s.radius_ ) );
+		return  vec3f::diagonal( ( 2.0f / 5.0f ) * volume( s ) * density * squared( s.radius_ ) );
 	}
 
 	inline void scale( sphere& s, float f ) {
