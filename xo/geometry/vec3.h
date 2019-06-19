@@ -85,7 +85,7 @@ namespace xo
 	template< typename T > T normalize( vec3_<T>& v )
 	{ T l = length( v ); if ( l > constants<T>::epsilon() ) v /= l; return l; }
 
-	/// clamp a value so that it is between min and max
+	/// clamp a value so that it is between lb and ub. #perf: check special instruction
 	template< typename T > vec3_<T>& clamp( vec3_<T>& v, const T& lb, const T& ub )
 	{ clamp( v.x, lb, ub ); clamp( v.y, lb, ub ); clamp( v.z, lb, ub ); return v; }
 
