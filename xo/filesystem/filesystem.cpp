@@ -22,8 +22,6 @@
 #endif
 #include "xo/container/container_tools.h"
 
-#include <iostream>
-
 namespace xo
 {
 #ifdef XO_COMP_MSVC
