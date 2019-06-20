@@ -2,9 +2,8 @@
 
 #include "xo/system/xo_config.h"
 #include "xo/string/string_type.h"
-#include "xo/system/log_level.h"
 #include "xo/string/string_cast.h"
-
+#include "xo/system/log_level.h"
 
 #define xo_logvar( var_ ) xo::log::trace( #var_"=", var_ )
 #define xo_logvar2( var1_, var2_ ) xo::log::trace( #var1_"=", var1_, "\t", #var2_"=", var2_ )
