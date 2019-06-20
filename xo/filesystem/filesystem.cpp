@@ -22,7 +22,6 @@
 #endif
 #include "xo/container/container_tools.h"
 
-
 namespace xo
 {
 #ifdef XO_COMP_MSVC
@@ -66,7 +65,7 @@ namespace xo
 		return path( buf ).parent_path();
 #elif defined(__linux__)
 		char buf[ 1024 ];
-		readlink("/proc/self/file", buf, sizeof( buf ));
+		readlink("/proc/self/exe", buf, sizeof( buf ));
 		return path( buf ).parent_path();
 #elif defined(__APPLE__)
 		uint32_t bufferSize = 1024;
