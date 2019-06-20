@@ -7,6 +7,9 @@ namespace xo
 {
 	struct box
 	{
+		box() : half_dim_() {}
+		box( const vec3f& half_dim ) : half_dim_( half_dim ) {}
+
 		vec3f half_dim_;
 
 		std::array< vec3f, 8 > corners() const;
