@@ -1,31 +1,34 @@
 #pragma once
 
 #include "quat_type.h"
+#include "xo/utility/smart_enum.h"
 
 namespace xo
 {
 	/// Euler order for Euler angle conversions
-	enum class euler_order { xyz, xzy, yxz, yzx, zxy, zyx };
+	xo_smart_enum_class( euler_order, xyz, xzy, yxz, yzx, zxy, zyx );
 
 	template< typename T > using euler_angles = vec3_< radian_< T > >;
 
 	/// make quaternion from Euler angles
 	template< angle_unit U, typename T > quat_<T> quat_from_euler( angle_<U, T> x, angle_<U, T> y, angle_<U, T> z, euler_order eo = euler_order::xyz ) {
-		T hxa = T( 0.5 ) * x.rad_value(), hya = T( 0.5 ) * y.rad_value(), hza = T( 0.5 ) * z.rad_value();
+		T hxa = T( 0.5 ) * x.rad_value();
+		T hya = T( 0.5 ) * y.rad_value();
+		T hza = T( 0.5 ) * z.rad_value();
 		quat_<T> qx = quat_<T>( std::cos( hxa ), std::sin( hxa ), T( 0 ), T( 0 ) );
 		quat_<T> qy = quat_<T>( std::cos( hya ), T( 0 ), std::sin( hya ), T( 0 ) );
 		quat_<T> qz = quat_<T>( std::cos( hza ), T( 0 ), T( 0 ), std::sin( hza ) );
+
 		// #todo: more efficient
-		// #todo: verify outcome
 		switch ( eo )
 		{
-		case xo::euler_order::xyz: return qx * ( qy * qz );
-		case xo::euler_order::xzy: return qx * ( qz * qy );
-		case xo::euler_order::yxz: return qy * ( qx * qz );
-		case xo::euler_order::yzx: return qy * ( qz * qx );
-		case xo::euler_order::zxy: return qz * ( qx * qy );
-		case xo::euler_order::zyx: return qz * ( qy * qx );
-		default: xo_error( "Unsupported euler_order" );
+		case xo::euler_order::xyz: return qx * qy * qz;
+		case xo::euler_order::xzy: return qx * qz * qy;
+		case xo::euler_order::yxz: return qy * qx * qz;
+		case xo::euler_order::yzx: return qy * qz * qx;
+		case xo::euler_order::zxy: return qz * qx * qy;
+		case xo::euler_order::zyx: return qz * qy * qx;
+		default: xo_error( "quat_from_euler: invalid euler_order" );
 		}
 	}
 

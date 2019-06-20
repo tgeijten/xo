@@ -19,12 +19,13 @@ namespace xo
 	}
 
 	template< typename T > bool from_prop_node( const prop_node& pn, quat_<T>& q ) {
-		if ( pn.size() == 4 ) {
+		if ( pn.size() == 4 && pn.has_key( "w" ) ) { // literal quaterion with w, x, y, z
 			q.set( pn.get<T>( "w" ), pn.get<T>( "x" ), pn.get<T>( "y" ), pn.get<T>( "z" ) );
 			return true;
 		}
-		else if ( vec3_< angle_< angle_unit::degrees, T > > v; from_prop_node( pn, v ) ) {
-			q = quat_from_euler( v );
+		else if ( vec3_< degree_<T> > v; from_prop_node( pn, v ) ) { // euler angles
+			auto order = pn.get< euler_order >( "order", euler_order::xyz );
+			q = quat_from_euler( v, order );
 			return true;
 		}
 		else return false;
