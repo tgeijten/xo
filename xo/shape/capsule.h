@@ -11,7 +11,7 @@ namespace xo
 	};
 
 	inline float volume( const capsule& s ) {
-		return pi_f * squared( s.radius_ ) * ( ( 4.0f / 3.0f ) * ( s.radius_ + s.height_ ) );
+		return constantsf::pi() * squared( s.radius_ ) * ( ( 4.0f / 3.0f ) * ( s.radius_ + s.height_ ) );
 	}
 
 	inline vec3f dim( const capsule& s ) {

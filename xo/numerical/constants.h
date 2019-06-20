@@ -28,8 +28,4 @@ namespace xo
 	using constantsd = constants< double >;
 	using constantsf = constants< float >;
 	using constantsi = constants< int >;
-
-	// #todo: change into PI_f / PI_d?
-	constexpr float pi_f = constants< float >::pi();
-	constexpr double pi_d = constants< double >::pi();
 }

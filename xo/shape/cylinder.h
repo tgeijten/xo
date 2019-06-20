@@ -11,7 +11,7 @@ namespace xo
 	};
 
 	inline float volume( const cylinder& s ) {
-		return pi_f * squared( s.radius_ ) * s.height_;
+		return constantsf::pi() * squared( s.radius_ ) * s.height_;
 	}
 
 	inline aabbf aabb( const cylinder& s, const transformf& t ) {

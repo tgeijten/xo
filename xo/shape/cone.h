@@ -11,7 +11,7 @@ namespace xo
 	};
 
 	inline float volume( const cone& s ) {
-		return pi_f * squared( s.radius_ ) * s.height_ / 3.0f;
+		return constantsf::pi() * squared( s.radius_ ) * s.height_ / 3.0f;
 	}
 
 	inline vec3f dim( const cone& s ) {
