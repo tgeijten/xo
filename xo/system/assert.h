@@ -8,8 +8,9 @@
 #	define xo_error( message_ ) \
 		throw std::runtime_error( message_ )
 #else
+#	include "xo/system/log.h"
 #	define xo_error( message_ ) \
-		{ std::cout << message_ << std::endl; exit( -1 ) }
+		{ xo::log::critical( message_ ); exit( -1 ); }
 #endif
 
 #ifndef XO_DISABLE_ASSERT
