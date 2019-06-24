@@ -14,6 +14,7 @@ namespace xo
 	template< typename T > struct vec3_;
 	template< typename T > struct quat_;
 	template< typename T > struct transform_;
+	template< typename T > struct aabb_;
 	template< typename T > class bounds;
 
 	// simple function type
