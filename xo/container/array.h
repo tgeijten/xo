@@ -8,7 +8,7 @@ namespace xo
 	public:
 		using value_type = T;
 		using size_type = size_t;
-		using iterator = T* ;
+		using iterator = T*;
 		using const_iterator = const T*;
 
 		T& operator[]( size_t i ) { return data_[ i ]; }
