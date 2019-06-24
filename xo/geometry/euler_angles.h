@@ -10,14 +10,20 @@ namespace xo
 
 	template< typename T > using euler_angles = vec3_< radian_< T > >;
 
+	template< angle_unit U, typename T > quat_<T> quat_from_x_angle( const angle_<U, T>& a )
+	{ T ha = T( 0.5 ) * a.rad_value(); return quat_<T>( std::cos( ha ), std::sin( ha ), T( 0 ), T( 0 ) ); }
+
+	template< angle_unit U, typename T > quat_<T> quat_from_y_angle( const angle_<U, T>& a )
+	{ T ha = T( 0.5 ) * a.rad_value(); return quat_<T>( std::cos( ha ), T( 0 ), std::sin( ha ), T( 0 ) ); }
+
+	template< angle_unit U, typename T > quat_<T> quat_from_z_angle( const angle_<U, T>& a )
+	{ T ha = T( 0.5 ) * a.rad_value(); return quat_<T>( std::cos( ha ), T( 0 ), T( 0 ), std::sin( ha ) ); }
+
 	/// make quaternion from Euler angles
-	template< angle_unit U, typename T > quat_<T> quat_from_euler( angle_<U, T> x, angle_<U, T> y, angle_<U, T> z, euler_order eo = euler_order::xyz ) {
-		T hxa = T( 0.5 ) * x.rad_value();
-		T hya = T( 0.5 ) * y.rad_value();
-		T hza = T( 0.5 ) * z.rad_value();
-		quat_<T> qx = quat_<T>( std::cos( hxa ), std::sin( hxa ), T( 0 ), T( 0 ) );
-		quat_<T> qy = quat_<T>( std::cos( hya ), T( 0 ), std::sin( hya ), T( 0 ) );
-		quat_<T> qz = quat_<T>( std::cos( hza ), T( 0 ), T( 0 ), std::sin( hza ) );
+	template< angle_unit U, typename T > quat_<T> quat_from_euler( const angle_<U, T>& x, const angle_<U, T>& y, const angle_<U, T>& z, euler_order eo = euler_order::xyz ) {
+		quat_<T> qx = quat_from_x_angle( x );
+		quat_<T> qy = quat_from_y_angle( y );
+		quat_<T> qz = quat_from_z_angle( z );
 
 		// #todo: more efficient
 		switch ( eo )
