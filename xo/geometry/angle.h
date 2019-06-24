@@ -88,11 +88,15 @@ namespace xo
 	template< typename T > angle_< angle_unit::degrees, T > deg( T deg ) { return angle_<angle_unit::degrees, T>( deg ); }
 
 	inline namespace literals {
-		/// user-defined literals, add 'using xo::literals' to access them outside the xo namespace
+		/// user-defined literals, add 'using namespace xo::literals' to access them outside the xo namespace
 		inline degreef operator"" _degf( long double v ) { return degreef( v ); }
 		inline degreef operator"" _degf( unsigned long long int v ) { return degreef( v ); }
 		inline radianf operator"" _radf( long double v ) { return radianf( v ); }
 		inline radianf operator"" _radf( unsigned long long int v ) { return radianf( v ); }
+		inline degreed operator"" _deg( long double v ) { return degreed( v ); }
+		inline degreed operator"" _deg( unsigned long long int v ) { return degreed( v ); }
+		inline radiand operator"" _rad( long double v ) { return radiand( v ); }
+		inline radiand operator"" _rad( unsigned long long int v ) { return radiand( v ); }
 	}
 
 	/// scalar multiplication
