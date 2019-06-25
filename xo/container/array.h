@@ -22,7 +22,7 @@ namespace xo
 		const_iterator end() const { return &data_[ N ]; }
 		const_iterator cend() const { return &data_[ N ]; }
 
-		constexpr size_t size() const { N; }
+		constexpr size_t size() const { return N; }
 
 		T data_[ N ];
 	};
