@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cmath>
 #include "xo/xo_types.h"
 
 namespace xo

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <functional>
-#include <memory>
+#include <array>
 #include "xo/numerical/math.h"
 
 namespace xo
