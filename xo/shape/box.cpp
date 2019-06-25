@@ -14,7 +14,7 @@ namespace xo
 	aabb_<float> aabb( const box& s, const transform_<float>& t )
 	{
 		aabbf bb;
-		auto clist = s.corners();
+		auto clist = corners( s );
 		for ( index_t i = 0; i < 8; ++i )
 			bb += t * clist[ i ];
 		return bb;
@@ -40,18 +40,18 @@ namespace xo
 		s.half_dim_ *= f;
 	}
 
-	array< vec3f, 8 > box::corners() const
+	array< vec3f, 8 > corners( const box& b )
 	{
 		return array< vec3f, 8 >{
 			{
-				{ -half_dim_.x, -half_dim_.y, -half_dim_.z },
-				{ half_dim_.x, -half_dim_.y, -half_dim_.z },
-				{ -half_dim_.x, half_dim_.y, -half_dim_.z },
-				{ half_dim_.x, half_dim_.y, -half_dim_.z },
-				{ -half_dim_.x, -half_dim_.y, half_dim_.z },
-				{ half_dim_.x, -half_dim_.y, half_dim_.z },
-				{ -half_dim_.x, half_dim_.y, half_dim_.z },
-				{ half_dim_.x, half_dim_.y, half_dim_.z }
+				{ -b.half_dim_.x, -b.half_dim_.y, -b.half_dim_.z },
+				{ b.half_dim_.x, -b.half_dim_.y, -b.half_dim_.z },
+				{ -b.half_dim_.x, b.half_dim_.y, -b.half_dim_.z },
+				{ b.half_dim_.x, b.half_dim_.y, -b.half_dim_.z },
+				{ -b.half_dim_.x, -b.half_dim_.y, b.half_dim_.z },
+				{ b.half_dim_.x, -b.half_dim_.y, b.half_dim_.z },
+				{ -b.half_dim_.x, b.half_dim_.y, b.half_dim_.z },
+				{ b.half_dim_.x, b.half_dim_.y, b.half_dim_.z }
 			}
 		};
 	}

@@ -13,8 +13,6 @@ namespace xo
 		box( const vec3f& half_dim ) : half_dim_( half_dim ) {}
 
 		vec3f half_dim_;
-
-		array< vec3f, 8 > corners() const;
 	};
 
 	XO_API float volume( const box& s );
@@ -22,4 +20,5 @@ namespace xo
 	XO_API vec3f dim( const box& s );
 	XO_API vec3f inertia( const box& s, float density );
 	XO_API void scale( box& s, float f );
+	XO_API array< vec3f, 8 > corners( const box& b );
 }
