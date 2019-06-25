@@ -14,6 +14,6 @@ set_target_properties(xo_test PROPERTIES
 
 if (MSVC)
 	source_group( "" FILES ${TEST_FILES} )
+	target_compile_options( xo_test PRIVATE "/MP" ) # multithreaded compilation on MSVC
+	target_compile_definitions( xo_test PRIVATE "$<$<CONFIG:RELWITHDEBINFO>:XO_ENABLE_PROFILER>" )
 endif()
-
-target_compile_definitions( xo_test PRIVATE "$<$<CONFIG:RELWITHDEBINFO>:XO_ENABLE_PROFILER>" )
