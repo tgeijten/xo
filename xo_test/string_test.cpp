@@ -58,7 +58,7 @@ namespace xo
 
 		path p( "X:/appel/taart.txt" );
 		XO_CHECK( p.empty() == false );
-		XO_CHECK( p.extension() == "txt" );
+		XO_CHECK( p.extension_no_dot() == "txt" );
 		XO_CHECK( p.replace_extension( "new_ext" ).str() == "X:/appel/taart.new_ext" );
 		XO_CHECK( p.filename() == "taart.new_ext");
 		XO_CHECK( p.stem() == "taart");

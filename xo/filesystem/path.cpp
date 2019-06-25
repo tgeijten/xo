@@ -47,7 +47,7 @@ namespace xo
 		return n != string::npos ? path( data_.substr( 0, n ) ) : path();
 	}
 
-	path path::extension() const
+	path path::extension_no_dot() const
 	{
 		size_t n = data_.find_last_of( '.' );
 		return n != string::npos ? path( data_.substr( n + 1 ) ) : path();

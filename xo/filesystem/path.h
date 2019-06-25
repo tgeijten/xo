@@ -31,7 +31,7 @@ namespace xo
 		path& replace_filename( const path& f = path() );
 		path& make_preferred();
 		path parent_path() const;
-		path extension() const;
+		path extension_no_dot() const;
 		path filename() const;
 		path stem() const;
 		bool empty() const;
