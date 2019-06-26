@@ -2,7 +2,9 @@
 
 #include "xo/system/assert.h"
 #include "xo/xo_types.h"
-#include <string>
+#include "xo/string/string_type.h"
+#include <iterator> // #todo get rid of this header, used by std::begin / std::end
+#include <vector>
 
 namespace xo
 {
@@ -48,9 +50,11 @@ namespace xo
 		else return it - std::begin( cont );
 	}
 
+	template< typename T > index_t index_of( const T& elem, const std::vector< T >& vec ) { return &elem - &vec[ 0 ]; }
+
 	/// convert elements in a container to a string
-	template< typename C > std::string container_to_str( const C& cont, const std::string& delim = " " ) {
-		std::string str;
+	template< typename C > string container_to_str( const C& cont, const string& delim = " " ) {
+		string str;
 		for ( auto& e : cont ) {
 			auto estr = to_str( e );
 			if ( !estr.empty() ) {
