@@ -1,6 +1,7 @@
 #pragma once
 
 #include "dynvec.h"
+#include "xo/container/dynarray.h"
 
 namespace xo
 {
