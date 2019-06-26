@@ -27,4 +27,14 @@ namespace xo
 		static inline indexed_set< T, I > data_ = {};
 		index_t index_;
 	};
+
+	template< typename T, typename I > prop_node to_prop_node( const proxy<T, I>& q ) {
+		return to_prop_node( q.get() );
+	}
+
+	template< typename T, typename I > bool from_prop_node( const prop_node& pn, proxy<T, I>& q ) {
+		if ( T value; from_prop_node( pn, value ) )
+		{ q.set( value ); return true; }
+		else return false;
+	}
 }
