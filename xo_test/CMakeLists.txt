@@ -1,5 +1,8 @@
 file (GLOB TEST_FILES "*.h" "*.cpp")
 
+include( PrecompiledHeaders )
+use_precompiled_headers( TEST_FILES "${CMAKE_CURRENT_SOURCE_DIR}/stdafx.h" "${CMAKE_CURRENT_SOURCE_DIR}/stdafx.cpp" 256 )
+
 add_executable(xo_test ${TEST_FILES})
 
 target_link_libraries(xo_test xo)

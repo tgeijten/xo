@@ -1,9 +1,9 @@
 #pragma once
 
-#include "xo/container/flat_map.h"
-#include "xo/xo_types.h"
-#include "xo/container/sorted_vector.h"
 #include <map>
+#include "xo/xo_types.h"
+#include "xo/container/flat_map.h"
+#include "xo/container/sorted_vector.h"
 #include "xo/container/table.h"
 #include "xo/numerical/random.h"
 #include "xo/system/test_framework.h"
