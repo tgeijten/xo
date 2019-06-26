@@ -2,6 +2,8 @@
 
 #include "xo/system/version.h"
 #include "xo/string/string_tools.h"
+#include "xo/time/time.h"
+#include "xo/filesystem/path.h"
 
 namespace xo
 {
@@ -128,6 +130,17 @@ namespace xo
 		return s;
 	}
 
+	string to_str( const path& p )
+	{
+		return p.str();
+	}
+
+	bool from_str( const string& s, path& v )
+	{
+		v = path( s );
+		return true;
+	}
+
 	bool from_str( const string& s, version& ver )
 	{
 		auto[ numbers, postfix ] = split_str_at_first( s, whitespace_characters );
@@ -146,4 +159,14 @@ namespace xo
 		return false;
 	}
 
+	string to_str( const time& v )
+	{
+		return to_str( v.seconds<double>() );
+	}
+
+	bool from_str( const string& s, time& v )
+	{
+		if ( double d; from_str( s, d ) ) { v = time_from_seconds( d ); return true; }
+		else return false;
+	}
 }

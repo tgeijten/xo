@@ -16,9 +16,10 @@
 #include <fstream>
 #include <algorithm>
 #include <cstring>
+#include <cctype>
+
 #include "xo/system/error_code.h"
 #include "xo/numerical/math.h"
-#include <cctype>
 #include "xo/system/assert.h"
 
 namespace xo
@@ -156,16 +157,6 @@ namespace xo
 #endif
 	}
 
-	bool pattern_match( const string& str, const string& pattern )
-	{
-#ifdef XO_COMP_MSVC
-		xo_assert_msg( str.find_first_of( ";" ) == string::npos, "pattern_match patterns cannot contain ';' on MSVC" );
-		return PathMatchSpecEx( str.c_str(), pattern.c_str(), PMSF_NORMAL ) == S_OK;
-#else
-		return fnmatch( pattern.c_str(), str.c_str(), FNM_NOESCAPE ) == 0;
-#endif
-	}
-
 	bool str_equals_any_of( const string& str, std::initializer_list< const char* > str_list )
 	{
 		for ( const char* c : str_list )
@@ -278,6 +269,16 @@ namespace xo
 			else sout += *it;
 		}
 		return sout;
+	}
+
+	bool pattern_match( const string& str, const string& pattern )
+	{
+#ifdef XO_COMP_MSVC
+		xo_assert_msg( str.find_first_of( ";" ) == string::npos, "pattern_match patterns cannot contain ';' on MSVC" );
+		return PathMatchSpecEx( str.c_str(), pattern.c_str(), PMSF_NORMAL ) == S_OK;
+#else
+		return fnmatch( pattern.c_str(), str.c_str(), FNM_NOESCAPE ) == 0;
+#endif
 	}
 
 	string get_filename_ext( const string& str )

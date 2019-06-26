@@ -1,8 +1,5 @@
 #pragma once
 
-#include "xo/string/string_type.h"
-#include "xo/string/string_cast.h"
-
 namespace xo
 {
 	struct XO_API time
@@ -41,9 +38,6 @@ namespace xo
 	};
 
 	template< typename T > time time_from_seconds( T s ) { return time( time::storage_t( s * T( 1e9 ) ) ); }
-
-	inline string to_str( time v ) { return to_str( v.seconds<double>() ); }
-	inline bool from_str( const string& s, time& v ) { if ( double d; from_str( s, d ) ) { v = time_from_seconds( d ); return true; } else return false; }
 
 	inline namespace literals {
 		constexpr time operator ""_ns( unsigned long long ns ) { return time( time::storage_t( ns ) ); }

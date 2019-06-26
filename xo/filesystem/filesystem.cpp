@@ -5,10 +5,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "xo/string/string_tools.h"
-#include "xo/system/assert.h"
-
 #ifdef XO_COMP_MSVC
+#	define NOMINMAX
+#	define WIN32_LEAN_AND_MEAN
 #	include <conio.h>
 #	include <shlobj.h>
 #   include <direct.h>
@@ -20,7 +19,11 @@
 #ifdef __APPLE__
 #	include <mach-o/dyld.h>
 #endif
+
+#include "xo/string/string_tools.h"
+#include "xo/system/assert.h"
 #include "xo/container/container_tools.h"
+#include "xo/string/string_cast.h"
 
 namespace xo
 {

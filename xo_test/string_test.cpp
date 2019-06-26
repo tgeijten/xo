@@ -6,6 +6,7 @@
 #include "xo/string/dictionary.h"
 #include "xo/utility/hash.h"
 #include <sstream>
+#include "xo/string/string_cast.h"
 
 namespace xo
 {

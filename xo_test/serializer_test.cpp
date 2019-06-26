@@ -6,6 +6,7 @@
 #include "xo/system/log.h"
 #include "xo/utility/smart_enum.h"
 #include "xo/serialization/prop_node_serializer_zml.h"
+#include "xo/string/string_tools.h"
 #include <sstream>
 
 namespace xo

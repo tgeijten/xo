@@ -66,10 +66,6 @@ namespace xo
 	template< typename T > quat_<T> positive( quat_<T> q )
 	{ if ( q.w < 0 ) { q.w = -q.w; q.x = -q.x; q.y = -q.y; q.z = -q.z; } return q; }
 
-	/// String conversion
-	template< typename T > string to_str( const quat_<T>& q )
-	{ return to_str( q.w ) + ' ' + to_str( q.x ) + ' ' + to_str( q.y ) + ' ' + to_str( q.z ); }
-
 	/// make quaternion from axis and angle
 	template< angle_unit U, typename T > quat_<T> quat_from_axis_angle( const vec3_<T>& axis, angle_<U, T> ang ) {
 		xo_assert( is_normalized<T>( axis ) );
@@ -117,7 +113,7 @@ namespace xo
 
 	/// Get rotation vector from quaternion
 	template< typename T > vec3_<T> rotation_vector_from_quat( const quat_<T>& q ) {
-		xo_assert_msg( is_normalized( q ), "squared_length = " + to_str( squared_length( q ) ) );
+		xo_assert( is_normalized( q ) );
 		T l = sqrt( q.x * q.x + q.y * q.y + q.z * q.z );
 		if ( l > constants<T>::ample_epsilon() ) {
 			T f = T(2) * std::acos( q.w ) / l;
@@ -128,7 +124,7 @@ namespace xo
 
 	/// Get axis angle from quaternion
 	template< typename T > std::pair< vec3_<T>, radian_<T> > axis_angle_from_quat( const quat_<T>& q ) {
-		xo_assert_msg( is_normalized( q ), "squared_length = " + to_str( squared_length( q ) ) );
+		xo_assert( is_normalized( q ) );
 		T l = sqrt( q.x * q.x + q.y * q.y + q.z * q.z );
 		if ( l > constants<T>::ample_epsilon() ) {
 			T s = T(1) / l;

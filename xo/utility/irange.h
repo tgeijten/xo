@@ -1,9 +1,13 @@
 #pragma once
 
 #ifdef XO_COMP_MSVC
+#	define NOMINMAX
+#	define WIN32_LEAN_AND_MEAN
 #   include <xutility>
 #endif
+
 #include "sfinae_tools.h"
+#include "xo/system/assert.h"
 
 namespace xo
 {

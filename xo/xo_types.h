@@ -10,6 +10,8 @@ namespace xo
 	class path;
 	struct error_code;
 	class char_stream;
+	struct version;
+	struct time;
 
 	template< typename T > struct vec3_;
 	template< typename T > struct quat_;

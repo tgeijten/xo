@@ -7,9 +7,7 @@ namespace xo
 {
 	struct version
 	{
-	public:
 		version() : major_(), minor_(), patch_(), build_(), postfix_() {}
-
 		version( int maj, int min, int bugfix, int bld = 0, string post = "" ) :
 			major_( maj ), minor_( min ), patch_( bugfix ), build_( bld ), postfix_( post ) {}
 
@@ -26,7 +24,4 @@ namespace xo
 	inline bool operator<( const version& v1, const version& v2 ) { return v1.to_int100() < v2.to_int100(); }
 	inline bool operator==( const version& v1, const version& v2 ) { return v1.to_int100() == v2.to_int100(); }
 	inline bool operator!=( const version& v1, const version& v2 ) { return v1.to_int100() != v2.to_int100(); }
-
-	XO_API string to_str( const version& v );
-	XO_API bool from_str( const string& s, version& ver );
 }

@@ -1,6 +1,8 @@
 #include "system_tools.h"
 
 #ifdef XO_COMP_MSVC
+#	define NOMINMAX
+#	define WIN32_LEAN_AND_MEAN
 #	include <conio.h>
 #	include <shlobj.h>
 #	pragma warning( disable: 4996 )

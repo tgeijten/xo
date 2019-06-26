@@ -5,6 +5,7 @@
 #include "profiler_config.h"
 #include "xo/numerical/math.h"
 #include "xo/container/prop_node.h"
+#include "xo/string/string_tools.h"
 
 namespace xo
 {

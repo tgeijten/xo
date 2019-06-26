@@ -23,6 +23,7 @@
 #include "xo/utility/optional.h"
 #include "xo/filesystem/filesystem.h"
 #include "xo/geometry/euler_angles.h"
+#include "xo/string/string_tools.h"
 
 using std::cout;
 using std::endl;

@@ -9,6 +9,7 @@
 #include "xo/system/test_framework.h"
 #include "xo/container/container_algorithms.h"
 #include "xo/container/circular_frame_buffer.h"
+#include "xo/string/string_tools.h"
 
 namespace xo
 {

@@ -62,9 +62,6 @@ namespace xo
 	/// get formatted string (printf style)
 	XO_API string stringf( const char* format, ... );
 
-	/// match pattern (glob, i.e. name* or name?)
-	XO_API bool pattern_match( const string& str, const string& pattern );
-
 	/// match any of the strings
 	XO_API bool str_equals_any_of( const string& str, std::initializer_list< const char* > str_list );
 
@@ -89,4 +86,7 @@ namespace xo
 
 	/// get a string between quotes
 	XO_API string try_unquoted( const string& s );
+
+	/// match pattern (glob, i.e. name* or name?)
+	XO_API bool pattern_match( const string& str, const string& pattern );
 }

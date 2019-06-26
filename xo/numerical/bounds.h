@@ -1,9 +1,7 @@
 #pragma once
 
 #include "xo/xo_types.h"
-#include "xo/string/string_cast.h"
 #include "xo/numerical/math.h"
-#include "xo/container/prop_node.h"
 
 namespace xo
 {
@@ -38,18 +36,4 @@ namespace xo
 	using boundsf = bounds<float>;
 	using boundsd = bounds<double>;
 	using boundsi = bounds<int>;
-
-	template< typename T > string to_str( const bounds<T>& v ) {
-		return to_str( v.lower ) + ' ' + to_str( v.upper );
-	}
-
-	template< typename T > bool from_str( const string& s, bounds<T>& v ) {
-		if ( from_str( s, v.lower ) )
-		{
-			if ( auto p = s.find( ".." ); p != string::npos )
-				return from_str( s.substr( p + 2 ), v.upper );
-			else { v.upper = v.lower; return true; }
-		}
-		else return false;
-	}
 }

@@ -3,7 +3,6 @@
 #include "xo/xo_types.h"
 #include "xo/geometry/angle_type.h"
 #include "xo/numerical/constants.h"
-#include "xo/string/string_cast.h"
 #include <cmath>
 
 namespace xo
@@ -133,7 +132,7 @@ namespace xo
 	template< angle_unit U, typename T > T acos( const angle_<U, T>& a ) { return std::acos( a.rad_value() ); }
 	template< angle_unit U, typename T > T atan( const angle_<U, T>& a ) { return std::atan( a.rad_value() ); }
 
-	/// string conversion
-	template< angle_unit U, typename T > string to_str( const angle_<U, T>& a ) { return to_str( a.value ); }
-	template< angle_unit U, typename T > bool from_str( const string& str, angle_<U, T>& v ) { return from_str( str, v.value ); }
+	/// Make vec3 from polar angles (radius, inclination & azimuth)
+	template< angle_unit U, typename T > vec3_<T> vec3_from_polar( T radius, angle_<U, T> inc, angle_<U, T> azi )
+	{ return vec3_<T>( radius * sin( inc ) * sin( azi ), radius * cos( inc ), radius * sin( inc ) * cos( azi ) ); }
 }
