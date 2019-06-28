@@ -20,7 +20,7 @@ namespace xo
 		optional<I> try_get( const T& value ) const {
 			if ( auto it = indices_.find( value ); it != indices_.end() )
 				return it->second;
-			else return xo::optional<T>();
+			else return xo::optional<I>();
 		}
 
 		I get_or_add( const T& value ) {
