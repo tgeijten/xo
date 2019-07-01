@@ -9,19 +9,27 @@ namespace xo
 	struct dynmat
 	{
 		using value_type = T;
-		using iterator = dynarray< T >::iterator;
-		using const_iterator = dynarray< T >::const_iterator;
+		using iterator = typename dynarray< T >::iterator;
+		using const_iterator = typename dynarray< T >::const_iterator;
 
 		dynmat() : data_(), cols_() {}
-		dynmat( size_t cols, size_t rows, const T& value = T() ) : data_( rows * cols, value ), cols_( cols ) {}
+		dynmat( size_t col, size_t row, const T& value = T() ) : data_( row * col, value ), cols_( col ) {}
 
 		const T& operator()( index_t col, index_t row ) const { return data_[ row * cols_ + col ]; }
 		T& operator()( index_t col, index_t row ) { return data_[ row * cols_ + col ]; }
 
-		void resize( size_t cols, size_t rows ) { data_.resize( cols * rows ); cols_ = cols_; }
+		void resize( size_t newcols, size_t newrows ) {
+			dynmat<T> newmat( newcols, newrows, T() );
+			auto rmin = xo::min( rows(), newrows );
+			auto cmin = xo::min( cols(), newcols );
+			for ( auto r = 0; r < rmin; ++r )
+				for ( auto c = 0; c < cmin; ++c )
+					newmat( c, r ) = (*this)( c, r );
+			*this = std::move( newmat );
+		}
 
 		size_t cols() const { return cols_; }
-		size_t rows() const { return data_.size() / cols; }
+		size_t rows() const { return data_.size() / cols_; }
 
 		iterator begin() { return data_.begin(); }
 		const_iterator begin() const { return data_.begin(); }
