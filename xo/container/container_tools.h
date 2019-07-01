@@ -38,7 +38,7 @@ namespace xo
 
 	/// copy elements of one container to another
 	template< typename InIt, typename OutIt > OutIt copy( InIt ib, InIt ie, OutIt ob )
-	{ for ( ; ib != ie; ++ib, ++ob ) *ob = *ib; }
+	{ for ( ; ib != ie; ++ib, ++ob ) *ob = *ib; return ob; }
 
 	/// append a container to another
 	template< typename C1, typename C2 > C1& append( C1& c1, const C2& c2 )
