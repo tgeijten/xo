@@ -5,25 +5,60 @@
 
 namespace xo
 {
+	bool from_prop_node( const prop_node& pn, sphere& s )
+	{
+		s.radius_ = pn.get<float>( "radius" );
+		return true;
+	}
+
+	bool from_prop_node( const prop_node& pn, box& s )
+	{
+		s.half_dim_ = 0.5f * pn.get<vec3f>( "dim" );
+		return true;
+	}
+
+	bool from_prop_node( const prop_node& pn, cylinder& s )
+	{
+		s.radius_ = pn.get<float>( "radius" );
+		s.height_ = pn.get<float>( "height" );
+		return true;
+	}
+	bool from_prop_node( const prop_node& pn, capsule& s )
+	{
+		s.radius_ = pn.get<float>( "radius" );
+		s.height_ = pn.get<float>( "height" );
+		return true;
+	}
+
+	bool from_prop_node( const prop_node& pn, cone& s )
+	{
+		s.radius_ = pn.get<float>( "radius" );
+		s.height_ = pn.get<float>( "height" );
+		return true;
+	}
+
+	bool from_prop_node( const prop_node& pn, plane& s )
+	{
+		s.normal_= pn.get<vec3f>( "normal", vec3f::unit_x() );
+		return true;
+	}
+
 	bool from_prop_node( const prop_node& pn, shape& s )
 	{
 		switch ( hash( pn.get<string>( "type" ) ) )
 		{
 		case "sphere"_hash:
-			s = sphere{ pn.get<float>( "radius" ) };
-			return true;
-		case "cylinder"_hash:
-			s = cylinder{ pn.get<float>( "radius" ), pn.get<float>( "height" ) };
-			return true;
-		case "capsule"_hash:
-			s = capsule{ pn.get<float>( "radius" ), pn.get<float>( "height" ) };
-			return true;
+			return from_prop_node( pn, std::get<sphere>( s = sphere() ) );
 		case "box"_hash:
-			s = box{ 0.5f * pn.get<vec3f>( "dim" ) };
-			return true;
+			return from_prop_node( pn, std::get<box>( s = box() ) );
+		case "cylinder"_hash:
+			return from_prop_node( pn, std::get<cylinder>( s = cylinder() ) );
+		case "capsule"_hash:
+			return from_prop_node( pn, std::get<capsule>( s = capsule() ) );
+		case "cone"_hash:
+			return from_prop_node( pn, std::get<cone>( s = cone() ) );
 		case "plane"_hash:
-			s = plane{ pn.get<vec3f>( "normal" ) };
-			return true;
+			return from_prop_node( pn, std::get<plane>( s = plane() ) );
 		default:
 			return false;
 		}

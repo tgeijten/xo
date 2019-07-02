@@ -1,8 +1,8 @@
 #pragma once
 
+#include "xo/xo_types.h"
 #include "xo/system/xo_config.h"
 #include "xo/geometry/vec3.h"
-#include "xo/xo_types.h"
 #include "xo/container/array.h"
 
 namespace xo

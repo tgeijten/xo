@@ -15,6 +15,12 @@ namespace xo
 {
 	using shape = std::variant< sphere, box, cylinder, capsule, cone, plane >;
 
+	XO_API bool from_prop_node( const prop_node& pn, sphere& s );
+	XO_API bool from_prop_node( const prop_node& pn, box& s );
+	XO_API bool from_prop_node( const prop_node& pn, cylinder& s );
+	XO_API bool from_prop_node( const prop_node& pn, capsule& s );
+	XO_API bool from_prop_node( const prop_node& pn, cone& s );
+	XO_API bool from_prop_node( const prop_node& pn, plane& s );
 	XO_API bool from_prop_node( const prop_node& pn, shape& s );
 
 	XO_API float volume( const shape& s );
