@@ -28,8 +28,10 @@ namespace xo
 			*this = std::move( newmat );
 		}
 
+		bool empty() const { return data_.empty(); }
+
 		size_t cols() const { return cols_; }
-		size_t rows() const { return data_.size() / cols_; }
+		size_t rows() const { return empty() ? 0 : data_.size() / cols_; }
 
 		iterator begin() { return data_.begin(); }
 		const_iterator begin() const { return data_.begin(); }
