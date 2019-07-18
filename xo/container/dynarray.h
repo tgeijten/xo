@@ -37,6 +37,7 @@ namespace xo
 		const_iterator end() const { return end_; }
 		const_iterator cend() const { return end_; }
 
+		bool empty() const { return begin() == end(); }
 		size_t size() const { return end() - begin(); }
 		void assign( const T& v ) { std::fill( begin(), end(), v ); }
 
