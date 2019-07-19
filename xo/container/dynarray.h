@@ -39,9 +39,11 @@ namespace xo
 
 		bool empty() const { return begin() == end(); }
 		size_t size() const { return end() - begin(); }
+
 		void assign( const T& v ) { std::fill( begin(), end(), v ); }
 
 		void resize( size_t n, const T& v = T() ) { data_.reset( new T[ n ] ); end_ = data_.get() + n; assign( v ); }
+		void clear() { data_.reset(); end_ = data_.get(); }
 
 		T* data() { return data_.get(); }
 		const T* data() const { return data_.get(); }

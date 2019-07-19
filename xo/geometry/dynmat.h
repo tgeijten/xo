@@ -29,6 +29,7 @@ namespace xo
 		}
 
 		bool empty() const { return data_.empty(); }
+		void clear() { data_.clear(); cols_ = 0; }
 
 		size_t cols() const { return cols_; }
 		size_t rows() const { return empty() ? 0 : data_.size() / cols_; }
