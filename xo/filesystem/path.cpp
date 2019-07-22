@@ -37,7 +37,8 @@ namespace xo
 	xo::path& path::make_preferred()
 	{
 		for ( char& c : data_ )
-			if ( c == '/' || c == '\\' ) c = preferred_separator();
+			if ( c == '/' || c == '\\' )
+				c = preferred_separator();
 		return *this;
 	}
 
@@ -89,7 +90,9 @@ namespace xo
 
 	xo::path& path::operator/=( const xo::string& p )
 	{
-		data_ += has_filename() ? preferred_separator() + p : p;
+		if ( !empty() )
+			data_ += preferred_separator() + p;
+		else data_ = p;
 		return *this;
 	}
 
@@ -100,7 +103,7 @@ namespace xo
 
 	path operator/( const path& p1, const string& p2 )
 	{
-		return p1.has_filename() ? path( p1.str() + path::preferred_separator() + p2 ) : path( p1.str() + p2 );
+		return !p1.empty() ? path( p1.str() + path::preferred_separator() + p2 ) : path( p2 );
 	}
 
 	xo::path operator/( const path& p1, const path& p2 )
