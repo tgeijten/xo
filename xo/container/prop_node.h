@@ -58,6 +58,9 @@ namespace xo
 		/// get the value of a child node, or a default value if it doesn't exist
 		template< typename T > T get( const key_t& key, const T& def ) const;
 
+		/// get an optional value of this node
+		template< typename T > optional<T> try_get() const;
+
 		/// get an optional value of a child node
 		template< typename T > optional<T> try_get( const key_t& key ) const;
 
@@ -221,13 +224,6 @@ namespace xo
 		return from_str( pn.raw_value(), v ); 
 	};
 
-	template< typename T > T from_prop_node( const prop_node& pn ) {
-		T value;
-		if ( from_prop_node( pn, value ) )
-			return value;
-		else xo_error( "Could not convert prop_node to " + get_type_name<T>() );
-	}
-
 	template< typename T > prop_node to_prop_node( const std::vector<T>& vec ) {
 		prop_node pn;
 		for ( size_t i = 0; i < vec.size(); ++i )
@@ -253,9 +249,12 @@ namespace xo
 	}
 
 	template< typename T >
-	T prop_node::get() const	{
+	T prop_node::get() const {
+		T value;
 		access();
-		return from_prop_node<T>( *this );
+		if ( from_prop_node( *this, value ) )
+			return value;
+		else xo_error( "Could not convert prop_node to " + get_type_name<T>() );
 	}
 
 	template< typename T >
@@ -276,16 +275,26 @@ namespace xo
 	}
 
 	template< typename T >
+	optional<T> prop_node::try_get() const {
+		T value;
+		access();
+		if ( from_prop_node( *this, value ) )
+			return value;
+		else return optional<T>();
+	}
+
+	template< typename T >
 	optional<T> prop_node::try_get( const key_t& key ) const {
 		if ( auto c = try_get_child( key ) )
-			return c->get< T >();
+			return c->try_get< T >();
 		else return optional< T >();
 	}
 
 	template< typename T >
 	bool prop_node::try_get( T& value, const key_t& key ) const	{
-		if ( auto c = try_get_child( key ) )
-		{ value = c->get< T >(); return true; }
+		if ( auto c = try_get_child( key ) ) {
+			value = c->get< T >(); return true;
+		}
 		else return false;
 	}
 
