@@ -6,7 +6,7 @@ project(xo)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 find_path(XO_INCLUDE_DIR
-    NAMES xo/system/build_config.hpp
+    NAMES xo/xo_types.h
 	PATHS ${CMAKE_CURRENT_SOURCE_DIR}
 	)
 

@@ -37,7 +37,7 @@ endif()
 if (MSVC)
 	source_group( "" FILES ${PRECOMPILED_HEADER_FILES} ${XO_ROOT} )
 	foreach(xolib ${XO_LIB_NAMES})
-	source_group("${xolib}" FILES ${XO_${xolib}} )
+		source_group("${xolib}" FILES ${XO_${xolib}} )
 	endforeach()
 	target_compile_definitions( xo PRIVATE XO_EXPORTS )
 	target_compile_options( xo PRIVATE "/MP" ) # multithreaded compilation on MSVC
