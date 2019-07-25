@@ -1,4 +1,5 @@
 #include "path.h"
+#include "xo/string/string_tools.h"
 
 namespace xo
 {
@@ -34,7 +35,7 @@ namespace xo
 		return *this /= f;
 	}
 
-	xo::path& path::make_preferred()
+	path& path::make_preferred()
 	{
 		for ( char& c : data_ )
 			if ( c == '/' || c == '\\' )
@@ -75,7 +76,9 @@ namespace xo
 
 	bool path::has_filename() const
 	{
-		return last_separator_pos() != data_.size() - 1;
+		return !empty()
+			&& last_separator_pos() != data_.size() - 1
+			&& !str_ends_with( data_, ":" );
 	}
 
 	bool path::has_parent_path() const
@@ -88,25 +91,25 @@ namespace xo
 		return data_.find_last_of( "/\\" );
 	}
 
-	xo::path& path::operator/=( const xo::string& p )
+	path& path::operator/=( const string& p )
 	{
-		if ( !empty() )
-			data_ += preferred_separator() + p;
-		else data_ = p;
+		if ( has_filename() )
+			data_ += preferred_separator() + trim_left_str( p, "/\\" );
+		else data_ += p;
 		return *this;
 	}
 
-	xo::path& path::operator/=( const path& p )
+	path& path::operator/=( const path& p )
 	{
 		return *this /= p.str();
 	}
 
 	path operator/( const path& p1, const string& p2 )
 	{
-		return !p1.empty() ? path( p1.str() + path::preferred_separator() + p2 ) : path( p2 );
+		return path( p1 ) /= p2;
 	}
 
-	xo::path operator/( const path& p1, const path& p2 )
+	path operator/( const path& p1, const path& p2 )
 	{
 		return p1 / p2.str();
 	}
@@ -116,7 +119,7 @@ namespace xo
 		return p1 / string( p2 );
 	}
 
-	xo::path operator+( const path& p1, const string& p2 )
+	path operator+( const path& p1, const string& p2 )
 	{
 		return path( p1.str() + p2 );
 	}
