@@ -70,6 +70,20 @@ namespace xo
 		XO_CHECK( path( "X:/test/" ) / "bla" == "X:/test/bla" );
 		XO_CHECK( path( "X:\\test\\bla" ).make_preferred() == "X:/test/bla" );
 
+		// some string testing
+		string a = "apple";
+		XO_CHECK( str_begins_with( a, "ap" ) );
+		XO_CHECK( str_begins_with( a, "a" ) );
+		XO_CHECK( str_begins_with( a, "apple" ) );
+		XO_CHECK( !str_begins_with( a, "apples" ) );
+		XO_CHECK( !str_begins_with( a, "p" ) );
+		XO_CHECK( !str_begins_with( a, "e" ) );
+		XO_CHECK( str_ends_with( a, "le" ) );
+		XO_CHECK( str_ends_with( a, "e" ) );
+		XO_CHECK( str_ends_with( a, "apple" ) );
+		XO_CHECK( !str_ends_with( a, "bapple" ) );
+		XO_CHECK( !str_ends_with( a, "a" ) );
+
 		index_t idx = 123;
 		int i = -10;
 		double d = 1.0 / 3.0;

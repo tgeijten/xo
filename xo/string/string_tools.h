@@ -23,16 +23,19 @@ namespace xo
 	/// get index of a substring in a string
 	XO_API index_t in_str( const string& str, const string& substr, index_t p = 0 );
 
-	/// check if a string ends with a string
+	/// check if a string begins with a string
 	XO_API bool str_begins_with( const string& str, const string& substr );
 
 	/// check if a string ends with a string
 	XO_API bool str_ends_with( const string& str, const string& substr );
 
-	/// remove leading and trailing spaces and newlines
+	/// remove leading and trailing characters
 	XO_API string trim_str( const string& str, const char* trim_chars = " \t\r\n\f\v" );
 
-	/// remove trailing spaces and newlines
+	/// remove leading characters
+	XO_API string trim_left_str( const string& str, const char* trim_chars = " \t\r\n\f\v" );
+
+	/// remove trailing characters
 	XO_API string trim_right_str( const string& str, const char* trim_chars = " \t\r\n\f\v" );
 
 	/// split a string into a vector of strings

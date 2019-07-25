@@ -48,20 +48,27 @@ namespace xo
 
 	bool str_begins_with( const string& str, const string& substr )
 	{
-		return str.find( substr ) == 0;
+		return str.compare( 0, substr.size(), substr ) == 0;
 	}
 
 	bool str_ends_with( const string& str, const string& substr )
 	{
-		return str.size() >= substr.size() && ( str.find( substr ) == str.size() - substr.size() );
+		return str.size() >= substr.size()
+			&& str.compare( str.size() - substr.size(), substr.size(), substr ) == 0;
 	}
 
 	string trim_str( const string& s, const char* space_chars )
 	{
 		auto left = s.find_first_not_of( space_chars );
-		if ( left == string::npos ) return string( "" ); // string has no non-whitespace characters
+		if ( left == string::npos ) return string(); // string has no non-whitespace characters
 		auto right = s.find_last_not_of( space_chars );
 		return s.substr( left, 1 + right - left );
+	}
+
+	string trim_left_str( const string& str, const char* trim_chars )
+	{
+		auto left = str.find_first_not_of( trim_chars );
+		return left != string::npos ? str.substr( left ) : string();
 	}
 
 	string trim_right_str( const string& s, const char* space_chars )
