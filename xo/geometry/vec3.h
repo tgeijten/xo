@@ -75,11 +75,15 @@ namespace xo
 	template< typename T > T distance( const vec3_<T>& v1, const vec3_<T>& v2 )
 	{ return sqrt( squared( v1.x - v2.x ) + squared( v1.y - v2.y ) + squared( v1.z - v2.z ) ); }
 
-	/// compare vec3
+	/// Compare vec3
 	template< typename T > bool operator==( const vec3_<T>& v1, const vec3_<T>& v2 )
 	{ return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z; }
 	template< typename T > bool operator!=( const vec3_<T>& v1, const vec3_<T>& v2 )
 	{ return !( v1 == v2 ); }
+
+	/// Compare vec3 with epsilon
+	template< typename T > bool equal( const vec3_<T>& v1, const vec3_<T>& v2, T e = constants<T>::ample_epsilon() )
+	{ return equal( v1.x, v2.x, e ) && equal( v1.y, v2.y, e ) && equal( v1.z, v2.z, e ); }
 
 	/// Normalize a vec3, returns length
 	template< typename T > T normalize( vec3_<T>& v )
