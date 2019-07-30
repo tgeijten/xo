@@ -101,7 +101,7 @@ namespace xo
 
 	/// Projection of v1 onto v2
 	template< typename T > vec3_<T> projection( const vec3_<T>& v1, const vec3_<T>& v2 )
-	{ return ( dot_product( v1, v2 ) / dot_product( v2, v2 ) ) * v2; }
+	{ return ( dot_product( v1, v2 ) / squared_length( v2 ) ) * v2; }
 
 	/// Cross product
 	template< typename T > vec3_<T> cross_product( const vec3_<T>& v1, const vec3_<T>& v2 )
