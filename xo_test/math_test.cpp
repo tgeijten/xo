@@ -95,8 +95,8 @@ namespace xo
 
 		auto a1_rd = rad( constants<double>::half_pi() );
 		auto a2_dd = deg( 180.0 );
-		auto a3 = a1_rd + a2_dd.radian();
-		auto a4 = a2_dd + a1_rd.degree();
+		auto a3 = a1_rd + radiand( a2_dd );
+		auto a4 = a2_dd + degreed( a1_rd );
 
 		auto a5_rf = radianf( deg( 90.0f ) );
 		auto a6_df = degreef( radiand( constants<float>::half_pi() ) );
@@ -114,7 +114,7 @@ namespace xo
 		XO_CHECK( equal( rad_vec[ 0 ].value, radianf( degreef( 10 ) ).value ) );
 
 
-		auto qtest = quat_from_euler( degreed( 180.0 ), degreed( 180 ), degreed( 180 ).radian().degree(), euler_order::xyz );
+		auto qtest = quat_from_euler( degreed( 180.0 ), degreed( 180 ), degreed( 180 ), euler_order::xyz );
 		auto qtest2 = quat_from_axis_angle( vec3_<float>::unit_x(), a6_df );
 
 		//xo_logvar4( a1.value, a2.value, a3.value, a4.value );

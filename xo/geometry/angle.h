@@ -28,18 +28,13 @@ namespace xo
 		/// constructor taking any value type
 		template< typename T2 > explicit angle_( const T2& v ) : value( T( v ) ) {}
 
-		/// copy constructor
-		explicit angle_( const angle_<U, T>& a ) : value( a.value ) {}
-
 		/// constructor that takes angle, converts unit and value type
-		template< angle_unit U2, typename T2 > angle_( const angle_<U2, T2>& a ) : value( angle_converter<U2, U>::convert( T( a.value ) ) ) {}
+		template< typename T2 > angle_( const angle_<angle_unit::degrees, T2>& a ) : value( angle_converter<angle_unit::degrees, U>::convert( T( a.value ) ) ) {}
+		template< typename T2 > angle_( const angle_<angle_unit::radians, T2>& a ) : value( angle_converter<angle_unit::radians, U>::convert( T( a.value ) ) ) {}
 
 		/// assignment that takes angle, converts unit and value type
-		template< angle_unit U2, typename T2 > angle_<U, T>& operator=( const angle_<U2, T2>& a ) { value = angle_converter<U2, U>::convert( T( a.value ) ); return *this; }
-
-		/// return degree copy
-		angle_< angle_unit::degrees, T > degree() const { return angle_< angle_unit::degrees, T >( angle_converter< U, angle_unit::degrees >::convert( value ) ); }
-		angle_< angle_unit::radians, T > radian() const { return angle_< angle_unit::radians, T >( angle_converter< U, angle_unit::radians >::convert( value ) ); }
+		template< typename T2 > angle_<U, T>& operator=( const angle_<angle_unit::degrees, T2>& a ) { value = angle_converter<angle_unit::degrees, U>::convert( T( a.value ) ); return *this; }
+		template< typename T2 > angle_<U, T>& operator=( const angle_<angle_unit::radians, T2>& a ) { value = angle_converter<angle_unit::radians, U>::convert( T( a.value ) ); return *this; }
 
 		/// get rad / deg value
 		T deg_value() const { return angle_converter< U, angle_unit::degrees >::convert( value ); }
@@ -76,15 +71,15 @@ namespace xo
 	};
 
 	// alias names
-	template < typename T > using radian_ = angle_< angle_unit::radians, T >;
-	template < typename T > using degree_ = angle_< angle_unit::degrees, T >;
-	using radianf = radian_< float >;
-	using radiand = radian_< double >;
-	using degreef = degree_< float >;
-	using degreed = degree_< double >;
+	template < typename T > using radian_ = angle_<angle_unit::radians, T>;
+	template < typename T > using degree_ = angle_<angle_unit::degrees, T>;
+	using radianf = radian_<float>;
+	using radiand = radian_<double>;
+	using degreef = degree_<float>;
+	using degreed = degree_<double>;
 
-	template< typename T > angle_< angle_unit::radians, T > rad( T rad ) { return angle_<angle_unit::radians, T>( rad ); }
-	template< typename T > angle_< angle_unit::degrees, T > deg( T deg ) { return angle_<angle_unit::degrees, T>( deg ); }
+	template< typename T > angle_<angle_unit::radians, T> rad( T rad ) { return angle_<angle_unit::radians, T>( rad ); }
+	template< typename T > angle_<angle_unit::degrees, T> deg( T deg ) { return angle_<angle_unit::degrees, T>( deg ); }
 
 	inline namespace literals {
 		/// user-defined literals, add 'using namespace xo::literals' to access them outside the xo namespace
