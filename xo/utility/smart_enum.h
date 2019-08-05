@@ -9,9 +9,12 @@ namespace smart_enum_detail
 	constexpr const char* sep_chars = " ,\t\n\r";
 	template< typename E > bool from_str( const std::string& str, E& e, const char* va_args ) {
 		for ( int i = 0; *va_args; ++i ) {
-			if ( std::strncmp( str.c_str(), va_args, str.size() ) == 0 ) { e = E( i ); return true; }
-			va_args += std::strcspn( va_args, sep_chars );
-			va_args += std::strspn( va_args, sep_chars );
+			size_t enum_len = std::strcspn( va_args, sep_chars );
+			if ( str.size() == enum_len && std::strncmp( str.c_str(), va_args, enum_len ) == 0 ) {
+				e = E( i ); return true;
+			}
+			size_t sep_len = std::strspn( va_args + enum_len, sep_chars );
+			va_args += enum_len + sep_len;
 		}
 		return false;
 	} 

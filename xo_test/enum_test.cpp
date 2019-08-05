@@ -15,6 +15,11 @@ namespace xo
 		XO_CHECK( f == apple );
 		XO_CHECK( to_str( banana ) == "banana" );
 		XO_CHECK( !from_str( "nonona", f ) );
+		XO_CHECK( !from_str( "", f ) );
+		XO_CHECK( !from_str( "b", f ) );
+		XO_CHECK( !from_str( "banan", f ) );
+		XO_CHECK( !from_str( "banana ", f ) );
+		XO_CHECK( !from_str( "bananana", f ) );
 		XO_CHECK( f == apple );
 	}
 }
