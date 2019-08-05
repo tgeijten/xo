@@ -75,6 +75,9 @@ namespace xo
 		vec3radd ea( 0.1_rad, 0.2_rad, 0.3_rad );
 
 		test_euler_conversion( ea, euler_order::xyz );
+		test_euler_conversion( ea, euler_order::xzy );
+		test_euler_conversion( ea, euler_order::yxz );
+		test_euler_conversion( ea, euler_order::yzx );
 		test_euler_conversion( ea, euler_order::zyx );
 		test_euler_conversion( ea, euler_order::zxy );
 

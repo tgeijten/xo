@@ -73,32 +73,53 @@ namespace xo
 		return radian_< T >( atan2( txy + twz, T( 1 ) - ( tyy + tzz ) ) );
 	}
 
-	template< typename T > vec3rad_<T> make_vec3rad( const T& x, const T& y, const T& z ) {
-		// #todo: this may be redundant if we have xo::atan2 / xo::asin, etc. returning radians
-		return vec3rad_<T>( radian_<T>( x ), radian_<T>( y ), radian_<T>( z ) );
-	}
-
 	template< typename T > vec3rad_<T> euler_xyz_from_quat( const quat_<T>& q )
 	{
-		return make_vec3rad(
-			std::atan2( -2 * ( q.y * q.z - q.w * q.x ), q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ),
+		return vec3rad_<T>(
+			std::atan2( -2 * ( q.y * q.z - q.w * q.x ),
+				q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ),
 			std::asin( 2 * ( q.x * q.z + q.w * q.y ) ),
-			std::atan2( -2 * ( q.x * q.y - q.w * q.z ), q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z )
+			std::atan2( -2 * ( q.x * q.y - q.w * q.z ),
+				q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z )
 		);
 	}
 
-	template< typename T > vec3rad_<T> euler_zyx_from_quat( const quat_<T>& q )
+	template< typename T > vec3rad_<T> euler_xzy_from_quat( const quat_<T>& q )
 	{
-		return make_vec3rad(
-			std::atan2( 2 * ( q.y * q.z + q.w * q.x ), q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ),
-			std::asin( -2 * ( q.x * q.z - q.w * q.y ) ),
-			std::atan2( 2 * ( q.x * q.y + q.w * q.z ), q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z )
+		return vec3rad_<T>(
+			std::atan2( 2 * ( q.y * q.z + q.w * q.x ),
+				q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z ),
+			std::atan2( 2 * ( q.x * q.z + q.w * q.y ),
+				q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z ),
+			std::asin( -2 * ( q.x * q.y - q.w * q.z ) )
+		);
+	}
+
+	template< typename T > vec3rad_<T> euler_yxz_from_quat( const quat_<T>& q )
+	{
+		return vec3rad_<T>(
+			std::asin( -2 * ( q.y * q.z - q.w * q.x ) ),
+			std::atan2( 2 * ( q.x * q.z + q.w * q.y ),
+				q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ),
+			std::atan2( 2 * ( q.x * q.y + q.w * q.z ),
+				q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z )
+		);
+	}
+
+	template< typename T > vec3rad_<T> euler_yzx_from_quat( const quat_<T>& q )
+	{
+		return vec3rad_<T>(
+			std::atan2( -2 * ( q.y * q.z - q.w * q.x ),
+				q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z ),
+			std::atan2( -2 * ( q.x * q.z - q.w * q.y ),
+				q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z ),
+			std::asin( 2 * ( q.x * q.y + q.w * q.z ) )
 		);
 	}
 
 	template< typename T > vec3rad_<T> euler_zxy_from_quat( const quat_<T>& q )
 	{
-		return make_vec3rad(
+		return vec3rad_<T>(
 			std::asin( 2 * ( q.y * q.z + q.w * q.x ) ),
 			std::atan2( -2 * ( q.x * q.z - q.w * q.y ),
 				q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ),
@@ -107,12 +128,26 @@ namespace xo
 		);
 	}
 
+	template< typename T > vec3rad_<T> euler_zyx_from_quat( const quat_<T>& q )
+	{
+		return vec3rad_<T>(
+			std::atan2( 2 * ( q.y * q.z + q.w * q.x ),
+				q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ),
+			std::asin( -2 * ( q.x * q.z - q.w * q.y ) ),
+			std::atan2( 2 * ( q.x * q.y + q.w * q.z ),
+				q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z )
+			);
+	}
+
 	/// get Euler angles from quat
 	template< typename T > vec3rad_<T> euler_from_quat( const quat_<T>& q, euler_order eo = euler_order::xyz )
 	{
 		switch ( eo )
 		{
 		case euler_order::xyz: return euler_xyz_from_quat( q );
+		case euler_order::xzy: return euler_xzy_from_quat( q );
+		case euler_order::yxz: return euler_yxz_from_quat( q );
+		case euler_order::yzx: return euler_yzx_from_quat( q );
 		case euler_order::zxy: return euler_zxy_from_quat( q );
 		case euler_order::zyx: return euler_zyx_from_quat( q );
 		default:
