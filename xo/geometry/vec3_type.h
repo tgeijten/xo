@@ -12,11 +12,12 @@ namespace xo
 
 		constexpr vec3_() : x(), y(), z() {}
 		constexpr vec3_( T px, T py, T pz ) : x( px ), y( py ), z( pz ) {}
-		template< typename T2 > vec3_( const vec3_<T2>& o ) : x( T( o.x ) ), y( T( o.y ) ), z( T( o.z ) ) {}
+		template< typename U > vec3_( U px, U py, U pz ) : x( T( px ) ), y( T( py ) ), z( T( pz ) ) {}
+		template< typename U > vec3_( const vec3_<U>& o ) : x( T( o.x ) ), y( T( o.y ) ), z( T( o.z ) ) {}
 
 		/// assignment
-		template< typename T2 > vec3_<T>& operator=( const vec3_<T2>& o ) { x = T( o.x ); y = T( o.y ); z = T( o.z ); return *this; }
-		template< typename T2 > void set( T2 px, T2 py, T2 pz ) { x = T( px ); y = T( py ); z = T( pz ); }
+		template< typename U > vec3_<T>& operator=( const vec3_<U>& o ) { x = T( o.x ); y = T( o.y ); z = T( o.z ); return *this; }
+		template< typename U > void set( U px, U py, U pz ) { x = T( px ); y = T( py ); z = T( pz ); }
 
 		/// data
 		T x, y, z;
