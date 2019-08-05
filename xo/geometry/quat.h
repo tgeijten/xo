@@ -133,6 +133,14 @@ namespace xo
 		else return std::pair< vec3_<T>, radian_<T> >{ vec3_<T>::unit_x(), radian_<T>( T() ) };
 	}
 
+	/// Get rotation around specific axis
+	// #todo: verify and optimize
+	template< typename T > radian_<T> rotation_around_axis( const quat_<T>& q, const vec3_<T>& a ) {
+		auto p = projection( vec3_<T>( q.x, q.y, q.z ), a );
+		auto qp = quat_<T>( q.w, p.x, p.y, p.z );
+		return radian_<T>( 2 * std::acos( qp.w / qp.length() ) );
+	}
+
 	/// Get quaternion using three axis vectors
 	template< typename T > quat_<T> quat_from_axes( const vec3_<T>& x, const vec3_<T>& y, const vec3_<T>& z ) {
 		//xo_assert( is_normalized( x ) && is_normalized( y ) && is_normalized( z ) );

@@ -91,4 +91,13 @@ namespace xo
 		auto wiki_angles = ToEulerAngles( wiki_q );
 
 	}
+
+	XO_TEST_CASE( xo_angle_decomposition_test )
+	{
+		auto q = quat_from_euler( 2_rad, 0_rad, 1_rad, euler_order::zyx );
+		auto d = rotation_around_axis( q, vec3d::unit_x() );
+		auto r = rotation_vector_from_quat( q );
+		auto testd = dot_product( r, vec3d::unit_x() );
+		XO_CHECK( equal( d.value, 2.0 ) );
+	}
 }
