@@ -1,6 +1,8 @@
 #pragma once
 
 #include "xo/xo_types.h"
+#include "xo/system/log.h"
+#include "xo/system/log_sink.h"
 #include <string>
 #include <vector>
 
@@ -19,6 +21,11 @@
 #define XO_CHECK_MESSAGE( _operation_, _message_ ) \
 	try { bool _result_ = ( _operation_ ); XO_ACTIVE_TEST_CASE.check( _result_, #_operation_, _message_ ); } \
 	catch( std::exception& e ) { XO_ACTIVE_TEST_CASE.check( false, #_operation_, e.what() ); }
+
+#define XO_TEST_MAIN \
+	int main( int argc, char* argv[] ) { \
+		xo::log::console_sink sink( xo::log::info_level ); xo::log::add_sink( &sink ); \
+		return xo::test::run_all(); }
 
 namespace xo
 {
