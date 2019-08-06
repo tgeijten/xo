@@ -11,26 +11,26 @@ namespace xo
 	template< typename T > T deg_to_rad( T deg_value ) { return ( constants<T>::pi() / T( 180 ) ) * deg_value; }
 
 	template< angle_unit A, angle_unit B > struct angle_converter
-	{ template< typename T > static const T& convert( const T& v ) { return v; } };
+	{ template< typename T > static constexpr T convert( T v ) { return v; } };
 
 	template<> struct angle_converter< angle_unit::degrees, angle_unit::radians >
-	{ template< typename T > static T convert( T v ) { return deg_to_rad( v ); } };
+	{ template< typename T > static constexpr T convert( T v ) { return deg_to_rad( v ); } };
 
 	template<> struct angle_converter< angle_unit::radians, angle_unit::degrees >
-	{ template< typename T > static T convert( T v ) { return rad_to_deg( v ); } };
+	{ template< typename T > static constexpr T convert( T v ) { return rad_to_deg( v ); } };
 
 	template< angle_unit U, typename T >
 	struct angle_
 	{
 		/// default constructor
-		explicit angle_() : value( T() ) {}
+		explicit constexpr angle_() : value( T() ) {}
 
 		/// constructor taking any value type
-		template< typename T2 > explicit angle_( const T2& v ) : value( T( v ) ) {}
+		template< typename T2 > explicit constexpr angle_( const T2& v ) : value( T( v ) ) {}
 
 		/// constructor that takes angle, converts unit and value type
-		template< typename T2 > angle_( const angle_<angle_unit::degrees, T2>& a ) : value( angle_converter<angle_unit::degrees, U>::convert( T( a.value ) ) ) {}
-		template< typename T2 > angle_( const angle_<angle_unit::radians, T2>& a ) : value( angle_converter<angle_unit::radians, U>::convert( T( a.value ) ) ) {}
+		template< typename T2 > constexpr angle_( const angle_<angle_unit::degrees, T2>& a ) : value( angle_converter<angle_unit::degrees, U>::convert( T( a.value ) ) ) {}
+		template< typename T2 > constexpr angle_( const angle_<angle_unit::radians, T2>& a ) : value( angle_converter<angle_unit::radians, U>::convert( T( a.value ) ) ) {}
 
 		/// assignment that takes angle, converts unit and value type
 		template< typename T2 > angle_<U, T>& operator=( const angle_<angle_unit::degrees, T2>& a ) { value = angle_converter<angle_unit::degrees, U>::convert( T( a.value ) ); return *this; }
@@ -52,7 +52,7 @@ namespace xo
 		angle_& operator-=( const angle_& other ) { value -= other.value; return *this; }
 
 		/// negation
-		angle_ operator-() const { return angle_( -value ); }
+		constexpr angle_ operator-() const { return angle_( -value ); }
 
 		/// comparison operators
 		bool operator>( const angle_& other ) const { return value > other.value; }
@@ -87,8 +87,8 @@ namespace xo
 		inline degreef operator"" _degf( unsigned long long int v ) { return degreef( v ); }
 		inline radianf operator"" _radf( long double v ) { return radianf( v ); }
 		inline radianf operator"" _radf( unsigned long long int v ) { return radianf( v ); }
-		inline degreed operator"" _deg( long double v ) { return degreed( v ); }
-		inline degreed operator"" _deg( unsigned long long int v ) { return degreed( v ); }
+		inline constexpr degreed operator"" _deg( long double v ) { return degreed( v ); }
+		inline constexpr degreed operator"" _deg( unsigned long long int v ) { return degreed( v ); }
 		inline radiand operator"" _rad( long double v ) { return radiand( v ); }
 		inline radiand operator"" _rad( unsigned long long int v ) { return radiand( v ); }
 	}

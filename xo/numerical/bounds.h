@@ -9,10 +9,10 @@ namespace xo
 	class bounds
 	{
 	public:
-		bounds() : lower(), upper() {};
-		bounds( const T& lower_bound, const T& upper_bound ) : lower( lower_bound ), upper( upper_bound ) {};
-		template< typename U > bounds( const U& lower_bound, const U& upper_bound ) : lower( T( lower_bound ) ), upper( T( upper_bound ) ) {};
-		template< typename U > bounds( const bounds< U >& other ) : lower( T( other.lower ) ), upper( T( other.upper ) ) {};
+		constexpr bounds() : lower(), upper() {};
+		constexpr bounds( const T& lower_bound, const T& upper_bound ) : lower( lower_bound ), upper( upper_bound ) {};
+		template< typename U > constexpr bounds( const U& lower_bound, const U& upper_bound ) : lower( T( lower_bound ) ), upper( T( upper_bound ) ) {};
+		template< typename U > constexpr bounds( const bounds< U >& other ) : lower( T( other.lower ) ), upper( T( other.upper ) ) {};
 
 		bool is_within( const T& value ) const { return ( value >= lower ) && ( value <= upper ); }
 		T range() const { return upper - lower; }
