@@ -1,6 +1,13 @@
 #pragma once
 
 #include "xo/xo_types.h"
+
+#ifdef XO_COMP_MSVC
+#	define NOMINMAX
+#	define WIN32_LEAN_AND_MEAN
+#	include <windows.h>
+#endif
+
 #include "xo/system/log.h"
 #include "xo/system/log_sink.h"
 #include <string>

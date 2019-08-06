@@ -2,6 +2,7 @@
 #include "xo/system/log.h"
 #include "xo/system/assert.h"
 #include "xo/container/container_tools.h"
+#include "system_tools.h"
 
 namespace xo
 {
@@ -35,6 +36,10 @@ namespace xo
 				log::error( "WARNING: ", tests_failed, " of ", total, " tests FAILED!" );
 			else
 				log::info( "Performed ", total, " tests with ", checks_passed, " checks; ALL CLEAR :-)" );
+
+#if XO_IS_DEBUG_BUILD && defined( XO_COMP_MSVC )
+			xo::wait_for_key();
+#endif
 
 			return tests_failed;
 		}
