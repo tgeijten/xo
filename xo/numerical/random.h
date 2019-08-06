@@ -25,6 +25,8 @@ namespace xo
 
 	XO_API random_number_generator& global_random_number_generator();
 	template< typename T, XO_ENABLE_IF_FLOATING_POINT > T rand_uni( T min, T max ) { return global_random_number_generator().uni( min, max ); }
+	template< typename T, XO_ENABLE_IF_FLOATING_POINT > T rand_uni( const xo::bounds<T>& b ) { return global_random_number_generator().uni( b.lower, b.upper ); }
 	template< typename T, XO_ENABLE_IF_INTEGRAL > T rand_uni_int( T min, T max ) { return global_random_number_generator().uni( min, max ); }
+	template< typename T, XO_ENABLE_IF_INTEGRAL > T rand_uni_int( const xo::bounds<T>& b ) { return global_random_number_generator().uni( b.lower, b.upper ); }
 	template< typename T, XO_ENABLE_IF_FLOATING_POINT > T rand_norm( T mean, T stdev ) { return global_random_number_generator().norm( mean, stdev ); }
 }
