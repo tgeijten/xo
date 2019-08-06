@@ -16,6 +16,13 @@ namespace xo
 		internal_measure_ += epoch_ - now;
 	}
 
+	void stopwatch::start()
+	{
+		auto prev = epoch_;
+		epoch_ = timer_();
+		internal_measure_ += epoch_ - prev;
+	}
+
 	prop_node stopwatch::get_report( int decimals )
 	{
 		auto old_precision = set_to_str_precision( decimals );
@@ -23,7 +30,7 @@ namespace xo
 		prop_node pn;
 		for ( auto& m : measures_ )
 			pn.push_back( m.first, m.second );
-		pn.push_back( "internal", internal_measure_ );
+		pn.push_back( "overhead", internal_measure_ );
 
 		set_to_str_precision( old_precision );
 

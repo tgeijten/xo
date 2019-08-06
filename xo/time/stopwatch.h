@@ -18,6 +18,9 @@ namespace xo
 		/// add a measure with a specific tag. identically names measures are summed
 		void add_measure( const string& s );
 
+		/// starts a measure, everything in between will be considered overhead
+		void start();
+
 		/// get report as a prop_node
 		prop_node get_report( int decimals = 6 );
 		
