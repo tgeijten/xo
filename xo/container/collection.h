@@ -14,23 +14,19 @@ namespace xo
 		~collection() {}
 
 		template< typename T > handle<T> push_back( const T& e ) {
-			return get_vec<T>().push_back( e );
+			return data<T>().push_back( e );
 		}
 		template< typename T > handle<T> push_back( T&& e ) {
-			return get_vec<T>().push_back( std::move( e ) );
+			return data<T>().push_back( std::move( e ) );
 		}
 
-		template< typename T > const T& operator[]( handle<T> i ) const {
-			return get_vec<T>()[ i ];
-		}
-		template< typename T > T& operator[]( handle<T> i ) {
-			return get_vec<T>()[ i ];
-		}
+		template< typename T > const T& operator[]( handle<T> i ) const { return data<T>()[ i ]; }
+		template< typename T > T& operator[]( handle<T> i ) { return data<T>()[ i ]; }
 
-		template< typename T > const handle_vector<T>& get_vec() const {
+		template< typename T > const handle_vector<T>& data() const {
 			return std::get< handle_vector<T> >( data_ );
 		}
-		template< typename T > handle_vector<T>& get_vec() {
+		template< typename T > handle_vector<T>& data() {
 			return std::get< handle_vector<T> >( data_ );
 		}
 
