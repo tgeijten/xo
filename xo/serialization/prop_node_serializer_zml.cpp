@@ -44,8 +44,12 @@ namespace xo
 		}
 	}
 
-	void read_zml_layer( char_stream& str, prop_node& parent, const string& close, error_code* ec, const path& folder, const prop_node& root )
+	void read_zml_layer( char_stream& str, prop_node& parent, const string& close, error_code* ec, const path& folder, const prop_node& root, prop_node& macros )
 	{
+		// keep track of the number of macros so we can delete them at the end of this scope
+		auto macro_count = macros.size(); 
+
+		// iterate over all items in this scope
 		for ( string t = get_zml_token( str, ec ); t != close; t = get_zml_token( str, ec ) )
 		{
 			if ( t.empty() ) // check if the stream has ended while expecting a close tag
@@ -60,15 +64,20 @@ namespace xo
 			}
 			else
 			{
+				prop_node* next_parent = nullptr;
+
 				// check if we're reading an array or if this is a label
 				if ( close != "]" )
 				{
 					if ( t != "{" && t != "[" )
 					{
-						// read label
-						if ( !isalpha( t[ 0 ] ) )
+						// t is a label
+						if ( t[ 0 ] == '$' )
+							next_parent = &macros.push_back( t ); // add macro
+						else if ( !isalpha( t[ 0 ] ) )
 							return zml_error( str, ec, "Invalid label " + t );
-						parent.push_back( t );
+						else
+							next_parent = &parent.push_back( t ); // add new item
 
 						// read = or :
 						t = get_zml_token( str, ec );
@@ -77,26 +86,46 @@ namespace xo
 						else if ( t != "{" && t != "[" )
 							return zml_error( str, ec, "Expected '=', ':', '{' or '['" );
 					}
+					else
+					{
+						// the previous item has both a value and children
+						next_parent = &parent.back().second;
+					}
 				}
-				else parent.push_back( "" ); // add array child
+				else next_parent = &parent.push_back( "" ); // add array child
 
 				// parse value element after
 				if ( t == "{" ) // new group
-					read_zml_layer( str, parent.back().second, "}", ec, folder, root );
+					read_zml_layer( str, *next_parent, "}", ec, folder, root, macros );
 				else if ( t == "[" ) // new array
-					read_zml_layer( str, parent.back().second, "]", ec, folder, root );
-				else if ( str_begins_with( t, "@" ) )
+					read_zml_layer( str, *next_parent, "]", ec, folder, root, macros );
+				else if ( str_begins_with( t, '@' ) )
 				{
+					// assign previous value
 					if ( auto ref_pn = root.try_get_query( t.substr( 1 ) ) )
-						parent.back().second = std::move( *ref_pn );
+						*next_parent = std::move( *ref_pn );
 					else return zml_error( str, ec, "Could not find " + t );
+				}
+				else if ( str_begins_with( t, '$' ) )
+				{
+					// assign macro
+					auto it = std::find_if( macros.rbegin(), macros.rend(), [&]( auto& l ) { return l.first == t; } );
+					if ( it == macros.rend() )
+						zml_error( str, ec, "Undefined variable: " + t );
+					else 
+						*next_parent = it->second;
 				}
 				else
 				{
-					parent.back().second.set_value( std::move( t ) );
+					// assign value
+					next_parent->set_value( std::move( t ) );
 				}
 			}
 		}
+
+		// macros are limited by scope
+		while ( macros.size() > macro_count )
+			macros.pop_back();
 	}
 
 	prop_node parse_zml( char_stream& str, error_code* ec, const path& folder )
@@ -105,8 +134,8 @@ namespace xo
 		str.set_delimiter_chars( " \n\r\t\v" );
 		str.set_quotation_chars( "\"'" );
 
-		prop_node root;
-		read_zml_layer( str, root, "", ec, folder, root );
+		prop_node root, macros;
+		read_zml_layer( str, root, "", ec, folder, root, macros );
 		return root;
 	}
 

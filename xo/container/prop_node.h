@@ -25,6 +25,8 @@ namespace xo
 		using container_t = std::vector< pair_t >;
 		using iterator = container_t::iterator;
 		using const_iterator = container_t::const_iterator;
+		using reverse_iterator = container_t::reverse_iterator;
+		using const_reverse_iterator = container_t::const_reverse_iterator;
 
 		/// constructors
 		prop_node() : accessed_flag( false ) {}
@@ -173,6 +175,8 @@ namespace xo
 		iterator begin() { access(); return children.begin(); }
 		const_iterator begin() const { access(); return children.begin(); }
 		const_iterator cbegin() const { access(); return children.cbegin(); }
+		reverse_iterator rbegin() { access(); return children.rbegin(); }
+		const_reverse_iterator rbegin() const { access(); return children.rbegin(); }
 		const pair_t& front() const { return children.front(); }
 		pair_t& front() { return children.front(); }
 
@@ -180,6 +184,8 @@ namespace xo
 		iterator end() { return children.end(); }
 		const_iterator end() const { return children.end(); }
 		const_iterator cend() const { return children.cend(); }
+		reverse_iterator rend() { access(); return children.rend(); }
+		const_reverse_iterator rend() const { access(); return children.rend(); }
 		const pair_t& back() const { return children.back(); }
 		pair_t& back() { return children.back(); }
 
