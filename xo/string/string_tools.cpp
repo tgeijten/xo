@@ -51,10 +51,20 @@ namespace xo
 		return str.compare( 0, substr.size(), substr ) == 0;
 	}
 
+	bool str_begins_with( const string& str, char c )
+	{
+		return !str.empty() && str.front() == c;
+	}
+
 	bool str_ends_with( const string& str, const string& substr )
 	{
 		return str.size() >= substr.size()
 			&& str.compare( str.size() - substr.size(), substr.size(), substr ) == 0;
+	}
+
+	bool str_ends_with( const string& str, char c )
+	{
+		return !str.empty() && str.back() == c;
 	}
 
 	string trim_str( const string& s, const char* space_chars )

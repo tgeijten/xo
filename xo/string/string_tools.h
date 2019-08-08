@@ -26,8 +26,14 @@ namespace xo
 	/// check if a string begins with a string
 	XO_API bool str_begins_with( const string& str, const string& substr );
 
+	/// check if a string begins with a string
+	XO_API bool str_begins_with( const string& str, char c );
+
 	/// check if a string ends with a string
 	XO_API bool str_ends_with( const string& str, const string& substr );
+
+	/// check if a string ends with a string
+	XO_API bool str_ends_with( const string& str, char c );
 
 	/// remove leading and trailing characters
 	XO_API string trim_str( const string& str, const char* trim_chars = " \t\r\n\f\v" );
