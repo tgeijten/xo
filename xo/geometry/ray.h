@@ -7,7 +7,7 @@ namespace xo
 	template< typename T >
 	struct ray_
 	{
-		ray_() : p(), q() {}
+		ray_() : pos_(), dir_() {}
 		ray_( const vec3_<T>& pos, const vec3_<T>& dir ) : pos_( pos ), dir_( dir ) {}
 
 		vec3_<T> pos_;
