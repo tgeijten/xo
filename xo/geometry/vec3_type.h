@@ -27,8 +27,6 @@ namespace xo
 		T& operator[]( index_t idx ) { return (&x)[idx]; }
 
 		/// const properties
-		T length() const { return sqrt( x * x + y * y + z * z ); }
-		T squared_length() const { return x * x + y * y + z * z; }
 		bool is_null() const { return x == T(0) && y == T(0) && z == T(0); }
 
 		/// modify vec3
