@@ -25,7 +25,7 @@ namespace xo
 		proxy& operator=( const value_type& value ) { return set( value ); }
 
 		const value_type& get() const { return typename proxy_data< T, I >::get_value( index_ ); }
-		operator const value_t&() const { return get(); }
+		operator const value_type&() const { return get(); }
 
 		friend bool operator==( const proxy a, const proxy b ) { return a.index_ == b.index_; }
 		friend bool operator!=( const proxy a, const proxy b ) { return a.index_ != b.index_; }
