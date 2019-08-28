@@ -58,6 +58,9 @@ namespace xo
 	/// get quaternion conjugate
 	template< typename T > quat_<T> conjugate( quat_<T> q ) { q.x = -q.x; q.y = -q.y; q.z = -q.z; return q; }
 
+	/// get quaternion conjugate
+	template< typename T > quat_<T> operator-( quat_<T> q ) { q.x = -q.x; q.y = -q.y; q.z = -q.z; return q; }
+
 	/// get quaternion inverse
 	template< typename T > quat_<T> inverse( quat_<T> q )
 	{ auto f = T( -1 ) / squared_length( q ); q.x *= f; q.y *= f; q.z *= f; return q; }
@@ -76,7 +79,7 @@ namespace xo
 
 	/// make quaternion from axis and angle
 	template< typename T > quat_<T> quat_from_rotation_vector( vec3_<T> v ) {
-		auto l = v.length();
+		auto l = length( v );
 		if ( l > constants<T>::epsilon() ) {
 			v /= l;
 			T ha = T( 0.5 ) * l;
