@@ -224,7 +224,7 @@ namespace xo
 			auto xo_x = normalized( xo_v2 - xo_v1 );
 			auto xo_y = normalized( cross_product( xo_x, normalized( xo_v2 ) ) );
 			auto xo_z = cross_product( xo_x, xo_y );
-			xo_logvar3( xo_x.length(), xo_y.length(), xo_z.length() );
+			xo_logvar3( length( xo_x ), length( xo_y ), length( xo_z ) );
 			auto xo_q1 = quat_from_axes( xo_x, xo_y, xo_z );
 			auto xo_q2 = quat_from_axis_angle( normalized( vec3( rv[ 6 ], rv[ 7 ], rv[ 8 ] ) ), rad( rv[ 9 ] ) );
 			auto xo_q3 = xo_q1 * xo_q2;
