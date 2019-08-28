@@ -35,7 +35,7 @@ namespace xo
 
 	/// get length of a quat
 	template< typename T > T length( const quat_<T>& q )
-	{ return sqrt( q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z ); }
+	{ return std::sqrt( q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z ); }
 
 	template< typename T > T squared_length( const quat_<T>& q )
 	{ return q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z; }
@@ -60,7 +60,7 @@ namespace xo
 
 	/// get quaternion inverse
 	template< typename T > quat_<T> inverse( quat_<T> q )
-	{ auto s = squared_length( q ); xo_assert( s > T( 0 ) ); auto f = -inv( s ); q.x *= f; q.y *= f; q.z *= f; return q; }
+	{ auto f = T( -1 ) / squared_length( q ); q.x *= f; q.y *= f; q.z *= f; return q; }
 
 	/// return quaternion in which w is positive (negate if w < 0)
 	template< typename T > quat_<T> positive( quat_<T> q )
@@ -138,7 +138,7 @@ namespace xo
 	template< typename T > radian_<T> rotation_around_axis( const quat_<T>& q, const vec3_<T>& a ) {
 		auto p = projection( vec3_<T>( q.x, q.y, q.z ), a );
 		auto qp = quat_<T>( q.w, p.x, p.y, p.z );
-		return radian_<T>( 2 * std::acos( qp.w / qp.length() ) );
+		return radian_<T>( 2 * std::acos( qp.w / length( qp ) ) );
 	}
 
 	/// Get quaternion using three axis vectors

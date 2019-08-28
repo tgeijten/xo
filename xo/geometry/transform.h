@@ -24,13 +24,13 @@ namespace xo
 		/// concatenate transforms
 		transform_<T> operator*( const transform_<T>& t ) const { return transform_<T>( p + q * t.p, q * t.q ); }
 		transform_<T> inv() const { auto iq = -q; return transform_<T>( iq * -p, iq ); }
-		transform_<T> inv_trans( const transform_<T>& t ) const { return transform_<T>( q.conjugate() * ( t.p - p ), q.conjugate() * t.q ); }
+		transform_<T> inv_trans( const transform_<T>& t ) const { return transform_<T>( conjugate( q ) * ( t.p - p ), conjugate( q ) * t.q ); }
 
 		vec3_<T> operator*( const vec3_<T>& v ) const { return p + q * v; }
-		vec3_<T> inv_trans( const vec3_<T>& v ) const { return q.conjugate() * ( v - p ); }
+		vec3_<T> inv_trans( const vec3_<T>& v ) const { return conjugate( q ) * ( v - p ); }
 
 		quat_<T> operator*( const quat_<T>& o ) const { return q * o; }
-		quat_<T> inv_trans( const quat_<T>& o ) const { return q.conjugate() * o; }
+		quat_<T> inv_trans( const quat_<T>& o ) const { return conjugate( q ) * o; }
 
 		static transform_<T> identity() { return transform_<T>( vec3_<T>::zero(), quat_<T>::identity() ); }
 	};
