@@ -1,11 +1,11 @@
 #pragma once
 
 #include "xo/system/assert.h"
-#include <stdint.h>
+#include "xo/xo_types.h"
 
 namespace xo
 {
-	template< typename T, typename I = uint32_t >
+	template< typename T, typename I = uint32 >
 	struct handle
 	{
 		using id_type = I;

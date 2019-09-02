@@ -7,7 +7,7 @@
 namespace xo
 {
 	/// vector that can be accessed with handles
-	template< typename T, typename I = uint32_t >
+	template< typename T, typename I = uint32 >
 	class handle_vector : protected std::vector<T>
 	{
 	public:

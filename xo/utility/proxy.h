@@ -2,17 +2,17 @@
 
 #include "xo/system/assert.h"
 #include "xo/container/indexed_set.h"
-#include <stdint.h>
+#include "xo/xo_types.h"
 
 namespace xo
 {
-	template< typename T, typename I = uint32_t >
+	template< typename T, typename I = uint32 >
 	struct proxy_data {
 		static const T& get_value( I index ) { xo_error( "proxy_data not implemented" ); }
 		static I get_index( const T& value ) { xo_error( "proxy_data not implemented" ); }
 	};
 
-	template< typename T, typename I = uint32_t >
+	template< typename T, typename I = uint32 >
 	struct proxy
 	{
 		using value_type = T;
