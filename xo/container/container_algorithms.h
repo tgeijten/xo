@@ -6,6 +6,7 @@
 #include "xo/system/assert.h"
 #include "xo/xo_types.h"
 
+// #todo: check this header
 #ifdef XO_COMP_MSVC
 #	define NOMINMAX
 #	define WIN32_LEAN_AND_MEAN
