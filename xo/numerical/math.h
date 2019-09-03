@@ -13,6 +13,9 @@ namespace xo
 	template< typename T > const T& max( const T& v1, const T& v2 ) { return v1 < v2 ? v2 : v1; }
 	template< typename T > const T& max( const T& v1, const T& v2, const T& v3 ) { return max( v1, max( v2, v3 ) ); }
 
+	/// abs
+	template< typename T > T abs( T v ) { return v < T(0) ? -v : v; }
+
 	/// inverse of v (1 / v)
 	template< typename T > T inv( T v ) { return T(1) / v; }
 
