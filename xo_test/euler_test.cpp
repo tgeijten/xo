@@ -67,9 +67,10 @@ namespace xo
 		{
 			auto q = quat_from_euler( ea, eo );
 			auto ea2 = euler_from_quat( q, eo );
-			auto ea_val = vec3d( vec3_< degreed >( ea ) );
-			auto ea2_val = vec3d( vec3_< degreed >( ea2 ) );
-			XO_CHECK_MESSAGE( equal( ea_val, ea2_val ), to_str( ea_val ) + " != " + to_str( ea2_val ) );
+			auto ea_val = vec3_< degreed >( ea );
+			auto ea2_val = vec3_< degreed >( ea2 );
+			auto e = degreed( constantsd::ample_epsilon() );
+			XO_CHECK_MESSAGE( equal( ea_val, ea2_val, e ), to_str( ea_val ) + " != " + to_str( ea2_val ) );
 		};
 
 		vec3radd ea( 0.1_rad, 0.2_rad, 0.3_rad );

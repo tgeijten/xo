@@ -62,10 +62,6 @@ namespace xo
 		bool operator==( const angle_& other ) const { return value == other.value; }
 		bool operator!=( const angle_& other ) const { return value != other.value; }
 
-		/// explicit type conversion (use with care)
-		explicit operator float() const { return static_cast<float>( value ); }
-		explicit operator double() const { return static_cast<double>( value ); }
-
 		/// actual value
 		T value;
 	};
