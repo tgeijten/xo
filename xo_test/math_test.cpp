@@ -93,12 +93,12 @@ namespace xo
 		//auto ang2 = radian( ang1 );
 		//auto ang3 = ang1 + degree( 180 );
 
-		auto a1_rd = rad( constants<double>::half_pi() );
-		auto a2_dd = deg( 180.0 );
+		auto a1_rd = radiand( constants<double>::half_pi() );
+		auto a2_dd = degreed( 180.0 );
 		auto a3 = a1_rd + radiand( a2_dd );
 		auto a4 = a2_dd + degreed( a1_rd );
 
-		auto a5_rf = radianf( deg( 90.0f ) );
+		auto a5_rf = radianf( ( 90.0_degf ) );
 		auto a6_df = degreef( radiand( constants<float>::half_pi() ) );
 
 		auto a1s = 0.5 * a1_rd;
@@ -114,11 +114,20 @@ namespace xo
 		XO_CHECK( equal( rad_vec[ 0 ].value, radianf( degreef( 10 ) ).value ) );
 
 
-		auto qtest = quat_from_euler( degreed( 180.0 ), degreed( 180 ), degreed( 180 ), euler_order::xyz );
+		auto qtest = quat_from_euler( 180.0_deg, 180_deg, 180_deg, euler_order::xyz );
 		auto qtest2 = quat_from_axis_angle( vec3_<float>::unit_x(), a6_df );
+		auto qtest3 = quat_from_axis_angle( vec3_<double>::unit_y(), a1_rd );
+		auto p = axis_angle_from_quat( qtest2 );
+		XO_CHECK( equal( p.first, vec3f::unit_x() ) );
+		XO_CHECK( equal( p.second, radianf( a6_df ), radianf( constants<float>::ample_epsilon() ) ) );
 
-		//xo_logvar4( a1.value, a2.value, a3.value, a4.value );
-		//xo_logvar4( sizeof( a1_rd ), sizeof( a2_dd ), sizeof( a3 ), sizeof( a4 ) );
+		radian_<float> r1( 1 );
+		degreed dd( 90 );
+		radianf r2;
+		r2 = radianf( dd );
+
+		auto r3 = r1 + r2;
+		XO_CHECK( r1 < r2 );
 	}
 
 	void xo_clamp_test()

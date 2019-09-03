@@ -7,6 +7,7 @@
 #include <cmath>
 #include <fstream>
 #include "xo/string/string_tools.h"
+#include "xo/numerical/constants.h"
 
 namespace xo
 {
