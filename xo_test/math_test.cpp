@@ -102,8 +102,8 @@ namespace xo
 		auto a6_df = degreef( radiand( constants<float>::half_pi() ) );
 
 		auto a1s = 0.5 * a1_rd;
-		auto a2s = 0.5f * a2_dd;
-		auto a3s = 2 * a3;
+		auto a2s = 0.5 * a2_dd;
+		auto a3s = 2.0 * a3;
 
 		auto sin1 = sin( a1_rd );
 		auto sin4 = sin( a4 );

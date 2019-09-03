@@ -41,15 +41,17 @@ namespace xo
 		T rad_value() const { return angle_converter< U, angle_unit::radians >::convert( value ); }
 
 		/// scalar multiplication and division
-		template< typename TS > angle_& operator*=( const TS& s ) { value *= T(s); return *this; }
+		angle_& operator*=( const T& s ) { value *= T(s); return *this; }
+		angle_& operator/=( const T& s ) { value /= T(s); return *this; }
 		angle_ operator*( const angle_& s ) const { return angle_( value * s.value ); }
-		template< typename TS > angle_ operator*( const TS& s ) const { return angle_( value * T(s) ); }
-		template< typename TS > angle_& operator/=( const TS& s ) { value /= T(s); return *this; }
-		template< typename TS > angle_ operator/( const TS& s ) const { return angle_( value / T(s) ); }
+		angle_ operator*( const T& s ) const { return angle_( value * s ); }
+		angle_ operator/( const T& s ) const { return angle_( value / s ); }
 
 		/// addition / subtraction of an angle with the same units
 		angle_& operator+=( const angle_& other ) { value += other.value; return *this; }
 		angle_& operator-=( const angle_& other ) { value -= other.value; return *this; }
+		angle_ operator+( const angle_& other ) const { return angle_( value + other.value ); }
+		angle_ operator-( const angle_& other ) const { return angle_( value - other.value ); }
 
 		/// negation
 		constexpr angle_ operator-() const { return angle_( -value ); }
@@ -90,30 +92,16 @@ namespace xo
 	}
 
 	/// scalar multiplication
-	template< angle_unit U, typename T, typename TS >
-	angle_<U, T> operator*( const TS& s, const angle_<U, T>& a ) { return angle_<U, T>( T(s) * a.value ); }
+	template< angle_unit U, typename T >
+	angle_<U, T> operator*( const T& s, const angle_<U, T>& a ) { return angle_<U, T>( s * a.value ); }
 
 	/// scalar division
-	template< angle_unit U, typename T, typename TS >
-	angle_<U, T> operator/( const TS& s, const angle_<U, T>& a ) { return angle_<U, T>( T(s) / a.value ); }
-
-	/// addition, value types can be different
-	template< angle_unit U, typename T1, typename T2 >
-	auto operator+( const angle_<U, T1>& a1, const angle_<U, T2>& a2 ) -> angle_<U, decltype( a1.value + a2.value )>
-	{ return angle_<U, decltype( a1.value + a2.value )>( a1.value + a2.value ); }
-
-	/// subtraction, value types can be different
-	template< angle_unit U, typename T1, typename T2 >
-	auto operator-( const angle_<U, T1>& a1, const angle_<U, T2>& a2 ) -> angle_<U, decltype( a1.value - a2.value )>
-	{ return angle_<U, decltype( a1.value - a2.value )>( a1.value - a2.value ); }
-
-	/// multiplication
 	template< angle_unit U, typename T >
-	angle_<U, T> operator*( const angle_<U, T>& a, const angle_<U, T>& b ) { return angle_<U, T>( a.value * b.value ); }
+	angle_<U, T> operator/( const T& s, const angle_<U, T>& a ) { return angle_<U, T>( s / a.value ); }
 
 	/// absolute value
 	template< angle_unit U, typename T >
-	angle_<U, T> abs( const angle_<U, T>& v ) { return angle_<U, T>( std::abs( v.value ) ); }
+	angle_<U, T> abs( const angle_<U, T>& v ) { return angle_<U, T>( abs( v.value ) ); }
 
 	/// sin/cos/tan
 	template< angle_unit U, typename T > T sin( const angle_<U, T>& a ) { return std::sin( a.rad_value() ); }
