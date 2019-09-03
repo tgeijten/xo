@@ -1,85 +1,57 @@
 #pragma once
 
+#include "xo/utility/arithmetic.h"
+
 namespace xo
 {
+	/// angle units class
 	enum class angle_unit { degrees, radians };
-	template< angle_unit U, typename T > struct angle_;
 
-	template< typename T > T rad_to_deg( T rad_value ) { return T( 57.295779513082320877L ) * rad_value; }
-	template< typename T > T deg_to_rad( T deg_value ) { return T( 0.017453292519943295769L ) * deg_value; }
-
-	template< angle_unit A, angle_unit B > struct angle_converter
-	{
-		template< typename T > static constexpr T convert( T v ) { return v; }
-	};
-
-	template<> struct angle_converter< angle_unit::degrees, angle_unit::radians >
-	{
-		template< typename T > static constexpr T convert( T v ) { return deg_to_rad( v ); }
-	};
-
-	template<> struct angle_converter< angle_unit::radians, angle_unit::degrees >
-	{
-		template< typename T > static constexpr T convert( T v ) { return rad_to_deg( v ); }
-	};
-
+	/// empty angle_ class definition
 	template< angle_unit U, typename T >
-	struct angle_
+	struct angle_ {};
+
+	/// partial specialization for degrees
+	template< typename T >
+	struct angle_< angle_unit::degrees, T > : arithmetic< T, angle_<angle_unit::degrees, T> >
 	{
 		/// default constructor
-		constexpr angle_() : value( T() ) {}
+		constexpr angle_() : arithmetic( T() ) {}
 
-		/// conversion / copy constructors with same T
-		constexpr angle_( const angle_<angle_unit::degrees, T>& a ) : value( angle_converter<angle_unit::degrees, U>::convert( T( a.value ) ) ) {}
-		constexpr angle_( const angle_<angle_unit::radians, T>& a ) : value( angle_converter<angle_unit::radians, U>::convert( T( a.value ) ) ) {}
+		/// copy / conversion constructor
+		template< angle_unit U, typename T2 > explicit constexpr angle_( const angle_<U, T2>& a ) : arithmetic( T( a.deg_value() ) ) {}
 
-		/// explicit conversion / copy constructors with different T
-		template< typename T2 > explicit constexpr angle_( const T2& v ) : value( T( v ) ) {}
-		template< typename T2 > explicit constexpr angle_( const angle_<angle_unit::degrees, T2>& a ) : value( angle_converter<angle_unit::degrees, U>::convert( T( a.value ) ) ) {}
-		template< typename T2 > explicit constexpr angle_( const angle_<angle_unit::radians, T2>& a ) : value( angle_converter<angle_unit::radians, U>::convert( T( a.value ) ) ) {}
+		/// value constructor
+		template< typename T2 > explicit constexpr angle_( const T2& v ) : arithmetic( T( v ) ) {}
 
 		/// copy assignment
 		angle_& operator=( const angle_& a ) { value = a.value; return *this; }
 
 		/// get rad / deg value
-		T deg_value() const { return angle_converter< U, angle_unit::degrees >::convert( value ); }
-		T rad_value() const { return angle_converter< U, angle_unit::radians >::convert( value ); }
-
-		/// scalar multiplication and division
-		angle_& operator*=( const T& s ) { value *= T( s ); return *this; }
-		angle_& operator/=( const T& s ) { value /= T( s ); return *this; }
-		angle_ operator*( const angle_& s ) const { return angle_( value * s.value ); }
-		angle_ operator*( const T& s ) const { return angle_( value * s ); }
-		angle_ operator/( const T& s ) const { return angle_( value / s ); }
-
-		/// addition / subtraction of an angle with the same units
-		angle_& operator+=( const angle_& other ) { value += other.value; return *this; }
-		angle_& operator-=( const angle_& other ) { value -= other.value; return *this; }
-		angle_ operator+( const angle_& other ) const { return angle_( value + other.value ); }
-		angle_ operator-( const angle_& other ) const { return angle_( value - other.value ); }
-
-		/// negation
-		constexpr angle_ operator-() const { return angle_( -value ); }
-
-		/// comparison operators
-		bool operator>( const angle_& other ) const { return value > other.value; }
-		bool operator<( const angle_& other ) const { return value < other.value; }
-		bool operator>=( const angle_& other ) const { return value >= other.value; }
-		bool operator<=( const angle_& other ) const { return value <= other.value; }
-		bool operator==( const angle_& other ) const { return value == other.value; }
-		bool operator!=( const angle_& other ) const { return value != other.value; }
-
-		/// actual value
-		T value;
+		constexpr const T& deg_value() const { return this->value; }
+		constexpr T rad_value() const { return T( 0.017453292519943295769L ) * this->value; }
 	};
 
-	/// scalar multiplication
-	template< angle_unit U, typename T >
-	angle_<U, T> operator*( const T& s, const angle_<U, T>& a ) { return angle_<U, T>( s * a.value ); }
+	/// partial specialization for radians
+	template< typename T >
+	struct angle_< angle_unit::radians, T > : arithmetic< T, angle_<angle_unit::radians, T> >
+	{
+		/// default constructor
+		constexpr angle_() : arithmetic( T() ) {}
 
-	/// scalar division
-	template< angle_unit U, typename T >
-	angle_<U, T> operator/( const T& s, const angle_<U, T>& a ) { return angle_<U, T>( s / a.value ); }
+		/// copy / conversion constructor
+		template< angle_unit U, typename T2 > explicit constexpr angle_( const angle_<U, T2>& a ) : arithmetic( T( a.rad_value() ) ) {}
+
+		/// value constructor
+		template< typename T2 > explicit constexpr angle_( const T2& v ) : arithmetic( T( v ) ) {}
+
+		/// copy assignment
+		angle_& operator=( const angle_& a ) { value = a.value; return *this; }
+
+		/// get rad / deg value
+		constexpr T deg_value() const { return T( 57.295779513082320877L ) * this->value; }
+		constexpr const T& rad_value() const { return this->value; }
+	};
 
 	// alias names
 	template < typename T > using radian_ = angle_<angle_unit::radians, T>;
@@ -89,8 +61,8 @@ namespace xo
 	using degreef = degree_<float>;
 	using degreed = degree_<double>;
 
+	/// user-defined literals, add 'using namespace xo::literals' to access them outside the xo namespace
 	inline namespace literals {
-		/// user-defined literals, add 'using namespace xo::literals' to access them outside the xo namespace
 		inline constexpr degreef operator"" _degf( long double v ) { return degreef( v ); }
 		inline constexpr degreef operator"" _degf( unsigned long long int v ) { return degreef( v ); }
 		inline constexpr radianf operator"" _radf( long double v ) { return radianf( v ); }

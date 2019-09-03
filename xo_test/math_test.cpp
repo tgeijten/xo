@@ -98,8 +98,11 @@ namespace xo
 		auto a3 = a1_rd + radiand( a2_dd );
 		auto a4 = a2_dd + degreed( a1_rd );
 
-		auto a5_rf = radianf( ( 90.0_degf ) );
+		auto a5_rf = radianf( ( 90_degf ) );
 		auto a6_df = degreef( radiand( constants<float>::half_pi() ) );
+		XO_CHECK( equal( a5_rf, radianf( constants<float>::half_pi() ), radianf( constantsf::ample_epsilon() ) ) );
+		XO_CHECK( equal( a6_df, 90_degf, degreef( constantsf::ample_epsilon() ) ) );
+		XO_CHECK( equal( degreef( a5_rf ), 90_degf, degreef( constantsf::ample_epsilon() ) ) );
 
 		auto a1s = 0.5 * a1_rd;
 		auto a2s = 0.5 * a2_dd;

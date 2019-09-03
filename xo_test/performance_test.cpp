@@ -76,7 +76,7 @@ namespace xo
 	_sw_.add_measure( #_func_ ); \
 	_cont_.push_back( r ); }
 
-	XO_TEST_CASE( function_performance )
+	XO_TEST_CASE_SKIP( function_performance )
 	{
 		std::vector<double> res;
 		res.reserve( 100 );

@@ -13,19 +13,19 @@ namespace xo
 	using vec3radf = vec3rad_< float >;
 	using vec3radd = vec3rad_< double >;
 
-	template< angle_unit U, typename T > quat_<T> quat_from_x_angle( const angle_<U, T>& a )
-	{
-		T ha = T( 0.5 ) * a.rad_value(); return quat_<T>( std::cos( ha ), std::sin( ha ), T( 0 ), T( 0 ) );
+	template< angle_unit U, typename T > quat_<T> quat_from_x_angle( const angle_<U, T>& a ) {
+		T ha = T( 0.5 ) * a.rad_value();
+		return quat_<T>( std::cos( ha ), std::sin( ha ), T( 0 ), T( 0 ) );
 	}
 
-	template< angle_unit U, typename T > quat_<T> quat_from_y_angle( const angle_<U, T>& a )
-	{
-		T ha = T( 0.5 ) * a.rad_value(); return quat_<T>( std::cos( ha ), T( 0 ), std::sin( ha ), T( 0 ) );
+	template< angle_unit U, typename T > quat_<T> quat_from_y_angle( const angle_<U, T>& a ) {
+		T ha = T( 0.5 ) * a.rad_value();
+		return quat_<T>( std::cos( ha ), T( 0 ), std::sin( ha ), T( 0 ) );
 	}
 
-	template< angle_unit U, typename T > quat_<T> quat_from_z_angle( const angle_<U, T>& a )
-	{
-		T ha = T( 0.5 ) * a.rad_value(); return quat_<T>( std::cos( ha ), T( 0 ), T( 0 ), std::sin( ha ) );
+	template< angle_unit U, typename T > quat_<T> quat_from_z_angle( const angle_<U, T>& a ) {
+		T ha = T( 0.5 ) * a.rad_value();
+		return quat_<T>( std::cos( ha ), T( 0 ), T( 0 ), std::sin( ha ) );
 	}
 
 	/// make quaternion from Euler angles
