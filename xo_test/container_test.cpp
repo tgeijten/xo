@@ -6,7 +6,7 @@
 #include "xo/container/sorted_vector.h"
 #include "xo/container/table.h"
 #include "xo/numerical/random.h"
-#include "xo/system/test_framework.h"
+#include "xo/system/test_case.h"
 #include "xo/container/container_algorithms.h"
 #include "xo/container/circular_frame_buffer.h"
 #include "xo/string/string_tools.h"

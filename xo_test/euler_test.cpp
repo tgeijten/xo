@@ -1,4 +1,4 @@
-#include "xo/system/test_framework.h"
+#include "xo/system/test_case.h"
 #include "xo/geometry/angle.h"
 #include "xo/geometry/euler_angles.h"
 #include "xo/geometry/vec3.h"

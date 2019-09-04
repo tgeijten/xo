@@ -1,4 +1,4 @@
-#include "xo/system/test_framework.h"
+#include "xo/system/test_case.h"
 #include "xo/utility/smart_enum.h"
 
 namespace xo

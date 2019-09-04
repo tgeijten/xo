@@ -1,7 +1,7 @@
 #pragma once
 #include "xo/xo_types.h"
 #include "xo/string/string_tools.h"
-#include "xo/system/test_framework.h"
+#include "xo/system/test_case.h"
 #include "xo/filesystem/path.h"
 #include "xo/string/dictionary.h"
 #include "xo/utility/hash.h"

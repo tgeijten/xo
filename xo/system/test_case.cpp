@@ -1,4 +1,4 @@
-#include "test_framework.h"
+#include "test_case.h"
 #include "xo/system/log.h"
 #include "xo/system/assert.h"
 #include "xo/container/container_tools.h"

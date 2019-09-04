@@ -2,7 +2,7 @@
 #include "xo/container/prop_node.h"
 #include "xo/geometry/vec3.h"
 #include "xo/serialization/serialize.h"
-#include "xo/system/test_framework.h"
+#include "xo/system/test_case.h"
 #include "xo/system/log.h"
 #include "xo/utility/smart_enum.h"
 #include "xo/serialization/prop_node_serializer_zml.h"

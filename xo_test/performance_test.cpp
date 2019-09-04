@@ -5,7 +5,7 @@
 #include "xo/numerical/functions.h"
 #include "xo/system/log.h"
 #include "xo/container/prop_node.h"
-#include "xo/system/test_framework.h"
+#include "xo/system/test_case.h"
 #include "xo/numerical/random.h"
 #include "xo/container/array.h"
 #include "xo/numerical/bounds.h"

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "xo/container/view_if.h"
-#include "xo/system/test_framework.h"
+#include "xo/system/test_case.h"
 #include <vector>
 
 namespace xo

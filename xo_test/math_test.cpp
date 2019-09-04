@@ -20,7 +20,7 @@
 #include "xo/string/string_tools.h"
 #include "xo/system/log.h"
 #include "xo/system/system_tools.h"
-#include "xo/system/test_framework.h"
+#include "xo/system/test_case.h"
 #include "xo/time/timer.h"
 #include "xo/utility/irange.h"
 #include "xo/utility/optional.h"

@@ -5,7 +5,7 @@
 #include "xo/geometry/vec3_type.h"
 #include "xo/container/container_tools.h"
 #include "xo/serialization/serialize.h"
-#include "xo/system/test_framework.h"
+#include "xo/system/test_case.h"
 #include "xo/filesystem/filesystem.h"
 #include "xo/system/log.h"
 #include "xo/utility/smart_enum.h"
