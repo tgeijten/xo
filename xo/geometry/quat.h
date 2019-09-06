@@ -8,9 +8,18 @@
 #include "xo/numerical/compare.h"
 #include "mat33_type.h"
 #include "axes_type.h"
+#include "xo/utility/smart_enum.h"
 
 namespace xo
 {
+	/// Euler order for Euler angle conversions
+	xo_smart_enum_class( euler_order, xyz, xzy, yxz, yzx, zxy, zyx );
+
+	/// vector of angles
+	template< typename T > using vec3rad_ = vec3_< radian_<T> >;
+	using vec3radf = vec3rad_< float >;
+	using vec3radd = vec3rad_< double >;
+
 	/// Quaternion multiplication
 	template< typename T > quat_<T> operator*( const quat_<T>& q1, const quat_<T>& q2 ) {
 		return quat_<T>(
@@ -177,7 +186,7 @@ namespace xo
 		return q;
 	}
 
-	/// Get quaternion using three axis vectors
+	/// Get axes from quaternion (#todo: verify)
 	template< typename T > axes_<T> axes_from_quat( const quat_<T>& q ) {
 		auto tx = q.x + q.x;
 		auto ty = q.y + q.y;
@@ -197,5 +206,174 @@ namespace xo
 			{ txy - twz, 1.0f - ( txx + tzz ), tyz + twx },
 			{ txz + twy, tyz - twx, 1.0f - ( txx + tyy ) }
 		};
+	}
+
+	template< angle_unit U, typename T > quat_<T> quat_from_x_angle( const angle_<U, T>& a ) {
+		T ha = T( 0.5 ) * a.rad_value();
+		return quat_<T>( std::cos( ha ), std::sin( ha ), T( 0 ), T( 0 ) );
+	}
+
+	template< angle_unit U, typename T > quat_<T> quat_from_y_angle( const angle_<U, T>& a ) {
+		T ha = T( 0.5 ) * a.rad_value();
+		return quat_<T>( std::cos( ha ), T( 0 ), std::sin( ha ), T( 0 ) );
+	}
+
+	template< angle_unit U, typename T > quat_<T> quat_from_z_angle( const angle_<U, T>& a ) {
+		T ha = T( 0.5 ) * a.rad_value();
+		return quat_<T>( std::cos( ha ), T( 0 ), T( 0 ), std::sin( ha ) );
+	}
+
+	/// make quaternion from Euler angles
+	template< angle_unit U, typename T > quat_<T> quat_from_euler( const angle_<U, T>& x, const angle_<U, T>& y, const angle_<U, T>& z, euler_order eo = euler_order::xyz ) {
+		quat_<T> qx = quat_from_x_angle( x );
+		quat_<T> qy = quat_from_y_angle( y );
+		quat_<T> qz = quat_from_z_angle( z );
+
+		// #todo: more efficient, enable compile-time switching
+		switch ( eo )
+		{
+		case euler_order::xyz: return qx * qy * qz;
+		case euler_order::xzy: return qx * qz * qy;
+		case euler_order::yxz: return qy * qx * qz;
+		case euler_order::yzx: return qy * qz * qx;
+		case euler_order::zxy: return qz * qx * qy;
+		case euler_order::zyx: return qz * qy * qx;
+		default: xo_error( "quat_from_euler: invalid euler_order" );
+		}
+	}
+
+	/// make quaternion from vec3 of Euler angles
+	template< angle_unit U, typename T > quat_<T> quat_from_euler( const vec3_< angle_<U, T> >& eu, euler_order eo = euler_order::xyz ) {
+		return quat_from_euler( eu.x, eu.y, eu.z, eo );
+	}
+
+	// #todo: verify / replace
+	template< typename T > radian_< T > pitch( const quat_<T>& q ) {
+		T tx = T( 2 ) * q.x, tz = T( 2 ) * q.z;
+		T twx = tx * q.w, txx = tx * q.x, tyz = tz * q.y, tzz = tz * q.z;
+		return radian_< T >( atan2( tyz + twx, T( 1 ) - ( txx + tzz ) ) );
+	}
+
+	// #todo: verify / replace
+	template< typename T > radian_< T > yaw( const quat_<T>& q ) {
+		T tx = T( 2 ) * q.x, ty = T( 2 ) * q.y, tz = T( 2 ) * q.z;
+		T twy = ty * q.w, txx = tx * q.x, txz = tz * q.x, tyy = ty * q.y;
+		return radian_< T >( atan2( txz + twy, T( 1 ) - ( txx + tyy ) ) );
+	}
+
+	// #todo: verify / replace
+	template< typename T > radian_< T > roll( const quat_<T>& q ) {
+		T ty = T( 2 ) * q.y, tz = T( 2 ) * q.z;
+		T twz = tz * q.w, txy = ty * q.x, tyy = ty * q.y, tzz = tz * q.z;
+		return radian_< T >( atan2( txy + twz, T( 1 ) - ( tyy + tzz ) ) );
+	}
+
+	template< typename T > vec3rad_<T> euler_xyz_from_quat( const quat_<T>& q )
+	{
+		return vec3rad_<T>(
+			std::atan2( -2 * ( q.y * q.z - q.w * q.x ),
+				q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ),
+			std::asin( 2 * ( q.x * q.z + q.w * q.y ) ),
+			std::atan2( -2 * ( q.x * q.y - q.w * q.z ),
+				q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z )
+			);
+	}
+
+	template< typename T > vec3rad_<T> euler_xzy_from_quat( const quat_<T>& q )
+	{
+		return vec3rad_<T>(
+			std::atan2( 2 * ( q.y * q.z + q.w * q.x ),
+				q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z ),
+			std::atan2( 2 * ( q.x * q.z + q.w * q.y ),
+				q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z ),
+			std::asin( -2 * ( q.x * q.y - q.w * q.z ) )
+			);
+	}
+
+	template< typename T > vec3rad_<T> euler_yxz_from_quat( const quat_<T>& q )
+	{
+		return vec3rad_<T>(
+			std::asin( -2 * ( q.y * q.z - q.w * q.x ) ),
+			std::atan2( 2 * ( q.x * q.z + q.w * q.y ),
+				q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ),
+			std::atan2( 2 * ( q.x * q.y + q.w * q.z ),
+				q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z )
+			);
+	}
+
+	template< typename T > vec3rad_<T> euler_yzx_from_quat( const quat_<T>& q )
+	{
+		return vec3rad_<T>(
+			std::atan2( -2 * ( q.y * q.z - q.w * q.x ),
+				q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z ),
+			std::atan2( -2 * ( q.x * q.z - q.w * q.y ),
+				q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z ),
+			std::asin( 2 * ( q.x * q.y + q.w * q.z ) )
+			);
+	}
+
+	template< typename T > vec3rad_<T> euler_zxy_from_quat( const quat_<T>& q )
+	{
+		return vec3rad_<T>(
+			std::asin( 2 * ( q.y * q.z + q.w * q.x ) ),
+			std::atan2( -2 * ( q.x * q.z - q.w * q.y ),
+				q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ),
+			std::atan2( -2 * ( q.x * q.y - q.w * q.z ),
+				q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z )
+			);
+	}
+
+	template< typename T > vec3rad_<T> euler_zyx_from_quat( const quat_<T>& q )
+	{
+		return vec3rad_<T>(
+			std::atan2( 2 * ( q.y * q.z + q.w * q.x ),
+				q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ),
+			std::asin( -2 * ( q.x * q.z - q.w * q.y ) ),
+			std::atan2( 2 * ( q.x * q.y + q.w * q.z ),
+				q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z )
+			);
+	}
+
+	/// get Euler angles from quat
+	template< typename T > vec3rad_<T> euler_from_quat( const quat_<T>& q, euler_order eo = euler_order::xyz )
+	{
+		switch ( eo )
+		{
+		case euler_order::xyz: return euler_xyz_from_quat( q );
+		case euler_order::xzy: return euler_xzy_from_quat( q );
+		case euler_order::yxz: return euler_yxz_from_quat( q );
+		case euler_order::yzx: return euler_yzx_from_quat( q );
+		case euler_order::zxy: return euler_zxy_from_quat( q );
+		case euler_order::zyx: return euler_zyx_from_quat( q );
+		default:
+			xo_error( "Unsupported euler_order for euler_from_quat():" + to_str( eo ) );
+		}
+	}
+
+	/// convert prop_node to quat
+	template< typename T > bool from_prop_node( const prop_node& pn, quat_<T>& q ) {
+		if ( pn.size() == 4 && pn.has_key( "w" ) ) {
+			// quaternion with w, x, y, z components
+			q.set( pn.get<T>( "w" ), pn.get<T>( "x" ), pn.get<T>( "y" ), pn.get<T>( "z" ) );
+			return true;
+		}
+		else if ( vec3_< degree_<T> > v; from_prop_node( pn, v ) ) {
+			// quaternion from Euler angles
+			auto order = pn.get< euler_order >( "order", euler_order::xyz );
+			q = quat_from_euler( v, order );
+			return true;
+		}
+		else return false;
+	};
+
+
+	/// convert quat to prop_node
+	template< typename T > prop_node to_prop_node( const quat_<T>& q ) {
+		prop_node pn;
+		pn.set( "w", q.w );
+		pn.set( "x", q.x );
+		pn.set( "y", q.y );
+		pn.set( "z", q.z );
+		return pn;
 	}
 }

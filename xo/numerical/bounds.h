@@ -2,6 +2,7 @@
 
 #include "xo/xo_types.h"
 #include "xo/numerical/math.h"
+#include "xo/container/prop_node.h"
 
 namespace xo
 {
@@ -36,4 +37,17 @@ namespace xo
 	using boundsf = bounds<float>;
 	using boundsd = bounds<double>;
 	using boundsi = bounds<int>;
+
+	/// convert from prop_node
+	template< typename T > bool from_prop_node( const prop_node& pn, bounds<T>& v ) {
+		if ( pn.has_value() ) {
+			return from_str( pn.raw_value(), v );
+		}
+		else if ( pn.size() >= 2 ) {
+			v.lower = pn.get_any<T>( { "min", "lower" }, pn.get<T>( 0 ) );
+			v.upper = pn.get_any<T>( { "max", "upper" }, pn.get<T>( 1 ) );
+			return true;
+		}
+		else return false;
+	}
 }

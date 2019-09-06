@@ -1,6 +1,6 @@
 #pragma once
 
-#include "xo/geometry/euler_angles.h"
+#include "xo/geometry/quat.h"
 #include "xo/numerical/random.h"
 
 namespace xo
@@ -11,4 +11,3 @@ namespace xo
 		return { quat_from_euler( rot, eu ), rot };
 	}
 }
-

@@ -1,10 +1,10 @@
 #pragma once
 
 #include "vec3_type.h"
-#include "angle.h"
 #include "xo/numerical/compare.h"
 #include "xo/numerical/math.h"
-#include <cmath> // #todo: get rid of this header
+#include "xo/container/prop_node.h"
+#include <cmath>
 
 namespace xo
 {
@@ -62,7 +62,7 @@ namespace xo
 
 	/// Get length of a vec3
 	template< typename T > T length( const vec3_<T>& v )
-	{ return sqrt( v.x * v.x + v.y * v.y + v.z * v.z ); }
+	{ return std::sqrt( v.x * v.x + v.y * v.y + v.z * v.z ); }
 
 	/// Get squared length of a vec3
 	template< typename T > T squared_length( const vec3_<T>& v )
@@ -74,7 +74,11 @@ namespace xo
 
 	/// Get distance between two vec3
 	template< typename T > T distance( const vec3_<T>& v1, const vec3_<T>& v2 )
-	{ return sqrt( squared( v1.x - v2.x ) + squared( v1.y - v2.y ) + squared( v1.z - v2.z ) ); }
+	{ return length( v1 - v2 ); }
+
+	/// Get squared distance between two vec3
+	template< typename T > T squared_distance( const vec3_<T>& v1, const vec3_<T>& v2 )
+	{ return squared_length( v1 - v2 );	}
 
 	/// Compare vec3
 	template< typename T > bool operator==( const vec3_<T>& v1, const vec3_<T>& v2 )
@@ -111,4 +115,27 @@ namespace xo
 	/// Cross product
 	template< typename T > vec3_<T> cross_product( const vec3_<T>& v1, const vec3_<T>& v2 )
 	{ return vec3_<T>( v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x ); }
+
+	/// convert from prop_node
+	template< typename T > bool from_prop_node( const prop_node& pn, vec3_<T>& v ) {
+		v.set( pn.get( "x", T() ), pn.get( "y", T() ), pn.get( "z", T() ) );
+		if ( pn.size() >= 3 && pn.is_array() ) {
+			v.set( pn.get<T>( 0 ), pn.get<T>( 1 ), pn.get<T>( 2 ) );
+		}
+		else if ( pn.size() == 0 && pn.has_value() ) {
+			if ( auto vs = split_str( pn.raw_value(), " \t" ); vs.size() >= 3 )
+				return from_str( vs[ 0 ], v.x ) && from_str( vs[ 1 ], v.y ) && from_str( vs[ 2 ], v.z );
+			else return false;
+		}
+		return true;
+	};
+
+	/// convert to prop_node
+	template< typename T > prop_node to_prop_node( const vec3_<T>& v ) {
+		prop_node pn;
+		pn.set( "x", v.x );
+		pn.set( "y", v.y );
+		pn.set( "z", v.z );
+		return pn;
+	}
 }

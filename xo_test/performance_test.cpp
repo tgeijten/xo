@@ -9,7 +9,7 @@
 #include "xo/numerical/random.h"
 #include "xo/container/array.h"
 #include "xo/numerical/bounds.h"
-#include "xo/geometry/euler_angles.h"
+#include "xo/geometry/quat.h"
 #include "test_tools.h"
 
 namespace xo

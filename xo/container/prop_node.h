@@ -6,11 +6,11 @@
 #include "xo/string/string_type.h"
 #include "xo/string/string_cast.h"
 #include "xo/string/string_tools.h"
+#include "xo/container/vector_type.h"
+#include "xo/container/pair_type.h"
 #include "xo/utility/optional.h"
 #include "xo/container/view_if.h"
 
-#include <vector>
-#include <utility>
 #include <initializer_list>
 
 namespace xo

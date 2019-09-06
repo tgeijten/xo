@@ -2,9 +2,9 @@
 
 #include "xo/xo_types.h"
 #include "xo/string/string_type.h"
+#include "xo/container/vector_type.h"
+#include "xo/container/pair_type.h"
 
-#include <utility>
-#include <vector>
 #include <initializer_list>
 
 #define xo_varstr( var_ ) ( ::std::string( #var_ ) + '=' + ::xo::to_str( ( var_ ) ) )
@@ -45,7 +45,7 @@ namespace xo
 	XO_API string trim_right_str( const string& str, const char* trim_chars = " \t\r\n\f\v" );
 
 	/// split a string into a vector of strings
-	XO_API std::vector< string > split_str( const string& s, const string& sep_chars );
+	XO_API vector< string > split_str( const string& s, const string& sep_chars );
 
 	/// split string into pair at first occurrence of sep_char, second is empty if not occurring
 	XO_API std::pair< string, string > split_str_at_first( const string& s, const string& sep_chars );

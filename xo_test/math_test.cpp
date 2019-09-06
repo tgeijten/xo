@@ -9,7 +9,6 @@
 #include "xo/container/storage.h"
 #include "xo/filesystem/filesystem.h"
 #include "xo/geometry/angle.h"
-#include "xo/geometry/euler_angles.h"
 #include "xo/geometry/quat.h"
 #include "xo/geometry/vec3.h"
 #include "xo/numerical/math.h"

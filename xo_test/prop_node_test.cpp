@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include "xo/container/prop_node_tools.h"
-#include "xo/geometry/vec3_type.h"
+#include "xo/geometry/vec3.h"
 #include "xo/container/container_tools.h"
 #include "xo/serialization/serialize.h"
 #include "xo/system/test_case.h"

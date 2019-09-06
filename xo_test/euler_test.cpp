@@ -1,7 +1,7 @@
 #include "xo/system/test_case.h"
 #include "xo/geometry/angle.h"
-#include "xo/geometry/euler_angles.h"
 #include "xo/geometry/vec3.h"
+#include "xo/geometry/quat.h"
 #include "xo/string/string_cast.h"
 #include <vector>
 #include <math.h>
