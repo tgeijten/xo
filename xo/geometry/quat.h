@@ -188,19 +188,10 @@ namespace xo
 
 	/// Get axes from quaternion (#todo: verify)
 	template< typename T > axes_<T> axes_from_quat( const quat_<T>& q ) {
-		auto tx = q.x + q.x;
-		auto ty = q.y + q.y;
-		auto tz = q.z + q.z;
-		auto twx = tx * q.w;
-		auto twy = ty * q.w;
-		auto twz = tz * q.w;
-		auto txx = tx * q.x;
-		auto txy = ty * q.x;
-		auto txz = tz * q.x;
-		auto tyy = ty * q.y;
-		auto tyz = tz * q.y;
-		auto tzz = tz * q.z;
-
+		T tx = q.x + q.x, ty = q.y + q.y, tz = q.z + q.z;
+		T twx = tx * q.w, twy = ty * q.w, twz = tz * q.w;
+		T txx = tx * q.x, txy = ty * q.x, txz = tz * q.x;
+		T tyy = ty * q.y, tyz = tz * q.y, tzz = tz * q.z;
 		return axes_<T>{
 			{ 1.0f - ( tyy + tzz ), txy + twz, txz - twy },
 			{ txy - twz, 1.0f - ( txx + tzz ), tyz + twx },
