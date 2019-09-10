@@ -186,6 +186,30 @@ namespace xo
 		return q;
 	}
 
+	template< typename T > vec3_<T> local_x_axis( const quat_<T>& q ) {
+		T tx = q.x + q.x, ty = q.y + q.y, tz = q.z + q.z;
+		T twy = ty * q.w, twz = tz * q.w;
+		T txy = ty * q.x, txz = tz * q.x;
+		T tyy = ty * q.y, tzz = tz * q.z;
+		return vec3_<T>( 1.0f - ( tyy + tzz ), txy + twz, txz - twy );
+		}
+
+	template< typename T > vec3_<T> local_y_axis( const quat_<T>& q ) {
+		T tx = q.x + q.x, ty = q.y + q.y, tz = q.z + q.z;
+		T twx = tx * q.w, twz = tz * q.w;
+		T txx = tx * q.x, txy = ty * q.x;
+		T tyz = tz * q.y, tzz = tz * q.z;
+		return vec3_<T>( txy - twz, 1.0f - ( txx + tzz ), tyz + twx );
+		}
+
+	template< typename T > vec3_<T> local_z_axis( const quat_<T>& q ) {
+		T tx = q.x + q.x, ty = q.y + q.y, tz = q.z + q.z;
+		T twx = tx * q.w, twy = ty * q.w;
+		T txx = tx * q.x, txz = tz * q.x;
+		T tyy = ty * q.y, tyz = tz * q.y;
+		return vec3_<T>( txz + twy, tyz - twx, 1.0f - ( txx + tyy ) );
+		}
+
 	/// Get axes from quaternion (#todo: verify)
 	template< typename T > axes_<T> axes_from_quat( const quat_<T>& q ) {
 		T tx = q.x + q.x, ty = q.y + q.y, tz = q.z + q.z;
@@ -215,14 +239,12 @@ namespace xo
 	}
 
 	/// make quaternion from Euler angles
+	// #todo: more efficient, enable compile-time switching
 	template< angle_unit U, typename T > quat_<T> quat_from_euler( const angle_<U, T>& x, const angle_<U, T>& y, const angle_<U, T>& z, euler_order eo = euler_order::xyz ) {
 		quat_<T> qx = quat_from_x_angle( x );
 		quat_<T> qy = quat_from_y_angle( y );
 		quat_<T> qz = quat_from_z_angle( z );
-
-		// #todo: more efficient, enable compile-time switching
-		switch ( eo )
-		{
+		switch ( eo ) {
 		case euler_order::xyz: return qx * qy * qz;
 		case euler_order::xzy: return qx * qz * qy;
 		case euler_order::yxz: return qy * qx * qz;
