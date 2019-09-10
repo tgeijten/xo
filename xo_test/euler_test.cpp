@@ -95,10 +95,27 @@ namespace xo
 
 	XO_TEST_CASE( xo_angle_decomposition_test )
 	{
-		auto q = quat_from_euler( 2_rad, 0_rad, 1_rad, euler_order::zyx );
-		auto d = rotation_around_axis( q, vec3d::unit_x() );
-		auto r = rotation_vector_from_quat( q );
-		auto testd = dot_product( r, vec3d::unit_x() );
-		XO_CHECK( equal( d.value, 2.0 ) );
+		auto q0 = quat_from_euler( 2_rad, 0_rad, 1_rad, euler_order::zyx );
+		auto d0 = rotation_around_axis( q0, vec3d::unit_x() );
+		XO_CHECK( equal( d0.value, 2.0 ) );
+
+		auto q = quat_from_euler( 0.4_rad, 0.3_rad, 0_rad, euler_order::xyz );
+		auto rx = rotation_around_axis( q, vec3d::unit_x() );
+		auto ry = rotation_around_axis( q, vec3d::unit_y() );
+		auto rz = rotation_around_axis( q, vec3d::unit_z() );
+		auto qyaw = yaw( q );
+		auto qpitch = pitch( q );
+		auto qroll = roll( q );
+		auto xyz = euler_xyz_from_quat( q );
+		auto xzy = euler_xzy_from_quat( q );
+		auto yxz = euler_yxz_from_quat( q );
+		auto yzx = euler_yzx_from_quat( q );
+		auto zxy = euler_zxy_from_quat( q );
+		auto zyx = euler_zyx_from_quat( q );
+
+		// these tests fail, need more info on what's going on
+		//XO_CHECK( equal( rx, qpitch, radiand( constantsd::ample_epsilon() ) ) );
+		//XO_CHECK( equal( ry, qyaw, radiand( constantsd::ample_epsilon() ) ) );
+		//XO_CHECK( equal( rz, qroll, radiand( constantsd::ample_epsilon() ) ) );
 	}
 }
