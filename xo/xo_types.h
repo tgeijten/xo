@@ -21,6 +21,10 @@ namespace xo
 	template< typename T > struct aabb_;
 	template< typename T > class bounds;
 
+	// angle type
+	enum class angle_unit { degrees, radians };
+	template< angle_unit U, typename T > struct angle_;
+
 	// simple function type
 	template< typename T > using simple_function_t = T( * )( T );
 

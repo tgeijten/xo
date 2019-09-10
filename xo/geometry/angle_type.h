@@ -1,13 +1,11 @@
 #pragma once
 
+#include "xo/xo_types.h"
 #include "xo/utility/arithmetic.h"
 
 namespace xo
 {
-	/// angle units class
-	enum class angle_unit { degrees, radians };
-
-	/// empty angle_ class definition
+	/// base angle_ definition
 	template< angle_unit U, typename T >
 	struct angle_ {};
 
