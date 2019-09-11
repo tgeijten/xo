@@ -11,13 +11,18 @@ namespace xo
 		using const_iterator = const T*;
 
 		constexpr vec3_() : x(), y(), z() {}
-		constexpr vec3_( T px, T py, T pz ) : x( px ), y( py ), z( pz ) {}
-		template< typename U > vec3_( U px, U py, U pz ) : x( T( px ) ), y( T( py ) ), z( T( pz ) ) {}
-		template< typename U > vec3_( const vec3_<U>& o ) : x( T( o.x ) ), y( T( o.y ) ), z( T( o.z ) ) {}
+		constexpr vec3_( const vec3_<T>& o ) = default;
+		vec3_( vec3_<T>&& o ) = default;
+		constexpr vec3_( const T& px, const T& py, const T& pz ) : x( px ), y( py ), z( pz ) {}
+		constexpr vec3_( T&& px, T&& py, T&& pz ) : x( std::move( px ) ), y( std::move( py ) ), z( std::move( pz ) ) {}
+
+		// conversion constructor
+		template< typename U > explicit vec3_( const vec3_<U>& o ) : x( T( o.x ) ), y( T( o.y ) ), z( T( o.z ) ) {}
 
 		/// assignment
-		template< typename U > vec3_<T>& operator=( const vec3_<U>& o ) { x = T( o.x ); y = T( o.y ); z = T( o.z ); return *this; }
-		template< typename U > void set( U px, U py, U pz ) { x = T( px ); y = T( py ); z = T( pz ); }
+		vec3_& operator=( const vec3_& o ) = default;
+		vec3_& operator=( vec3_&& o ) = default;
+		void set( const T& px, const T& py, const T& pz ) { x = px; y = py; z = pz; }
 
 		/// data
 		T x, y, z;

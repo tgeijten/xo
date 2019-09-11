@@ -8,9 +8,9 @@ namespace xo
 {
 	namespace test
 	{
-		std::vector< test_case* >& get_test_cases()
+		vector< test_case* >& get_test_cases()
 		{
-			static std::vector< test_case* > test_cases;
+			static vector< test_case* > test_cases;
 			return test_cases;
 		}
 
@@ -44,7 +44,7 @@ namespace xo
 			return tests_failed;
 		}
 
-		test::test_case::test_case( const char* name, test_func_t func ) : func_( func ), name_( name ), num_checks_( 0 ), num_passed_( 0 ), num_failed_( 0 )
+		test_case::test_case( const char* name, test_func_t func ) : func_( func ), name_( name ), num_checks_( 0 ), num_passed_( 0 ), num_failed_( 0 )
 		{
 			register_test_case( this );
 		}

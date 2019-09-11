@@ -28,9 +28,9 @@ namespace xo
 		auto sin1 = sin( a1_rd );
 		auto sin4 = sin( a4 );
 
-		vec3_< degreef > deg_vec( degreef( 10 ), degreef( 20 ), degreef( 30 ) );
-		vec3_< radianf > rad_vec;
-		rad_vec = deg_vec;
+		vec3_< degreef > deg_vec( 10_degf, 20_degf, 30_degf );
+		vec3_< radianf > rad_vec( vec3degf( 10_degf, 20_degf, 30_degf ) );
+		rad_vec = vec3radf( deg_vec );
 		XO_CHECK( equal( rad_vec[ 0 ].value, radianf( degreef( 10 ) ).value ) );
 
 		auto qtest = quat_from_euler( 180.0_deg, 180_deg, 180_deg, euler_order::xyz );

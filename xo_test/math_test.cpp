@@ -66,7 +66,7 @@ namespace xo
 		c = vec3f( 1, 2, 3 );
 		XO_CHECK( !!c );
 		XO_CHECK( *c == vec3f( 1, 2, 3 ) );
-		optional< vec3d > d( vec3f( 3, 4, 5 ) );
+		optional< vec3d > d( vec3d( vec3f( 3, 4, 5 ) ) );
 		XO_CHECK( !!d );
 	}
 

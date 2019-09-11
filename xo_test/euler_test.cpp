@@ -103,6 +103,11 @@ namespace xo
 		auto rx = rotation_around_axis( q, vec3d::unit_x() );
 		auto ry = rotation_around_axis( q, vec3d::unit_y() );
 		auto rz = rotation_around_axis( q, vec3d::unit_z() );
+		auto rxyz = rotation_around_xyz( q );
+		XO_CHECK( rx == rxyz.x );
+		XO_CHECK( ry == rxyz.y );
+		XO_CHECK( rz == rxyz.z );
+
 		auto qyaw = yaw( q );
 		auto qpitch = pitch( q );
 		auto qroll = roll( q );

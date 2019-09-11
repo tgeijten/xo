@@ -59,7 +59,7 @@ namespace xo
 		pn.push_back( "vec_test", vec );
 
 		std::vector< vec3f > vec2;
-		for ( int i = 1; i <= 3; ++i ) vec2.push_back( vec3d( i, i * 1.1, i * 1.11 ) );
+		for ( int i = 1; i <= 3; ++i ) vec2.push_back( vec3f( i * 1.0f, i * 1.1f, i * 1.11f ) );
 		pn.push_back( "vec2_test", vec2 );
 
 		pn.push_back( "e1", e1 );

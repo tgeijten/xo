@@ -2,6 +2,7 @@
 
 #include "xo/xo_types.h"
 #include "xo/utility/arithmetic.h"
+#include "xo/geometry/vec3_type.h"
 
 namespace xo
 {
@@ -53,11 +54,24 @@ namespace xo
 
 	// alias names
 	template < typename T > using radian_ = angle_<angle_unit::radians, T>;
-	template < typename T > using degree_ = angle_<angle_unit::degrees, T>;
 	using radianf = radian_<float>;
 	using radiand = radian_<double>;
+	template < typename T > using degree_ = angle_<angle_unit::degrees, T>;
 	using degreef = degree_<float>;
 	using degreed = degree_<double>;
+
+	/// alias for angle vector
+	template< typename T > using vec3rad_ = vec3_< radian_<T> >;
+	using vec3radf = vec3rad_< float >;
+	using vec3radd = vec3rad_< double >;
+	template< typename T > using vec3deg_ = vec3_< degree_<T> >;
+	using vec3degf = vec3deg_< float >;
+	using vec3degd = vec3deg_< double >;
+
+	/// convert vector of angles to vector of values
+	template< angle_unit U, typename T > vec3_<T> value( const angle_<U, T>& v ) {
+		return vec3_<T>( v.x.value, v.y.value, v.z.value );
+	}
 
 	/// user-defined literals, add 'using namespace xo::literals' to access them outside the xo namespace
 	inline namespace literals {

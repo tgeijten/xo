@@ -7,18 +7,12 @@
 #include "xo/system/assert.h"
 #include "xo/numerical/compare.h"
 #include "mat33_type.h"
-#include "axes_type.h"
 #include "xo/utility/smart_enum.h"
 
 namespace xo
 {
 	/// Euler order for Euler angle conversions
 	xo_smart_enum_class( euler_order, xyz, xzy, yxz, yzx, zxy, zyx );
-
-	/// vector of angles
-	template< typename T > using vec3rad_ = vec3_< radian_<T> >;
-	using vec3radf = vec3rad_< float >;
-	using vec3radd = vec3rad_< double >;
 
 	/// Quaternion multiplication
 	template< typename T > quat_<T> operator*( const quat_<T>& q1, const quat_<T>& q2 ) {
@@ -34,8 +28,8 @@ namespace xo
 		vec3_<T> qv( q.x, q.y, q.z );
 		vec3_<T> uv = cross_product( qv, v );
 		vec3_<T> uuv = cross_product( qv, uv );
-		uv *= T(2) * q.w;
-		uuv *= T(2);
+		uv *= T( 2 ) * q.w;
+		uuv *= T( 2 );
 		return v + uv + uuv;
 	}
 
@@ -44,14 +38,20 @@ namespace xo
 
 	/// get length of a quat
 	template< typename T > T length( const quat_<T>& q )
-	{ return std::sqrt( q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z ); }
+	{
+		return std::sqrt( q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z );
+	}
 
 	template< typename T > T squared_length( const quat_<T>& q )
-	{ return q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z; }
+	{
+		return q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z;
+	}
 
 	/// test if a quat is of unit length
 	template< typename T > bool is_normalized( const quat_<T>& q )
-	{ return std::abs( squared_length( q ) - T(1) ) <= constants<T>::ample_epsilon();}
+	{
+		return std::abs( squared_length( q ) - T( 1 ) ) <= constants<T>::ample_epsilon();
+	}
 
 	/// normalize quaternion, return length
 	template< typename T > T normalize( quat_<T>& q ) {
@@ -72,11 +72,15 @@ namespace xo
 
 	/// get quaternion inverse
 	template< typename T > quat_<T> inverse( quat_<T> q )
-	{ auto f = T( -1 ) / squared_length( q ); q.x *= f; q.y *= f; q.z *= f; return q; }
+	{
+		auto f = T( -1 ) / squared_length( q ); q.x *= f; q.y *= f; q.z *= f; return q;
+	}
 
 	/// return quaternion in which w is positive (negate if w < 0)
 	template< typename T > quat_<T> positive( quat_<T> q )
-	{ if ( q.w < 0 ) { q.w = -q.w; q.x = -q.x; q.y = -q.y; q.z = -q.z; } return q; }
+	{
+		if ( q.w < 0 ) { q.w = -q.w; q.x = -q.x; q.y = -q.y; q.z = -q.z; } return q;
+	}
 
 	/// make quaternion from axis and angle
 	template< angle_unit U, typename T > quat_<T> quat_from_axis_angle( const vec3_<T>& axis, angle_<U, T> ang ) {
@@ -105,15 +109,15 @@ namespace xo
 		vec3_<T> c = cross_product( s, t );
 		T d = dot_product( s, t );
 
-		if ( equal( d, T(1) ) ) // check if vectors are the same
+		if ( equal( d, T( 1 ) ) ) // check if vectors are the same
 			return quat_<T>::identity();
 
 		auto clen = length( c );
-		if ( equal( clen, T(0) ) ) // check if vectors are 180 deg apart
+		if ( equal( clen, T( 0 ) ) ) // check if vectors are 180 deg apart
 			return quat_<T>( 0, 1, 0, 0 ); // this doesn't work if source is unit_x
 
 		c /= clen;
-		auto a = std::acos( d ) * T(0.5);
+		auto a = std::acos( d ) * T( 0.5 );
 		auto sa = std::sin( a );
 
 		return quat_<T>( std::cos( a ), c.x * sa, c.y * sa, c.z * sa );
@@ -121,14 +125,16 @@ namespace xo
 
 	/// Get quaternion to represent the rotation from source to target quaternion
 	template< typename T > quat_<T> quat_from_quats( const quat_<T>& source, const quat_<T>& target )
-	{ return -source * target; }
+	{
+		return -source * target;
+	}
 
 	/// Get rotation vector from quaternion
 	template< typename T > vec3_<T> rotation_vector_from_quat( const quat_<T>& q ) {
 		xo_assert( is_normalized( q ) );
 		T l = sqrt( q.x * q.x + q.y * q.y + q.z * q.z );
 		if ( l > constants<T>::ample_epsilon() ) {
-			T f = T(2) * std::acos( q.w ) / l;
+			T f = T( 2 ) * std::acos( q.w ) / l;
 			return vec3_<T>( f * q.x, f * q.y, f * q.z );
 		}
 		else return vec3_<T>::zero();
@@ -139,8 +145,8 @@ namespace xo
 		xo_assert( is_normalized( q ) );
 		T l = sqrt( q.x * q.x + q.y * q.y + q.z * q.z );
 		if ( l > constants<T>::ample_epsilon() ) {
-			T s = T(1) / l;
-			return std::pair< vec3_<T>, radian_<T> >{ vec3f( s * q.x, s * q.y, s * q.z ), radian_<T>( T(2) * std::acos( q.w ) ) };
+			T s = T( 1 ) / l;
+			return std::pair< vec3_<T>, radian_<T> >{ vec3f( s* q.x, s* q.y, s* q.z ), radian_<T>( T( 2 )* std::acos( q.w ) ) };
 		}
 		else return std::pair< vec3_<T>, radian_<T> >{ vec3_<T>::unit_x(), radian_<T>( T() ) };
 	}
@@ -153,37 +159,28 @@ namespace xo
 		return radian_<T>( 2 * std::acos( qp.w / length( qp ) ) );
 	}
 
-	/// Get quaternion using three axis vectors
-	template< typename T > quat_<T> quat_from_axes( const vec3_<T>& x, const vec3_<T>& y, const vec3_<T>& z ) {
-		//xo_assert( is_normalized( x ) && is_normalized( y ) && is_normalized( z ) );
-		quat_<T> q;
-		mat33_<T> m = mat33_from_axes( x, y, z );
+	/// Rotation around local x axis
+	// #todo: verify and handle singularity when q.w == 0 && q.x == 0
+	template< typename T > radian_<T> rotation_around_x( const quat_<T>& q ) {
+		return radian_<T>( 2 * std::acos( q.w / std::sqrt( q.w * q.w + q.x * q.x ) ) );
+	}
 
-		T t = m.e00 + m.e11 + m.e22;
-		if ( t > 0.0 ) {
-			T root = sqrt( t + T( 1 ) );
-			q.w = T( 0.5 ) * root;
-			root = T( 0.5 ) / root;
-			q.x = ( m.e21 - m.e12 ) * root;
-			q.y = ( m[0][2] - m[2][0] ) * root;
-			q.z = ( m[1][0] - m[0][1] ) * root;
-		}
-		else {
-			size_t i = 0;
-			if ( m[1][1] > m[0][0] ) i = 1;
-			if ( m[2][2] > m[i][i] ) i = 2;
-			size_t j = ( i + 1 ) % 3;
-			size_t k = ( j + 1 ) % 3;
-			T root = sqrt( m[i][i] - m[j][j] - m[k][k] + T( 1 ) );
-			T* q_xyz = &q.x;
-			q_xyz[i] = T( 0.5 ) * root;
-			root = T( 0.5 ) / root;
-			q.w = ( m[k][j] - m[j][k] ) * root;
-			q_xyz[j] = ( m[j][i] + m[i][j] ) * root;
-			q_xyz[k] = ( m[k][i] + m[i][k] ) * root;
-		}
+	/// Rotation around local x axis
+	// #todo: verify and handle singularity when q.w == 0 && q.y == 0
+	template< typename T > radian_<T> rotation_around_y( const quat_<T>& q ) {
+		return radian_<T>( 2 * std::acos( q.w / std::sqrt( q.w * q.w + q.y * q.y ) ) );
+	}
 
-		return q;
+	/// Rotation around local x axis
+	// #todo: verify and handle singularity when q.w == 0 && q.z == 0
+	template< typename T > radian_<T> rotation_around_z( const quat_<T>& q ) {
+		return radian_<T>( 2 * std::acos( q.w / std::sqrt( q.w * q.w + q.z * q.z ) ) );
+	}
+
+	/// Get rotations around the local xyz axes of the quaternion
+	// #todo: verify and optimize
+	template< typename T > vec3rad_<T> rotation_around_xyz( const quat_<T>& q ) {
+		return vec3rad_<T>( rotation_around_x( q ), rotation_around_y( q ), rotation_around_z( q ) );
 	}
 
 	template< typename T > vec3_<T> local_x_axis( const quat_<T>& q ) {
@@ -192,7 +189,7 @@ namespace xo
 		T txy = ty * q.x, txz = tz * q.x;
 		T tyy = ty * q.y, tzz = tz * q.z;
 		return vec3_<T>( 1.0f - ( tyy + tzz ), txy + twz, txz - twy );
-		}
+	}
 
 	template< typename T > vec3_<T> local_y_axis( const quat_<T>& q ) {
 		T tx = q.x + q.x, ty = q.y + q.y, tz = q.z + q.z;
@@ -200,7 +197,7 @@ namespace xo
 		T txx = tx * q.x, txy = ty * q.x;
 		T tyz = tz * q.y, tzz = tz * q.z;
 		return vec3_<T>( txy - twz, 1.0f - ( txx + tzz ), tyz + twx );
-		}
+	}
 
 	template< typename T > vec3_<T> local_z_axis( const quat_<T>& q ) {
 		T tx = q.x + q.x, ty = q.y + q.y, tz = q.z + q.z;
@@ -208,19 +205,18 @@ namespace xo
 		T txx = tx * q.x, txz = tz * q.x;
 		T tyy = ty * q.y, tyz = tz * q.y;
 		return vec3_<T>( txz + twy, tyz - twx, 1.0f - ( txx + tyy ) );
-		}
+	}
 
 	/// Get axes from quaternion (#todo: verify)
-	template< typename T > axes_<T> axes_from_quat( const quat_<T>& q ) {
+	template< typename T > vec3_< vec3_<T> > axes_from_quat( const quat_<T>& q ) {
 		T tx = q.x + q.x, ty = q.y + q.y, tz = q.z + q.z;
 		T twx = tx * q.w, twy = ty * q.w, twz = tz * q.w;
 		T txx = tx * q.x, txy = ty * q.x, txz = tz * q.x;
 		T tyy = ty * q.y, tyz = tz * q.y, tzz = tz * q.z;
-		return axes_<T>{
+		return {
 			{ 1.0f - ( tyy + tzz ), txy + twz, txz - twy },
 			{ txy - twz, 1.0f - ( txx + tzz ), tyz + twx },
-			{ txz + twy, tyz - twx, 1.0f - ( txx + tyy ) }
-		};
+			{ txz + twy, tyz - twx, 1.0f - ( txx + tyy ) } };
 	}
 
 	template< angle_unit U, typename T > quat_<T> quat_from_x_angle( const angle_<U, T>& a ) {
@@ -284,66 +280,66 @@ namespace xo
 	template< typename T > vec3rad_<T> euler_xyz_from_quat( const quat_<T>& q )
 	{
 		return vec3rad_<T>(
-			std::atan2( -2 * ( q.y * q.z - q.w * q.x ),
-				q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ),
-			std::asin( 2 * ( q.x * q.z + q.w * q.y ) ),
-			std::atan2( -2 * ( q.x * q.y - q.w * q.z ),
-				q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z )
+			radian_<T>( std::atan2( -2 * ( q.y * q.z - q.w * q.x ),
+				q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ) ),
+			radian_<T>( std::asin( 2 * ( q.x * q.z + q.w * q.y ) ) ),
+			radian_<T>( std::atan2( -2 * ( q.x * q.y - q.w * q.z ),
+				q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z ) )
 			);
 	}
 
 	template< typename T > vec3rad_<T> euler_xzy_from_quat( const quat_<T>& q )
 	{
 		return vec3rad_<T>(
-			std::atan2( 2 * ( q.y * q.z + q.w * q.x ),
-				q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z ),
-			std::atan2( 2 * ( q.x * q.z + q.w * q.y ),
-				q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z ),
-			std::asin( -2 * ( q.x * q.y - q.w * q.z ) )
+			radian_<T>( std::atan2( 2 * ( q.y * q.z + q.w * q.x ),
+				q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z ) ),
+			radian_<T>( std::atan2( 2 * ( q.x * q.z + q.w * q.y ),
+				q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z ) ),
+			radian_<T>( std::asin( -2 * ( q.x * q.y - q.w * q.z ) ) )
 			);
 	}
 
 	template< typename T > vec3rad_<T> euler_yxz_from_quat( const quat_<T>& q )
 	{
 		return vec3rad_<T>(
-			std::asin( -2 * ( q.y * q.z - q.w * q.x ) ),
-			std::atan2( 2 * ( q.x * q.z + q.w * q.y ),
-				q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ),
-			std::atan2( 2 * ( q.x * q.y + q.w * q.z ),
-				q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z )
+			radian_<T>( std::asin( -2 * ( q.y * q.z - q.w * q.x ) ) ),
+			radian_<T>( std::atan2( 2 * ( q.x * q.z + q.w * q.y ),
+				q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ) ),
+			radian_<T>( std::atan2( 2 * ( q.x * q.y + q.w * q.z ),
+				q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z ) )
 			);
 	}
 
 	template< typename T > vec3rad_<T> euler_yzx_from_quat( const quat_<T>& q )
 	{
 		return vec3rad_<T>(
-			std::atan2( -2 * ( q.y * q.z - q.w * q.x ),
-				q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z ),
-			std::atan2( -2 * ( q.x * q.z - q.w * q.y ),
-				q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z ),
-			std::asin( 2 * ( q.x * q.y + q.w * q.z ) )
+			radian_<T>( std::atan2( -2 * ( q.y * q.z - q.w * q.x ),
+				q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z ) ),
+			radian_<T>( std::atan2( -2 * ( q.x * q.z - q.w * q.y ),
+				q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z ) ),
+			radian_<T>( std::asin( 2 * ( q.x * q.y + q.w * q.z ) ) )
 			);
 	}
 
 	template< typename T > vec3rad_<T> euler_zxy_from_quat( const quat_<T>& q )
 	{
 		return vec3rad_<T>(
-			std::asin( 2 * ( q.y * q.z + q.w * q.x ) ),
-			std::atan2( -2 * ( q.x * q.z - q.w * q.y ),
-				q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ),
-			std::atan2( -2 * ( q.x * q.y - q.w * q.z ),
-				q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z )
+			radian_<T>( std::asin( 2 * ( q.y * q.z + q.w * q.x ) ) ),
+			radian_<T>( std::atan2( -2 * ( q.x * q.z - q.w * q.y ),
+				q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ) ),
+			radian_<T>( std::atan2( -2 * ( q.x * q.y - q.w * q.z ),
+				q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z ) )
 			);
 	}
 
 	template< typename T > vec3rad_<T> euler_zyx_from_quat( const quat_<T>& q )
 	{
 		return vec3rad_<T>(
-			std::atan2( 2 * ( q.y * q.z + q.w * q.x ),
-				q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ),
-			std::asin( -2 * ( q.x * q.z - q.w * q.y ) ),
-			std::atan2( 2 * ( q.x * q.y + q.w * q.z ),
-				q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z )
+			radian_<T>( std::atan2( 2 * ( q.y * q.z + q.w * q.x ),
+				q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ) ),
+			radian_<T>( std::asin( -2 * ( q.x * q.z - q.w * q.y ) ) ),
+			radian_<T>( std::atan2( 2 * ( q.x * q.y + q.w * q.z ),
+				q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z ) )
 			);
 	}
 
