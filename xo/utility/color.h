@@ -14,7 +14,7 @@ namespace xo
 		float r, g, b, a;
 
 		static color red( float br = 1.0f, float sat = 1.0f ) { return color( br, br * ( 1.0f - sat ), br * ( 1.0f - sat ) ); }
-		static color orange( float br = 1.0f, float sat = 1.0f ) { return color( br, 0.5f * br + br * ( 0.5f - sat ), br * ( 1.0f - sat ) ); }
+		static color orange( float br = 1.0f, float sat = 1.0f ) { return color( br, 0.5f * br + 0.5f * br * ( 1.0f - sat ), br * ( 1.0f - sat ) ); }
 		static color yellow( float br = 1.0f, float sat = 1.0f ) { return color( br, br, br * ( 1.0f - sat ) ); }
 		static color green( float br = 1.0f, float sat = 1.0f ) { return color( br * ( 1.0f - sat ), br, br * ( 1.0f - sat ) ); }
 		static color cyan( float br = 1.0f, float sat = 1.0f ) { return color( br * ( 1.0f - sat ), br, br ); }
