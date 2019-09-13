@@ -10,13 +10,13 @@ namespace xo
 	public:
 		path() {}
 		path( const path& p ) : data_( p.data_ ) {}
-		path( path&& p ) : data_( std::move( p.data_ ) ) {}
+		path( path&& p ) noexcept : data_( std::move( p.data_ ) ) {}
 		path( const char* p ) : data_( p ) {}
 		explicit path( const string& p ) : data_( p ) {}
 		explicit path( string&& p ) : data_( std::move( p ) ) {}
 
 		path& operator=( const path& p ) { data_ = p.data_; return *this; }
-		path& operator=( path&& p ) { data_ = std::move( p.data_ ); return *this; }
+		path& operator=( path&& p ) noexcept { data_ = std::move( p.data_ ); return *this; }
 		path& operator=( const string& p ) { data_ = p; return *this; }
 		path& operator=( string&& p ) { data_ = std::move( p ); return *this; }
 
