@@ -3,7 +3,7 @@
 
 namespace xo
 {
-	void log_unaccessed( const prop_node& pn, log::level level, int depth )
+	void log_unaccessed( const prop_node& pn, log::level level, size_t depth )
 	{
 		if ( pn.size() > 0 )
 		{
@@ -25,7 +25,7 @@ namespace xo
 		}
 	}
 
-	void to_str_unaccessed( const prop_node& pn, string& str, int depth )
+	void to_str_unaccessed( const prop_node& pn, string& str, size_t depth )
 	{
 		if ( pn.size() > 0 )
 		{

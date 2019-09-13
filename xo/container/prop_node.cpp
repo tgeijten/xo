@@ -257,12 +257,12 @@ namespace xo
 			c.second.set_accessed_recursively( access );
 	}
 
-	int get_align_width( const prop_node& pn, int depth )
+	size_t get_align_width( const prop_node& pn, size_t depth )
 	{
-		int width = 0;
+		size_t width = 0;
 		for ( auto& child : pn )
 		{
-			width = max( width, depth * 2 + int( child.first.size() ) );
+			width = max( width, depth * 2 + child.first.size() );
 			width = max( width, get_align_width( child.second, depth + 1 ) );
 		}
 		return width;
@@ -287,7 +287,7 @@ namespace xo
 		return true;
 	}
 
-	std::ostream& to_stream( std::ostream& str, const prop_node& pn, int depth, int align )
+	std::ostream& to_stream( std::ostream& str, const prop_node& pn, size_t depth, size_t align )
 	{
 		if ( align == 0 )
 			align = get_align_width( pn, depth );
