@@ -17,7 +17,7 @@
 
 namespace xo
 {
-	XO_API void log_unaccessed( const prop_node& pn, log::level level = log::warning_level, int depth = 0 );
+	XO_API void log_unaccessed( const prop_node& pn, log::level level = log::warning_level, size_t depth = 0 );
 	XO_API string to_str_unaccessed( const prop_node& pn );
 	XO_API std::pair< bool, string > find_query_to_node( const prop_node* from, const prop_node* to, const char delim = '.' );
 }
