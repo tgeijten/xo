@@ -9,7 +9,6 @@ namespace xo
 		color() : r( 0.0f ), g( 0.0f ), b( 0.0f ), a( 1.0f ) {}
 		color( float pr, float pg, float pb, float pa = 1.0f ) : r( pr ), g( pg ), b( pb ), a( pb ) {}
 		color( double pr, double pg, double pb, double pa = 1.0 ) : r( float( pr ) ), g( float( pg ) ), b( float( pb ) ), a( float( pb ) ) {}
-		color( const xo::prop_node& pn );
 
 		float r, g, b, a;
 

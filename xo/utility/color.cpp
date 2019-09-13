@@ -31,10 +31,6 @@ namespace xo
 		else return false;
 	}
 
-	color::color( const xo::prop_node& pn )
-	{
-	}
-
 	color make_from_hsv( float H, float S, float V )
 	{
 		H = fmod( H, 360.0f ) / 60.0f;
