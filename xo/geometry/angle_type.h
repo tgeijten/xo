@@ -69,7 +69,7 @@ namespace xo
 	using vec3degd = vec3deg_< double >;
 
 	/// convert vector of angles to vector of values
-	template< angle_unit U, typename T > vec3_<T> value( const angle_<U, T>& v ) {
+	template< angle_unit U, typename T > vec3_<T> value( const vec3_< angle_<U, T> >& v ) {
 		return vec3_<T>( v.x.value, v.y.value, v.z.value );
 	}
 
