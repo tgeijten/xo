@@ -29,6 +29,9 @@ namespace xo
 		/// get rad / deg value
 		constexpr const T& deg_value() const { return this->value; }
 		constexpr T rad_value() const { return T( 0.017453292519943295769L ) * this->value; }
+
+		/// explicit cast to value type
+		explicit operator T() const { return this->value; }
 	};
 
 	/// partial specialization for radians
@@ -50,6 +53,9 @@ namespace xo
 		/// get rad / deg value
 		constexpr T deg_value() const { return T( 57.295779513082320877L ) * this->value; }
 		constexpr const T& rad_value() const { return this->value; }
+
+		/// explicit cast to value type
+		explicit operator T() const { return this->value; }
 	};
 
 	// alias names
