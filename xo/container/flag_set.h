@@ -1,12 +1,13 @@
 #pragma once
 
+#include "xo/xo_types.h"
 #include <initializer_list>
 
 namespace xo
 {
 	/// class for defining flags in a bitset
 	// #todo: use smart storage type
-	template< typename EnumT, typename StorageT = unsigned int >
+	template< typename EnumT, typename StorageT = uint64 >
 	struct flag_set
 	{
 		flag_set() : data_( StorageT( 0 ) ) {}
@@ -15,9 +16,9 @@ namespace xo
 
 		flag_set& operator=( const flag_set& o ) { data_ = o.data_; return *this; }
 
-		inline const bool get( EnumT index ) const { return ( data_ & storage_bit( index ) ) != 0; }
-		inline const bool operator()( EnumT index ) const { return get( index ); }
+		inline bool get( EnumT index ) const { return ( data_ & storage_bit( index ) ) != 0; }
 		template< EnumT index >	bool get() const { return ( data_ & storage_bit( index ) ) != 0; }
+		inline bool operator()( EnumT index ) const { return get( index ); }
 
 		flag_set& set( EnumT index, bool value ) { data_ = ( data_ & ~storage_bit( index ) ) | storage_bit( index, value ); return *this; }
 		template< EnumT index > flag_set& set( bool value ) { data_ = ( data_ & ~storage_bit( index ) ) | storage_bit( index, value ); return *this; }
@@ -25,6 +26,9 @@ namespace xo
 		flag_set& set( EnumT index ) { data_ |= storage_bit( index ); return *this; }
 		template< EnumT index > flag_set& set() { data_ |= storage_bit( index ); return *this; }
 		template< EnumT index > flag_set& clear() { data_ &= ~storage_bit( index ); return *this; }
+
+		flag_set& toggle( EnumT index ) { set( index, !get( index ) ); return *this; }
+		template< EnumT index > flag_set& toggle() { set<index>( !get<index>() ); return *this; }
 
 		flag_set& set( std::initializer_list< EnumT > flags ) { for ( auto f : flags ) set( f ); return *this; }
 		flag_set& set( std::initializer_list< EnumT > flags, bool value ) { for ( auto f : flags ) set( f, value ); return *this; }
