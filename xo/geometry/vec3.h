@@ -68,6 +68,10 @@ namespace xo
 	template< typename T > T squared_length( const vec3_<T>& v )
 	{ return v.x * v.x + v.y * v.y + v.z * v.z; }
 
+	/// Get Manhattan length of a vec3
+	template< typename T > T manhattan_length( const vec3_<T>& v )
+	{ return std::abs( v.x ) + std::abs( v.y ) + std::abs( v.z ); }
+
 	/// Test if a vec3 is of unit length
 	template< typename T > bool is_normalized( const vec3_<T>& v )
 	{ return equal( v.x * v.x + v.y * v.y + v.z * v.z, T(1) ); }
