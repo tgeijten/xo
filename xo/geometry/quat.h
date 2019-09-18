@@ -305,55 +305,45 @@ namespace xo
 	template< typename T > vec3rad_<T> euler_xzy_from_quat( const quat_<T>& q )
 	{
 		return vec3rad_<T>(
-			radian_<T>( std::atan2( 2 * ( q.y * q.z + q.w * q.x ),
-				q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z ) ),
-			radian_<T>( std::atan2( 2 * ( q.x * q.z + q.w * q.y ),
-				q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z ) ),
-			radian_<T>( std::asin( -2 * ( q.x * q.y - q.w * q.z ) ) )
+			std::atan2( 2 * ( q.y * q.z + q.w * q.x ), q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z ),
+			std::atan2( 2 * ( q.x * q.z + q.w * q.y ), q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z ),
+			std::asin( -2 * ( q.x * q.y - q.w * q.z ) )
 			);
 	}
 
 	template< typename T > vec3rad_<T> euler_yxz_from_quat( const quat_<T>& q )
 	{
 		return vec3rad_<T>(
-			radian_<T>( std::asin( -2 * ( q.y * q.z - q.w * q.x ) ) ),
-			radian_<T>( std::atan2( 2 * ( q.x * q.z + q.w * q.y ),
-				q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ) ),
-			radian_<T>( std::atan2( 2 * ( q.x * q.y + q.w * q.z ),
-				q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z ) )
+			std::asin( -2 * ( q.y * q.z - q.w * q.x ) ),
+			std::atan2( 2 * ( q.x * q.z + q.w * q.y ), q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ),
+			std::atan2( 2 * ( q.x * q.y + q.w * q.z ), q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z )
 			);
 	}
 
 	template< typename T > vec3rad_<T> euler_yzx_from_quat( const quat_<T>& q )
 	{
 		return vec3rad_<T>(
-			radian_<T>( std::atan2( -2 * ( q.y * q.z - q.w * q.x ),
-				q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z ) ),
-			radian_<T>( std::atan2( -2 * ( q.x * q.z - q.w * q.y ),
-				q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z ) ),
-			radian_<T>( std::asin( 2 * ( q.x * q.y + q.w * q.z ) ) )
+			std::atan2( -2 * ( q.y * q.z - q.w * q.x ), q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z ),
+			std::atan2( -2 * ( q.x * q.z - q.w * q.y ), q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z ),
+			std::asin( 2 * ( q.x * q.y + q.w * q.z ) )
 			);
 	}
 
 	template< typename T > vec3rad_<T> euler_zxy_from_quat( const quat_<T>& q )
 	{
 		return vec3rad_<T>(
-			radian_<T>( std::asin( 2 * ( q.y * q.z + q.w * q.x ) ) ),
-			radian_<T>( std::atan2( -2 * ( q.x * q.z - q.w * q.y ),
-				q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ) ),
-			radian_<T>( std::atan2( -2 * ( q.x * q.y - q.w * q.z ),
-				q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z ) )
+			std::asin( 2 * ( q.y * q.z + q.w * q.x ) ),
+			std::atan2( -2 * ( q.x * q.z - q.w * q.y ), q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ),
+			std::atan2( -2 * ( q.x * q.y - q.w * q.z ), q.w * q.w - q.x * q.x + q.y * q.y - q.z * q.z )
 			);
 	}
 
 	template< typename T > vec3rad_<T> euler_zyx_from_quat( const quat_<T>& q )
 	{
 		return vec3rad_<T>(
-			radian_<T>( std::atan2( 2 * ( q.y * q.z + q.w * q.x ),
-				q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ) ),
-			radian_<T>( std::asin( -2 * ( q.x * q.z - q.w * q.y ) ) ),
-			radian_<T>( std::atan2( 2 * ( q.x * q.y + q.w * q.z ),
-				q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z ) )
+			std::atan2( 2 * ( q.y * q.z + q.w * q.x ), q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ),
+			std::asin( -2 * ( q.x * q.z - q.w * q.y ) ),
+			std::atan2( 2 * ( q.x * q.y + q.w * q.z ), q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z )
 			);
 	}
 
