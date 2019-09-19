@@ -146,9 +146,9 @@ namespace xo
 		T l = sqrt( q.x * q.x + q.y * q.y + q.z * q.z );
 		if ( l > constants<T>::ample_epsilon() ) {
 			T s = T( 1 ) / l;
-			return std::pair< vec3_<T>, radian_<T> >{ vec3f( s* q.x, s* q.y, s* q.z ), radian_<T>( T( 2 )* std::acos( q.w ) ) };
+			return { vec3f( s * q.x, s * q.y, s * q.z ), radian_<T>( T( 2 ) * std::acos( q.w ) ) };
 		}
-		else return std::pair< vec3_<T>, radian_<T> >{ vec3_<T>::unit_x(), radian_<T>( T() ) };
+		else return { vec3_<T>::unit_x(), radian_<T>() };
 	}
 
 	/// Get rotation around specific axis
