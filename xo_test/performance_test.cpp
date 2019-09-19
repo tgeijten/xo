@@ -39,7 +39,7 @@ namespace xo
 		random_number_generator rng;
 		array< quatf, N > res;
 		for ( int i = 0; i < N; ++i )
-			res[ i ] = make_random_quat( euler_order::xyz, rng ).first;
+			res[ i ] = make_random_quat<float>( euler_order::xyz, rng ).first;
 		return res;
 	}
 

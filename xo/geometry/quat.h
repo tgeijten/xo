@@ -38,26 +38,25 @@ namespace xo
 
 	/// get length of a quat
 	template< typename T > T length( const quat_<T>& q )
-	{
-		return std::sqrt( q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z );
-	}
+	{ return std::sqrt( q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z ); }
 
 	template< typename T > T squared_length( const quat_<T>& q )
-	{
-		return q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z;
-	}
+	{ return q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z; }
 
 	/// test if a quat is of unit length
 	template< typename T > bool is_normalized( const quat_<T>& q )
-	{
-		return std::abs( squared_length( q ) - T( 1 ) ) <= constants<T>::ample_epsilon();
-	}
+	{ return std::abs( squared_length( q ) - T( 1 ) ) <= constants<T>::ample_epsilon(); }
+
+	/// Compare quat with epsilon
+	template< typename T > bool equal( const quat_<T>& v1, const quat_<T>& v2, T e = constants<T>::ample_epsilon() )
+	{ return equal( v1.w, v2.w, e ) && equal( v1.x, v2.x, e ) && equal( v1.y, v2.y, e ) && equal( v1.z, v2.z, e ); }
 
 	/// normalize quaternion, return length
 	template< typename T > T normalize( quat_<T>& q ) {
 		T len = length( q );
-		xo_assert( len > constants<T>::epsilon() );
-		T s = inv( len ); q.x *= s; q.y *= s; q.z *= s; q.w *= s;
+		if ( len > constants<T>::ample_epsilon() ) {
+			T s = inv( len ); q.x *= s; q.y *= s; q.z *= s; q.w *= s;
+		}
 		return len;
 	}
 
@@ -72,15 +71,11 @@ namespace xo
 
 	/// get quaternion inverse
 	template< typename T > quat_<T> inverse( quat_<T> q )
-	{
-		auto f = T( -1 ) / squared_length( q ); q.x *= f; q.y *= f; q.z *= f; return q;
-	}
+	{ auto f = T( -1 ) / squared_length( q ); q.x *= f; q.y *= f; q.z *= f; return q; }
 
 	/// return quaternion in which w is positive (negate if w < 0)
 	template< typename T > quat_<T> positive( quat_<T> q )
-	{
-		if ( q.w < 0 ) { q.w = -q.w; q.x = -q.x; q.y = -q.y; q.z = -q.z; } return q;
-	}
+	{ if ( q.w < 0 ) { q.w = -q.w; q.x = -q.x; q.y = -q.y; q.z = -q.z; } return q; }
 
 	/// make quaternion from axis and angle
 	template< angle_unit U, typename T > quat_<T> quat_from_axis_angle( const vec3_<T>& axis, angle_<U, T> ang ) {
@@ -98,36 +93,23 @@ namespace xo
 			T ha = T( 0.5 ) * l;
 			T hs = std::sin( ha );
 			return quat_<T>( std::cos( ha ), hs * v.x, hs * v.y, hs * v.z );
-		}
-		else return quat_<T>::identity();
+		} else return quat_<T>::identity();
 	}
 
 	/// Get quaternion to represent the rotation from source to target vector
 	template< typename T > quat_<T> quat_from_directions( const vec3_<T>& source, const vec3_<T>& target ) {
-		vec3_<T> s = normalized( source );
-		vec3_<T> t = normalized( target );
-		vec3_<T> c = cross_product( s, t );
-		T d = dot_product( s, t );
-
-		if ( equal( d, T( 1 ) ) ) // check if vectors are the same
-			return quat_<T>::identity();
-
-		auto clen = length( c );
-		if ( equal( clen, T( 0 ) ) ) // check if vectors are 180 deg apart
-			return quat_<T>( 0, 1, 0, 0 ); // this doesn't work if source is unit_x
-
-		c /= clen;
-		auto a = std::acos( d ) * T( 0.5 );
-		auto sa = std::sin( a );
-
-		return quat_<T>( std::cos( a ), c.x * sa, c.y * sa, c.z * sa );
+		vec3_<T> axis = cross_product( source, target );
+		T dot = dot_product( source, target );
+		if ( dot < -1.0f + constants<T>::ample_epsilon() )
+			return quat_<T>( 0, 1, 0, 0 );
+		quat_<T> result( dot + 1.0f, axis.x, axis.y, axis.z );
+		normalize( result );
+		return result;
 	}
 
 	/// Get quaternion to represent the rotation from source to target quaternion
 	template< typename T > quat_<T> quat_from_quats( const quat_<T>& source, const quat_<T>& target )
-	{
-		return -source * target;
-	}
+	{ return -source * target; }
 
 	/// Get rotation vector from quaternion
 	template< typename T > vec3_<T> rotation_vector_from_quat( const quat_<T>& q ) {
@@ -136,8 +118,7 @@ namespace xo
 		if ( l > constants<T>::ample_epsilon() ) {
 			T f = T( 2 ) * std::acos( q.w ) / l;
 			return vec3_<T>( f * q.x, f * q.y, f * q.z );
-		}
-		else return vec3_<T>::zero();
+		} else return vec3_<T>::zero();
 	}
 
 	/// Get axis angle from quaternion
@@ -147,8 +128,7 @@ namespace xo
 		if ( l > constants<T>::ample_epsilon() ) {
 			T s = T( 1 ) / l;
 			return { vec3f( s * q.x, s * q.y, s * q.z ), radian_<T>( T( 2 ) * std::acos( q.w ) ) };
-		}
-		else return { vec3_<T>::unit_x(), radian_<T>() };
+		} else return { vec3_<T>::unit_x(), radian_<T>() };
 	}
 
 	/// Get rotation around specific axis
@@ -298,7 +278,7 @@ namespace xo
 		return vec3rad_<T>(
 			std::atan2( -2 * ( q.y * q.z - q.w * q.x ), q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z ),
 			std::asin( 2 * ( q.x * q.z + q.w * q.y ) ),
-			std::atan2( -2 * ( q.x * q.y - q.w * q.z ),	q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z ) 
+			std::atan2( -2 * ( q.x * q.y - q.w * q.z ), q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z )
 			);
 	}
 
@@ -369,14 +349,12 @@ namespace xo
 			// quaternion with w, x, y, z components
 			q.set( pn.get<T>( "w" ), pn.get<T>( "x" ), pn.get<T>( "y" ), pn.get<T>( "z" ) );
 			return true;
-		}
-		else if ( vec3_< degree_<T> > v; from_prop_node( pn, v ) ) {
+		} else if ( vec3_< degree_<T> > v; from_prop_node( pn, v ) ) {
 			// quaternion from Euler angles
 			auto order = pn.get< euler_order >( "order", euler_order::xyz );
 			q = quat_from_euler( v, order );
 			return true;
-		}
-		else return false;
+		} else return false;
 	};
 
 
