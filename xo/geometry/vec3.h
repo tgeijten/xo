@@ -28,7 +28,7 @@ namespace xo
 
 	/// Scalar multiplication
 	template< typename T, typename TS > vec3_<T>& operator*=( vec3_<T>& v, TS s )
-	{ v.x *= T(s); v.y *= T(s); v.z *= T(s); return v; }
+	{ v.x *= s; v.y *= s; v.z *= s; return v; }
 	/// Scalar multiplication
 	template< typename T, typename TS > vec3_<T> operator*( TS s, vec3_<T> v )
 	{ return v *= s; }
@@ -39,24 +39,21 @@ namespace xo
 	/// Scalar division
 	template< typename T > vec3_<T> operator/( vec3_<T> v, T s )
 	{ T ms = inv( s ); v.x *= ms; v.y *= ms; v.z *= ms; return v; }
-	/// Invert components
+	/// Invert elements
 	template< typename T > vec3_<T> operator/( T s, vec3_<T> v )
 	{ v.x = s / v.x; v.y = s / v.y; v.z = s / v.z; return v; }
 	/// Scalar division
 	template< typename T > vec3_<T>& operator/=( vec3_<T>& v, T s )
 	{ T ms = inv( s ); v.x *= ms; v.y *= ms; v.z *= ms; return v; }
 
-	/// Scale components (masking)
-	template< typename T > vec3_<T> operator*( const vec3_<T>& v1, const vec3_<T>& v2 )
-	{ return vec3_<T>( v1.x * v2.x, v1.y * v2.y, v1.z * v2.z ); }
-	/// Scale components (masking)
+	/// Multiply vector elements
 	template< typename T > vec3_<T>& operator*=( vec3_<T>& v1, const vec3_<T>& v2 )
 	{ v1.x *= v2.x; v1.y *= v2.y; v1.z *= v2.z; return v1; }
 
-	/// Inverse scale components
+	/// Inverse scale elements
 	template< typename T > vec3_<T> operator/( const vec3_<T>& v1, const vec3_<T>& v2 )
 	{ return vec3_<T>( v1.x / v2.x, v1.y / v2.y, v1.z / v2.z ); }
-	/// Inverse scale components
+	/// Inverse scale elements
 	template< typename T > vec3_<T>& operator/=( vec3_<T>& v1, const vec3_<T>& v2 )
 	{ v1.x /= v2.x; v1.y /= v2.y; v1.z /= v2.z; return v1; }
 
@@ -103,14 +100,20 @@ namespace xo
 	{ clamp( v.x, lb, ub ); clamp( v.y, lb, ub ); clamp( v.z, lb, ub ); return v; }
 
 	/// Get normalized vec3
-	template< typename T > vec3_<T> normalized( vec3_<T> v ) { normalize( v ); return v; }
+	template< typename T > vec3_<T> normalized( vec3_<T> v )
+	{ normalize( v ); return v; }
 
 	/// Get absolute value of vec3
-	template< typename T > vec3_<T> abs( vec3_<T> v ) { v.x = std::abs( v.x ); v.y = std::abs( v.y ); v.z = std::abs( v.z ); return v; }
+	template< typename T > vec3_<T> abs( vec3_<T> v )
+	{ v.x = std::abs( v.x ); v.y = std::abs( v.y ); v.z = std::abs( v.z ); return v; }
 
 	/// Dot product of two vec3
 	template< typename T1, typename T2 > auto dot_product( const vec3_<T1>& v1, const vec3_<T2>& v2 )
 	{ return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z; }
+
+	/// Multiply vector elements, can be of different types
+	template< typename T, typename U > auto multiply( const vec3_<T>& v1, const vec3_<U>& v2 )
+	{ return vec3_( v1.x * v2.x, v1.y * v2.y, v1.z * v2.z ); }
 
 	/// Projection of v1 onto v2
 	template< typename T > vec3_<T> projection( const vec3_<T>& v1, const vec3_<T>& v2 )

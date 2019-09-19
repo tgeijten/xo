@@ -46,12 +46,12 @@ namespace xo
 			buf.add_channel( stringf( "channel%d", i ) );
 
 		// more tests
-		std::vector< std::pair< double, vec3f > > buf_test;
-		buf_test.push_back( std::make_pair( 0, vec3f( 1, 0, 0 ) ) );
-		buf_test.push_back( std::make_pair( 1, vec3f( 0, 1, 0 ) ) );
-		buf_test.push_back( std::make_pair( 3, vec3f( 0, 1, 2 ) ) );
+		std::vector< std::pair< float, vec3f > > buf_test;
+		buf_test.push_back( std::make_pair( 0.0f, vec3f( 1, 0, 0 ) ) );
+		buf_test.push_back( std::make_pair( 1.0f, vec3f( 0, 1, 0 ) ) );
+		buf_test.push_back( std::make_pair( 3.0f, vec3f( 0, 1, 2 ) ) );
 		for ( int d = -10; d < 40; ++d )
-			log::trace( 0.1 * d, ": ", interpolated_value( buf_test, 0.1 * d ) );
+			log::trace( 0.1 * d, ": ", interpolated_value( buf_test, float( 0.1 * d ) ) );
 
 		// more tests
 		std::vector< vec3f > buf_test2;
@@ -59,6 +59,6 @@ namespace xo
 		buf_test2.push_back( vec3f( 0, 1, 0 ) );
 		buf_test2.push_back( vec3f( 0, 1, 2 ) );
 		for ( int d = -10; d < 40; ++d )
-			log::trace( 0.1 * d, ": ", interpolated_value( buf_test2, 0.1 * d ) );
+			log::trace( 0.1 * d, ": ", interpolated_value( buf_test2, float( 0.1 * d ) ) );
 	}
 }
