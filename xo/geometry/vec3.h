@@ -103,6 +103,10 @@ namespace xo
 	template< typename T > vec3_<T> normalized( vec3_<T> v )
 	{ normalize( v ); return v; }
 
+	/// Get normalized vec3 and length
+	template< typename T > pair< vec3_<T>, T > direction_length( const vec3_<T>& v )
+	{ auto l = length( v ); if ( l > constants<T>::epsilon() ) return { v / l, l }; else return { v, l }; }
+
 	/// Get absolute value of vec3
 	template< typename T > vec3_<T> abs( vec3_<T> v )
 	{ v.x = std::abs( v.x ); v.y = std::abs( v.y ); v.z = std::abs( v.z ); return v; }
