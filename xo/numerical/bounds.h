@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xo/xo_types.h"
+#include "xo/container/pair_type.h"
 #include "xo/numerical/math.h"
 #include "xo/container/prop_node.h"
 
@@ -18,8 +19,17 @@ namespace xo
 		bool is_within( const T& value ) const { return ( value >= lower ) && ( value <= upper ); }
 		T range() const { return upper - lower; }
 
-		/// returns negative when value is below lower, positive when value is above upper, 0 when within bounds
+		/// check bounds, return negative when value below lower, positive when value above upper, 0 when within bounds
 		T get_violation( const T& value ) const { if ( value < lower ) return value - lower; else if ( value > upper ) return value - upper; else return T( 0 ); }
+
+		/// check bounds, return negative when value below lower, positive when value above upper, 0 when within bounds
+		pair< bool, T > check( const T& value ) const {
+			if ( value < lower )
+				return { false, value - lower };
+			else if ( value > upper )
+				return { false, value - upper };
+			else return { true, T( 0 ) };
+		}
 
 		T& clamp( T& value ) const { return xo::clamp( value, lower, upper ); }
 		T clamped( T value ) const { return xo::clamped( value, lower, upper ); }
