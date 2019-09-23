@@ -15,6 +15,7 @@ namespace xo
 			sink( level l = info_level );
 			virtual ~sink();
 			virtual void send_log_message( level l, const string& msg ) = 0;
+			virtual void flush() {}
 			void try_send_log_message( level l, const string& msg );
 			void set_log_level( level l );
 			level get_log_level();
@@ -28,7 +29,8 @@ namespace xo
 		{
 		public:
 			stream_sink( level l, std::ostream& str );
-			virtual void send_log_message( level l, const string& msg );
+			virtual void send_log_message( level l, const string& msg ) override;
+			virtual void flush() override;
 
 		protected:
 			std::ostream& stream_;
@@ -45,7 +47,7 @@ namespace xo
 		public:
 			file_sink( level l, const path& file );
 			virtual void send_log_message( level l, const string& msg ) override;
-			bool good();
+			const std::ofstream& file_stream() const { return file_stream_; }
 
 		protected:
 			std::ofstream file_stream_;

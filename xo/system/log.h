@@ -23,14 +23,18 @@ namespace xo
 		XO_API void add_sink( sink* s );
 		XO_API void remove_sink( sink* s );
 
-		// dynamic log level
+		// set log level
 		XO_API void set_global_log_level( level l );
+		XO_API void update_global_log_level(); // set global level to lowest of all sinks
 		XO_API level get_global_log_level();
 		XO_API bool test_log_level( level l );
 
 		// log independent of level
 		XO_API void log_string( level l, const string& s );
 		XO_API void log_vstring( level l, const char* format, va_list list );
+
+		// flush all sinks, happens automatically if level >= error_level
+		XO_API void flush();
 
 		template< typename T, typename... Args > void log_string( level l, std::string& s, T v, const Args&... args ) {
 			s += to_str( v );
@@ -72,14 +76,18 @@ namespace xo
 		XO_API void warningf( const char* format, ... );
 
 		template< typename... Args > void error( const Args&... args ) {
-			if constexpr ( XO_STATIC_LOG_LEVEL <= error_level )
+			if constexpr ( XO_STATIC_LOG_LEVEL <= error_level ) {
 				message( error_level, args... );
+				flush();
+			}
 		}
 		XO_API void errorf( const char* format, ... );
 
 		template< typename... Args > void critical( const Args&... args ) {
-			if constexpr ( XO_STATIC_LOG_LEVEL <= critical_level )
+			if constexpr ( XO_STATIC_LOG_LEVEL <= critical_level ) {
 				message( critical_level, args... );
+				flush();
+			}
 		}
 		XO_API void criticalf( const char* format, ... );
 	}
