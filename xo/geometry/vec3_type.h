@@ -22,7 +22,7 @@ namespace xo
 
 		/// assignment
 		vec3_& operator=( const vec3_& o ) = default;
-		vec3_& operator=( vec3_&& o ) = default;
+		vec3_& operator=( vec3_&& o ) noexcept = default;
 		void set( const T& px, const T& py, const T& pz ) { x = px; y = py; z = pz; }
 
 		/// data

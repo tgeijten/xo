@@ -15,8 +15,8 @@ namespace xo
 		template< typename U > handle( U v ) : value( id_type( v ) ) { xo_error_if( v >= invalid_value(), "handle cannot hold value" ); }
 		handle( const handle& ) = default;
 		handle& operator=( const handle& ) = default;
-		handle( handle&& o ) : value( o.value ) { o.value = invalid_value(); }
-		handle& operator=( handle&& o ) { id_type tmp = value; value = o.value; o.value = tmp; return *this; }
+		handle( handle&& o ) noexcept : value( o.value ) { o.value = invalid_value(); }
+		handle& operator=( handle&& o ) noexcept { id_type tmp = value; value = o.value; o.value = tmp; return *this; }
 
 		static constexpr id_type invalid_value() { return ~id_type( 0 ); }
 
