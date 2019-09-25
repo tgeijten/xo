@@ -1,7 +1,7 @@
 #pragma once
-#include "xo/numerical/bounded.h"
 
-#include <cstdint>
+#include "xo/numerical/bounded.h"
+#include "xo/xo_types.h"
 
 namespace xo
 {
@@ -16,7 +16,7 @@ namespace xo
 		bounded< int, 0, 59 > second;
 		bounded< int, 0, 999 > millisecond;
 
-		std::int64_t timestamp() const;
+		uint64 timestamp() const;
 	};
 
 	bool operator<( const date_time& a, const date_time& b ) {
