@@ -16,16 +16,16 @@ namespace xo
 		return len;
 	}
 
-	template< typename P >
-	index_t insert_path_point( P& path, double insert_len )
+	template< typename P, typename T >
+	index_t insert_path_point( P& path, T insert_len )
 	{
 		auto s = std::size( path );
 		xo_assert( s >= 2 );
 
 		// check if this matches the first existing point
-		if ( less_or_equal( insert_len, 0.0 ) )
+		if ( less_or_equal( insert_len, T( 0 ) ) )
 			return 0;
-
+			
 		for ( index_t idx = 1; idx < s; ++idx )
 		{
 			auto svec = path[ idx ] - path[ idx - 1 ];
