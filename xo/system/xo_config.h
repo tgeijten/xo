@@ -22,9 +22,9 @@
 
 #ifndef XO_STATIC_LOG_LEVEL
 #	if XO_ENABLE_LOG
-#		define XO_STATIC_LOG_LEVEL never_log_level
-#	else
 #		define XO_STATIC_LOG_LEVEL trace_level
+#	else
+#		define XO_STATIC_LOG_LEVEL never_log_level
 #	endif
 #endif
 
