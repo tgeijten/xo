@@ -7,7 +7,7 @@ namespace xo
 	struct XO_API color
 	{
 		color() : r( 0.0f ), g( 0.0f ), b( 0.0f ), a( 1.0f ) {}
-		color( float pr, float pg, float pb, float pa = 1.0f ) : r( pr ), g( pg ), b( pb ), a( pb ) {}
+		color( float pr, float pg, float pb, float pa = 1.0f ) : r( pr ), g( pg ), b( pb ), a( pa ) {}
 		color( double pr, double pg, double pb, double pa = 1.0 ) : r( float( pr ) ), g( float( pg ) ), b( float( pb ) ), a( float( pb ) ) {}
 
 		float r, g, b, a;

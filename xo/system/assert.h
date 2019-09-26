@@ -3,7 +3,7 @@
 #include "xo/system/xo_config.h"
 #include <string>
 
-#ifndef XO_DISABLE_EXCEPTIONS
+#if XO_USE_EXCEPTIONS
 #	include <stdexcept>
 #	define xo_error( message_ ) \
 		throw std::runtime_error( message_ )
@@ -13,20 +13,20 @@
 		{ xo::log::critical( message_ ); exit( -1 ); }
 #endif
 
-#ifndef XO_DISABLE_ASSERT
+#if XO_USE_ASSERT
 #	define xo_assert( expression_ ) \
-		if (!(expression_)) xo_error( "Assertion Failure in " + std::string( __FUNCTION__ ) + "(): "#expression_ )
+		if (!(expression_)) xo_error( "Assertion failure in " + std::string( __FUNCTION__ ) + "(): "#expression_ )
 
 #	define xo_assert_msg( expression_, message_ ) \
-		if (!(expression_)) xo_error( "Assertion Failure in " + std::string( __FUNCTION__ ) + "(): "#expression_" (" + std::string( message_ ) + ")" )
+		if (!(expression_)) xo_error( "Assertion failure in " + std::string( __FUNCTION__ ) + "(): "#expression_" (" + std::string( message_ ) + ")" )
 #else
 #	define xo_assert( expression_ )
-#	define xo_debug_assert( expression_ )
 #	define xo_assert_msg( expression_, message_ )
 #endif
 
-#ifndef NDEBUG
-#	define xo_debug_assert( expression_ ) xo_assert( expression_ )
+#if XO_DEBUG_MODE && XO_USE_ASSERT
+#	define xo_debug_assert( expression_ ) \
+	if ( !( expression_ ) ) xo_error( "Debug assertion failure in " + std::string( __FUNCTION__ ) + "(): "#expression_ )
 #else
 #	define xo_debug_assert( expression_ )
 #endif

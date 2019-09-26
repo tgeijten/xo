@@ -9,7 +9,7 @@ namespace xo
 	template< typename T, int N >
 	struct iir_filter
 	{
-		iir_filter() : x_(), y_(), b0_(), b_(), a_() {}
+		iir_filter() : b0_(), x_(), y_(), b_(), a_() {}
 		const T& operator()( const T& x ) {
 			auto y = b0_ * x;
 			for ( int i = 0; i < N; ++i )
@@ -30,8 +30,8 @@ namespace xo
 
 		T b0_;
 		std::array< T, N > x_;
-		std::array< T, N > b_;
 		std::array< T, N > y_;
+		std::array< T, N > b_;
 		std::array< T, N > a_;
 	};
 

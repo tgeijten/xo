@@ -12,7 +12,7 @@ namespace xo
 	public:
 		using measure_t = std::pair< std::string, time >;
 
-		stopwatch() : internal_measure_( 0 ), timer_() { epoch_ = timer_(); }
+		stopwatch() : timer_(), internal_measure_( 0 ) { epoch_ = timer_(); }
 		~stopwatch() {}
 
 		/// add a measure with a specific tag. identically names measures are summed

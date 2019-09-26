@@ -37,7 +37,7 @@ namespace xo
 			else
 				log::info( "Performed ", total, " tests with ", checks_passed, " checks; ALL CLEAR :-)" );
 
-#if XO_IS_DEBUG_BUILD && defined( XO_COMP_MSVC )
+#if XO_DEBUG_MODE && defined( XO_COMP_MSVC )
 			xo::wait_for_key();
 #endif
 

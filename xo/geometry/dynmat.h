@@ -12,8 +12,8 @@ namespace xo
 		using iterator = typename dynarray< T >::iterator;
 		using const_iterator = typename dynarray< T >::const_iterator;
 
-		dynmat() : data_(), cols_() {}
-		dynmat( size_t col, size_t row, const T& value = T() ) : data_( row * col, value ), cols_( col ) {}
+		dynmat() : cols_(), data_() {}
+		dynmat( size_t col, size_t row, const T& value = T() ) : cols_( col ), data_( row * col, value ) {}
 
 		const T& operator()( index_t col, index_t row ) const { return data_[ row * cols_ + col ]; }
 		T& operator()( index_t col, index_t row ) { return data_[ row * cols_ + col ]; }

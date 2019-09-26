@@ -31,7 +31,7 @@ namespace xo
 		}
 
 		void clear() {
-			std::apply( []( auto&... v ) { ( ( v.clear() ), ... ); }, data_ );
+			std::apply( []( auto&... v ) { ( ( v.clear() ), ... ); }, data_ ); // fold comma expression
 		}
 
 	private:

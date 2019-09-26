@@ -59,7 +59,8 @@ namespace xo
 		console_sink::console_sink( level l ) : stream_sink( l, std::cout )
 		{}
 
-		file_sink::file_sink( level l, const path& file ) : file_stream_(), stream_sink( l, file_stream_ )
+		file_sink::file_sink( level l, const path& file ) :
+			stream_sink( l, file_stream_ )
 		{
 			if ( file.has_parent_path() )
 				create_directories( file.parent_path() );

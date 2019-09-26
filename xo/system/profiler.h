@@ -54,9 +54,9 @@ namespace xo
 
 	private:
 		std::vector< section > sections_;
+		section* current_section_;
 		timer timer_;
 		bool enabled_;
-		section* current_section_;
 		time overhead_estimate;
 		std::thread::id instance_thread_;
 	};
