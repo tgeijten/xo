@@ -56,11 +56,9 @@ namespace xo
 	/// check if a number is whole (i.e. has no decimals)
 	template< typename T > bool is_whole( T v ) { return floor( v ) == v; }
 
-	/// linearly interpolate between two points (x1, y1) and (x2, y2)
-	template< typename T > T interpolate( T x, T x1, T y1, T x2, T y2 ) {
-		double w = ( x - x1 ) / ( x2 - x1 );
-		return w * y2 + ( 1.0 - w ) * y1;
-	}
+	/// linearly interpolate between v1 (t=0) and v2 (t=1)
+	template< typename T, typename S > T lerp( const T& v1, const T& v2, S t )
+	{ return v1 + t * ( v2 - v1 ); }
 
 	/// clamp a value so that it is between min and max
 	template< typename T > T& clamp( T& v, const T& min, const T& max )

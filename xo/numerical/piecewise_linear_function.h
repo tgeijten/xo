@@ -25,7 +25,8 @@ namespace xo
 				++it1;
 
 			auto it0 = it1 - 1;
-			return interpolate( x, it0->first, it0->second, it1->first, it1->second );
+			auto t = ( x - it0->first ) / ( it1->first - it0->first );
+			return lerp( it0->second, it1->second, t );
 		}
 
 		const container_t& data() { return data_; }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xo/xo_types.h"
+#include "xo/numerical/math.h"
 
 namespace xo
 {
@@ -27,7 +28,9 @@ namespace xo
 
 	inline color operator+( const color& c1, const color& c2 ) { return color( c1.r + c2.r, c1.g + c2.g, c1.b + c2.b, c1.a + c2.a ); }
 	inline color operator-( const color& c1, const color& c2 ) { return color( c1.r - c2.r, c1.g - c2.g, c1.b - c2.b, c1.a - c2.a ); }
-	inline color mix_colors( const color& col1, const color& col2, float w1 ) { return w1 * col1 + ( 1.0f - w1 ) * col2; }
+
+	inline color& clamp( color& c, float l = 0.0f, float u = 1.0f )
+	{ clamp( c.r, l, u ); clamp( c.g, l, u ); clamp( c.b, l, u ); clamp( c.a, l, u ); return c; }
 
 	XO_API float perceived_brightness( const color& c );
 	XO_API color make_from_hsv( float H, float S, float V );
