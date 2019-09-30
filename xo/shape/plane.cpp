@@ -2,7 +2,7 @@
 
 namespace xo
 {
-	vec3f intersection( const rayf& r, const plane& s, const transformf& t )
+	vec3f intersection( const linef& r, const plane& s, const transformf& t )
 	{
 		vec3f delta_pos = r.pos_ - t.p;
 		vec3f plane_normal = t.q * s.normal_;
