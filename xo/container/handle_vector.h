@@ -2,56 +2,48 @@
 
 #include "xo/xo_types.h"
 #include "xo/utility/handle.h"
-#include <vector>
+#include "xo/container/vector_type.h"
 
 namespace xo
 {
 	/// vector that can be accessed with handles
 	template< typename T, typename I = uint32 >
-	class handle_vector : protected std::vector<T>
+	class handle_vector : protected vector<T>
 	{
 	public:
-		using typename std::vector<T>::value_type;
-		using typename std::vector<T>::iterator;
-		using typename std::vector<T>::const_iterator;
-		using handle_t = typename handle<T, I>;
-		using std::vector<T>::empty;
-		using std::vector<T>::clear;
-		using std::vector<T>::size;
-		using std::vector<T>::capacity;
-		using std::vector<T>::reserve;
-		using std::vector<T>::begin;
-		using std::vector<T>::end;
-		using std::vector<T>::cbegin;
-		using std::vector<T>::cend;
-		using std::vector<T>::front;
-		using std::vector<T>::back;
-		using std::vector<T>::erase;
+		using typename vector<T>::value_type;
+		using typename vector<T>::iterator;
+		using typename vector<T>::const_iterator;
+		using handle_type = typename handle<T, I>;
+		using handle_span_type = typename handle_span<T, I>;
+		using vector<T>::empty;
+		using vector<T>::clear;
+		using vector<T>::size;
+		using vector<T>::capacity;
+		using vector<T>::reserve;
+		using vector<T>::begin;
+		using vector<T>::end;
+		using vector<T>::cbegin;
+		using vector<T>::cend;
+		using vector<T>::front;
+		using vector<T>::back;
+		using vector<T>::operator[];
+		using vector<T>::erase;
 
-		handle_vector() : std::vector<T>() {}
+		handle_vector() : vector<T>() {}
 
-		handle_t push_back( const T& e ) {
-			std::vector<T>::push_back( e );
-			return handle_t( size() - 1 );
-		}
-		handle_t push_back( T&& e ) {
-			std::vector<T>::push_back( std::move( e ) );
-			return handle_t( size() - 1 );
-		}
+		handle_type push_back( const T& e ) { vector<T>::push_back( e ); return back_handle(); }
+		handle_type push_back( T&& e ) { vector<T>::push_back( std::move( e ) ); return back_handle(); }
+		template< typename... Args > handle_type emplace_back( Args&& ... args ) { vector<T>::emplace_back( std::forward<Args>( args )... ); return back_handle(); }
 
-		template< typename... Args > handle_t emplace_back( Args&&... args ) {
-			std::vector<T>::emplace_back( std::forward<Args>( args )... );
-			return handle_t( size() - 1 );
-		}
+		const T& operator[]( handle_type h ) const { return vector<T>::operator[]( h.value() ); }
+		T& operator[]( handle_type h ) { return vector<T>::operator[]( h.value() ); }
 
-		const T& operator[]( handle_t i ) const { return std::vector<T>::operator[]( i.value ); }
-		T& operator[]( handle_t i ) { return std::vector<T>::operator[]( i.value ); }
+		handle_type back_handle() const { return handle_type( static_cast<I>( size() - 1 ) ); }
+		handle_type handle_from_iterator( const_iterator it ) const { return it != end() ? handle_type( static_cast<I>( it - begin() ) ) : handle_type(); }
 
-		handle_t find( const T& e ) {
-			for ( handle_t h = 0; h.value < size(); ++h.value )
-				if ( ( *this )[ i ] == e )
-					return h;
-			return handle_t();
-		}
+		bool contains( handle_type h ) const { return h.value() < size(); }
+
+		handle_type erase( handle_type h ) { vector<T>::erase( begin() + h.value() ); return h; }
 	};
 }

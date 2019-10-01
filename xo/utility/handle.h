@@ -2,30 +2,49 @@
 
 #include "xo/system/assert.h"
 #include "xo/xo_types.h"
+#include "xo/numerical/math.h"
 
 namespace xo
 {
+	/// non-owning handle to a specific object, typically an index
 	template< typename T, typename I = uint32 >
 	struct handle
 	{
 		using id_type = I;
 
-		handle() : value( invalid_value() ) {}
-		explicit handle( id_type v ) : value( v ) {}
-		template< typename U > handle( U v ) : value( id_type( v ) ) { xo_error_if( v >= invalid_value(), "handle cannot hold value" ); }
-		handle( const handle& ) = default;
-		handle& operator=( const handle& ) = default;
-		handle( handle&& o ) noexcept : value( o.value ) { o.value = invalid_value(); }
-		handle& operator=( handle&& o ) noexcept { id_type tmp = value; value = o.value; o.value = tmp; return *this; }
+		constexpr handle() : value_( invalid_id() ) {}
+		explicit constexpr handle( id_type v ) : value_( v ) {}
 
-		static constexpr id_type invalid_value() { return ~id_type( 0 ); }
+		explicit operator bool() const { return value_ != invalid_id(); }
+		const id_type& value() const { return value_; }
 
-		explicit operator bool() const { return value != invalid_value(); }
-		explicit operator id_type() const { return value; }
+		void reset() { value_ = invalid_id(); }
+		void swap( handle& o ) { id_type tmp = value_; value_ = o.value_; o.value_ = tmp; }
 
-		friend bool operator==( const handle a, const handle b ) { return a.value == b.value; }
-		friend bool operator!=( const handle a, const handle b ) { return a.value != b.value; }
+		friend bool operator==( const handle a, const handle b ) { return a.value_ == b.value_; }
+		friend bool operator!=( const handle a, const handle b ) { return a.value_ != b.value_; }
 
-		id_type value;
+	private:
+		static constexpr id_type invalid_id() { return ~id_type( 0 ); }
+		id_type value_;
+	};
+
+	/// continuous span of handles
+	template< typename T, typename I = uint32 >
+	struct handle_span
+	{
+		using handle_type = handle<T, I>;
+		constexpr handle_span() : begin_(), end_() {}
+		constexpr handle_span( handle_type b, handle_type e ) : begin_( b ), end_( e ) {}
+
+		bool empty() const { return begin_ == end_; }
+		bool contains( handle_type h ) { return h.value() >= begin_.value() && h.value() < end_.value(); }
+
+		handle_type begin() const { return begin_; }
+		handle_type end() const { return end_; }
+
+	private:
+		handle_type begin_;
+		handle_type end_;
 	};
 }
