@@ -9,7 +9,7 @@ namespace xo
 		constexpr time() : internal_( 0 ) {}
 		explicit constexpr time( storage_t nanoseconds ) : internal_( nanoseconds ) {}
 
-		template< typename T > T seconds() const { return T( internal_ / T(1'000'000'000) ); }
+		double seconds() const { return double( internal_ / 1'000'000'000 ); }
 		double millisecondsd() const { return double( internal_ ) / 1e6; }
 		storage_t milliseconds() const { return internal_ / 1'000'000; }
 		storage_t microseconds() const { return internal_ / 1'000; }

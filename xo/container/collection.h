@@ -28,6 +28,9 @@ namespace xo
 			std::apply( []( auto&... v ) { ( ( v.clear() ), ... ); }, data_ ); // fold comma expression
 		}
 
+		container_type& data() { return data_; }
+		const container_type& data() const { return data_; }
+
 	private:
 		container_type data_;
 	};
