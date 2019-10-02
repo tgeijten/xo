@@ -128,12 +128,12 @@ namespace xo
 
 	void profiler::report_section( section* s, prop_node& pn, double minimum_expand_percentage )
 	{
-		double root_total = root()->total_time.millisecondsd();
-		double total = s->total_time.millisecondsd();
+		double root_total = root()->total_time.milliseconds();
+		double total = s->total_time.milliseconds();
 		double rel_total = 100.0 * total / root_total;
-		double ex = exclusive_time( s ).millisecondsd();
+		double ex = exclusive_time( s ).milliseconds();
 		double rel_ex = 100.0 * ex / root_total;
-		double over = total_overhead( s ).millisecondsd();
+		double over = total_overhead( s ).milliseconds();
 		double rel_over = 100.0 * over / total;
 
 		pn[ s->name ] = stringf( "%6.0fms %6.2f%% (%5.2f%% exclusive ~%.0f%% overhead)", total, rel_total, rel_ex, clamped( rel_over, 0.0, 100.0 ) );

@@ -161,7 +161,7 @@ namespace xo
 
 	string to_str( const time& v )
 	{
-		return to_str( v.seconds<double>() );
+		return to_str( v.seconds() );
 	}
 
 	bool from_str( const string& s, time& v )
