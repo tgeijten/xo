@@ -33,8 +33,8 @@ namespace xo
 	{ clamp( c.r, l, u ); clamp( c.g, l, u ); clamp( c.b, l, u ); clamp( c.a, l, u ); return c; }
 
 	XO_API float perceived_brightness( const color& c );
-	XO_API color make_from_hsv( float H, float S, float V );
+	XO_API color color_from_hsv( float H, float S, float V );
+	XO_API color color_from_int( uint32 x );
 	XO_API color make_unique_color( index_t i, float brightness = 0.6 );
-	XO_API color make_from_hex( unsigned int x );
 	XO_API bool from_prop_node( const prop_node& pn, color& c );
 }

@@ -8,17 +8,16 @@
 
 namespace xo
 {
-
 	bool from_prop_node( const prop_node& pn, color& c )
 	{
 		if ( pn.has_value() )
 		{
-			c = make_from_hex( static_cast<unsigned int>( std::stoul( pn.get<string>(), 0, 16 ) ) );
+			c = color_from_int( static_cast<unsigned int>( std::stoul( pn.get<string>(), 0, 16 ) ) );
 			return true;
 		}
 		else if ( pn.has_any_key( { "h", "s", "v" } ) )
 		{
-			c = make_from_hsv( pn.get<float>( "h", 0 ), pn.get<float>( "s", 1 ), pn.get<float>( "v", 1 ) );
+			c = color_from_hsv( pn.get<float>( "h", 0 ), pn.get<float>( "s", 1 ), pn.get<float>( "v", 1 ) );
 			return true;
 		}
 		else if ( pn.size() >= 3 )
@@ -31,7 +30,7 @@ namespace xo
 		else return false;
 	}
 
-	color make_from_hsv( float H, float S, float V )
+	color color_from_hsv( float H, float S, float V )
 	{
 		H = fmod( H, 360.0f ) / 60.0f;
 		float fract = H - floor( H );
@@ -60,12 +59,12 @@ namespace xo
 		static std::array< float, 12 > standard_hue{ 0, 120, 240, 45, 195, 310, 20, 75, 165, 215, 275, 330 };
 		float hue = standard_hue[ idx % standard_hue.size() ];
 		float sat = 1.0f / ( 1.0f + idx / standard_hue.size() );
-		float pbr = perceived_brightness( make_from_hsv( hue, sat, 1.0f ) );
+		float pbr = perceived_brightness( color_from_hsv( hue, sat, 1.0f ) );
 		float val = xo::clamped( brightness / pbr, brightness, 1.0f );
-		return make_from_hsv( hue, sat, val );
+		return color_from_hsv( hue, sat, val );
 	}
 
-	color make_from_hex( unsigned int x )
+	color color_from_int( uint32 x )
 	{
 		return color( ( x >> 16 ) / 255.0f, ( ( x & 0xff00 ) >> 8 ) / 255.0f, ( x & 0xff ) / 255.0f );
 	}
