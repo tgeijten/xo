@@ -6,13 +6,13 @@
 #	include <windows.h>
 #endif
 
-#include "xo/xo_types.h"
 #include "xo/system/test_case.h"
 #include "xo/system/log.h"
 #include "xo/system/log_sink.h"
 
-#define XO_TEST_MAIN \
-	int main( int argc, char* argv[] ) { \
-		xo::log::console_sink sink( xo::log::info_level ); \
-		xo::log::add_sink( &sink ); \
-		return xo::test::run_all(); }
+int main( int argc, char* argv[] )
+{
+	xo::log::console_sink sink( xo::log::info_level );
+	xo::log::add_sink( &sink );
+	return xo::test::run_all_test_cases();
+}

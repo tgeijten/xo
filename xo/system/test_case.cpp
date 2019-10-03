@@ -20,71 +20,74 @@ namespace xo
 			get_test_cases().emplace_back( tc );
 		}
 
-		int run_all()
-		{
-			int tests_failed = 0;
-			int total = static_cast<int>( get_test_cases().size() );
-
-			int checks_total = 0;
-			int checks_passed = 0;
-			int checks_failed = 0;
-			for ( auto tc : get_test_cases() )
-				tests_failed += tc->run( &checks_total, &checks_passed, &checks_failed );
-
-			auto level = tests_failed > 0 ? log::error_level : log::info_level;
-			if ( tests_failed > 0 )
-				log::error( "WARNING: ", tests_failed, " of ", total, " tests FAILED!" );
-			else
-				log::info( "Performed ", total, " tests with ", checks_passed, " checks; ALL CLEAR :-)" );
-
-#if XO_DEBUG_MODE && defined( XO_COMP_MSVC )
-			xo::wait_for_key();
-#endif
-
-			return tests_failed;
-		}
-
-		test_case::test_case( const char* name, test_func_t func ) : func_( func ), name_( name ), num_checks_( 0 ), num_passed_( 0 ), num_failed_( 0 )
+		test_case::test_case( const char* name, test_func_t func ) :
+			name_( name ) ,
+			func_( func )
 		{
 			register_test_case( this );
 		}
 
 		bool test_case::check( bool result, const char* operation, const string& message )
 		{
-			++num_checks_;
+			result_.checks_++;
 			if ( result )
 			{
-				num_passed_++;
+				result_.passed_++;
 				return true;
-			}
-			else
-			{
-				log::error( "\t", "FAILED: ", operation, " ", message );
-				num_failed_++;
+			} else {
+				result_.failed_++;
+				log::error( name_, ": CHECK FAILED: ", operation, " ", message );
 				return false;
 			}
 		}
 
-		int test_case::run( int* checks, int* passed, int* failed )
+		bool test_case::try_run_func()
 		{
-			num_checks_ = 0;
-			num_passed_ = 0;
-			num_failed_ = 0;
-			log::info( "TEST CASE: ", name_ );
 			try
 			{
 				func_( *this );
-				if ( checks ) *checks += num_checks_;
-				if ( passed ) *passed += num_passed_;
-				if ( failed ) *failed += num_failed_;
-
-				return num_failed_ == 0 ? 0 : 1;
+				return true;
 			}
 			catch ( std::exception& e )
 			{
-				log::error( "\t", "EXCEPTION: ", e.what() );
-				return 1;
+				result_.error_ = e.what();
+				return false;
 			}
+		}
+
+		const test_result& test_case::run()
+		{
+			if ( try_run_func() )
+			{
+				if ( result_.success() )
+					log::info( name_, ": ", result_.passed_, " checks passed" );
+				else
+					log::error( name_, ": ", result_.failed_, " of ", result_.checks_, " checks FAILED!" );
+			}
+			else log::critical( name_, ": EXCEPTION: ", result_.error_ );
+
+			return result_;
+		}
+
+		int run_all_test_cases()
+		{
+			test_result total;
+			int tests_failed = 0;
+			int tests_performed = 0;
+			for ( auto tc : get_test_cases() )
+			{
+				auto& r = tc->run();
+				tests_performed += 1;
+				tests_failed += int( !r.success() );
+				total += r;
+			}
+
+			if ( tests_failed == 0 )
+				log::info( "Performed ", tests_performed, " tests with ", total.passed_, " checks; ALL CLEAR :-)" );
+			else
+				log::error( "WARNING: ", tests_failed, " of ", tests_performed, " tests FAILED!" );
+
+			return tests_failed;
 		}
 	}
 }

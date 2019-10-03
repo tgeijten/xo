@@ -6,9 +6,9 @@
 #include "xo/container/vector_type.h"
 
 #define XO_TEST_CASE( _name_ ) \
-	static void _name_( ::xo::test::test_case& ); \
-	auto _name_##_case = ::xo::test::test_case( #_name_, &_name_ ); \
-	static void _name_( ::xo::test::test_case& XO_ACTIVE_TEST_CASE )
+	static void _name_##_function( ::xo::test::test_case& ); \
+	auto _name_##_test_case = ::xo::test::test_case( #_name_, &_name_##_function ); \
+	static void _name_##_function( ::xo::test::test_case& XO_ACTIVE_TEST_CASE )
 
 #define XO_TEST_CASE_SKIP( _name_ ) \
 	static void _name_( ::xo::test::test_case& XO_ACTIVE_TEST_CASE )
@@ -25,25 +25,38 @@ namespace xo
 {
 	namespace test
 	{
-		class test_case;
-		XO_API void register_test_case( test_case* tc );
-		XO_API vector< test_case* >& get_test_cases();
-		XO_API int run_all();
+		struct test_result {
+			int checks_ = 0;
+			int passed_ = 0;
+			int failed_ = 0;
+			string error_;
+			const bool success() const { return failed_ == 0 && checks_ > 0 && error_.empty(); }
+			test_result& operator+=( const test_result& o ) {
+				checks_ += o.checks_;
+				passed_ += o.passed_;
+				failed_ += o.failed_;
+				error_ += error_.empty() ? o.error_ : "; " + o.error_;
+				return *this;
+			}
+		};
 
+		class test_case;
 		typedef void( *test_func_t )( test_case& );
 		class XO_API test_case
 		{
 		public:
 			test_case( const char* name, test_func_t func );
 			bool check( bool result, const char* operation, const string& message = "" );
-			int run( int* checks = nullptr, int* passed = nullptr, int* failed = nullptr );
+			const test_result& run();
 
 		private:
-			test_func_t func_;
+			bool try_run_func();
 			const char* name_;
-			int num_checks_;
-			int num_passed_;
-			int num_failed_;
+			test_func_t func_;
+			test_result result_;
 		};
+
+		XO_API void register_test_case( test_case* tc );
+		XO_API int run_all_test_cases();
 	}
 }
