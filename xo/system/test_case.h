@@ -57,6 +57,7 @@ namespace xo
 		};
 
 		XO_API index_t add_test_case( const string& name, test_func_t fn );
-		XO_API int run_all_test_cases();
+		XO_API int run_tests();
+		XO_API int run_tests_async();
 	}
 }

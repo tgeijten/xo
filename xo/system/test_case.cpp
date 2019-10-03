@@ -69,12 +69,35 @@ namespace xo
 			return result_;
 		}
 
-		int run_all_test_cases()
+		int run_tests()
+		{
+			test_result total;
+			int tests_failed = 0;
+			for ( auto& tc : get_test_cases() )
+			{
+				const auto& r = tc->run();
+				tests_failed += int( !r.success() );
+				total += r;
+			}
+
+			if ( tests_failed == 0 )
+				log::info( "Performed ", get_test_cases().size(), " tests with ", total.passed_, " checks; ALL CLEAR :-)" );
+			else
+				log::error( "WARNING: ", tests_failed, " of ", get_test_cases().size(), " tests FAILED!" );
+
+			return tests_failed;
+		}
+
+		int run_tests_async()
 		{
 			test_result total;
 			std::vector< std::future< const test_result& > > results;
 			for ( index_t i = 0; i < get_test_cases().size(); ++i )
+			{
 				results.push_back( std::async( &test_case::run, get_test_cases()[ i ].get() ) );
+				// wait a while to relieve the pressure on the filesystem caused by test initialization
+				xo::sleep( 50 );
+			}
 
 			int tests_failed = 0;
 			for ( auto& fut : results )

@@ -14,5 +14,5 @@ int main( int argc, char* argv[] )
 {
 	xo::log::console_sink sink( xo::log::info_level );
 	xo::log::add_sink( &sink );
-	return xo::test::run_all_test_cases();
+	return xo::test::run_tests();
 }
