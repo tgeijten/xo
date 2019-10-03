@@ -56,7 +56,7 @@ namespace xo
 #ifdef XO_COMP_MSVC
 		return get_known_windows_folder( FOLDERID_Documents );
 #else
-		return std::getenv( "HOME" );
+		return path( std::getenv( "HOME" ) );
 #endif
 	}
 
@@ -80,13 +80,13 @@ namespace xo
 		}
 		return path( buf.data() ).parent_path();
 #else
-		return "";
+		return path();
 #endif
 	}
 
 	path temp_directory_path()
 	{
-		return std::getenv( "TMP" );
+		return path( std::getenv( "TMP" ) );
 	}
 
 	bool copy_file( const path& from, const path& to, bool overwrite )

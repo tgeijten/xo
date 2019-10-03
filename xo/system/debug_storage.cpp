@@ -6,6 +6,8 @@
 
 namespace xo
 {
+	constexpr char debug_out_file[] = "debug.txt";
+
 	template< typename T, typename L >
 	struct auto_storage_writer
 	{
@@ -25,7 +27,7 @@ namespace xo
 		storage< T, L > storage_;
 	};
 
-	auto_storage_writer< float, string > g_debug_storage_writer( "debug.txt" );
+	auto g_debug_storage_writer = auto_storage_writer< float, string >( debug_out_file );
 
 	void set_debug_output( const path& filename )
 	{

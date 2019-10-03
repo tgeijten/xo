@@ -3,13 +3,6 @@
 
 namespace xo
 {
-	const size_t path::npos = string::npos;
-
-	char path::preferred_separator()
-	{
-		return '/';
-	}
-
 	path& path::replace_extension( const path& ext )
 	{
 		size_t n = data_.find_last_of( '.' );
@@ -39,7 +32,7 @@ namespace xo
 	{
 		for ( char& c : data_ )
 			if ( c == '/' || c == '\\' )
-				c = preferred_separator();
+				c = preferred_separator;
 		return *this;
 	}
 
@@ -83,7 +76,7 @@ namespace xo
 
 	bool path::has_parent_path() const
 	{
-		return last_separator_pos() != npos;
+		return last_separator_pos() != string::npos;
 	}
 
 	size_t path::last_separator_pos() const
@@ -91,52 +84,24 @@ namespace xo
 		return data_.find_last_of( "/\\" );
 	}
 
-	path& path::operator/=( const string& p )
+	path& path::operator/=( const string_type& p )
 	{
 		if ( has_filename() )
-			data_ += preferred_separator() + trim_left_str( p, "/\\" );
+			data_ += preferred_separator + trim_left_str( p, "/\\" );
 		else data_ += p;
 		return *this;
 	}
+	path& path::operator/=( const path& p ) { return *this /= p.str(); }
 
-	path& path::operator/=( const path& p )
+	path& path::operator+=( const string_type& p )
 	{
-		return *this /= p.str();
+		data_ += p;
+		return *this;
 	}
+	path& path::operator+=( const path& p ) { return *this += p.str(); }
 
-	path operator/( const path& p1, const string& p2 )
-	{
-		return path( p1 ) /= p2;
-	}
-
-	path operator/( const path& p1, const path& p2 )
-	{
-		return p1 / p2.str();
-	}
-
-	path operator/( const path& p1, const char* p2 )
-	{
-		return p1 / string( p2 );
-	}
-
-	path operator+( const path& p1, const string& p2 )
-	{
-		return path( p1.str() + p2 );
-	}
-
-	path operator+( const string& p1, const path& p2 )
-	{
-		return path( p1 + p2.str() );
-	}
-
-	bool operator!=( const path& p1, const path& p2 )
-	{
-		return p1.str() != p2.str();
-	}
-
-	bool operator==( const path& p1, const path& p2 )
-	{
-		return p1.str() == p2.str();
-	}
-
+	path operator/( const path& p1, const path& p2 ) { return path( p1 ) /= p2; }
+	path operator+( const path& p1, const path& p2 ) { return path( p1 ) += p2; }
+	bool operator==( const path& p1, const path& p2 ) { return p1.str() == p2.str(); }
+	bool operator!=( const path& p1, const path& p2 ) { return p1.str() != p2.str(); }
 }
