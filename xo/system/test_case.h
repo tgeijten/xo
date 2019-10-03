@@ -4,10 +4,11 @@
 #include "xo/system/assert.h"
 #include "xo/string/string_type.h"
 #include "xo/container/vector_type.h"
+#include <functional>
 
 #define XO_TEST_CASE( _name_ ) \
 	static void _name_##_function( ::xo::test::test_case& ); \
-	auto _name_##_test_case = ::xo::test::test_case( #_name_, &_name_##_function ); \
+	auto _name_##_test_case = ::xo::test::add_test_case( #_name_, &_name_##_function ); \
 	static void _name_##_function( ::xo::test::test_case& XO_ACTIVE_TEST_CASE )
 
 #define XO_TEST_CASE_SKIP( _name_ ) \
@@ -40,23 +41,22 @@ namespace xo
 			}
 		};
 
-		class test_case;
-		typedef void( *test_func_t )( test_case& );
+		using test_func_t = std::function< void( class test_case& ) >;
 		class XO_API test_case
 		{
 		public:
-			test_case( const char* name, test_func_t func );
+			test_case( const string& name, test_func_t func );
 			bool check( bool result, const char* operation, const string& message = "" );
 			const test_result& run();
 
 		private:
 			bool try_run_func();
-			const char* name_;
+			string name_;
 			test_func_t func_;
 			test_result result_;
 		};
 
-		XO_API void register_test_case( test_case* tc );
+		XO_API index_t add_test_case( const string& name, test_func_t fn );
 		XO_API int run_all_test_cases();
 	}
 }
