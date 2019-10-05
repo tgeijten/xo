@@ -79,6 +79,16 @@ namespace xo
 		return last_separator_pos() != string::npos;
 	}
 
+	bool path::is_absolute() const
+	{
+		return str_begins_with( data_, '/' ) || data_.find( ':' ) != string::npos;
+	}
+
+	bool path::is_relative() const
+	{
+		return !is_absolute();
+	}
+
 	size_t path::last_separator_pos() const
 	{
 		return data_.find_last_of( "/\\" );

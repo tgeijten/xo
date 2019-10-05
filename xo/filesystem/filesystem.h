@@ -21,8 +21,9 @@ namespace xo
 	XO_API bool file_exists( const path& file );
 	XO_API bool folder_exists( const path& folder );
 
-	XO_API path find_file( std::initializer_list< path > filenames );
-	XO_API optional< path > try_find_file( std::initializer_list< path > filenames );
+	XO_API void current_find_file_folder( const path& dir );
+	XO_API path find_file( std::initializer_list< path > paths );
+	XO_API optional< path > try_find_file( std::initializer_list< path > paths );
 
 	XO_API bool create_directories( const path& folder );
 	XO_API path create_unique_folder( const path& folder, int max_attempts = 9999 );

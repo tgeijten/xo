@@ -27,6 +27,9 @@
 
 namespace xo
 {
+	// thread local path used by find_file()
+	thread_local path g_current_find_file_folder = path();
+
 #ifdef XO_COMP_MSVC
 	// define this helper function for windows, since it's so complicated
 	path get_known_windows_folder( KNOWNFOLDERID id )
@@ -145,20 +148,33 @@ namespace xo
 #endif
 	}
 
-	xo::optional< xo::path > try_find_file( std::initializer_list< path > filenames )
+	void current_find_file_folder ( const path& folder )
 	{
-		for ( auto& f : filenames )
-			if ( file_exists( f ) )
-				return f;
-		return xo::optional< xo::path >();
+		g_current_find_file_folder = folder;
 	}
 
-	path find_file( std::initializer_list< path > filenames )
+	path find_file( std::initializer_list< path > find_paths )
 	{
-		for ( auto& f : filenames )
-			if ( file_exists( f ) )
+		for ( auto& f : find_paths )
+		{
+			if ( f.is_absolute() && file_exists( f ) )
 				return f;
-		xo_error( "Could not find " + container_to_str( filenames, " or " ) + " in " + xo::current_path().str() );
+			else if ( auto full_path = g_current_find_file_folder / f; file_exists( full_path ) )
+				return full_path;
+		}
+		xo_error( "Could not find " + container_to_str( find_paths, " or " ) );
+	}
+
+	optional< path > try_find_file( std::initializer_list< path > find_paths )
+	{
+		for ( auto& f : find_paths )
+		{
+			if ( f.is_absolute() && file_exists( f ) )
+				return f;
+			else if ( auto full_path = g_current_find_file_folder / f; file_exists( full_path ) )
+				return full_path;
+		}
+		return optional< path >();
 	}
 
 	bool create_directories( const path& folder )

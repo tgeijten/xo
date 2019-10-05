@@ -41,6 +41,9 @@ namespace xo
 		bool has_filename() const;
 		bool has_parent_path() const;
 
+		bool is_absolute() const;
+		bool is_relative() const;
+
 	private:
 		size_t last_separator_pos() const;
 		string_type data_;
