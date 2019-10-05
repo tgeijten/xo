@@ -5,4 +5,5 @@
 namespace xo
 {
 	using std::string;
+	using namespace std::string_literals;
 }
