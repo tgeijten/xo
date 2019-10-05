@@ -3,6 +3,12 @@
 #include "xo/filesystem/filesystem.h"
 #include "system_tools.h"
 
+#ifdef XO_COMP_MSVC
+#	define NOMINMAX
+#	define WIN32_LEAN_AND_MEAN
+#	include <windows.h>
+#endif
+
 namespace xo
 {
 	namespace log
@@ -58,6 +64,44 @@ namespace xo
 
 		console_sink::console_sink( level l ) : stream_sink( l, std::cout )
 		{}
+
+		void console_sink::send_log_message( level l, const string & msg )
+		{
+			auto str = get_date_time_str( "%H:%M:%S " );
+			stream_ << str;
+
+#ifdef XO_COMP_MSVC
+			// set console color
+			HANDLE h = GetStdHandle( STD_OUTPUT_HANDLE );
+			CONSOLE_SCREEN_BUFFER_INFO info;
+			GetConsoleScreenBufferInfo( h, &info );
+			auto bg = info.wAttributes & ( BACKGROUND_RED | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_INTENSITY );
+			switch ( l )
+			{
+			case xo::log::trace_level:
+			case xo::log::debug_level:
+				SetConsoleTextAttribute( h, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | bg );
+				break;
+			case xo::log::info_level:
+				SetConsoleTextAttribute( h, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY | bg );
+				break;
+			case xo::log::warning_level:
+				SetConsoleTextAttribute( h, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY | bg );
+				break;
+			case xo::log::error_level:
+			case xo::log::critical_level:
+				SetConsoleTextAttribute( h, FOREGROUND_RED | FOREGROUND_INTENSITY | bg );
+				break;
+			}
+#endif
+			// output text
+			stream_ << msg << std::endl;
+
+#ifdef XO_COMP_MSVC
+			// restore color
+			SetConsoleTextAttribute( h, info.wAttributes );
+#endif
+		}
 
 		file_sink::file_sink( level l, const path& file ) :
 			stream_sink( l, file_stream_ )

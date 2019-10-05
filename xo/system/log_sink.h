@@ -40,6 +40,7 @@ namespace xo
 		{
 		public:
 			console_sink( level l );
+			virtual void send_log_message( level l, const string& msg ) override;
 		};
 
 		class XO_API file_sink : public stream_sink
