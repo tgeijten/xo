@@ -93,11 +93,7 @@ namespace xo
 			test_result total;
 			std::vector< std::future< const test_result& > > results;
 			for ( index_t i = 0; i < get_test_cases().size(); ++i )
-			{
 				results.push_back( std::async( &test_case::run, get_test_cases()[ i ].get() ) );
-				// wait a while to relieve the pressure on the filesystem caused by test initialization
-				xo::sleep( 50 );
-			}
 
 			int tests_failed = 0;
 			for ( auto& fut : results )
