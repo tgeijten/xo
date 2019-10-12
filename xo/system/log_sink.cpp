@@ -69,6 +69,7 @@ namespace xo
 		{
 			auto str = get_date_time_str( "%H:%M:%S " );
 			stream_ << str;
+			stream_.flush();
 
 #ifdef XO_COMP_MSVC
 			// set console color
