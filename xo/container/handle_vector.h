@@ -46,5 +46,6 @@ namespace xo
 		bool contains( handle_type h ) const { return h.value() < size(); }
 
 		handle_type erase( handle_type h ) { vector<T>::erase( begin() + h.value() ); return h; }
+		handle_type erase( handle_span_type hs ) { vector<T>::erase( begin() + hs.begin(), begin() + hs.end() ); return hs.begin(); }
 	};
 }
