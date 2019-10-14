@@ -16,13 +16,19 @@ namespace xo
 		explicit constexpr handle( id_type v ) : value_( v ) {}
 
 		explicit operator bool() const { return value_ != invalid_id(); }
+
 		const id_type& value() const { return value_; }
+		id_type& value() { return value_; }
 
 		void reset() { value_ = invalid_id(); }
 		void swap( handle& o ) { id_type tmp = value_; value_ = o.value_; o.value_ = tmp; }
 
 		friend bool operator==( const handle a, const handle b ) { return a.value_ == b.value_; }
 		friend bool operator!=( const handle a, const handle b ) { return a.value_ != b.value_; }
+		friend bool operator>=( const handle a, const handle b ) { return a.value_ >= b.value_; }
+		friend bool operator<=( const handle a, const handle b ) { return a.value_ <= b.value_; }
+		friend bool operator<( const handle a, const handle b ) { return a.value_ < b.value_; }
+		friend bool operator>( const handle a, const handle b ) { return a.value_ > b.value_; }
 
 	private:
 		static constexpr id_type invalid_id() { return ~id_type( 0 ); }
@@ -38,7 +44,8 @@ namespace xo
 		constexpr handle_span( handle_type b, handle_type e ) : begin_( b ), end_( e ) {}
 
 		bool empty() const { return begin_ == end_; }
-		bool contains( handle_type h ) { return h.value() >= begin_.value() && h.value() < end_.value(); }
+		I size() const { return end_.value() - begin_.value(); }
+		bool contains( handle_type h ) const { return h.value() >= begin_.value() && h.value() < end_.value(); }
 
 		handle_type begin() const { return begin_; }
 		handle_type end() const { return end_; }

@@ -29,6 +29,7 @@ namespace xo
 		using vector<T>::back;
 		using vector<T>::operator[];
 		using vector<T>::erase;
+		using vector<T>::pop_back;
 
 		handle_vector() : vector<T>() {}
 
