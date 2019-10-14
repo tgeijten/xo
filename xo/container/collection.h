@@ -21,8 +21,8 @@ namespace xo
 		template< typename T > const T& operator[]( handle<T> i ) const { return get_vec<T>()[ i ]; }
 		template< typename T > T& operator[]( handle<T> i ) { return get_vec<T>()[ i ]; }
 
-		template< typename T > handle<T> erase( const T& e ) { return get_vec<T>().erase( e ); }
-		template< typename T > void pop_back( const T& e ) { get_vec<T>().pop_back( e ); }
+		template< typename T > handle<T> erase( handle<T> h ) { return get_vec<T>().erase( h ); }
+		template< typename T > handle<T> erase( handle_span<T> hs ) { return get_vec<T>().erase( hs ); }
 
 		template< typename T > const handle_vector<T>& get_vec() const { return std::get< handle_vector<T> >( data_ ); }
 		template< typename T > handle_vector<T>& get_vec() { return std::get< handle_vector<T> >( data_ ); }
