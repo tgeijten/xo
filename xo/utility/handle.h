@@ -25,10 +25,6 @@ namespace xo
 
 		friend bool operator==( const handle a, const handle b ) { return a.value_ == b.value_; }
 		friend bool operator!=( const handle a, const handle b ) { return a.value_ != b.value_; }
-		friend bool operator>=( const handle a, const handle b ) { return a.value_ >= b.value_; }
-		friend bool operator<=( const handle a, const handle b ) { return a.value_ <= b.value_; }
-		friend bool operator<( const handle a, const handle b ) { return a.value_ < b.value_; }
-		friend bool operator>( const handle a, const handle b ) { return a.value_ > b.value_; }
 
 	private:
 		static constexpr id_type invalid_id() { return ~id_type( 0 ); }
@@ -54,4 +50,11 @@ namespace xo
 		handle_type begin_;
 		handle_type end_;
 	};
+
+	/// update handle after elements have been erased
+	template< typename T, typename I = uint32 >
+	handle<T, I>& consolidate( handle<T, I>& h, handle_span<T, I> hs ) {
+		if ( h.value() >= hs.end().value() )
+			h.value() -= hs.size();
+	}
 }
