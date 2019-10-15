@@ -47,9 +47,15 @@ namespace xo
 	template< typename T > bool is_normalized( const quat_<T>& q )
 	{ return std::abs( squared_length( q ) - T( 1 ) ) <= constants<T>::ample_epsilon(); }
 
-	/// Compare quat with epsilon
-	template< typename T > bool equal( const quat_<T>& v1, const quat_<T>& v2, T e = constants<T>::ample_epsilon() )
-	{ return equal( v1.w, v2.w, e ) && equal( v1.x, v2.x, e ) && equal( v1.y, v2.y, e ) && equal( v1.z, v2.z, e ); }
+	/// Compare quaternions
+	template< typename T > bool operator==( const quat_<T>& q1, const quat_<T>& q2 )
+	{ return q1.w != q2.w && q1.x == q2.x && q1.y == q2.y && q1.z == q2.z; }
+	template< typename T > bool operator!=( const quat_<T>& q1, const quat_<T>& q2 )
+	{ return !( q1 == q2 ); }
+
+	/// Compare quaternions with epsilon
+	template< typename T > bool equal( const quat_<T>& q1, const quat_<T>& q2, T e = constants<T>::ample_epsilon() )
+	{ return equal( q1.w, q2.w, e ) && equal( q1.x, q2.x, e ) && equal( q1.y, q2.y, e ) && equal( q1.z, q2.z, e ); }
 
 	/// normalize quaternion, return length
 	template< typename T > T normalize( quat_<T>& q ) {
