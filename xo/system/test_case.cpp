@@ -10,6 +10,8 @@ namespace xo
 {
 	namespace test
 	{
+		std::mutex g_log_mutex;
+
 		vector< u_ptr< test_case > >& get_test_cases()
 		{
 			static vector< u_ptr< test_case > > test_cases;
@@ -35,6 +37,7 @@ namespace xo
 				result_.passed_++;
 				return true;
 			} else {
+				auto lock = std::scoped_lock( g_log_mutex );
 				result_.failed_++;
 				log::error( name_, ": CHECK FAILED: ", operation, " ", message );
 				return false;
@@ -59,12 +62,17 @@ namespace xo
 		{
 			if ( try_run_func() )
 			{
+				auto lock = std::scoped_lock( g_log_mutex );
 				if ( result_.success() )
 					log::info( name_, ": ", result_.passed_, " checks passed" );
 				else
 					log::error( name_, ": ", result_.failed_, " of ", result_.checks_, " checks FAILED!" );
 			}
-			else log::critical( name_, ": EXCEPTION: ", result_.error_ );
+			else
+			{
+				auto lock = std::scoped_lock( g_log_mutex );
+				log::critical( name_, ": EXCEPTION: ", result_.error_ );
+			}
 
 			return result_;
 		}
