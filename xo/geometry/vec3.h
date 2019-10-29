@@ -129,16 +129,18 @@ namespace xo
 
 	/// convert from prop_node
 	template< typename T > bool from_prop_node( const prop_node& pn, vec3_<T>& v ) {
-		v.set( pn.get( "x", T() ), pn.get( "y", T() ), pn.get( "z", T() ) );
-		if ( pn.size() >= 3 && pn.is_array() ) {
-			v.set( pn.get<T>( 0 ), pn.get<T>( 1 ), pn.get<T>( 2 ) );
-		}
-		else if ( pn.size() == 0 && pn.has_value() ) {
-			if ( auto vs = split_str( pn.raw_value(), " \t" ); vs.size() >= 3 )
+		// the following notations are supported:
+		// array: [ 1 2 3 ], group: { x=1 y=2 z=3 }, string: "1 2 3"
+		if ( pn.size() == 3 ) {
+			if ( pn.is_array() ) // array: [ 1 2 3 ]
+				v.set( pn.get<T>( 0 ), pn.get<T>( 1 ), pn.get<T>( 2 ) );
+			else v.set( pn.get<T>( "x" ), pn.get<T>( "y" ), pn.get<T>( "z" ) ); // group: { x=1 y=2 z=3 }
+			return true;
+		} else if ( pn.size() == 0 && pn.has_value() ) {
+			if ( auto vs = split_str( pn.raw_value(), " \t" ); vs.size() == 3 ) // string: "1 2 3"
 				return from_str( vs[ 0 ], v.x ) && from_str( vs[ 1 ], v.y ) && from_str( vs[ 2 ], v.z );
 			else return false;
-		}
-		return true;
+		} else return false;
 	};
 
 	/// convert to prop_node
