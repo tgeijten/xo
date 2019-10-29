@@ -314,4 +314,10 @@ namespace xo
 		to_stream( str, pn, 0, 0 );
 		return str.str();
 	}
+
+	bool from_str( const string& s, prop_node& pn )
+	{
+		pn.set_value( string( s ) );
+		return true;
+	}
 }

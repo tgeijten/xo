@@ -221,11 +221,15 @@ namespace xo
 	/// convert prop_node to string
 	XO_API string to_str( const prop_node& pn );
 
-	/// prop_node conversion
+	/// convert string to prop_node: this simply sets the value!
+	XO_API bool from_str( const string& s, prop_node& pn );
+
+	/// default conversion from T to prop_node, uses to_str()
 	template< typename T > prop_node to_prop_node( const T& v ) {
 		return prop_node( to_str( v ) );
 	}
 
+	/// default conversion from prop_node to T, uses to_str()
 	template< typename T > bool from_prop_node( const prop_node& pn, T& v ) {
 		return from_str( pn.raw_value(), v ); 
 	};
