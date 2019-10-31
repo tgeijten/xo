@@ -36,25 +36,45 @@ namespace xo
 	struct handle_span
 	{
 		using handle_type = handle<T, I>;
+
+		/// iterator through a continuous span of handles
+		struct iterator : public std::iterator< std::forward_iterator_tag, T, T >
+		{
+			using value_type = handle_type;
+			using difference_type = handle_type;
+			using pointer = handle_type *;
+			using reference = handle_type &;
+			iterator( handle_type v ) : handle_( v ) {}
+			iterator& operator++() { ++handle_.value(); return *this; }
+			iterator operator++( int ) { auto h = *this; ++handle_.value(); return h; }
+			bool operator==( const iterator& o ) const { return o.handle_ == handle_; }
+			bool operator!=( const iterator& o ) const { return o.handle_ != handle_; }
+			handle_type& operator*() { return handle_; }
+			const I& value() const { return handle_.value(); }
+			handle_type handle_;
+		};
+
 		constexpr handle_span() : begin_(), end_() {}
 		constexpr handle_span( handle_type b, handle_type e ) : begin_( b ), end_( e ) {}
 
 		bool empty() const { return begin_ == end_; }
 		I size() const { return end_.value() - begin_.value(); }
 		bool contains( handle_type h ) const { return h.value() >= begin_.value() && h.value() < end_.value(); }
+		bool is_beyond( handle_type h ) const { return h.value() >= end_.value(); }
 
-		handle_type begin() const { return begin_; }
-		handle_type end() const { return end_; }
+		iterator begin() const { return begin_; }
+		iterator end() const { return end_; }
 
 	private:
-		handle_type begin_;
-		handle_type end_;
+		iterator begin_;
+		iterator end_;
 	};
 
 	/// update handle after elements have been erased
 	template< typename T, typename I = uint32 >
-	handle<T, I>& consolidate( handle<T, I>& h, handle_span<T, I> hs ) {
-		if ( h.value() >= hs.end().value() )
-			h.value() -= hs.size();
+	handle<T, I>& consolidate( handle<T, I>& h, const handle_span<T, I>& erased_handles ) {
+		if ( h.value() >= erased_handles.end().value() )
+			h.value() -= erased_handles.size();
+		return h;
 	}
 }

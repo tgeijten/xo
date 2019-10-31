@@ -40,8 +40,9 @@ namespace xo
 		const T& operator[]( handle_type h ) const { return vector<T>::operator[]( h.value() ); }
 		T& operator[]( handle_type h ) { return vector<T>::operator[]( h.value() ); }
 
-		handle_type back_handle() const { return handle_type( static_cast<I>( size() - 1 ) ); }
+		handle_type back_handle() const { return handle_type( I( size() - 1 ) ); }
 		handle_type handle_from_iterator( const_iterator it ) const { return it != end() ? handle_type( static_cast<I>( it - begin() ) ) : handle_type(); }
+		handle_span_type span() const { return { handle_type( I( 0 ) ), handle_type( I( size() ) ) }; }
 
 		bool contains( handle_type h ) const { return h.value() < size(); }
 
