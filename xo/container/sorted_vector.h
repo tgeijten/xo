@@ -53,4 +53,7 @@ namespace xo
 			return ( it != cend() && *it == e ) ? it : cend();
 		}
 	};
+
+	/// convert sorted_vector to string
+	template< typename T > string to_str( const sorted_vector<T>& v ) { return container_to_str( v ); }
 }
