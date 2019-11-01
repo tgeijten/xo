@@ -1,19 +1,17 @@
-#include "xo/system/assert.h"
 #include "log.h"
 #include "log_sink.h"
-
+#include "xo/system/assert.h"
+#include "xo/numerical/math.h"
+#include "xo/container/vector_type.h"
+#include "xo/container/container_tools.h"
 #include <stdarg.h>
-#include <vector>
-#include <iostream>
-#include <algorithm>
 
 namespace xo
 {
 	namespace log
 	{
-		void std_cout_log( level l, const std::string& msg ) { std::cout << msg << std::endl; }
 		level global_log_level = level::never_log_level; // lowest log level of all sinks
-		std::vector< sink* > global_sinks;
+		xo::vector< sink* > global_sinks;
 
 		void log_string( level l, const string& str )
 		{
@@ -41,7 +39,7 @@ namespace xo
 		void add_sink( sink* s )
 		{
 			xo_assert( s != nullptr );
-			if ( std::find( global_sinks.begin(), global_sinks.end(), s ) == global_sinks.end() )
+			if ( xo::find( global_sinks, s ) == global_sinks.end() )
 			{
 				global_sinks.push_back( s );
 				update_global_log_level();
@@ -50,7 +48,7 @@ namespace xo
 
 		void remove_sink( sink* s )
 		{
-			auto it = std::find( global_sinks.begin(), global_sinks.end(), s );
+			auto it = xo::find( global_sinks, s );
 			if ( it != global_sinks.end() )
 				global_sinks.erase( it );
 			update_global_log_level();
