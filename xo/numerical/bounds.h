@@ -48,7 +48,21 @@ namespace xo
 	using boundsd = bounds<double>;
 	using boundsi = bounds<int>;
 
-	/// convert from prop_node
+	/// convert bounds to string
+	template< typename T > string to_str( const bounds<T>& v ) {
+		return to_str( v.lower ) + ".." + to_str( v.upper );
+	}
+
+	/// convert bounds from string
+	template< typename T > bool from_str( const string& s, bounds<T>& v ) {
+		if ( from_str( s, v.lower ) ) {
+			if ( auto p = s.find( ".." ); p != string::npos )
+				return from_str( s.substr( p + 2 ), v.upper );
+			else { v.upper = v.lower; return true; }
+		} else return false;
+	}
+
+	/// convert bounds from prop_node
 	template< typename T > bool from_prop_node( const prop_node& pn, bounds<T>& v ) {
 		if ( pn.has_value() ) {
 			return from_str( pn.raw_value(), v );

@@ -349,6 +349,11 @@ namespace xo
 		}
 	}
 
+	/// convert quat to string
+	template< typename T > string to_str( const quat_<T>& q ) {
+		return to_str( q.w ) + ' ' + to_str( q.x ) + ' ' + to_str( q.y ) + ' ' + to_str( q.z );
+	}
+
 	/// convert prop_node to quat
 	template< typename T > bool from_prop_node( const prop_node& pn, quat_<T>& q ) {
 		if ( pn.size() == 4 && pn.has_key( "w" ) ) {

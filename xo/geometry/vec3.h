@@ -4,6 +4,7 @@
 #include "xo/numerical/compare.h"
 #include "xo/numerical/math.h"
 #include "xo/container/prop_node.h"
+#include "xo/string/string_cast.h"
 #include <cmath>
 
 namespace xo
@@ -126,6 +127,11 @@ namespace xo
 	/// Cross product
 	template< typename T > vec3_<T> cross_product( const vec3_<T>& v1, const vec3_<T>& v2 )
 	{ return vec3_<T>( v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x ); }
+
+	/// Convert to string
+	template< typename T > string to_str( const vec3_<T>& v ) {
+		return to_str( v.x ) + ' ' + to_str( v.y ) + ' ' + to_str( v.z );
+	}
 
 	/// convert from prop_node
 	template< typename T > bool from_prop_node( const prop_node& pn, vec3_<T>& v ) {
