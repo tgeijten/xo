@@ -1,9 +1,7 @@
 #pragma once
 
-#include "xo/system/xo_config.h"
 #include "xo/xo_types.h"
 #include "xo/string/string_type.h"
-#include "xo/geometry/angle.h"
 
 namespace xo
 {
@@ -48,4 +46,14 @@ namespace xo
 
 	XO_API bool from_str( const string& s, path& v );
 	XO_API string to_str( const path& p );
+
+	/// convert elements in a container to a string
+	template< typename C >
+	string container_to_str( const C& cont ) {
+		string s = "[ ";
+		for ( const auto& e : cont )
+			s += to_str( e ) + ' ';
+		s += "]";
+		return s;
+	}
 }

@@ -52,19 +52,6 @@ namespace xo
 
 	template< typename T > index_t index_of( const T& elem, const std::vector< T >& vec ) { return &elem - &vec[ 0 ]; }
 
-	/// convert elements in a container to a string
-	template< typename C > string container_to_str( const C& cont, const string& delim = " " ) {
-		string str;
-		for ( auto& e : cont ) {
-			auto estr = to_str( e );
-			if ( !estr.empty() ) {
-				if ( !str.empty() ) str += delim;
-				str += estr;
-			}
-		}
-		return str;
-	}
-
 	/// get index of last element
 	template< typename C > index_t back_index( const C& cont ) { return size( cont ) > 0 ? size( cont ) - 1 : no_index; }
 
