@@ -162,7 +162,7 @@ namespace xo
 			else if ( auto full_path = g_current_find_file_folder / f; file_exists( full_path ) )
 				return full_path;
 		}
-		xo_error( "Could not find " + container_to_str( find_paths, " or " ) );
+		xo_error( "Could not find any of the following files: " + container_to_str( find_paths ) );
 	}
 
 	optional< path > try_find_file( std::initializer_list< path > find_paths )

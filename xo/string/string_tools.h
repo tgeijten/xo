@@ -65,9 +65,6 @@ namespace xo
 	/// split string into trimmed key / value pair
 	XO_API std::pair< string, string > make_key_value_str( const string& s, const string& sep_char = "=" );
 
-	/// concatenate strings with delimiters
-	XO_API string concatenate_str( std::initializer_list< string > lst, const string& delim = "" );
-
 	/// get formatted string (printf style)
 	XO_API string stringf( const char* format, ... );
 
@@ -98,4 +95,21 @@ namespace xo
 
 	/// match pattern (glob, i.e. name* or name?)
 	XO_API bool pattern_match( const string& str, const string& pattern );
+
+	/// concatenate strings with delimiters
+	XO_API string concatenate_str( std::initializer_list< string > lst, const string& delim = "" );
+
+	/// concatenate container of strings with delimiters
+	template< typename C >
+	string concatenate_str( const C& container, const string& delim = "" ) {
+		string str;
+		bool first = true;
+		for ( auto& element : container ) {
+			if ( !element.empty() ) {
+				if ( !first ) str += delim; else first = false;
+				str += element;
+			}
+		}
+		return str;
+	}
 }
