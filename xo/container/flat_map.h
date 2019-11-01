@@ -50,6 +50,11 @@ namespace xo
 		pair_t& back() { return data_.back(); }
 
 		iterator erase( iterator it ) { return data_.erase( it ); }
+		size_t erase( const K& key ) {
+			if ( auto it = find( key ); it != end() )
+				return data_.erase( it ), 1;
+			else return 0;
+		}
 
 		iterator lower_bound( const K& key ) {
 			return std::lower_bound( begin(), end(), key, [&]( const pair_t& kvp, const K& key ) { return kvp.first < key; } );
@@ -77,9 +82,9 @@ namespace xo
 		size_t count( const K& key ) const {
 			return std::count_if( cbegin(), cend(), [&]( const pair_t& kvp ) { return kvp.first == key; } );
 		}
-		bool has_key( const K& key ) const { return find( key ) != end(); }
+		bool contains( const K& key ) const { return find( key ) != end(); }
 
-		xo::pair< iterator, bool > insert( const pair_t& value ) {
+		pair< iterator, bool > insert( const pair_t& value ) {
 			auto it = lower_bound( value.first );
 			if ( it != end() && it->first == value.first ) {
 				it->second = value.second; // replace existing item
@@ -88,7 +93,7 @@ namespace xo
 			else return make_pair( data_.insert( it, value ), true );
 		}
 
-		xo::pair< iterator, bool > insert( pair_t&& value ) {
+		pair< iterator, bool > insert( pair_t&& value ) {
 			auto it = lower_bound( value.first );
 			if ( it != end() && it->first == value.first ) {
 				it->second = std::move( value.second ); // replace existing item
@@ -125,7 +130,7 @@ namespace xo
 		}
 	};
 
-	/// convert bounds to string
+	/// convert flat_map to string
 	template< typename K, typename V >
 	string to_str( const flat_map<K, V>& m ) {
 		string s = "{ ";
