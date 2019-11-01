@@ -1,8 +1,10 @@
 #pragma once
 
 #include <algorithm>
-#include <vector>
+#include "xo/container/vector_type.h"
+#include "xo/container/pair_type.h"
 #include "xo/system/assert.h"
+#include "xo/string/string_cast.h"
 
 namespace xo
 {
@@ -10,9 +12,9 @@ namespace xo
 	class flat_map
 	{
 	public:
-		using value_type = typename std::pair< K, V >;
-		using pair_t = typename std::pair< K, V >;
-		using container_t = typename std::vector< pair_t >;
+		using value_type = typename xo::pair< K, V >;
+		using pair_t = typename xo::pair< K, V >;
+		using container_t = typename xo::vector< pair_t >;
 		using iterator = typename container_t::iterator;
 		using reverse_iterator = typename container_t::reverse_iterator;
 		using const_iterator = typename container_t::const_iterator;
@@ -77,7 +79,7 @@ namespace xo
 		}
 		bool has_key( const K& key ) const { return find( key ) != end(); }
 
-		std::pair< iterator, bool > insert( const pair_t& value ) {
+		xo::pair< iterator, bool > insert( const pair_t& value ) {
 			auto it = lower_bound( value.first );
 			if ( it != end() && it->first == value.first ) {
 				it->second = value.second; // replace existing item
@@ -86,7 +88,7 @@ namespace xo
 			else return make_pair( data_.insert( it, value ), true );
 		}
 
-		std::pair< iterator, bool > insert( pair_t&& value ) {
+		xo::pair< iterator, bool > insert( pair_t&& value ) {
 			auto it = lower_bound( value.first );
 			if ( it != end() && it->first == value.first ) {
 				it->second = std::move( value.second ); // replace existing item
@@ -122,4 +124,14 @@ namespace xo
 			std::sort( data_.begin(), data_.end(), [&]( const pair_t& a, const pair_t& b ) { return a.first < b.first; } );
 		}
 	};
+
+	/// convert bounds to string
+	template< typename K, typename V >
+	string to_str( const flat_map<K, V>& m ) {
+		string s = "{ ";
+		for ( const auto& [key, value] : m )
+			s += to_str( key ) + " = " + to_str( value ) + " ";
+		s += "}";
+		return s;
+	}
 }
