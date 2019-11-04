@@ -10,6 +10,7 @@ namespace xo
 	template< typename T, typename I = uint32 >
 	struct handle
 	{
+		using object_type = T;
 		using id_type = I;
 
 		constexpr handle() : value_( invalid_id() ) {}
@@ -72,9 +73,9 @@ namespace xo
 
 	/// update handle after elements have been erased
 	template< typename T, typename I = uint32 >
-	handle<T, I>& consolidate( handle<T, I>& h, const handle_span<T, I>& erased_handles ) {
-		if ( h.value() >= erased_handles.end().value() )
-			h.value() -= erased_handles.size();
+	handle<T, I>& update_moved_handle( handle<T, I>& h, const handle_span<T, I>& moved_handles, I offset ) {
+		if ( moved_handles.contains( h ) )
+			h.value() += offset;
 		return h;
 	}
 }
