@@ -113,12 +113,12 @@ namespace xo
 	{ v.x = std::abs( v.x ); v.y = std::abs( v.y ); v.z = std::abs( v.z ); return v; }
 
 	/// Dot product of two vec3
-	template< typename T1, typename T2 > auto dot_product( const vec3_<T1>& v1, const vec3_<T2>& v2 )
+	template< typename T > T dot_product( const vec3_<T>& v1, const vec3_<T>& v2 )
 	{ return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z; }
 
-	/// Multiply vector elements, can be of different types
-	template< typename T, typename U > auto multiply( const vec3_<T>& v1, const vec3_<U>& v2 )
-	{ return vec3_( v1.x * v2.x, v1.y * v2.y, v1.z * v2.z ); }
+	/// Multiply vector elements
+	template< typename T > vec3_<T> multiply( const vec3_<T>& v1, const vec3_<T>& v2 )
+	{ return vec3_<T>( v1.x * v2.x, v1.y * v2.y, v1.z * v2.z ); }
 
 	/// Projection of v1 onto v2
 	template< typename T > vec3_<T> projection( const vec3_<T>& v1, const vec3_<T>& v2 )
@@ -135,8 +135,7 @@ namespace xo
 
 	/// convert from prop_node
 	template< typename T > bool from_prop_node( const prop_node& pn, vec3_<T>& v ) {
-		// the following notations are supported:
-		// array: [ 1 2 3 ], group: { x=1 y=2 z=3 }, string: "1 2 3"
+		// load vec3_ from array [ 1 2 3 ], group { x=1 y=2 z=3 }, or string: "1 2 3"
 		if ( pn.size() == 3 ) {
 			if ( pn.is_array() ) // array: [ 1 2 3 ]
 				v.set( pn.get<T>( 0 ), pn.get<T>( 1 ), pn.get<T>( 2 ) );
