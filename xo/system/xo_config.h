@@ -2,9 +2,9 @@
 
 // DEBUG settings
 #ifdef NDEBUG
-#	define XO_DEBUG_MODE 0
+#	define XO_IS_DEBUG_BUILD 0
 #else
-#	define XO_DEBUG_MODE 1
+#	define XO_IS_DEBUG_BUILD 1
 #endif
 
 // Exceptions and asserts

@@ -24,7 +24,7 @@
 #	define xo_assert_msg( expression_, message_ )
 #endif
 
-#if XO_DEBUG_MODE && XO_USE_ASSERT
+#if XO_IS_DEBUG_BUILD && XO_USE_ASSERT
 #	define xo_debug_assert( expression_ ) \
 	if ( !( expression_ ) ) xo_error( "Debug assertion failure in " + std::string( __FUNCTION__ ) + "(): "#expression_ )
 #else

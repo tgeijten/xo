@@ -14,7 +14,7 @@
 
 namespace xo
 {
-#if XO_DEBUG_MODE
+#if XO_IS_DEBUG_BUILD
 	constexpr static int num_evals = 1000000;
 #else
 	constexpr static int num_evals = 10000000;
