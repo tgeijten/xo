@@ -5,6 +5,8 @@
 #include "system_tools.h"
 #include "xo/utility/pointer_types.h"
 #include <future>
+#include "xo/time/timer.h"
+#include "xo/string/string_tools.h"
 
 namespace xo
 {
@@ -98,6 +100,8 @@ namespace xo
 
 		int run_tests_async()
 		{
+			xo::timer t;
+
 			test_result total;
 			std::vector< std::future< const test_result& > > results;
 			for ( index_t i = 0; i < get_test_cases().size(); ++i )
@@ -111,8 +115,9 @@ namespace xo
 				total += r;
 			}
 
+			auto time_str = stringf( "%.2fs", t().seconds() );
 			if ( tests_failed == 0 )
-				log::info( "Performed ", results.size(), " tests with ", total.passed_, " checks; ALL CLEAR :-)" );
+				log::info( "Performed ", results.size(), " tests with ", total.passed_, " checks in ", time_str, "; ALL CLEAR :-)" );
 			else
 				log::error( "WARNING: ", tests_failed, " of ", results.size(), " tests FAILED!" );
 
