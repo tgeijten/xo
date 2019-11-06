@@ -44,7 +44,7 @@ namespace xo
 	}
 #endif
 
-	path get_config_folder()
+	path get_config_dir()
 	{
 #ifdef XO_COMP_MSVC
 		return get_known_windows_folder( FOLDERID_LocalAppData );
@@ -54,7 +54,7 @@ namespace xo
 #endif
 	}
 
-	path get_documents_folder()
+	path get_documents_dir()
 	{
 #ifdef XO_COMP_MSVC
 		return get_known_windows_folder( FOLDERID_Documents );
@@ -63,7 +63,7 @@ namespace xo
 #endif
 	}
 
-	path get_application_folder()
+	path get_application_dir()
 	{
 #ifdef XO_COMP_MSVC
 		char buf[ 1024 ];
@@ -132,7 +132,7 @@ namespace xo
 		return ifs.good();
 	}
 
-	bool folder_exists( const path& folder )
+	bool directory_exists( const path& folder )
 	{
 #ifdef XO_COMP_MSVC
 		DWORD dwAttrib = GetFileAttributes( path( folder ).make_preferred().c_str() );
@@ -148,9 +148,14 @@ namespace xo
 #endif
 	}
 
-	void current_find_file_folder ( const path& folder )
+	void current_find_file_path ( const path& folder )
 	{
 		g_current_find_file_folder = folder;
+	}
+
+	const path& current_find_file_path()
+	{
+		return g_current_find_file_folder;
 	}
 
 	path find_file( std::initializer_list< path > find_paths )
@@ -180,7 +185,7 @@ namespace xo
 	bool create_directories( const path& folder )
 	{
 		// make sure parent folders exist
-		if ( folder.has_parent_path() && !folder_exists( folder.parent_path() ) )
+		if ( folder.has_parent_path() && !directory_exists( folder.parent_path() ) )
 			create_directories( folder.parent_path() );
 
 #ifdef XO_COMP_MSVC
@@ -190,7 +195,7 @@ namespace xo
 #endif
 	}
 
-	path create_unique_folder( const path& folder, int max_attempts )
+	path create_unique_directory( const path& folder, int max_attempts )
 	{
 		path unique_folder = folder;
 		bool success = false;
@@ -199,7 +204,7 @@ namespace xo
 			if ( i > 0 )
 				unique_folder = folder + stringf( " (%d)", i );
 
-			if ( !folder_exists( unique_folder ) )
+			if ( !directory_exists( unique_folder ) )
 				success = create_directories( unique_folder ); // try to create folder
 		}
 		xo_error_if( !success, "Could not create unique folder after " + to_str( max_attempts ) + " attempts" );
