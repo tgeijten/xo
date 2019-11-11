@@ -42,10 +42,11 @@ namespace xo
 		struct iterator : public std::iterator< std::forward_iterator_tag, T, T >
 		{
 			using value_type = handle_type;
-			using difference_type = handle_type;
+			using difference_type = I;
 			using pointer = handle_type *;
 			using reference = handle_type &;
 			iterator( handle_type v ) : handle_( v ) {}
+			iterator( I v ) : handle_( v ) {}
 			iterator& operator++() { ++handle_.value(); return *this; }
 			iterator operator++( int ) { auto h = *this; ++handle_.value(); return h; }
 			bool operator==( const iterator& o ) const { return o.handle_ == handle_; }
@@ -57,6 +58,7 @@ namespace xo
 
 		constexpr handle_span() : begin_(), end_() {}
 		constexpr handle_span( handle_type b, handle_type e ) : begin_( b ), end_( e ) {}
+		constexpr handle_span( iterator b, iterator e ) : begin_( b ), end_( e ) {}
 
 		bool empty() const { return begin_ == end_; }
 		I size() const { return end_.value() - begin_.value(); }
@@ -73,9 +75,10 @@ namespace xo
 
 	/// update handle after elements have been erased
 	template< typename T, typename I = uint32 >
-	handle<T, I>& update_moved_handle( handle<T, I>& h, const handle_span<T, I>& moved_handles, I offset ) {
-		if ( moved_handles.contains( h ) )
-			h.value() += offset;
+	handle<T, I>& update_moved_handle( handle<T, I>& h, const handle_span<T, I>& moved_handles, const typename handle_span<T, I>::iterator new_begin ) {
+		if ( moved_handles.contains( h ) ) {
+			h.value() = h.value() - moved_handles.begin().value() + new_begin.value();
+		}
 		return h;
 	}
 }

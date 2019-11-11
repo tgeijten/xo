@@ -42,11 +42,13 @@ namespace xo
 
 		handle_type back_handle() const { return handle_type( I( size() - 1 ) ); }
 		handle_type handle_from_iterator( const_iterator it ) const { return it != end() ? handle_type( static_cast<I>( it - begin() ) ) : handle_type(); }
-		handle_span_type span() const { return { handle_type( I( 0 ) ), handle_type( I( size() ) ) }; }
+		typename handle_span_type::iterator span_begin() const { return typename handle_span_type::iterator( I( 0 ) ); }
+		typename handle_span_type::iterator span_end() const { return typename handle_span_type::iterator( I( size() ) ); }
+		handle_span_type span() const { return { span_begin(), span_end() }; }
 
 		bool contains( handle_type h ) const { return h.value() < size(); }
 
 		handle_type erase( handle_type h ) { vector<T>::erase( begin() + h.value() ); return h; }
-		handle_type erase( handle_span_type hs ) { vector<T>::erase( begin() + hs.begin(), begin() + hs.end() ); return hs.begin(); }
+		handle_type erase( handle_span_type hs ) { vector<T>::erase( begin() + hs.begin().value(), begin() + hs.end().value() ); return *hs.begin(); }
 	};
 }
