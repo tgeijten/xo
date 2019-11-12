@@ -13,7 +13,7 @@ namespace xo
 	{ auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( *it == e ) break; return it; }
 
 	/// find element in a container
-	template< typename C, typename P > auto find( const C& cont, const typename C::value_type& e )
+	template< typename C > auto find( const C& cont, const typename C::value_type& e )
 	{ auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( *it == e ) break; return it; }
 
 	/// find element in a container
@@ -36,9 +36,28 @@ namespace xo
 	template< typename C, typename P > size_t count_if( const C& cont, P pred )
 	{ size_t c = 0; for ( auto it = std::begin( cont ); it != std::end( cont ); ++it ) c += size_t( pred( *it ) ); return c; }
 
-	/// copy elements of one container to another
+	/// copy elements of one container to another (no range checking)
 	template< typename InIt, typename OutIt > OutIt copy( InIt ib, InIt ie, OutIt ob )
 	{ for ( ; ib != ie; ++ib, ++ob ) *ob = *ib; return ob; }
+
+	/// copy elements of one container to another, explicitly casting to target value type (no range checking)
+	template< typename InIt, typename OutIt > OutIt copy_cast( InIt ib, InIt ie, OutIt ob ) {
+		for ( ; ib != ie; ++ib, ++ob )
+			*ob = static_cast<std::iterator_traits<OutIt>::value_type>( *ib );
+		return ob;
+	}
+
+	/// copy elements of one container to another (with range checking)
+	template< typename InC, typename OutC > void copy( const InC& source, OutC& target ) {
+		xo_assert( std::size( source ) <= std::size( target ) );
+		copy( std::begin( source ), std::end( source ), std::begin( target ) );
+	}
+
+	/// copy elements of one container to another, explicitly casting to target value type (with range checking)
+	template< typename InC, typename OutC > void copy_cast( const InC& source, OutC& target ) {
+		xo_assert( std::size( source ) <= std::size( target ) );
+		copy_cast( std::begin( source ), std::end( source ), std::begin( target ) );
+	}
 
 	/// append a container to another
 	template< typename C1, typename C2 > C1& append( C1& c1, const C2& c2 )
