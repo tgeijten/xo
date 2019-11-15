@@ -9,9 +9,9 @@
 #include "xo/container/flat_map.h"
 
 #define XO_FACTORY_REGISTRANT( _factory_, _type_ ) \
-	auto _type_##_registrant = ::xo::make_type_registrant< _type_ >( _factory_ )
+	auto _type_##_registrant = ::xo::make_factory_registrant< _type_ >( _factory_ )
 #define XO_FACTORY_REGISTRANT_NAMED( _factory_, _type_, _name_ ) \
-	auto _name_##_registrant = xo::make_type_registrant< _type_ >( _factory_, #_name_ )
+	auto _name_##_registrant = xo::make_factory_registrant< _type_ >( _factory_, #_name_ )
 
 namespace xo
 {
@@ -63,20 +63,20 @@ namespace xo
 	};
 
 	template< typename T, typename F >
-	class scoped_type_registrant {
+	class factory_registrant {
 	public:
-		scoped_type_registrant( F& f, const string& name = get_clean_type_name<T>() ) : factory_( f ), name_( name ) { factory_.template register_type<T>( name_ ); }
-		~scoped_type_registrant() { factory_.unregister_type( name_ ); }
+		factory_registrant( F& f, const string& name = get_clean_type_name<T>() ) : factory_( f ), name_( name ) { factory_.template register_type<T>( name_ ); }
+		~factory_registrant() { factory_.unregister_type( name_ ); }
 	private:
 		F& factory_;
 		string name_;
 	};
 
-	template< typename T, typename F > scoped_type_registrant< T, F > make_type_registrant( F& f ) {
-		return scoped_type_registrant< T, F >( f, get_clean_type_name<T>() );
+	template< typename T, typename F > factory_registrant< T, F > make_factory_registrant( F& f ) {
+		return factory_registrant< T, F >( f, get_clean_type_name<T>() );
 	}
 
-	template< typename T, typename F > scoped_type_registrant< T, F > make_type_registrant( F& f, const string& type_id ) {
-		return scoped_type_registrant< T, F >( f, type_id );
+	template< typename T, typename F > factory_registrant< T, F > make_factory_registrant( F& f, const string& type_id ) {
+		return factory_registrant< T, F >( f, type_id );
 	}
 }
