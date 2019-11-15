@@ -21,8 +21,8 @@ namespace xo
 	public:
 		using key_t = string;
 		using value_t = string;
-		using pair_t = std::pair< key_t, prop_node >;
-		using container_t = std::vector< pair_t >;
+		using pair_t = pair< key_t, prop_node >;
+		using container_t = vector< pair_t >;
 		using iterator = container_t::iterator;
 		using const_iterator = container_t::const_iterator;
 		using reverse_iterator = container_t::reverse_iterator;
@@ -32,12 +32,13 @@ namespace xo
 		prop_node() : accessed_flag( false ) {}
 		prop_node( const prop_node& other ) = default;
 		prop_node( prop_node&& other ) = default;
-		prop_node( const char* pn );
 		prop_node( const value_t& v ) : accessed_flag( false ), value( v ) {}
 		prop_node( value_t&& v ) : accessed_flag( false ), value( std::move( v ) ) {}
+		prop_node( const char* v ) : accessed_flag( false ), value( v ) {}
+		prop_node( std::initializer_list< pair_t > c ) : accessed_flag( false ), children( c ) {}
 
 		/// destructor (non-virtual)
-		~prop_node() {}
+		~prop_node() = default;
 
 		/// assignment operators
 		prop_node& operator=( const prop_node& other ) = default;
@@ -234,14 +235,14 @@ namespace xo
 		return from_str( pn.raw_value(), v ); 
 	};
 
-	template< typename T > prop_node to_prop_node( const std::vector<T>& vec ) {
+	template< typename T > prop_node to_prop_node( const vector<T>& vec ) {
 		prop_node pn;
 		for ( size_t i = 0; i < vec.size(); ++i )
 			pn.push_back( "", to_prop_node( vec[ i ] ) );
 		return pn;
 	}
 
-	template< typename T > bool from_prop_node( const prop_node& pn , std::vector<T>& vec ) {
+	template< typename T > bool from_prop_node( const prop_node& pn , vector<T>& vec ) {
 		vec.resize( pn.size() );
 		bool ok = true;
 		for ( index_t i = 0; i < pn.size(); ++i )

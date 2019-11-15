@@ -12,6 +12,15 @@
 
 namespace xo
 {
+	prop_node init_test = prop_node( {
+		{ "test", "value" },
+		{ "vector", {
+			{ "x", "0" },
+			{ "x", "1" },
+			{ "z", "2" } } },
+		{ "another", "value with spaces\nand \"special\" \001 characters" } }
+	);
+
 	struct custom_struct
 	{
 		string name;

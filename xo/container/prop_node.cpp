@@ -1,6 +1,5 @@
 #include "prop_node.h"
 
-#include "xo/serialization/prop_node_serializer_zml.h"
 #include "xo/container/container_tools.h"
 #include "xo/numerical/math.h"
 #include "xo/string/string_tools.h"
@@ -10,11 +9,6 @@
 
 namespace xo
 {
-	prop_node::prop_node( const char* pn ) : accessed_flag( false )
-	{
-		*this = parse_zml( pn );
-	}
-
 	bool prop_node::has_value( const key_t& key ) const
 	{
 		if ( auto c = try_get_child( key ) )
