@@ -10,11 +10,14 @@ namespace xo
 	public:
 		constexpr quat_() : w( 1 ), x( 0 ), y( 0 ), z( 0 ) {}
 		constexpr quat_( T w, T x, T y, T z ) : w( w ), x( x ), y( y ), z( z ) {}
-		template< typename T2 > quat_( const quat_<T2>& o ) : w( T( o.w ) ), x( T( o.x ) ), y( T( o.y ) ), z( T( o.z ) ) {}
+		constexpr quat_( const quat_& o ) = default;
+
+		/// conversion copy constructor
+		template< typename U > explicit quat_( const quat_<U>& o ) : w( T( o.w ) ), x( T( o.x ) ), y( T( o.y ) ), z( T( o.z ) ) {}
 
 		/// assignment
-		template< typename T2 > quat_<T>& operator=( const quat_<T2>& o ) { w = T( o.w ); x = T( o.x ); y = T( o.y ); z = T( o.z ); return *this; }
-		template< typename T2 > void set( T2 pw, T2 px, T2 py, T2 pz ) { w = T( pw ); x = T( px ); y = T( py ); z = T( pz ); }
+		quat_& operator=( const quat_& o ) = default;
+		void set( T pw, T px, T py, T pz ) { w = pw; x = px ; y = py; z = pz; }
 
 		/// member access
 		T w, x, y, z;
