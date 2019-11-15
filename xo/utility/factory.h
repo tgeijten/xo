@@ -1,10 +1,11 @@
 #pragma once
 
 #include <functional>
-#include <memory>
-#include <string>
+
 #include "xo/system/assert.h"
 #include "xo/system/system_tools.h"
+#include "xo/utility/pointer_types.h"
+#include "xo/string/string_type.h"
 #include "xo/container/flat_map.h"
 
 #define XO_FACTORY_REGISTRANT( _factory_, _type_ ) \
@@ -18,39 +19,41 @@ namespace xo
 	class factory
 	{
 	public:
-		using create_func_t = std::function< std::unique_ptr< T >( Args... ) >;
-		using container_t = xo::flat_map< std::string, create_func_t >;
+		using create_func_t = std::function< u_ptr< T >( Args... ) >;
+		using container_t = flat_map< string, create_func_t >;
 		using const_iterator = typename container_t::const_iterator;
 
 		/// register type U
 		template< typename U >
-		void register_type( const std::string& type_id = get_clean_type_name<U>() ) {
+		factory& register_type( const string& type_id = get_clean_type_name<U>() ) {
 			xo_error_if( func_map_.contains( type_id ), "Type already registered: " + type_id );
-			func_map_[ type_id ] = []( Args... args ) { return std::unique_ptr< T >( new U( args... ) ); };
+			func_map_[ type_id ] = []( Args... args ) { return u_ptr< T >( new U( args... ) ); };
+			return *this;
 		}
 
 		/// unregister type
-		void unregister_type( const std::string& type_id ) {
+		factory& unregister_type( const string& type_id ) {
 			auto it = func_map_.find( type_id );
 			xo_error_if( it == end(), "Unknown type: " + type_id );
 			func_map_.erase( it );
+			return *this;
 		}
 
 		/// create instance of type
-		std::unique_ptr< T > create( const std::string& type_id, Args... args ) {
+		u_ptr< T > create( const string& type_id, Args... args ) {
 			auto it = func_map_.find( type_id );
 			xo_error_if( it == end(), "Unknown type: " + type_id );
 			return it->second( args... );
 		}
 
 		/// try create instance of type, return nullptr if not found
-		std::unique_ptr< T > try_create( const std::string& type_id, Args... args ) {
+		u_ptr< T > try_create( const string& type_id, Args... args ) {
 			auto it = func_map_.find( type_id );
 			return it != end() ? it->second( args... ) : nullptr;
 		}
 
 		bool empty() const { return func_map_.empty(); }
-		bool has_type( const std::string& type_id ) const { return func_map_.find( type_id ) != func_map_.end(); }
+		bool has_type( const string& type_id ) const { return func_map_.find( type_id ) != func_map_.end(); }
 
 		const_iterator begin() const { return func_map_.begin(); }
 		const_iterator end() const { return func_map_.end(); }
