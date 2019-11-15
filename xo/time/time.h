@@ -28,6 +28,8 @@ namespace xo
 		time& operator-=( time o ) { internal_ -= o.internal_; return *this; }
 		time& operator+=( time o ) { internal_ += o.internal_; return *this; }
 
+		bool is_zero() const { return internal_ == 0; }
+
 		/// compute time ratio
 		double operator/( time v ) const { return double( internal_ ) / double( v.internal_ ); }
 
