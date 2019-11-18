@@ -2,6 +2,7 @@
 
 #include "xo/utility/hash.h"
 #include "xo/container/prop_node_tools.h"
+#include "xo/utility/overload.h"
 
 namespace xo
 {
@@ -62,6 +63,70 @@ namespace xo
 		default:
 			return false;
 		}
+	}
+
+	prop_node to_prop_node( const sphere& s )
+	{
+		prop_node pn;
+		pn[ "type" ] = "sphere";
+		pn[ "radius" ] = s.radius_;
+		return pn;
+	}
+
+	prop_node to_prop_node( const box& s )
+	{
+		prop_node pn;
+		pn[ "type" ] = "box";
+		pn[ "dim" ] = 2 * s.half_dim_;
+		return pn;
+	}
+
+	prop_node to_prop_node( const cylinder& s )
+	{
+		prop_node pn;
+		pn[ "type" ] = "cylinder";
+		pn[ "radius" ] = s.radius_;
+		pn[ "height" ] = s.height_;
+		return pn;
+	}
+	prop_node to_prop_node( const capsule& s )
+	{
+		prop_node pn;
+		pn[ "type" ] = "capsule";
+		pn[ "radius" ] = s.radius_;
+		pn[ "height" ] = s.height_;
+		return pn;
+	}
+
+	prop_node to_prop_node( const cone& s )
+	{
+		prop_node pn;
+		pn[ "type" ] = "cone";
+		pn[ "radius" ] = s.radius_;
+		pn[ "height" ] = s.height_;
+		return pn;
+	}
+
+	prop_node to_prop_node( const plane& s )
+	{
+		prop_node pn;
+		pn[ "type" ] = "plane";
+		pn[ "normal" ] = s.normal_;
+		return pn;
+	}
+
+	prop_node to_prop_node( const shape& s )
+	{
+		prop_node pn;
+		std::visit( overload(
+			[&]( const sphere& s ) { pn = to_prop_node( s ); },
+			[&]( const box& s ) { pn = to_prop_node( s ); },
+			[&]( const cylinder& s ) { pn = to_prop_node( s ); },
+			[&]( const capsule& s ) { pn = to_prop_node( s ); },
+			[&]( const cone& s ) { pn = to_prop_node( s ); },
+			[&]( const plane& s ) { pn = to_prop_node( s ); }
+			), s );
+		return pn;
 	}
 
 	float volume( const shape& s )
