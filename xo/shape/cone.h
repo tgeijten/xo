@@ -7,7 +7,7 @@ namespace xo
 	struct cone
 	{
 		cone() : radius_(), height_() {}
-		cone( float radius, float height ) : radius_( radius ), height_( height ) {}
+		explicit cone( float radius, float height ) : radius_( radius ), height_( height ) {}
 
 		float radius_;
 		float height_;

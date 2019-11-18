@@ -11,7 +11,7 @@ namespace xo
 	struct plane
 	{
 		plane() : normal_() {}
-		plane( const vec3f& normal ) : normal_( normal ) {}
+		explicit plane( const vec3f& normal ) : normal_( normal ) {}
 
 		vec3f normal_;
 	};

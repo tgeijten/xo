@@ -7,7 +7,7 @@ namespace xo
 	struct capsule
 	{
 		capsule() : radius_(), height_() {}
-		capsule( float radius, float height ) : radius_( radius ), height_( height ) {}
+		explicit capsule( float radius, float height ) : radius_( radius ), height_( height ) {}
 
 		float radius_;
 		float height_;

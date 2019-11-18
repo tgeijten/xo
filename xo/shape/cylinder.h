@@ -7,7 +7,7 @@ namespace xo
 	struct cylinder
 	{
 		cylinder() : radius_(), height_() {}
-		cylinder( float radius, float height ) : radius_( radius ), height_( height ) {}
+		explicit cylinder( float radius, float height ) : radius_( radius ), height_( height ) {}
 
 		float radius_;
 		float height_;

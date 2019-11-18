@@ -11,7 +11,7 @@ namespace xo
 	struct sphere
 	{
 		sphere() : radius_() {}
-		sphere( float radius ) : radius_( radius ) {}
+		explicit sphere( float radius ) : radius_( radius ) {}
 
 		float radius_;
 	};

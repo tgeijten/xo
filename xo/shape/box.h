@@ -10,7 +10,7 @@ namespace xo
 	struct box
 	{
 		box() : half_dim_() {}
-		box( const vec3f& half_dim ) : half_dim_( half_dim ) {}
+		explicit box( const vec3f& half_dim ) : half_dim_( half_dim ) {}
 
 		vec3f half_dim_;
 	};
