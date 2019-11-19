@@ -24,6 +24,7 @@ namespace xo
 		void reset() { value_ = invalid_id(); }
 		void swap( handle& o ) { id_type tmp = value_; value_ = o.value_; o.value_ = tmp; }
 
+		friend bool operator<( const handle a, const handle b ) { return a.value_ < b.value_; }
 		friend bool operator==( const handle a, const handle b ) { return a.value_ == b.value_; }
 		friend bool operator!=( const handle a, const handle b ) { return a.value_ != b.value_; }
 
