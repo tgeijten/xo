@@ -17,7 +17,7 @@ namespace xo
 	/// get middle n characters, starting from pos
 	XO_API string mid_str( const string& str, index_t pos, size_t n = string::npos );
 
-	/// get right n characters; if n < 0, get string WITHOUT the right n characters
+	/// get right n characters; if n is negative, get string WITHOUT the right n characters
 	XO_API string right_str( const string& str, int n );
 
 	/// get index of a substring in a string
