@@ -55,7 +55,7 @@ namespace xo
 		return str;
 	}
 
-	std::pair< bool, string > find_query_to_node( const prop_node* from, const prop_node* to, const char delim )
+	pair< bool, string > find_query_to_node( const prop_node* from, const prop_node* to, const char delim )
 	{
 		if ( from == to )
 			return { true, "" };
@@ -68,5 +68,30 @@ namespace xo
 		}
 
 		return { false, "" };
+	}
+
+	prop_node prop_node_from_arg( int argc, const char* argv[] )
+	{
+		prop_node pn;
+
+		xo_assert( argc >= 1 );
+		pn.set_value( argv[ 0 ] );
+		prop_node* value_pn = nullptr;
+		for ( int i = 1; i < argc; ++i )
+		{
+			string arg = argv[ i ];
+			if ( str_begins_with( arg, '-' ) )
+			{
+				value_pn = &pn.push_back( mid_str( arg, 1 ) );
+			}
+			else if ( value_pn )
+			{
+				value_pn->set_value( arg );
+				value_pn = nullptr;
+			}
+			else pn[ "" ].set_value( arg );
+		}
+
+		return pn;
 	}
 }
