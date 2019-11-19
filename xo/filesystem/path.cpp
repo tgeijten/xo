@@ -28,6 +28,13 @@ namespace xo
 		return *this /= f;
 	}
 
+	path& path::replace_stem( const path& stem )
+	{
+		auto ext = extension();
+		remove_filename();
+		return *this /= stem + ext;
+	}
+
 	path& path::make_preferred()
 	{
 		for ( char& c : data_ )
@@ -40,6 +47,12 @@ namespace xo
 	{
 		size_t n = last_separator_pos();
 		return n != string::npos ? path( data_.substr( 0, n ) ) : path();
+	}
+
+	path path::extension() const
+	{
+		size_t n = data_.find_last_of( '.' );
+		return n != string::npos ? path( data_.substr( n ) ) : path();
 	}
 
 	path path::extension_no_dot() const

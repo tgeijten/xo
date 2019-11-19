@@ -26,8 +26,10 @@ namespace xo
 		path& replace_extension( const path& ext = path() );
 		path& remove_filename();
 		path& replace_filename( const path& f = path() );
+		path& replace_stem( const path& stem = path() );
 		path& make_preferred();
 		path parent_path() const;
+		path extension() const;
 		path extension_no_dot() const;
 		path filename() const;
 		path stem() const;
