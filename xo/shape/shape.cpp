@@ -117,16 +117,7 @@ namespace xo
 
 	prop_node to_prop_node( const shape& s )
 	{
-		prop_node pn;
-		std::visit( overload(
-			[&]( const sphere& s ) { pn = to_prop_node( s ); },
-			[&]( const box& s ) { pn = to_prop_node( s ); },
-			[&]( const cylinder& s ) { pn = to_prop_node( s ); },
-			[&]( const capsule& s ) { pn = to_prop_node( s ); },
-			[&]( const cone& s ) { pn = to_prop_node( s ); },
-			[&]( const plane& s ) { pn = to_prop_node( s ); }
-			), s );
-		return pn;
+		return std::visit( []( auto&& arg ) { return to_prop_node( arg ); }, s );
 	}
 
 	float volume( const shape& s )
