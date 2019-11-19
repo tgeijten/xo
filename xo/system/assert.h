@@ -16,19 +16,17 @@
 #if XO_USE_ASSERT
 #	define xo_assert( expression_ ) \
 		if (!(expression_)) xo_error( "Assertion failure in " + std::string( __FUNCTION__ ) + "(): "#expression_ )
-
 #	define xo_assert_msg( expression_, message_ ) \
 		if (!(expression_)) xo_error( "Assertion failure in " + std::string( __FUNCTION__ ) + "(): "#expression_" (" + std::string( message_ ) + ")" )
-#else
+#	if XO_IS_DEBUG_BUILD
+#		define xo_debug_assert( expression_ ) \
+			if ( !( expression_ ) ) xo_error( "Debug assertion failure in " + std::string( __FUNCTION__ ) + "(): "#expression_ )
+#	else // XO_IS_DEBUG_BUILD
+#		define xo_debug_assert( expression_ )
+#	endif
+#else // XO_USE_ASSERT
 #	define xo_assert( expression_ )
 #	define xo_assert_msg( expression_, message_ )
-#endif
-
-#if XO_IS_DEBUG_BUILD && XO_USE_ASSERT
-#	define xo_debug_assert( expression_ ) \
-	if ( !( expression_ ) ) xo_error( "Debug assertion failure in " + std::string( __FUNCTION__ ) + "(): "#expression_ )
-#else
-#	define xo_debug_assert( expression_ )
 #endif
 
 #define xo_error_if( condition_, message_ ) \
