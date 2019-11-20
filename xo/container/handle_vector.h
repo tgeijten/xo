@@ -45,6 +45,7 @@ namespace xo
 		typename handle_span_type::iterator span_begin() const { return typename handle_span_type::iterator( I( 0 ) ); }
 		typename handle_span_type::iterator span_end() const { return typename handle_span_type::iterator( I( size() ) ); }
 		handle_span_type span() const { return { span_begin(), span_end() }; }
+		handle_span_type span( typename handle_span_type::iterator b ) const { return { b, span_end() }; }
 
 		bool contains( handle_type h ) const { return h.value() < size(); }
 

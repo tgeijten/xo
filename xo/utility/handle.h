@@ -52,7 +52,7 @@ namespace xo
 			iterator operator++( int ) { auto h = *this; ++handle_.value(); return h; }
 			bool operator==( const iterator& o ) const { return o.handle_ == handle_; }
 			bool operator!=( const iterator& o ) const { return o.handle_ != handle_; }
-			handle_type& operator*() { return handle_; }
+			const handle_type& operator*() const { return handle_; }
 			const I& value() const { return handle_.value(); }
 			handle_type handle_;
 		};
