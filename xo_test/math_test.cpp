@@ -1,5 +1,3 @@
-#pragma once
-
 #include <random>
 #include <algorithm>
 #include <iostream>

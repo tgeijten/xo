@@ -1,5 +1,3 @@
-#pragma once
-
 #include <iostream>
 #include "xo/container/prop_node_tools.h"
 #include "xo/geometry/vec3.h"

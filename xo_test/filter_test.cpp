@@ -1,5 +1,3 @@
-#pragma once
-
 #include "xo/container/storage.h"
 #include "xo/numerical/filter.h"
 #include "xo/numerical/constants.h"
@@ -32,7 +30,6 @@ namespace xo
 			f[ "f3" ] = f3( s );
 			f[ "f4" ] = f4( s );
 		}
-		
 		std::ofstream( "X:/filter_test.txt" ) << sto;
 	}
 }

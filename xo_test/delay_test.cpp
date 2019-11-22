@@ -1,5 +1,3 @@
-#pragma once
-
 #include "xo/numerical/delayer.h"
 #include "xo/container/storage.h"
 #include "xo/system/log.h"

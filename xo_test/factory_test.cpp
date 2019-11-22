@@ -1,5 +1,3 @@
-#pragma once
-
 #include "xo/container/prop_node.h"
 #include "xo/utility/factory.h"
 #include "xo/system/test_case.h"

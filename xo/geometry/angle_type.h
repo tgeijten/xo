@@ -12,19 +12,21 @@ namespace xo
 
 	/// partial specialization for degrees
 	template< typename T >
-	struct angle_< angle_unit::degrees, T > : arithmetic< T, angle_<angle_unit::degrees, T> >
+	struct angle_< angle_unit::degrees, T > : arithmetic< T, angle_<angle_unit::degrees, T>>
 	{
 		/// default constructor
-		constexpr angle_() : arithmetic( T() ) {}
+		constexpr angle_() : arithmetic< T, angle_<angle_unit::degrees, T>>( T() ) {}
 
 		/// copy / conversion constructor
-		template< angle_unit U, typename T2 > explicit constexpr angle_( const angle_<U, T2>& a ) : arithmetic( T( a.deg_value() ) ) {}
+		template< angle_unit U, typename T2 > explicit constexpr angle_( const angle_<U, T2>& a )
+		    : arithmetic< T, angle_<angle_unit::degrees, T>>( T( a.deg_value() ) ) {}
 
 		/// value constructor
-		template< typename T2 > explicit constexpr angle_( const T2& v ) : arithmetic( T( v ) ) {}
+		template< typename T2 > explicit constexpr angle_( const T2& v )
+		    : arithmetic< T, angle_<angle_unit::degrees, T>>( T( v ) ) {}
 
 		/// copy assignment
-		angle_& operator=( const angle_& a ) { value = a.value; return *this; }
+		angle_& operator=( const angle_& a ) { this->value = a.value; return *this; }
 
 		/// get rad / deg value
 		constexpr const T& deg_value() const { return this->value; }
@@ -39,16 +41,18 @@ namespace xo
 	struct angle_< angle_unit::radians, T > : arithmetic< T, angle_<angle_unit::radians, T> >
 	{
 		/// default constructor
-		constexpr angle_() : arithmetic( T() ) {}
+		constexpr angle_() : arithmetic< T, angle_<angle_unit::radians, T> >( T() ) {}
 
 		/// copy / conversion constructor
-		template< angle_unit U, typename T2 > explicit constexpr angle_( const angle_<U, T2>& a ) : arithmetic( T( a.rad_value() ) ) {}
+		template< angle_unit U, typename T2 > explicit constexpr angle_( const angle_<U, T2>& a )
+		    : arithmetic< T, angle_<angle_unit::radians, T> >( T( a.rad_value() ) ) {}
 
 		/// value constructor
-		template< typename T2 > explicit constexpr angle_( const T2& v ) : arithmetic( T( v ) ) {}
+		template< typename T2 > explicit constexpr angle_( const T2& v )
+		    : arithmetic< T, angle_<angle_unit::radians, T> >( T( v ) ) {}
 
 		/// copy assignment
-		angle_& operator=( const angle_& a ) { value = a.value; return *this; }
+		angle_& operator=( const angle_& a ) { this->value = a.value; return *this; }
 
 		/// get rad / deg value
 		constexpr T deg_value() const { return T( 57.295779513082320877L ) * this->value; }

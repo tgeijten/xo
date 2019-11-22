@@ -1,5 +1,3 @@
-#pragma once
-
 #include "xo/container/storage.h"
 #include "xo/utility/data_algorithms.h"
 #include <iostream>
