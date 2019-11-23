@@ -4,6 +4,7 @@
 #include "xo/filesystem/path.h"
 #include "xo/geometry/vec3_type.h"
 #include "xo/geometry/quat_type.h"
+#include "xo/numerical/math.h"
 
 namespace xo
 {
