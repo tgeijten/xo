@@ -11,8 +11,9 @@ namespace xo
 	struct flag_set
 	{
 		flag_set() : data_( StorageT( 0 ) ) {}
-		flag_set( const flag_set& o ) : data_( o.data_ ) {}
+		flag_set( const flag_set& o ) = default;
 		flag_set( std::initializer_list< EnumT > flags ) : data_( StorageT( 0 ) ) { set( flags ); }
+		explicit flag_set( StorageT data ) : data_( data ) {}
 
 		flag_set& operator=( const flag_set& o ) { data_ = o.data_; return *this; }
 
@@ -36,6 +37,7 @@ namespace xo
 
 		void clear() { data_ = StorageT(0); }
 		bool any() const { return data_ != 0; }
+		StorageT data() const { return data_; }
 
 	private:
 		StorageT storage_bit( EnumT i ) const { return StorageT( 1 ) << int( i ); }
