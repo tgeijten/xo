@@ -36,9 +36,21 @@ namespace xo
 	template< typename C, typename P > size_t count_if( const C& cont, P pred )
 	{ size_t c = 0; for ( auto it = std::begin( cont ); it != std::end( cont ); ++it ) c += size_t( pred( *it ) ); return c; }
 
-	/// copy elements of one container to another (no range checking)
+	/// copy elements based on input range (no range checking)
 	template< typename InIt, typename OutIt > OutIt copy( InIt ib, InIt ie, OutIt ob )
 	{ for ( ; ib != ie; ++ib, ++ob ) *ob = *ib; return ob; }
+
+	/// copy elements of one container to another (no range checking)
+	template< typename InC, typename OutIt > OutIt copy( const InC& cont, OutIt ob )
+	{ return xo::copy( std::begin( cont ), std::end( cont ), ob ); }
+
+	/// copy elements based on output range (no range checking)
+	template< typename InIt, typename OutIt > InIt copy_to_range( InIt ib, OutIt ob, OutIt oe )
+	{ for ( ; ob != oe; ++ib, ++ob ) *ob = *ib; return ib; }
+
+	/// copy elements to output container (no range checking)
+	template< typename InIt, typename OutC > InIt copy_to_range( InIt it, OutC& cont )
+	{ return copy_to_range( it, std::begin( cont ), std::end( cont ) ); }
 
 	/// copy elements of one container to another, explicitly casting to target value type (no range checking)
 	template< typename InIt, typename OutIt > OutIt copy_cast( InIt ib, InIt ie, OutIt ob ) {
@@ -48,7 +60,7 @@ namespace xo
 	}
 
 	/// copy elements of one container to another (with range checking)
-	template< typename InC, typename OutC > void copy( const InC& source, OutC& target ) {
+	template< typename InC, typename OutC > void copy_container( const InC& source, OutC& target ) {
 		xo_assert( std::size( source ) <= std::size( target ) );
 		copy( std::begin( source ), std::end( source ), std::begin( target ) );
 	}
