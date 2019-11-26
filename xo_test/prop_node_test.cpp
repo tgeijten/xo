@@ -45,7 +45,7 @@ namespace xo
 
 	XO_TEST_CASE( xo_prop_node_test )
 	{
-		const prop_node literal_pn( "a=appel b=123" );
+		const prop_node literal_pn( { { "a", "appel" }, { "b", "123" } } );
 		XO_CHECK( literal_pn.get< string >( "a" ) == "appel" );
 		XO_CHECK( literal_pn.get< int >( "b" ) == 123 );
 
