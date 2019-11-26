@@ -1,5 +1,3 @@
-#pragma once
-
 #include "xo/system/system_tools.h"
 #include "xo/system/log.h"
 #include "xo/system/profiler_config.h"

@@ -7,6 +7,7 @@
 #include "xo/container/prop_node.h"
 #include "xo/container/container_tools.h"
 #include "xo/system/log.h"
+#include <algorithm>
 
 namespace xo
 {

@@ -3,6 +3,7 @@
 #include "xo/geometry/vec3_type.h"
 #include "xo/geometry/angle_type.h"
 #include "xo/string/string_cast.h"
+#include <cmath>
 
 namespace xo
 {

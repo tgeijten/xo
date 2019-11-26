@@ -1,4 +1,3 @@
-#pragma once
 #include "xo/xo_types.h"
 #include "xo/string/string_tools.h"
 #include "xo/system/test_case.h"

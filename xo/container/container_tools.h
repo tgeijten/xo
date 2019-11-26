@@ -55,7 +55,7 @@ namespace xo
 	/// copy elements of one container to another, explicitly casting to target value type (no range checking)
 	template< typename InIt, typename OutIt > OutIt copy_cast( InIt ib, InIt ie, OutIt ob ) {
 		for ( ; ib != ie; ++ib, ++ob )
-			*ob = static_cast<std::iterator_traits<OutIt>::value_type>( *ib );
+			*ob = static_cast<typename std::iterator_traits<OutIt>::value_type>( *ib );
 		return ob;
 	}
 

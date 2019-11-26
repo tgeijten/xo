@@ -1,5 +1,3 @@
-#pragma once
-
 #include <map>
 #include "xo/xo_types.h"
 #include "xo/container/flat_map.h"

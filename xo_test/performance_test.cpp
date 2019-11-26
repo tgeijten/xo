@@ -1,5 +1,3 @@
-#pragma once
-
 #include <cmath>
 #include "xo/time/stopwatch.h"
 #include "xo/numerical/functions.h"

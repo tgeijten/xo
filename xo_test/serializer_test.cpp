@@ -1,4 +1,3 @@
-#pragma once
 #include "xo/container/prop_node.h"
 #include "xo/geometry/vec3.h"
 #include "xo/serialization/serialize.h"
