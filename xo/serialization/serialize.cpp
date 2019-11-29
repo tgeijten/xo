@@ -9,16 +9,13 @@
 namespace xo
 {
 
-	XO_API factory< prop_node_serializer >& get_serializer_factory()
+	factory< prop_node_serializer >& get_serializer_factory()
 	{
-		static factory< prop_node_serializer > f;
-		if ( f.empty() )
-		{
-			f.register_type< prop_node_serializer_xml >( "xml" );
-			f.register_type< prop_node_serializer_ini >( "ini" );
-			f.register_type< prop_node_serializer_zml >( "zml" );
-			f.register_type< prop_node_serializer_zml >( "zson" );
-		}
+		static factory<prop_node_serializer> f = factory<prop_node_serializer>()
+			.register_type< prop_node_serializer_xml >( "xml" )
+			.register_type< prop_node_serializer_ini >( "ini" )
+			.register_type< prop_node_serializer_zml >( "zml" );
+
 		return f;
 	}
 

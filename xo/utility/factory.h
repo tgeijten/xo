@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <cstdlib>
 
 #include "xo/system/assert.h"
 #include "xo/system/system_tools.h"
@@ -63,7 +64,13 @@ namespace xo
 	};
 
 	/// generic access to specific factory (must be defined to allow factory_registrant without constructor arguments)
-	template< typename F > F& get_factory() { static_assert( false, "get_factory() was not defined for this type" ); }
+	template< typename F > F& get_factory() {
+#ifdef XO_COMP_MSVC
+		static_assert( false, "get_factory() was not defined for this type" );
+#else
+		abort();
+#endif
+	}
 
 	/// helper class to register types using (static) variables
 	template< typename F, typename T >
