@@ -62,21 +62,28 @@ namespace xo
 		container_t func_map_;
 	};
 
-	template< typename T, typename F >
+	/// generic access to specific factory (must be defined to allow factory_registrant without constructor arguments)
+	template< typename F > F& get_factory() { static_assert( false, "get_factory() was not defined for this type" ); }
+
+	/// helper class to register types using (static) variables
+	template< typename F, typename T >
 	class factory_registrant {
 	public:
-		factory_registrant( F& f, const string& name = get_clean_type_name<T>() ) : factory_( f ), name_( name ) { factory_.template register_type<T>( name_ ); }
+		factory_registrant( const string& name = get_clean_type_name<T>() ) : factory_( get_factory<F>() ), name_( name )
+		{ factory_.template register_type<T>( name_ ); }
+
+		factory_registrant( F& f, const string& name = get_clean_type_name<T>() ) : factory_( f ), name_( name )
+		{ factory_.template register_type<T>( name_ ); }
+
 		~factory_registrant() { factory_.unregister_type( name_ ); }
 	private:
 		F& factory_;
 		string name_;
 	};
 
-	template< typename T, typename F > factory_registrant< T, F > make_factory_registrant( F& f ) {
-		return factory_registrant< T, F >( f, get_clean_type_name<T>() );
-	}
-
-	template< typename T, typename F > factory_registrant< T, F > make_factory_registrant( F& f, const string& type_id ) {
-		return factory_registrant< T, F >( f, type_id );
+	/// helper function for making a factory registrant that deduces the factory type from the argument
+	template< typename T, typename F >
+	factory_registrant<F, T> make_factory_registrant( F& f, const string& type_id = get_clean_type_name<T>() ) {
+		return factory_registrant<F, T>( f, type_id );
 	}
 }
