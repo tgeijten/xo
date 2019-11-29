@@ -8,7 +8,6 @@
 
 namespace xo
 {
-
 	factory< prop_node_serializer >& get_serializer_factory()
 	{
 		static factory<prop_node_serializer> f = factory<prop_node_serializer>()
@@ -76,7 +75,7 @@ namespace xo
 
 	prop_node load_file_with_include( const path& filename, const string& include_directive, int level );
 
-	void resolve_include_files( prop_node &pn, const path &filename, const string& include_directive, int level )
+	void resolve_include_files( prop_node& pn, const path& filename, const string& include_directive, int level )
 	{
 		for ( auto iter = pn.begin(); iter != pn.end(); )
 		{
