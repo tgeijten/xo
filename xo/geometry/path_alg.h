@@ -23,7 +23,7 @@ namespace xo
 		xo_assert( s >= 2 );
 
 		// check if this matches the first existing point
-		if ( less_or_equal( insert_len, T( 0 ) ) )
+		if ( less_than_or_equal( insert_len, T( 0 ) ) )
 			return 0;
 			
 		for ( index_t idx = 1; idx < s; ++idx )
