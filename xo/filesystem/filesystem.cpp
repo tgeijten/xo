@@ -148,7 +148,7 @@ namespace xo
 #endif
 	}
 
-	void current_find_file_path ( const path& folder )
+	void current_find_file_path( const path& folder )
 	{
 		g_current_find_file_folder = folder;
 	}
@@ -164,7 +164,7 @@ namespace xo
 		{
 			if ( f.is_absolute() && file_exists( f ) )
 				return f;
-			else if ( auto full_path = g_current_find_file_folder / f; file_exists( full_path ) )
+			else if ( auto full_path = current_find_file_path() / f; file_exists( full_path ) )
 				return full_path;
 		}
 		xo_error( "Could not find any of the following files: " + container_to_str( find_paths ) );
@@ -176,7 +176,7 @@ namespace xo
 		{
 			if ( f.is_absolute() && file_exists( f ) )
 				return f;
-			else if ( auto full_path = g_current_find_file_folder / f; file_exists( full_path ) )
+			else if ( auto full_path = current_find_file_path() / f; file_exists( full_path ) )
 				return full_path;
 		}
 		return optional< path >();
