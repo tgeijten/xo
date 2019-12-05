@@ -61,11 +61,14 @@ namespace xo
 	{ return v1 + t * ( v2 - v1 ); }
 
 	/// clamp a value so that it is between min and max
-	template< typename T > T& clamp( T& v, const T& min, const T& max )
-	{ if ( v < min ) v = min; else if ( v > max ) v = max; return v; } // #todo: use efficient instructions
+	template< typename T > T& clamp( T& v, const T& lower, const T& upper )
+	// { return v = std::max( std::min( v, upper ), lower ); } // seems slower, despite https://godbolt.org/z/dZ2nXJ 
+	{ if ( v < lower ) v = lower; else if ( v > upper ) v = upper; return v; }
 
 	/// return clamped value that is between min and max
-	template< typename T > T clamped( T v, const T& min, const T& max ) { return clamp( v, min, max ); }
+	template< typename T > T clamped( T v, const T& lower, const T& upper )
+	// { return std::max( std::min( v, upper ), lower ); } // seems slower, despite https://godbolt.org/z/dZ2nXJ 
+	{ return clamp( v, lower, upper ); }
 
 	/// limit transform function
 	template< typename T > T limit_transfer( T x, T limit ) { return limit - limit * limit / ( x + limit ); }
