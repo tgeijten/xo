@@ -4,6 +4,7 @@
 
 #include <memory>
 #include <vector>
+#include <string>
 
 namespace xo
 {
@@ -19,5 +20,17 @@ namespace xo
 		r.reserve( o.size() );
 		for ( auto& e : o ) r.push_back( clone( e ) );
 		return r;
+	}
+
+	template< typename T >
+	T& dereference_or_throw( T* v, const std::string& message ) {
+		xo_error_if( !v, message );
+		return *v;
+	}
+
+	template< typename T >
+	const T& dereference_or_throw( const T* v, const std::string& message ) {
+		xo_error_if( !v, message );
+		return *v;
 	}
 }
