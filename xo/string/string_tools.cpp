@@ -28,17 +28,21 @@ namespace xo
 
 	string left_str( const string& str, int n )
 	{
-		if ( n >= 0 ) return str.substr( 0, size_t( n ) ); else return str.substr( 0, size_t( max( 0, int( str.size() ) + n ) ) );
+		if ( n >= 0 )
+			return str.substr( 0, size_t( n ) );
+		else return str.substr( 0, size_t( max( 0, int( str.size() ) + n ) ) );
 	}
 
-	string mid_str( const string& str, index_t pos, size_t n /*= string::npos */ )
+	string mid_str( const string& str, index_t pos, size_t n )
 	{
 		return str.substr( pos, n );
 	}
 
 	string right_str( const string& str, int n )
 	{
-		if ( n >= 0 ) return str.substr( str.size() - n, string::npos ); else return str.substr( size_t( -n ), string::npos );
+		if ( n >= 0 )
+			return str.substr( str.size() - n, string::npos );
+		else return str.substr( size_t( -n ), string::npos );
 	}
 
 	index_t in_str( const string& str, const string& substr, index_t p /*= 0 */ )
