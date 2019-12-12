@@ -8,6 +8,7 @@
 #include "xo/utility/pointer_types.h"
 #include "xo/string/string_type.h"
 #include "xo/container/flat_map.h"
+#include "xo/container/prop_node.h"
 
 #define XO_FACTORY_REGISTRANT( _factory_, _type_ ) \
 	auto _type_##_registrant = ::xo::make_factory_registrant< _type_ >( _factory_ )
@@ -70,6 +71,16 @@ namespace xo
 #else
 		abort();
 #endif
+	}
+
+	/// helper function to a factory 
+	template< typename F >
+	prop_node::const_iterator find_factory_prop_node( const F& f, const prop_node& parent_pn ) {
+		return xo::find_if( parent_pn, [&]( const auto& kvp ) { return f.has_type( kvp.first ); } );
+	}
+	template< typename F >
+	prop_node::const_iterator find_factory_prop_node( const prop_node& parent_pn ) {
+		return find_factory_prop_node( get_factory<F>(), parent_pn );
 	}
 
 	/// helper class to register types using (static) variables
