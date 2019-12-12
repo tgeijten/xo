@@ -40,7 +40,7 @@ namespace xo
 		storage_t internal_;
 	};
 
-	template< typename T > time time_from_seconds( T s ) { return time( time::storage_t( s * T( 1e9 ) ) ); }
+	template< typename T > time time_from_seconds( T s ) { return time( time::storage_t( ( s + 5e-10 ) * T( 1e9 ) ) ); }
 
 	inline namespace literals {
 		constexpr time operator ""_ns( unsigned long long ns ) { return time( time::storage_t( ns ) ); }
