@@ -281,7 +281,7 @@ namespace xo
 	template< typename T >
 	T prop_node::get( const key_t& key, const T& def ) const {
 		if ( auto c = try_get_child( key ) )
-			return c->get< T >();
+			return c->get<T>();
 		else return def;
 	}
 
