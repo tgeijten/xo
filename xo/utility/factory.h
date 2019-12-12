@@ -9,6 +9,7 @@
 #include "xo/string/string_type.h"
 #include "xo/container/flat_map.h"
 #include "xo/container/prop_node.h"
+#include "xo/container/container_tools.h"
 
 #define XO_FACTORY_REGISTRANT( _factory_, _type_ ) \
 	auto _type_##_registrant = ::xo::make_factory_registrant< _type_ >( _factory_ )
