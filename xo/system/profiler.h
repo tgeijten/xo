@@ -28,14 +28,16 @@ namespace xo
 		struct section
 		{
 			section( const char* n, size_t i, size_t pi ) :
-				name( n ), id( i ), parent_id( pi ), total_time( 0 ), overhead( 0 ), count( 0 ) {}
+				name( n ), id( i ), parent_id( pi ), total_time( 0 ), count( 0 ) {}
 			const char* name;
 			size_t id;
 			size_t parent_id;
 			time total_time;
-			time overhead;
-			size_t count;
 			time epoch;
+			size_t count;
+#ifdef XO_PROFILER_MEASURE_OVERHEAD
+			time overhead = 0;
+#endif
 		};
 
 		time now() const { return timer_(); }
@@ -63,10 +65,12 @@ namespace xo
 
 	struct scope_profiler
 	{
-		scope_profiler( const char* name, profiler& p = profiler::instance() ) : profiler_( p )
-		{ if ( profiler_.enabled() ) profiler_.start_section( name ); }
-		~scope_profiler()
-		{ if ( profiler_.enabled() ) profiler_.end_section(); }
+		scope_profiler( const char* name, profiler& p = profiler::instance() ) : profiler_( p )	{
+			if ( profiler_.enabled() ) profiler_.start_section( name );
+		}
+		~scope_profiler() {
+			if ( profiler_.enabled() ) profiler_.end_section();
+		}
 		profiler& profiler_;
 	};
 }

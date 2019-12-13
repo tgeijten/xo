@@ -12,6 +12,7 @@ namespace xo
 	profiler::profiler( bool auto_start ) :
 		current_section_( nullptr ),
 		enabled_( false ),
+		overhead_estimate( time_from_seconds( 1000 ) ),
 		instance_thread_()
 	{
 		if ( auto_start )
@@ -47,7 +48,11 @@ namespace xo
 
 		// update root time
 		root()->total_time = now() - root()->epoch;
+		root()->count++;
+
+#ifdef XO_PROFILER_MEASURE_OVERHEAD
 		root()->overhead += overhead_estimate;
+#endif
 		enabled_ = false;
 		current_section_ = nullptr;
 	}
@@ -78,8 +83,9 @@ namespace xo
 		prev_section->total_time += t2 - prev_section->epoch;
 		prev_section->overhead += ( t2 - t1 ) + overhead_estimate;
 #else
-		prev_section->overhead += overhead_estimate;
+		//prev_section->overhead += overhead_estimate;
 		prev_section->total_time += now() - prev_section->epoch;
+		prev_section->count++;
 #endif
 	}
 
@@ -136,7 +142,7 @@ namespace xo
 		double over = total_overhead( s ).milliseconds();
 		double rel_over = 100.0 * over / total;
 
-		pn[ s->name ] = stringf( "%6.0fms %6.2f%% (%5.2f%% exclusive ~%.0f%% overhead)", total, rel_total, rel_ex, clamped( rel_over, 0.0, 100.0 ) );
+		pn[ s->name ] = stringf( "%6.0fms %6.2f%% (%5.2f%%) %6d ~%2.0f%% OH", total, rel_total, rel_ex, s->count, clamped( rel_over, 0.0, 99.0 ) );
 
 		if ( rel_total >= minimum_expand_percentage )
 		{
@@ -158,7 +164,11 @@ namespace xo
 
 	time profiler::total_overhead( section* s )
 	{
+#ifdef XO_PROFILER_MEASURE_OVERHEAD
 		auto t = s->overhead;
+#else
+		auto t = overhead_estimate * s->count;
+#endif
 		for ( auto& cs : sections_ )
 			if ( cs.parent_id == s->id )
 				t += total_overhead( &cs );
@@ -177,16 +187,17 @@ namespace xo
 #else
 		sections_.clear();
 		current_section_ = add_section( "init_overhead_estimate", no_index );
+		start_section( "test_section1" );
+		end_section();
 		int samples = 10000;
 		timer t;
-		auto t1 = t();
 		for ( int i = 0; i < samples; ++i )
 		{
 			start_section( "test_section1" );
 			end_section();
 		}
-		auto t2 = t();
-		overhead_estimate = ( t2 - t1 ) / samples;
+		auto est = t();
+		overhead_estimate = std::min( overhead_estimate, est / samples );
 #endif
 	}
 }
