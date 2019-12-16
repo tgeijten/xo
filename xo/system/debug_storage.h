@@ -1,12 +1,12 @@
 #pragma once
 
 #include "xo/xo_types.h"
+#include "xo/system/assert.h"
 #include "xo/filesystem/path.h"
 #include "xo/filesystem/filesystem.h"
 #include "xo/string/string_type.h"
 #include "xo/numerical/compare.h"
 #include <fstream>
-#include <iostream>
 #include <iomanip>
 
 namespace xo
