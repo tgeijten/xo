@@ -9,6 +9,7 @@
 #include "xo/container/vector_type.h"
 #include "xo/container/pair_type.h"
 #include "xo/utility/optional.h"
+#include "xo/utility/type_traits.h"
 #include "xo/container/view_if.h"
 
 #include <initializer_list>
@@ -261,7 +262,7 @@ namespace xo
 
 	template< typename T >
 	T prop_node::get() const {
-		T value;
+		remove_const<T>::type value;
 		access();
 		if ( from_prop_node( *this, value ) )
 			return value;
