@@ -16,7 +16,7 @@ namespace xo
 
 	template< typename T >
 	void write_function( const path& file, T min, T max, simple_function_t<T> func, T interval = T( 0.01 ) ) {
-		xo::create_directories( file.parent_path() );
+		create_directories( file.parent_path() );
 		std::ofstream of( file.c_str() );
 		xo_error_if( !of.good(), "Could not create " + file.str() );
 		of << std::setprecision( 6 );
