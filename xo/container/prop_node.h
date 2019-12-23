@@ -262,7 +262,7 @@ namespace xo
 
 	template< typename T >
 	T prop_node::get() const {
-		remove_const<T>::type value;
+		typename remove_const<T>::type value;
 		access();
 		if ( from_prop_node( *this, value ) )
 			return value;
