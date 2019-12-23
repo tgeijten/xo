@@ -4,6 +4,7 @@
 #include "xo/string/string_type.h"
 #include "xo/container/vector_type.h"
 #include "xo/container/pair_type.h"
+#include "xo/string/string_cast.h"
 
 #include <initializer_list>
 
@@ -107,7 +108,7 @@ namespace xo
 		for ( auto& element : container ) {
 			if ( !element.empty() ) {
 				if ( !first ) str += delim; else first = false;
-				str += element;
+				str += to_str( element );
 			}
 		}
 		return str;
