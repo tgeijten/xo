@@ -40,8 +40,9 @@ namespace xo
 		using handle_type = handle<T, I>;
 
 		/// iterator through a continuous span of handles
-		struct iterator : public std::iterator< std::forward_iterator_tag, T, T >
+		struct iterator
 		{
+			using iterator_category = std::forward_iterator_tag;
 			using value_type = handle_type;
 			using difference_type = I;
 			using pointer = handle_type *;
