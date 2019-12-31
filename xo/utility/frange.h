@@ -32,7 +32,7 @@ namespace xo
 		};
 
 		iterator begin() const { return iterator( T( 0 ), begin_, end_, steps_ ); }
-		iterator end() const { return iterator( steps_, begin_, end_, steps_ ); }
+		iterator end() const { return iterator( steps_ + 1, begin_, end_, steps_ ); }
 
 		T begin_, end_, steps_;
 	};
