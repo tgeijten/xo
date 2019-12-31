@@ -3,6 +3,7 @@
 #include "xo/xo_types.h"
 #include "xo/system/assert.h"
 #include "xo/container/label_vector.h"
+#include "xo/numerical/math.h"
 
 #include <vector>
 #include <string>
@@ -45,7 +46,7 @@ namespace xo
 
 		/// add a channel with data, resize buffer if needed
 		index_t add_channel( L label, const std::vector< T >& data ) {
-			resize( std::max( frame_size(), std::size( data ) ), channel_size() + 1 );
+			resize( max( frame_size(), std::size( data ) ), channel_size() + 1 );
 			labels_.set( channel_size() - 1, label );
 			auto cidx = channel_size() - 1;
 			for ( index_t fidx = 0; fidx < std::size( data ); ++fidx ) ( *this )( fidx, cidx ) = data[ fidx ];
