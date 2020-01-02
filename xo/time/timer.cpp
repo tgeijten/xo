@@ -2,7 +2,7 @@
 
 #include "xo/system/xo_config.h"
 
-#if XO_USE_WINDOWS_PERFORMANCE_COUNTER
+#if XO_WINDOWS_PERFORMANCE_COUNTER_ENABLED
 #	define NOMINMAX
 #	define WIN32_LEAN_AND_MEAN
 #	include <windows.h>
@@ -13,7 +13,7 @@
 
 namespace xo
 {
-#if XO_USE_WINDOWS_PERFORMANCE_COUNTER
+#if XO_WINDOWS_PERFORMANCE_COUNTER_ENABLED
 	long long query_windows_performance_counter_frequency()
 	{
 		LARGE_INTEGER frequency;

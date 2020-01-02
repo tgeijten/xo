@@ -3,7 +3,7 @@
 #include "xo/system/xo_config.h"
 #include <string>
 
-#if XO_USE_EXCEPTIONS
+#if XO_EXCEPTIONS_ENABLED
 #	include <stdexcept>
 #	define xo_error( message_ ) \
 		throw std::runtime_error( message_ )
@@ -13,7 +13,7 @@
 		{ xo::log::critical( message_ ); exit( -1 ); }
 #endif
 
-#if XO_USE_ASSERT
+#if XO_ASSERT_ENABLED
 #	define xo_assert( expression_ ) \
 		if (!(expression_)) xo_error( "Assertion failure in " + std::string( __FUNCTION__ ) + "(): "#expression_ )
 #	define xo_assert_msg( expression_, message_ ) \
@@ -24,7 +24,7 @@
 #	else // XO_IS_DEBUG_BUILD
 #		define xo_debug_assert( expression_ )
 #	endif
-#else // XO_USE_ASSERT
+#else // XO_ASSERT_ENABLED
 #	define xo_assert( expression_ )
 #	define xo_assert_msg( expression_, message_ )
 #endif

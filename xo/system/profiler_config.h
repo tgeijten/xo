@@ -2,7 +2,7 @@
 
 #include "xo/system/xo_config.h"
 
-#ifdef XO_ENABLE_PROFILER
+#if XO_PROFILER_ENABLED
 #	include "xo/system/profiler.h"
 #	include "xo/container/prop_node.h"
 #	define XO_PROFILE_FUNCTION ::xo::scope_profiler scope_profiler_instance( __FUNCTION__ )

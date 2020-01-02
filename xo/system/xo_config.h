@@ -8,61 +8,76 @@
 #endif
 
 // Exceptions and asserts
-#ifndef XO_USE_EXCEPTIONS
-#	define XO_USE_EXCEPTIONS 1
+#ifndef XO_DISABLE_EXCEPTIONS
+#	define XO_EXCEPTIONS_ENABLED 1
+#else
+#	define XO_EXCEPTIONS_ENABLED 0
 #endif
-#ifndef XO_USE_ASSERT
-#	define XO_USE_ASSERT 1
+
+#ifndef XO_DISABLE_ASSERT
+#	define XO_ASSERT_ENABLED 1
+#else
+#	define XO_ASSERT_ENABLED 1
 #endif
 
 // Log
-#ifndef XO_ENABLE_LOG
-#	define XO_ENABLE_LOG 1
-#endif
-
-#ifndef XO_STATIC_LOG_LEVEL
-#	if XO_ENABLE_LOG
+#ifndef XO_DISABLE_LOG
+#	define XO_LOG_ENABLED 1
+#	if defined( XO_STATIC_LOG_LEVEL_TRACE )
 #		define XO_STATIC_LOG_LEVEL trace_level
+#	elif defined( XO_STATIC_LOG_LEVEL_DEBUG )
+#		define XO_STATIC_LOG_LEVEL debug_level
+#	elif defined( XO_STATIC_LOG_LEVEL_INFO )
+#		define XO_STATIC_LOG_LEVEL info_level
+#	elif defined( XO_STATIC_LOG_LEVEL_WARNING )
+#		define XO_STATIC_LOG_LEVEL warning_level
+#	elif defined( XO_STATIC_LOG_LEVEL_ERROR )
+#		define XO_STATIC_LOG_LEVEL error_level
+#	elif defined( XO_STATIC_LOG_LEVEL_CRITICAL )
+#		define XO_STATIC_LOG_LEVEL critical_level
 #	else
-#		define XO_STATIC_LOG_LEVEL never_log_level
+#		define XO_STATIC_LOG_LEVEL trace_level
 #	endif
+#else
+#	define XO_LOG_ENABLED 0
+#	define XO_STATIC_LOG_LEVEL never_log_level
 #endif
 
 // Profiler
-#ifndef XO_ENABLE_PROFILER 
-#	define XO_ENABLE_PROFILER 1
-#endif
-
-// Timer
-#if defined( _MSC_VER ) && !defined( XO_USE_WINDOWS_PERFORMANCE_COUNTER )
-#	define XO_USE_WINDOWS_PERFORMANCE_COUNTER 1 // use windows performance counter instead of std::chrono (faster)
-#endif
-
-// MSVC warnings
-#if defined( _MSC_VER )
-#	ifndef XO_DISABLE_MSVC_WARNING_4251
-#		define XO_DISABLE_MSVC_WARNING_4251 1 // DLL export warning
-#	endif
-#	ifndef XO_PROMOTE_MSVC_WARNING_5038
-#		define XO_PROMOTE_MSVC_WARNING_5038 1 // Class member initialization order warning
-#	endif
+#ifndef XO_DISABLE_PROFILER
+#	define XO_PROFILER_ENABLED 1
+#else
+#	define XO_PROFILER_ENABLED 0
 #endif
 
 // MSVC settings
 #if defined( _MSC_VER )
 #	define XO_COMP_MSVC
+
+	// dll export
 #	ifdef XO_EXPORTS
 #		define XO_API __declspec(dllexport)
 #	else
 #		define XO_API __declspec(dllimport)
 #	endif
-#	define _CRT_SECURE_NO_WARNINGS
-#	if XO_DISABLE_MSVC_WARNING_4251
-#		pragma warning( disable: 4251 )
+
+	// windows performance counter
+#	ifndef XO_DISABLE_WINDOWS_PERFORMANCE_COUNTER
+#		define XO_WINDOWS_PERFORMANCE_COUNTER_ENABLED 1 // use windows performance counter for timing (faster)
+#	else
+#		define XO_WINDOWS_PERFORMANCE_COUNTER_ENABLED 0 // use std::chono for timing
 #	endif
-#	if XO_PROMOTE_MSVC_WARNING_5038
-#		pragma warning( 3: 5038 )
+
+	// MSVC specific warnings
+#	ifndef XO_ENABLE_MSVC_WARNINGS
+#		pragma warning( disable: 4251 ) // DLL export warning is disabled by default
+#		define _CRT_SECURE_NO_WARNINGS
 #	endif
+
+#	ifndef XO_DISABLE_MSVC_WARNING_5038
+#		pragma warning( 3: 5038 ) // Class member initialization order warning
+#	endif
+
 #else
 #	define XO_API
 #endif
