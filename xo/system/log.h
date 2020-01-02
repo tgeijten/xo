@@ -10,7 +10,6 @@
 #define xo_logvar3( var1_, var2_, var3_ ) xo::log::debug( #var1_"=", var1_, "\t", #var2_"=", var2_, "\t", #var3_"=", var3_ )
 #define xo_logvar4( var1_, var2_, var3_, var4_ ) xo::log::debug( #var1_"=", var1_, "\t", #var2_"=", var2_, "\t", #var3_"=", var3_, "\t", #var4_"=", var4_ )
 
-#define xo_do_periodic( interval_, statement_ ) { static local_count_ = 0; if ( local_count_++ % interval_ == 0 ) { statement_; } }
 #define xo_trace_call( function_ ) xo::log::trace( "--> "#function_ ); function_; xo::log::trace( "<-- "#function_ )
 #define xo_log_if_different( var1_, var2_ ) if ( var1_ != var2_ ) xo::log::debug( #var1_"=", var1_, "\t", #var2_"=", var2_ )
 
