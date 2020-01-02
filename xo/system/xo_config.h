@@ -24,23 +24,23 @@
 #ifndef XO_DISABLE_LOG
 #	define XO_LOG_ENABLED 1
 #	if defined( XO_STATIC_LOG_LEVEL_TRACE )
-#		define XO_STATIC_LOG_LEVEL trace_level
+#		define XO_STATIC_LOG_LEVEL level::trace
 #	elif defined( XO_STATIC_LOG_LEVEL_DEBUG )
-#		define XO_STATIC_LOG_LEVEL debug_level
+#		define XO_STATIC_LOG_LEVEL level::debug
 #	elif defined( XO_STATIC_LOG_LEVEL_INFO )
-#		define XO_STATIC_LOG_LEVEL info_level
+#		define XO_STATIC_LOG_LEVEL level::info
 #	elif defined( XO_STATIC_LOG_LEVEL_WARNING )
-#		define XO_STATIC_LOG_LEVEL warning_level
+#		define XO_STATIC_LOG_LEVEL level::warning
 #	elif defined( XO_STATIC_LOG_LEVEL_ERROR )
-#		define XO_STATIC_LOG_LEVEL error_level
+#		define XO_STATIC_LOG_LEVEL level::error
 #	elif defined( XO_STATIC_LOG_LEVEL_CRITICAL )
-#		define XO_STATIC_LOG_LEVEL critical_level
+#		define XO_STATIC_LOG_LEVEL level::critical
 #	else
-#		define XO_STATIC_LOG_LEVEL trace_level
+#		define XO_STATIC_LOG_LEVEL level::trace
 #	endif
 #else
 #	define XO_LOG_ENABLED 0
-#	define XO_STATIC_LOG_LEVEL never_log_level
+#	define XO_STATIC_LOG_LEVEL level::never
 #endif
 
 // Profiler

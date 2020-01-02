@@ -10,7 +10,7 @@ namespace xo
 {
 	namespace log
 	{
-		level global_log_level = level::never_log_level; // lowest log level of all sinks
+		level global_log_level = level::never; // lowest log level of all sinks
 		xo::vector< sink* > global_sinks;
 
 		void log_string( level l, const string& str )
@@ -63,7 +63,7 @@ namespace xo
 
 		void update_global_log_level()
 		{
-			global_log_level = never_log_level;
+			global_log_level = level::never;
 			for ( auto s : global_sinks )
 				global_log_level = xo::min( global_log_level, s->get_log_level() );
 		}
@@ -85,44 +85,44 @@ namespace xo
 
 		void tracef( const char* format, ... )
 		{
-			if constexpr ( XO_STATIC_LOG_LEVEL <= trace_level ) {
-				va_list va; va_start( va, format ); log_vstring( trace_level, format, va ); va_end( va );
+			if constexpr ( XO_STATIC_LOG_LEVEL <= level::trace ) {
+				va_list va; va_start( va, format ); log_vstring( level::trace, format, va ); va_end( va );
 			}
 		}
 
 		void debugf( const char* format, ... )
 		{
-			if constexpr ( XO_STATIC_LOG_LEVEL <= debug_level ) {
-				va_list va; va_start( va, format ); log_vstring( debug_level, format, va ); va_end( va );
+			if constexpr ( XO_STATIC_LOG_LEVEL <= level::debug ) {
+				va_list va; va_start( va, format ); log_vstring( level::debug, format, va ); va_end( va );
 			}
 		}
 
 		void infof( const char* format, ... )
 		{
-			if constexpr ( XO_STATIC_LOG_LEVEL <= info_level ) {
-				va_list va; va_start( va, format ); log_vstring( info_level, format, va ); va_end( va );
+			if constexpr ( XO_STATIC_LOG_LEVEL <= level::info ) {
+				va_list va; va_start( va, format ); log_vstring( level::info, format, va ); va_end( va );
 			}
 		}
 
 		void warningf( const char* format, ... )
 		{
-			if constexpr ( XO_STATIC_LOG_LEVEL <= warning_level ) {
-				va_list va; va_start( va, format ); log_vstring( warning_level, format, va ); va_end( va );
+			if constexpr ( XO_STATIC_LOG_LEVEL <= level::warning ) {
+				va_list va; va_start( va, format ); log_vstring( level::warning, format, va ); va_end( va );
 			}
 		}
 
 		void errorf( const char* format, ... )
 		{
-			if constexpr ( XO_STATIC_LOG_LEVEL <= error_level ) {
-				va_list va; va_start( va, format ); log_vstring( error_level, format, va ); va_end( va );
+			if constexpr ( XO_STATIC_LOG_LEVEL <= level::error ) {
+				va_list va; va_start( va, format ); log_vstring( level::error, format, va ); va_end( va );
 				flush();
 			}
 		}
 
 		void criticalf( const char* format, ... )
 		{
-			if constexpr ( XO_STATIC_LOG_LEVEL <= critical_level ) {
-				va_list va; va_start( va, format ); log_vstring( critical_level, format, va ); va_end( va );
+			if constexpr ( XO_STATIC_LOG_LEVEL <= level::critical ) {
+				va_list va; va_start( va, format ); log_vstring( level::critical, format, va ); va_end( va );
 				flush();
 			}
 		}

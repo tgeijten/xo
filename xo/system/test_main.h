@@ -12,7 +12,7 @@
 
 int main( int argc, char* argv[] )
 {
-	xo::log::console_sink sink( xo::log::info_level );
+	xo::log::console_sink sink( xo::log::level::info );
 	xo::log::add_sink( &sink );
 	return xo::test::run_tests();
 }

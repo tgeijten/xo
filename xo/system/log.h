@@ -32,7 +32,7 @@ namespace xo
 		XO_API void log_string( level l, const string& s );
 		XO_API void log_vstring( level l, const char* format, va_list list );
 
-		// flush all sinks, happens automatically if level >= error_level
+		// flush all sinks, happens automatically if level >= level::error
 		XO_API void flush();
 
 		template< typename T, typename... Args > void log_string( level l, std::string& s, T v, const Args&... args ) {
@@ -51,40 +51,40 @@ namespace xo
 		void messagef( level l, const char* format, ... );
 
 		template< typename... Args > void trace( const Args&... args ) {
-			if constexpr ( XO_STATIC_LOG_LEVEL <= trace_level )
-				message( trace_level, args... );
+			if constexpr ( XO_STATIC_LOG_LEVEL <= level::trace )
+				message( level::trace, args... );
 		}
 		XO_API void tracef( const char* format, ... );
 
 		template< typename... Args > void debug( const Args&... args ) {
-			if constexpr ( XO_STATIC_LOG_LEVEL <= debug_level )
-				message( debug_level, args... );
+			if constexpr ( XO_STATIC_LOG_LEVEL <= level::debug )
+				message( level::debug, args... );
 		}
 		XO_API void debugf( const char* format, ... );
 
 		template< typename... Args > void info( const Args&... args ) {
-			if constexpr ( XO_STATIC_LOG_LEVEL <= info_level )
-				message( info_level, args... );
+			if constexpr ( XO_STATIC_LOG_LEVEL <= level::info )
+				message( level::info, args... );
 		}
 		XO_API void infof( const char* format, ... );
 
 		template< typename... Args > void warning( const Args&... args ) {
-			if constexpr ( XO_STATIC_LOG_LEVEL <= warning_level )
-				message( warning_level, args... );
+			if constexpr ( XO_STATIC_LOG_LEVEL <= level::warning )
+				message( level::warning, args... );
 		}
 		XO_API void warningf( const char* format, ... );
 
 		template< typename... Args > void error( const Args&... args ) {
-			if constexpr ( XO_STATIC_LOG_LEVEL <= error_level ) {
-				message( error_level, args... );
+			if constexpr ( XO_STATIC_LOG_LEVEL <= level::error ) {
+				message( level::error, args... );
 				flush();
 			}
 		}
 		XO_API void errorf( const char* format, ... );
 
 		template< typename... Args > void critical( const Args&... args ) {
-			if constexpr ( XO_STATIC_LOG_LEVEL <= critical_level ) {
-				message( critical_level, args... );
+			if constexpr ( XO_STATIC_LOG_LEVEL <= level::critical ) {
+				message( level::critical, args... );
 				flush();
 			}
 		}

@@ -79,18 +79,18 @@ namespace xo
 			auto bg = info.wAttributes & ( BACKGROUND_RED | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_INTENSITY );
 			switch ( l )
 			{
-			case xo::log::trace_level:
-			case xo::log::debug_level:
+			case xo::log::level::trace:
+			case xo::log::level::debug:
 				SetConsoleTextAttribute( h, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | bg );
 				break;
-			case xo::log::info_level:
+			case xo::log::level::info:
 				SetConsoleTextAttribute( h, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY | bg );
 				break;
-			case xo::log::warning_level:
+			case xo::log::level::warning:
 				SetConsoleTextAttribute( h, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY | bg );
 				break;
-			case xo::log::error_level:
-			case xo::log::critical_level:
+			case xo::log::level::error:
+			case xo::log::level::critical:
 				SetConsoleTextAttribute( h, FOREGROUND_RED | FOREGROUND_INTENSITY | bg );
 				break;
 			}

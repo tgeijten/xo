@@ -12,7 +12,7 @@ namespace xo
 		class XO_API sink
 		{
 		public:
-			sink( level l = info_level );
+			sink( level l = level::info );
 			virtual ~sink();
 			virtual void send_log_message( level l, const string& msg ) = 0;
 			virtual void flush() {}
