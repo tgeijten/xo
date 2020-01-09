@@ -1,6 +1,7 @@
 #include "prop_node_serializer_zml.h"
 
 #include <fstream>
+#include <sstream>
 
 #include "xo/serialization/char_stream.h"
 #include "xo/string/string_tools.h"
@@ -152,11 +153,32 @@ namespace xo
 		bool show_value = !pn.raw_value().empty() || pn.size() == 0;
 		xo_error_if( !show_label && show_value && !inside_array, "Value without label outside array" );
 		if ( show_label )
-			str << try_quoted( label, "{}[]#<>\\" );
+			str << try_quoted( label, "{}[]#<>\\/" );
 		if ( show_label && show_value )
 			str << equals_str;
 		if ( show_value )
-			str << try_quoted( pn.raw_value(), "{}[]#<>\\" );
+			str << try_quoted( pn.raw_value(), "{}[]#<>\\/" );
+	}
+
+	void write_zml_node_one_line( std::ostream& str, const string& label, const prop_node& pn, bool inside_array )
+	{
+		write_zml_kvp( str, label, pn, " = ", inside_array );
+		if ( pn.size() > 0 )
+		{
+			// add space if there's a label
+			if ( !label.empty() )
+				str << ' ';
+
+			// add children, either array or group
+			bool is_array = pn.is_array();
+			str << ( is_array ? "[ " : "{ " );
+			for ( auto it = pn.begin(); it != pn.end(); ++it )
+			{
+				if ( it != pn.begin() ) str << " ";
+				write_zml_node_one_line( str, it->first, it->second, is_array );
+			}
+			str << ( is_array ? " ]" : " }" );
+		}
 	}
 
 	void write_zml_node( std::ostream& str, const string& label, const prop_node& pn, int level, bool inside_array )
@@ -168,32 +190,35 @@ namespace xo
 
 		if ( pn.size() > 0 )
 		{
-			// check if this is an array
-			bool is_array = pn.is_array();
-			auto depth = pn.count_layers();
+			// add space if there's a label
+			if ( !label.empty() )
+				str << ' ';
 
-			if ( depth == 1 && pn.size() <= 3 )
+			bool is_array = pn.is_array();
+
+			// try oneliner
+			const size_t max_oneliner_length = 80;
+			if ( level != 0 && pn.count_layers() <= 2 && pn.count_children() <= 5 )
 			{
-				// single line children
-				if ( level > 0 ) str << ( is_array ? " [ " : " { " );
-				for ( auto it = pn.begin(); it != pn.end(); ++it )
+				std::ostringstream oneliner;
+				write_zml_node_one_line( oneliner, "", pn, is_array );
+				if ( level + label.size() + 1 + oneliner.str().size() <= max_oneliner_length )
 				{
-					if ( it != pn.begin() ) str << " ";
-					write_zml_node( str, it->first, it->second, 0, is_array );
+					str << oneliner.str();
+					return;
 				}
-				if ( level > 0 ) str << ( is_array ? " ]" : " }" );
 			}
-			else
+
+			// normal multiline output
+			if ( level != 0 )
+				str << ( is_array ? "[" : "{" ) << std::endl;
+			for ( auto it = pn.begin(); it != pn.end(); ++it )
 			{
-				// multi-line children
-				if ( level > 0 ) str << ( is_array ? " [" : " {" ) << std::endl;
-				for ( auto it = pn.begin(); it != pn.end(); ++it )
-				{
-					write_zml_node( str, it->first, it->second, level + 1, is_array );
-					str << std::endl;
-				}
-				if ( level > 0 ) str << string( level - 1, '\t' ) << ( is_array ? "]" : "}" );
+				write_zml_node( str, it->first, it->second, level + 1, is_array );
+				str << std::endl;
 			}
+			if ( level != 0 )
+				str << string( level - 1, '\t' ) << ( is_array ? "]" : "}" );
 		}
 	}
 
@@ -203,12 +228,12 @@ namespace xo
 		if ( pn.size() > 0 )
 		{
 			// add children, either array or group
-			bool is_array = find_if( pn, [&]( const prop_node::pair_t& n ) { return !n.first.empty(); } ) == pn.end();
+			bool is_array = pn.is_array();
 			if ( level > 0 ) str << ( is_array ? '[' : '{' );
 			for ( auto it = pn.begin(); it != pn.end(); ++it )
 			{
 				if ( it != pn.begin() ) str << " ";
-				write_zml_node_concise( str, it->first, it->second, level + 1, inside_array );
+				write_zml_node_concise( str, it->first, it->second, level + 1, is_array );
 			}
 			if ( level > 0 ) str << ( is_array ? ']' : '}' );
 		}
