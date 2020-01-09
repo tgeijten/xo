@@ -127,7 +127,8 @@ namespace xo
 		template< typename T > prop_node& set_query( const key_t& query, const T& v, const char delim = '.' );
 
 		/// add a child node with a value
-		template< typename T > prop_node& push_back( const key_t& key, const T& value );
+		template< typename T > prop_node& add_key_value( const key_t& key, const T& value );
+		template< typename T > void add_value( const T& value ) { children.emplace_back( key_t(), to_prop_node( value ) ); }
 
 		/// add a child node
 		prop_node& push_back( const key_t& key, const prop_node& pn );
@@ -337,7 +338,7 @@ namespace xo
 	prop_node& prop_node::set( const key_t& key, const T& v ) {
 		if ( auto c = try_get_child( key ) )
 			return c->set( v );
-		else return push_back( key, v );
+		else return add_key_value( key, v );
 	}
 
 	template< typename T >
@@ -346,7 +347,7 @@ namespace xo
 	}
 
 	template< typename T >
-	prop_node& prop_node::push_back( const key_t& key, const T& value ) {
+	prop_node& prop_node::add_key_value( const key_t& key, const T& value ) {
 		children.emplace_back( key, to_prop_node( value ) );
 		return children.back().second;
 	}

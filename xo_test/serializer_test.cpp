@@ -18,22 +18,22 @@ namespace xo
 		xo::prop_node pn;
 		pn.set( "empty", "" );
 		pn.set( "key with spaces", "value with spaces\nand \"special\" \001 characters" );
-		pn.push_back( "test", 1.23f );
-		pn.push_back( "duplicate", 1 );
-		pn.push_back( "duplicate", 2 );
+		pn.add_key_value( "test", 1.23f );
+		pn.add_key_value( "duplicate", 1 );
+		pn.add_key_value( "duplicate", 2 );
 
 		std::vector< string > vec;
 		for ( int i = 1; i <= 3; ++i ) vec.push_back( stringf( "name%d", i ) );
-		pn.push_back( "vec_test", vec );
+		pn.add_key_value( "vec_test", vec );
 
 		std::vector< vec3f > vec2;
 		for ( int i = 1; i <= 3; ++i ) vec2.push_back( vec3f( vec3d( i, i * 1.1, i * 1.11 ) ) );
-		pn.push_back( "vec2_test", vec2 );
+		pn.add_key_value( "vec2_test", vec2 );
 
 		enumclass e1 = enumclass::value3;
 		normalenum e2 = value2;
-		pn.push_back( "e1", e1 );
-		pn.push_back( "e2", e2 );
+		pn.add_key_value( "e1", e1 );
+		pn.add_key_value( "e2", e2 );
 
 		prop_node root;
 		root.push_back( "root", pn );

@@ -29,8 +29,8 @@ namespace xo
 
 		prop_node pn;
 		for ( auto& m : measures_ )
-			pn.push_back( m.first, m.second );
-		pn.push_back( "overhead", internal_measure_ );
+			pn.add_key_value( m.first, m.second );
+		pn.add_key_value( "overhead", internal_measure_ );
 
 		set_to_str_precision( old_precision );
 

@@ -55,22 +55,22 @@ namespace xo
 		xo::prop_node pn;
 		pn.set( "empty", "" );
 		pn.set( "key with spaces", "value with spaces\nand \"special\" \001 characters" );
-		pn.push_back( "test", 1.23f );
+		pn.add_key_value( "test", 1.23f );
 		XO_CHECK( pn.get< float >( "test" ) == 1.23f );
 
-		pn.push_back( "duplicate", 1 );
-		pn.push_back( "duplicate", 2 );
+		pn.add_key_value( "duplicate", 1 );
+		pn.add_key_value( "duplicate", 2 );
 
 		std::vector< custom_struct > vec;
 		for ( int i = 1; i <= 3; ++i ) vec.push_back( custom_struct{ stringf( "name%d", i ), i * 1.5 } );
-		pn.push_back( "vec_test", vec );
+		pn.add_key_value( "vec_test", vec );
 
 		std::vector< vec3f > vec2;
 		for ( int i = 1; i <= 3; ++i ) vec2.push_back( vec3f( i * 1.0f, i * 1.1f, i * 1.11f ) );
-		pn.push_back( "vec2_test", vec2 );
+		pn.add_key_value( "vec2_test", vec2 );
 
-		pn.push_back( "e1", e1 );
-		pn.push_back( "e2", e2 );
+		pn.add_key_value( "e1", e1 );
+		pn.add_key_value( "e2", e2 );
 
 		auto vec1b = pn.get< std::vector< custom_struct > >( "vec_test" );
 		auto vec2b = pn.get< std::vector< vec3f > >( "vec2_test" );
@@ -82,14 +82,14 @@ namespace xo
 		p2.set( "test", pn );
 		XO_CHECK( p2.get_child( "test" ) == pn );
 
-		pn.push_back( "duplicate", 3 );
+		pn.add_key_value( "duplicate", 3 );
 
 		// test delimiters
 		pn.set_query( "this.is.a.subfolder", 1.5 );
 		XO_CHECK( pn[ "this" ][ "is" ][ "a" ][ "subfolder" ].get< double >() == 1.5 );
 		//XO_CHECK( pn.get_delimited< double >( "this.is.a.subfolder" ) == 1.5 );
 
-		pn.push_back( "duplicate", 4 );
+		pn.add_key_value( "duplicate", 4 );
 
 		int count_s = 0;
 		for ( auto& selection : pn.select( "duplicate" ) )
