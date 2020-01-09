@@ -150,10 +150,10 @@ namespace xo
 
 	/// convert to prop_node
 	template< typename T > prop_node to_prop_node( const vec3_<T>& v ) {
-		prop_node pn; // sets vec3 as array: [ 1 2 3 ]
-		pn.add_value( v.x );
-		pn.add_value( v.y );
-		pn.add_value( v.z );
+		prop_node pn;
+		pn.set( "x", v.x );
+		pn.set( "y", v.y );
+		pn.set( "z", v.z );
 		return pn;
 	}
 }
