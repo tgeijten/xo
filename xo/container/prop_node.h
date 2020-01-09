@@ -126,8 +126,10 @@ namespace xo
 		/// set the value of a child node, accessing children through delimiter character
 		template< typename T > prop_node& set_query( const key_t& query, const T& v, const char delim = '.' );
 
-		/// add a node with a value
+		/// add a child node with a value
 		template< typename T > prop_node& push_back( const key_t& key, const T& value );
+
+		/// add a child node
 		prop_node& push_back( const key_t& key, const prop_node& pn );
 		prop_node& push_back( const key_t& key, prop_node&& pn );
 		prop_node& push_back( const key_t& key );
