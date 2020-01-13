@@ -6,6 +6,7 @@
 #include "xo/numerical/math.h"
 #include "xo/container/prop_node.h"
 #include "xo/string/string_tools.h"
+#include "xo/container/prop_node_tools.h"
 
 namespace xo
 {
@@ -122,35 +123,50 @@ namespace xo
 		return children;
 	}
 
-	prop_node profiler::report( double minimum_expand_percentage )
+	prop_node profiler::report( double minimum_expand_percentage, bool add_log_level_tag )
 	{
 		if ( enabled() )
 			stop();
 
 		prop_node pn;
-		report_section( root(), pn, minimum_expand_percentage );
+		report_section( root(), pn, minimum_expand_percentage, add_log_level_tag );
 		return pn;
 	}
 
-	void profiler::report_section( section* s, prop_node& pn, double minimum_expand_percentage )
+	void profiler::report_section( section* s, prop_node& pn, double minimum_expand_percentage, bool add_log_level_tag )
 	{
 		double root_total = root()->total_time.milliseconds();
-		double total = s->total_time.milliseconds();
-		double rel_total = 100.0 * total / root_total;
-		double ex = exclusive_time( s ).milliseconds();
-		double rel_ex = 100.0 * ex / root_total;
+		double total_ms = s->total_time.milliseconds();
+		double total_perc = 100.0 * total_ms / root_total;
+		double excl_ms = exclusive_time( s ).milliseconds();
+		double excl_perc = 100.0 * excl_ms / root_total;
+		double excl_avg_ns = min( 9999.0, excl_ms / s->count * 1e6 ); // nanoseconds
 		double over = total_overhead( s ).milliseconds();
-		double rel_over = 100.0 * over / total;
+		double over_perc = 100.0 * over / total_ms;
 
-		pn[ s->name ] = stringf( "%6.0fms %6.2f%% (%5.2f%%) %6d ~%2.0f%% OH", total, rel_total, rel_ex, s->count, clamped( rel_over, 0.0, 99.0 ) );
+		string key;
+		if ( add_log_level_tag )
+		{
+			if ( excl_perc < 1 ) key += "@2";
+			else if ( excl_perc < 5 ) key += "@3";
+			else if ( excl_perc < 15 ) key += "@4";
+			else key += "@5";
+		}
 
-		if ( rel_total >= minimum_expand_percentage )
+		auto value = stringf( "%6.0fms %6.2f%% (%5.2f%%) %6d %4.0fns ~%2.0f%% OH", total_ms, total_perc, excl_perc, s->count, excl_avg_ns, clamped( over_perc, 0.0, 99.0 ) );
+		auto& child_pn = pn.add_key_value( key + s->name, value );
+		if ( total_perc >= minimum_expand_percentage )
 		{
 			auto children = get_children( s->id );
 			std::sort( children.begin(), children.end(), [&]( section* s1, section* s2 ) { return s1->total_time > s2->total_time; } );
 			for ( auto& c : children )
-				report_section( c, pn[ s->name ], minimum_expand_percentage );
+				report_section( c, child_pn, minimum_expand_percentage, add_log_level_tag );
 		}
+	}
+
+	void profiler::log_results( double minimum_expand_percentage )
+	{
+		log_prop_node( report( minimum_expand_percentage, true ) );
 	}
 
 	time profiler::exclusive_time( section* s )

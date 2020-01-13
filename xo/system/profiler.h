@@ -16,8 +16,8 @@ namespace xo
 
 		void start( const char* label = "TOTAL" );
 		void stop();
-		prop_node report( double minimum_expand_percentage = 0.5 );
-
+		prop_node report( double minimum_expand_percentage = 0.5, bool add_log_level_tag = false );
+		void log_results( double minimum_expand_percentage = 0.5 );
 		bool enabled() const { return enabled_; }
 
 		static profiler& instance();
@@ -44,7 +44,7 @@ namespace xo
 		void init_overhead_estimate();
 		section* start_section( const char* name );
 		void end_section();
-		void report_section( section* s, prop_node& pn, double minimum_expand_percentage );
+		void report_section( section* s, prop_node& pn, double minimum_expand_percentage, bool add_log_level_tag );
 		time exclusive_time( section* s );
 		time total_overhead( section* s );
 		section* root() { return &sections_.front(); }
