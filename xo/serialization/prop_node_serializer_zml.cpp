@@ -91,6 +91,8 @@ namespace xo
 					else
 					{
 						// the previous item has both a value and children
+						if ( parent.size() == 0 )
+							return zml_error( str, ec, "'{' or '[' has no matching '}' or ']'" );
 						next_parent = &parent.back().second;
 					}
 				}
