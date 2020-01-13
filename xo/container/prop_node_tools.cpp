@@ -1,8 +1,46 @@
 #include "prop_node_tools.h"
 #include "xo/system/log.h"
+#include "xo/numerical/math.h"
+#include <sstream>
 
 namespace xo
 {
+	size_t prop_node_align_width( const prop_node& pn, const size_t indent, const size_t depth )
+	{
+		size_t width = 0;
+		for ( auto& child : pn )
+		{
+			width = max( width, depth * indent + child.first.size() );
+			width = max( width, prop_node_align_width( child.second, indent, depth + 1 ) );
+		}
+		return width;
+	}
+
+	void log_prop_node( const prop_node& pn, const size_t indent, const size_t depth, size_t align )
+	{
+		if ( align == 0 )
+			align = prop_node_align_width( pn, 2, depth );
+
+		for ( const auto& [key, value] : pn )
+		{
+			std::stringstream str;
+			log::level l = log::level::info;
+			str << string( depth * 2, ' ' );
+			if ( str_begins_with( key, '@' ) && key.size() >= 2 )
+			{
+				str << mid_str( key, 2 );
+				l = static_cast<log::level>( int( key[ 1 ] - '0' ) );
+
+			}
+			else str << key;
+
+			if ( value.has_value() || value.size() == 0 )
+				str << string( align - str.str().size(), ' ' ) << " = " << value.raw_value();
+			log::log_string( l, str.str() );
+			log_prop_node( value, indent, depth + 1, align );
+		}
+	}
+
 	void log_unaccessed( const prop_node& pn, log::level level, size_t depth )
 	{
 		if ( pn.size() > 0 )

@@ -18,6 +18,8 @@
 
 namespace xo
 {
+	XO_API size_t prop_node_align_width( const prop_node& pn, const size_t indent = 2, const size_t depth = 0 );
+	XO_API void log_prop_node( const prop_node& pn, const size_t indent = 2, const size_t depth = 0, const size_t align = 0 );
 	XO_API void log_unaccessed( const prop_node& pn, log::level level = log::level::warning, size_t depth = 0 );
 	XO_API string to_str_unaccessed( const prop_node& pn );
 	XO_API pair< bool, string > find_query_to_node( const prop_node* from, const prop_node* to, const char delim = '.' );

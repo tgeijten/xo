@@ -6,6 +6,7 @@
 
 #include <iomanip>
 #include <sstream>
+#include "prop_node_tools.h"
 
 namespace xo
 {
@@ -251,17 +252,6 @@ namespace xo
 			c.second.set_accessed_recursively( access );
 	}
 
-	size_t get_align_width( const prop_node& pn, size_t depth )
-	{
-		size_t width = 0;
-		for ( auto& child : pn )
-		{
-			width = max( width, depth * 2 + child.first.size() );
-			width = max( width, get_align_width( child.second, depth + 1 ) );
-		}
-		return width;
-	}
-
 	bool prop_node::operator==( const prop_node& other ) const
 	{
 		if ( value != other.value )
@@ -284,16 +274,14 @@ namespace xo
 	std::ostream& to_stream( std::ostream& str, const prop_node& pn, size_t depth, size_t align )
 	{
 		if ( align == 0 )
-			align = get_align_width( pn, depth );
+			align = prop_node_align_width( pn, 2, depth );
 
 		for ( auto& child : pn )
 		{
-			string key_str( depth * 2, ' ' );
-			key_str += child.first;
-
-			str << std::left << std::setw( align ) << key_str;
+			auto key = string( depth * 2, ' ' ) + child.first;
+			str << key;
 			if ( child.second.has_value() || child.second.size() == 0 )
-				str << std::setw( 0 ) << " = " << child.second.raw_value();
+				str << string( align - key.size(), ' ' ) << " = " << child.second.raw_value();
 			str << std::endl;
 
 			to_stream( str, child.second, depth + 1, align );
