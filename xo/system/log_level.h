@@ -6,13 +6,13 @@ namespace xo
 	{
 		enum class level {
 			always = 0,
-			trace,
-			debug,
-			info,
-			warning,
-			error,
-			critical,
-			never
+			trace = 1,
+			debug = 2,
+			info = 3,
+			warning = 4,
+			error = 5,
+			critical = 6,
+			never = 7
 		};
 	}
 }

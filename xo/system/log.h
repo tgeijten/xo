@@ -28,7 +28,7 @@ namespace xo
 		XO_API level get_global_log_level();
 		XO_API bool test_log_level( level l );
 
-		// log independent of level
+		// log with specific level
 		XO_API void log_string( level l, const string& s );
 		XO_API void log_vstring( level l, const char* format, va_list list );
 
