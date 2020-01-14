@@ -75,13 +75,9 @@ namespace xo
 	template< typename C1, typename C2 > C1& append( C1& c1, const C2& c2 )
 	{ c1.insert( c1.end(), c2.begin(), c2.end() ); return c1; }
 
-	template< typename C > index_t find_index( const C& cont, const typename C::value_type& e ) {
-		auto it = find( cont, e );
-		if ( it == std::end( cont ) ) return no_index;
-		else return it - std::begin( cont );
-	}
-
-	template< typename T > index_t index_of( const T& elem, const std::vector< T >& vec ) { return &elem - &vec[ 0 ]; }
+	/// find the index of an element in an array-type container
+	template< typename C > index_t find_index( const C& c, const typename C::value_type& e )
+	{ for ( index_t i = 0; i < std::size( c ); ++i ) if ( c[ i ] == e ) return i; return no_index; }
 
 	/// get index of last element
 	template< typename C > index_t back_index( const C& cont ) { return size( cont ) > 0 ? size( cont ) - 1 : no_index; }
