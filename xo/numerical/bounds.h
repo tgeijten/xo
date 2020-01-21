@@ -31,6 +31,9 @@ namespace xo
 			else return { true, T( 0 ) };
 		}
 
+		void extend( const T& value ) { lower = min( lower, value ); upper = max( upper, value ); }
+		void extend( const bounds& b ) { lower = min( lower, b.lower ); upper = max( upper, b.upper ); }
+
 		T& clamp( T& value ) const { return xo::clamp( value, lower, upper ); }
 		T clamped( T value ) const { return xo::clamped( value, lower, upper ); }
 		T& soft_clamp( T& value, const T& boundary ) const { return xo::soft_clamp( value, lower, upper, boundary ); }
