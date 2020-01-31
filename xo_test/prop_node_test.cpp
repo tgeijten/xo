@@ -10,13 +10,13 @@
 
 namespace xo
 {
-	prop_node init_test = prop_node{
-		{ "test", "value" },
-		{ "vector", {
-			{ "x", "0" },
-			{ "x", "1" },
-			{ "z", "2" } } },
-		{ "another", "value with spaces\nand \"special\" \001 characters" } };
+	auto init_test = prop_node{
+		{ "test", "value"_pn },
+		{ "vector", prop_node{
+			{ "x", "0"_pn },
+			{ "y", "1"_pn },
+			{ "z", "2"_pn } } },
+		{ "another", "value with spaces\nand \"special\" \001 characters"_pn } };
 
 	struct custom_struct
 	{
@@ -44,7 +44,7 @@ namespace xo
 
 	XO_TEST_CASE( xo_prop_node_test )
 	{
-		const prop_node literal_pn( { { "a", "appel" }, { "b", "123" } } );
+		const prop_node literal_pn( { { "a", "appel"_pn }, { "b", "123"_pn } } );
 		XO_CHECK( literal_pn.get< string >( "a" ) == "appel" );
 		XO_CHECK( literal_pn.get< int >( "b" ) == 123 );
 

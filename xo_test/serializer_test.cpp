@@ -36,7 +36,7 @@ namespace xo
 		pn.add_key_value( "e2", e2 );
 
 		prop_node root;
-		root.push_back( "root", pn );
+		root.add_child( "root", pn );
 
 		return root;
 	}

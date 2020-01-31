@@ -120,7 +120,7 @@ namespace xo
 			string arg = argv[ i ];
 			if ( str_begins_with( arg, '-' ) )
 			{
-				value_pn = &pn.push_back( mid_str( arg, 1 ) );
+				value_pn = &pn.add_child( mid_str( arg, 1 ) );
 			}
 			else if ( value_pn )
 			{

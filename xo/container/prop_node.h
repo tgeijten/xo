@@ -30,25 +30,33 @@ namespace xo
 		using const_reverse_iterator = container_t::const_reverse_iterator;
 
 		/// constructors
-		prop_node() : accessed_flag( false ) {}
+		prop_node() : accessed_flag( false ), value() {}
 		prop_node( const prop_node& other ) = default;
 		prop_node( prop_node&& other ) = default;
-		prop_node( const value_t& v ) : accessed_flag( false ), value( v ) {}
-		prop_node( value_t&& v ) : accessed_flag( false ), value( std::move( v ) ) {}
-		prop_node( const char* v ) : accessed_flag( false ), value( v ) {}
-		prop_node( std::initializer_list< pair_t > c ) : accessed_flag( false ), children( c ) {}
+		explicit prop_node( const value_t& v ) : accessed_flag( false ), value( v ) {}
+		explicit prop_node( value_t&& v ) : accessed_flag( false ), value( std::move( v ) ) {}
+		explicit prop_node( const char* v ) : accessed_flag( false ), value( v ) {}
+		explicit prop_node( std::initializer_list< pair_t > c ) : accessed_flag( false ), children( c ) {}
 
 		/// destructor (non-virtual)
 		~prop_node() = default;
 
-		/// assignment operators
+		/// copy assignment
 		prop_node& operator=( const prop_node& other ) = default;
 		prop_node& operator=( prop_node&& other ) = default;
-		template< typename T > prop_node& operator=( const T& v ) { return set( v ); }
+		prop_node& set( prop_node&& pn ) { return operator=( std::move( pn ) ); }
+		prop_node& set( const prop_node& pn ) { return operator=( pn ); }
 
-		/// equality operators
-		bool operator==( const prop_node& other ) const;
-		bool operator!=( const prop_node& other ) const { return !( *this == other ); }
+		/// assignment
+		template< typename T > prop_node& operator=( const T& v ) { return set( v ); }
+		template< typename T > prop_node& set( const T& v );
+
+		/// set value of child node
+		template< typename T > prop_node& set( const key_t& key, const T& v );
+
+		/// set the value of this node directly (does not affect children)
+		template< typename T > prop_node& set_value( const T& v ) { value = to_str( v ); return *this; }
+		prop_node& set_value( value_t&& v ) { value = std::move( v ); return *this; }
 
 		/// get the value of this node, throws if conversion fails
 		template< typename T > T get() const;
@@ -80,17 +88,9 @@ namespace xo
 		/// get the value of a child node for a range of keys, or a default value if it doesn't exist
 		template< typename T > optional< T > try_get_any( std::initializer_list< key_t > keys ) const;
 
-		/// set the value of this node
-		prop_node& set( prop_node&& pn ) { return *this = std::move( pn ); }
-		prop_node& set( const prop_node& pn ) { return *this = pn; }
-		template< typename T > prop_node& set( const T& v );
-
-		/// set the value of a child node, the node is created if not existing
-		template< typename T > prop_node& set( const key_t& key, const T& v );
-
-		/// set the value of this node (does not affect children)
-		template< typename T > prop_node& set_value( const T& v ) { value = to_str( v ); return *this; }
-		prop_node& set_value( value_t&& v ) { value = std::move( v ); return *this; }
+		/// equality operators
+		bool operator==( const prop_node& other ) const;
+		bool operator!=( const prop_node& other ) const { return !( *this == other ); }
 
 		/// see if this prop_node has a value
 		bool has_value() const { return !value.empty(); }
@@ -131,9 +131,10 @@ namespace xo
 		template< typename T > void add_value( const T& value ) { children.emplace_back( key_t(), to_prop_node( value ) ); }
 
 		/// add a child node
-		prop_node& push_back( const key_t& key, const prop_node& pn );
-		prop_node& push_back( const key_t& key, prop_node&& pn );
-		prop_node& push_back( const key_t& key );
+		prop_node& add_child();
+		prop_node& add_child( const key_t& key );
+		prop_node& add_child( const key_t& key, const prop_node& pn );
+		prop_node& add_child( const key_t& key, prop_node&& pn );
 
 		/// insert children
 		iterator insert( iterator pos, const_iterator first, const_iterator last );
@@ -223,6 +224,11 @@ namespace xo
 		container_t children;
 	};
 
+	/// prop_node literal, 'using namespace xo::literals' puts them outside the xo namespace
+	inline namespace literals {
+		inline prop_node operator"" _pn( const char* v, size_t s ) { return prop_node( v ); }
+	}
+
 	/// convert prop_node to string
 	XO_API string to_str( const prop_node& pn );
 
@@ -242,7 +248,7 @@ namespace xo
 	template< typename T > prop_node to_prop_node( const vector<T>& vec ) {
 		prop_node pn;
 		for ( size_t i = 0; i < vec.size(); ++i )
-			pn.push_back( "", to_prop_node( vec[ i ] ) );
+			pn.add_child( "", to_prop_node( vec[ i ] ) );
 		return pn;
 	}
 
@@ -261,6 +267,11 @@ namespace xo
 	template< typename T >
 	prop_node& prop_node::set( const T& v ) {
 		return *this = to_prop_node( v );
+	}
+
+	template< typename T >
+	prop_node& prop_node::set( const key_t& key, const T& v ) {
+		return get_or_add_child( key ).set( v );
 	}
 
 	template< typename T >
@@ -332,13 +343,6 @@ namespace xo
 		if ( auto c = try_get_any_child( keys ) )
 			return c->get< T >();
 		return optional< T >();
-	}
-
-	template< typename T >
-	prop_node& prop_node::set( const key_t& key, const T& v ) {
-		if ( auto c = try_get_child( key ) )
-			return c->set( v );
-		else return add_key_value( key, v );
 	}
 
 	template< typename T >

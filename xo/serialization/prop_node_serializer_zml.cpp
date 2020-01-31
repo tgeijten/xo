@@ -75,11 +75,11 @@ namespace xo
 					{
 						// t is a label
 						if ( t[ 0 ] == '$' )
-							next_parent = &macros.push_back( t ); // add macro
+							next_parent = &macros.add_child( t ); // add macro
 						else if ( !isalpha( t[ 0 ] ) )
 							return zml_error( str, ec, "Invalid label " + t );
 						else
-							next_parent = &parent.push_back( t ); // add new item
+							next_parent = &parent.add_child( t ); // add new item
 
 						// read = or :
 						t = get_zml_token( str, ec );
@@ -96,7 +96,7 @@ namespace xo
 						next_parent = &parent.back().second;
 					}
 				}
-				else next_parent = &parent.push_back( "" ); // add array child
+				else next_parent = &parent.add_child( "" ); // add array child
 
 				// parse value element after
 				if ( t == "{" ) // new group

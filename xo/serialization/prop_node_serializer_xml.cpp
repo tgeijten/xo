@@ -30,13 +30,13 @@ namespace xo
 
 		// add attributes
 		for ( rapidxml::xml_attribute<>* attr = node->first_attribute(); attr; attr = attr->next_attribute() )
-			pn.push_back( attr->name(), attr->value() );
+			pn.add_key_value( attr->name(), attr->value() );
 
 		// add child nodes
 		for ( rapidxml::xml_node<>* child = node->first_node(); child; child = child->next_sibling() )
 		{
 			if ( child->name_size() > 0 )
-				pn.push_back( child->name(), get_rapid_xml_node( child ) );
+				pn.add_child( child->name(), get_rapid_xml_node( child ) );
 		}
 
 		return pn;
@@ -61,7 +61,7 @@ namespace xo
 		std::string file_contents( std::istreambuf_iterator<char>( str ), {} );
 		doc.parse< 0 >( &file_contents[ 0 ] ); // not officially supported but probably safe
 		if ( doc.first_node() )
-			read_pn_->push_back( doc.first_node()->name(), get_rapid_xml_node( doc.first_node() ) );
+			read_pn_->add_child( doc.first_node()->name(), get_rapid_xml_node( doc.first_node() ) );
 		return str;
 	}
 

@@ -48,22 +48,24 @@ namespace xo
 		return find_if( *this, [&]( const prop_node::pair_t& n ) { return !n.first.empty(); } ) == end();
 	}
 
-	prop_node& prop_node::push_back( const key_t& key, const prop_node& pn )
+	prop_node& prop_node::add_child()
 	{
-		children.emplace_back( key, pn );
-		return children.back().second;
+		return children.emplace_back( key_t(), prop_node() ).second;
 	}
 
-	prop_node& prop_node::push_back( const key_t& key, prop_node&& pn )
+	prop_node& prop_node::add_child( const key_t& key )
 	{
-		children.emplace_back( key, std::move( pn ) );
-		return children.back().second;
+		return children.emplace_back( key, prop_node() ).second;
 	}
 
-	prop_node& prop_node::push_back( const key_t& key )
+	prop_node& prop_node::add_child( const key_t& key, const prop_node& pn )
 	{
-		children.emplace_back( key, prop_node() );
-		return children.back().second;
+		return children.emplace_back( key, pn ).second;
+	}
+
+	prop_node& prop_node::add_child( const key_t& key, prop_node&& pn )
+	{
+		return children.emplace_back( key, std::move( pn ) ).second;
 	}
 
 	prop_node::iterator prop_node::insert( iterator pos, const_iterator first, const_iterator last )
@@ -89,7 +91,7 @@ namespace xo
 		{
 			if ( auto c = try_get_child( o.first ) )
 				c->merge( o.second, overwrite );
-			else push_back( o.first, o.second );
+			else add_child( o.first, o.second );
 		}
 	}
 
@@ -141,7 +143,7 @@ namespace xo
 	{
 		if ( auto c = try_get_child( key ) )
 			return *c;
-		else return push_back( key );
+		else return add_child( key );
 	}
 
 	const prop_node::key_t& prop_node::get_key( index_t idx ) const
@@ -203,14 +205,14 @@ namespace xo
 		{
 			if ( auto* c = try_get_query_key( key ) )
 				return const_cast<prop_node&>( *c );
-			else return push_back( key );
+			else return add_child( key );
 		}
 		else
 		{
 			auto sub_key = key.substr( 0, p );
 			if ( auto* c = try_get_query_key( sub_key ) )
 				return const_cast<prop_node&>( *c ).get_or_add_query( mid_str( key, p + 1 ), delim );
-			else return push_back( sub_key ).get_or_add_query( mid_str( key, p + 1 ), delim );
+			else return add_child( sub_key ).get_or_add_query( mid_str( key, p + 1 ), delim );
 		}
 	}
 

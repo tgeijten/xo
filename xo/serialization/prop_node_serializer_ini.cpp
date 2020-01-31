@@ -45,7 +45,7 @@ namespace xo
 
 			if ( line.size() > 2 && line[ 0 ] == '[' && line[ line.size() - 1 ] == ']' )
 			{
-				cur_group = &read_pn_->push_back( line.substr( 1, line.size() - 2 ) );
+				cur_group = &read_pn_->add_child( line.substr( 1, line.size() - 2 ) );
 				continue;
 			}
 
