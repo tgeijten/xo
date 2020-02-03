@@ -9,7 +9,7 @@ namespace xo
 	template< typename T >
 	vector<T> evaluate_function( simple_function_t<T> f, const frange<T>& range ) {
 		vector<T> v;
-		v.reserve( size_t( range.steps_ ) );
+		v.reserve( size_t( range.max_step_ ) );
 		for ( auto x : range )
 			v.push_back( f( x ) );
 		return v;
