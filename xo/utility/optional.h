@@ -9,8 +9,8 @@ namespace xo
 {
 	template< typename T, typename E = void > struct optional;
 
-	/// optional value for integrals that uses sentinel to represent no value
-	template< typename T > struct optional< T, typename std::enable_if_t< std::is_integral_v<T> > >
+	/// optional value for integrals (but not bool) that uses a sentinel to represent no value
+	template< typename T > struct optional< T, typename std::enable_if_t< std::is_integral_v<T> && !std::is_same_v<T, bool> > >
 	{
 		using value_type = T;
 		optional() : value_( constants<T>::sentinel() ) {}
@@ -42,7 +42,7 @@ namespace xo
 	};
 
 	/// optional value that works with any value type
-	template< typename T > struct optional< T, typename std::enable_if_t< !std::is_floating_point_v<T> && !std::is_integral_v<T> > >
+	template< typename T > struct optional< T, typename std::enable_if_t< !std::is_floating_point_v<T> && !(std::is_integral_v<T> && !std::is_same_v<T, bool> ) > >
 	{
 		using value_type = T;
 		optional() : has_value_( false ) {}
