@@ -1,6 +1,7 @@
 #pragma once
 
 #include <limits> // #todo: get rid of this header
+#include <type_traits> // #todo: get rid of this header
 
 namespace xo
 {
@@ -22,7 +23,11 @@ namespace xo
 		static constexpr T lowest() { return std::numeric_limits<T>::lowest(); }
 		static constexpr T NaN() { return std::numeric_limits<T>::quiet_NaN(); }
 		static constexpr bool is_signed() { return std::numeric_limits<T>::is_signed; }
-		static constexpr T sentinel() { return constants<T>::is_signed() ? constants<T>::lowest() : constants<T>::max(); }
+		static constexpr T sentinel() {
+			static_assert( !std::is_same_v<T, bool>, "xo::constants<bool>::sentinal() is not supported" );
+			if constexpr ( constants<T>::is_signed() )
+				return constants<T>::lowest();
+			else return constants<T>::max(); }
 	};
 
 	using constantsd = constants< double >;
