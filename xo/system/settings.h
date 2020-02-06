@@ -61,13 +61,8 @@ namespace xo
 	template< typename T > T xo::settings::get( const string& id ) const
 	{
 		if ( auto data_node = data_.try_get_query( id ) )
-		{
-			if ( auto v = data_node->try_get< T >() )
-				return *v;
-			else log::warning( "Invalid value for setting ", id, "; using default" );
-		}
-
-		if ( auto* schema_node = try_find_setting( id ) )
+			return data_node->get<T>();
+		else if ( auto* schema_node = try_find_setting( id ) )
 			return schema_node->get< T >( "default" );
 		else xo_error( "Undefined setting: " + id );
 	}
