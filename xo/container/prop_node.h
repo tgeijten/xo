@@ -280,7 +280,7 @@ namespace xo
 		access();
 		if ( from_prop_node( *this, value ) )
 			return value;
-		else xo_error( "Could not convert prop_node to " + get_type_name<T>() );
+		else xo_error( "Could not convert \"" + raw_value() + "\" to " + get_type_name<T>() );
 	}
 
 	template< typename T >
