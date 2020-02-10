@@ -16,8 +16,8 @@
 namespace xo
 {
 	template< typename I, typename T = typename std::iterator_traits< I >::value_type > T average( I b, I e, T v = T() ) {
-		for ( auto i = b; i != e; ++i ) v += *i;
-		return v / ( e - b );
+		for ( auto i = b; i != e; ++i ) v = v + *i;
+		return v * ( T( 1 ) / T( e - b ) );
 	}
 
 	template< typename C > typename C::value_type average( const C& cont )
