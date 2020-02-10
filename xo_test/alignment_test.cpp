@@ -18,7 +18,6 @@ namespace xo
 
 	void alignment_test()
 	{
-		set_global_log_level( log::level::trace );
 		xo_logvar( sizeof( int ) );
 		xo_logvar( sizeof( AA ) );
 		xo_logvar( sizeof( AB ) );

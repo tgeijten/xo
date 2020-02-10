@@ -13,7 +13,10 @@ namespace xo
 {
 	namespace log
 	{
-		sink::sink( level l ) : log_level_( l )
+		sink::sink( level l, sink_mode m ) :
+			log_level_( l ),
+			sink_mode_( m ),
+			thread_id_( std::this_thread::get_id() )
 		{
 			add_sink( this );
 		}
@@ -23,16 +26,22 @@ namespace xo
 			remove_sink( this );
 		}
 
-		void sink::try_send_log_message( level l, const string& msg )
+		bool sink::test_log_level( level l ) const
+		{
+			if ( sink_mode_ == sink_mode::all_threads )
+				return l >= log_level_;
+			else return l >= log_level_ && ( std::this_thread::get_id() == thread_id_ );
+		}
+
+		void sink::submit_log_message( level l, const string& msg )
 		{
 			if ( test_log_level( l ) )
-				send_log_message( l, msg );
+				hande_log_message( l, msg );
 		}
 
 		void sink::set_log_level( level l )
 		{
 			log_level_ = l;
-			update_global_log_level();
 		}
 
 		level sink::get_log_level()
@@ -40,17 +49,18 @@ namespace xo
 			return log_level_;
 		}
 
-		bool sink::test_log_level( level l )
+		void sink::set_sink_mode( sink_mode m )
 		{
-			return l >= log_level_;
+			sink_mode_ = m;
+			thread_id_ = std::this_thread::get_id();
 		}
 
-		stream_sink::stream_sink( level l, std::ostream& str ) :
-			sink( l ),
+		stream_sink::stream_sink( std::ostream& str, level l, sink_mode m ) :
+			sink( l, m ),
 			stream_( str )
 		{}
 
-		void stream_sink::send_log_message( level l, const string& msg )
+		void stream_sink::hande_log_message( level l, const string& msg )
 		{
 			// #todo: make the time prefix an option
 			auto str = get_date_time_str( "%H:%M:%S " );
@@ -62,10 +72,11 @@ namespace xo
 			stream_.flush();
 		}
 
-		console_sink::console_sink( level l ) : stream_sink( l, std::cout )
+		console_sink::console_sink( level l, sink_mode m ) :
+			stream_sink( std::cout, l, m )
 		{}
 
-		void console_sink::send_log_message( level l, const string & msg )
+		void console_sink::hande_log_message( level l, const string& msg )
 		{
 			auto str = get_date_time_str( "%H:%M:%S " );
 			stream_ << str;
@@ -104,18 +115,18 @@ namespace xo
 #endif
 		}
 
-		file_sink::file_sink( level l, const path& file ) :
-			stream_sink( l, file_stream_ )
+		file_sink::file_sink( const path& file, level l, sink_mode m ) :
+			stream_sink( file_stream_, l, m )
 		{
 			if ( file.has_parent_path() )
 				create_directories( file.parent_path() );
 			file_stream_.open( file.str() );
 		}
 
-		void file_sink::send_log_message( level l, const string& msg )
+		void file_sink::hande_log_message( level l, const string& msg )
 		{
 			if ( file_stream_.good() )
-				stream_sink::send_log_message( l, msg );
+				stream_sink::hande_log_message( l, msg );
 		}
 
 	}

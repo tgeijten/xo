@@ -22,10 +22,7 @@ namespace xo
 		XO_API void add_sink( sink* s );
 		XO_API void remove_sink( sink* s );
 
-		// set log level
-		XO_API void set_global_log_level( level l );
-		XO_API void update_global_log_level(); // set global level to lowest of all sinks
-		XO_API level get_global_log_level();
+		// test log level for all sinks
 		XO_API bool test_log_level( level l );
 
 		// log with specific level
