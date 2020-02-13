@@ -1,4 +1,5 @@
 #include <vector>
+#include <map>
 #include "xo/geometry/vec3.h"
 #include "xo/system/log.h"
 #include "xo/container/label_vector.h"
@@ -7,6 +8,7 @@
 #include "xo/container/storage.h"
 #include "xo/system/test_case.h"
 #include "xo/string/string_tools.h"
+#include "xo/container/container_algorithms.h"
 
 namespace xo
 {
@@ -45,10 +47,10 @@ namespace xo
 			buf.add_channel( stringf( "channel%d", i ) );
 
 		// more tests
-		std::vector< std::pair< float, vec3f > > buf_test;
-		buf_test.push_back( std::make_pair( 0.0f, vec3f( 1, 0, 0 ) ) );
-		buf_test.push_back( std::make_pair( 1.0f, vec3f( 0, 1, 0 ) ) );
-		buf_test.push_back( std::make_pair( 3.0f, vec3f( 0, 1, 2 ) ) );
+		std::map< float, vec3f > buf_test;
+		buf_test[ 0.0f ] = vec3f( 1, 0, 0 );
+		buf_test[ 1.0f ] = vec3f( 0, 1, 0 );
+		buf_test[ 3.0f ] = vec3f( 0, 1, 2 );
 		for ( int d = -10; d < 40; ++d )
 			log::trace( 0.1 * d, ": ", interpolated_value( buf_test, float( 0.1 * d ) ) );
 
