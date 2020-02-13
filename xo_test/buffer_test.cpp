@@ -1,7 +1,6 @@
 #include <vector>
 #include "xo/geometry/vec3.h"
 #include "xo/system/log.h"
-#include "xo/utility/interpolation.h"
 #include "xo/container/label_vector.h"
 #include "xo/container/circular_frame_buffer.h"
 #include "xo/container/circular_deque.h"
