@@ -12,9 +12,10 @@ namespace xo
 	class flat_map
 	{
 	public:
+		using key_type = K;
+		using mapped_type = V;
 		using value_type = typename xo::pair< K, V >;
-		using pair_t = typename xo::pair< K, V >;
-		using container_t = typename xo::vector< pair_t >;
+		using container_t = typename xo::vector< value_type >;
 		using iterator = typename container_t::iterator;
 		using reverse_iterator = typename container_t::reverse_iterator;
 		using const_iterator = typename container_t::const_iterator;
@@ -23,7 +24,7 @@ namespace xo
 		flat_map() : data_() {}
 		flat_map( const flat_map& other ) : data_( other.data_ ) {}
 		flat_map( flat_map&& other ) : data_( std::move( other.data_ ) ) {}
-		flat_map( std::initializer_list< pair_t > l ) : data_( l ) { sort(); }
+		flat_map( std::initializer_list< value_type > l ) : data_( l ) { sort(); }
 		flat_map& operator=( const flat_map& other ) { data_ = other.data_; return *this; }
 		flat_map& operator=( flat_map&& other ) { data_ = std::move( other.data_ ); return *this; }
 
@@ -43,48 +44,48 @@ namespace xo
 		reverse_iterator rend() { return data_.rend(); }
 		const_reverse_iterator crend() const { return data_.crend(); }
 
-		const pair_t& front() const { return data_.front(); }
-		pair_t& front() { return data_.front(); }
+		const value_type& front() const { return data_.front(); }
+		value_type& front() { return data_.front(); }
 
-		const pair_t& back() const { return data_.back(); }
-		pair_t& back() { return data_.back(); }
+		const value_type& back() const { return data_.back(); }
+		value_type& back() { return data_.back(); }
 
 		iterator erase( iterator it ) { return data_.erase( it ); }
-		size_t erase( const K& key ) {
+		size_t erase( const key_type& key ) {
 			if ( auto it = find( key ); it != end() )
 				return data_.erase( it ), 1;
 			else return 0;
 		}
 
-		iterator lower_bound( const K& key ) {
-			return std::lower_bound( begin(), end(), key, [&]( const pair_t& kvp, const K& key ) { return kvp.first < key; } );
+		iterator lower_bound( const key_type& key ) {
+			return std::lower_bound( begin(), end(), key, [&]( const value_type& kvp, const key_type& key ) { return kvp.first < key; } );
 		}
-		const_iterator lower_bound( const K& key ) const {
-			return std::lower_bound( begin(), end(), key, [&]( const pair_t& kvp, const K& key ) { return kvp.first < key; } );
-		}
-
-		iterator upper_bound( const K& key ) {
-			return std::upper_bound( begin(), end(), key, [&]( const K& key, const pair_t& kvp ) { return key < kvp.first; } );
-		}
-		const_iterator upper_bound( const K& key ) const {
-			return std::upper_bound( begin(), end(), key, [&]( const K& key, const pair_t& kvp ) { return key < kvp.first; } );
+		const_iterator lower_bound( const key_type& key ) const {
+			return std::lower_bound( begin(), end(), key, [&]( const value_type& kvp, const key_type& key ) { return kvp.first < key; } );
 		}
 
-		iterator find( const K& key ) {
+		iterator upper_bound( const key_type& key ) {
+			return std::upper_bound( begin(), end(), key, [&]( const key_type& key, const value_type& kvp ) { return key < kvp.first; } );
+		}
+		const_iterator upper_bound( const key_type& key ) const {
+			return std::upper_bound( begin(), end(), key, [&]( const key_type& key, const value_type& kvp ) { return key < kvp.first; } );
+		}
+
+		iterator find( const key_type& key ) {
 			auto it = lower_bound( key );
 			return ( it != end() && it->first == key ) ? it : end();
 		}
-		const_iterator find( const K& key ) const {
+		const_iterator find( const key_type& key ) const {
 			auto it = lower_bound( key );
 			return ( it != end() && it->first == key ) ? it : end();
 		}
 
-		size_t count( const K& key ) const {
-			return std::count_if( cbegin(), cend(), [&]( const pair_t& kvp ) { return kvp.first == key; } );
+		size_t count( const key_type& key ) const {
+			return std::count_if( cbegin(), cend(), [&]( const value_type& kvp ) { return kvp.first == key; } );
 		}
-		bool contains( const K& key ) const { return find( key ) != end(); }
+		bool contains( const key_type& key ) const { return find( key ) != end(); }
 
-		pair< iterator, bool > insert( const pair_t& value ) {
+		pair< iterator, bool > insert( const value_type& value ) {
 			auto it = lower_bound( value.first );
 			if ( it != end() && it->first == value.first ) {
 				it->second = value.second; // replace existing item
@@ -93,7 +94,7 @@ namespace xo
 			else return make_pair( data_.insert( it, value ), true );
 		}
 
-		pair< iterator, bool > insert( pair_t&& value ) {
+		pair< iterator, bool > insert( value_type&& value ) {
 			auto it = lower_bound( value.first );
 			if ( it != end() && it->first == value.first ) {
 				it->second = std::move( value.second ); // replace existing item
@@ -102,31 +103,33 @@ namespace xo
 			else return make_pair( data_.insert( it, std::move( value ) ), true );
 		}
 
-		V& operator[]( const K& key ) {
+		V& operator[]( const key_type& key ) {
 			auto it = lower_bound( key );
 			if ( it != end() && it->first == key )
 				return it->second;
 			return data_.insert( it, std::make_pair( key, V() ) )->second;
 		}
 
-		const V& operator[]( const K& key ) const { return at( key ); }
+		const V& operator[]( const key_type& key ) const { return at( key ); }
 
-		V& at( const K& key ) {
+		V& at( const key_type& key ) {
 			auto it = find( key );
 			xo_error_if( it == end(), "Could not find key: " + to_str( key ) );
 			return it->second;
 		}
 
-		const V& at( const K& key ) const {
+		const V& at( const key_type& key ) const {
 			auto it = find( key );
 			xo_error_if( it == end(), "Could not find key: " + to_str( key ) );
 			return it->second;
 		}
+
+		void reserve( size_t s ) { data_.reserve( s ); }
 
 	private:
 		container_t data_;
 		void sort() {
-			std::sort( data_.begin(), data_.end(), [&]( const pair_t& a, const pair_t& b ) { return a.first < b.first; } );
+			std::sort( data_.begin(), data_.end(), [&]( const value_type& a, const value_type& b ) { return a.first < b.first; } );
 		}
 	};
 
