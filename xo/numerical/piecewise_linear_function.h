@@ -2,6 +2,7 @@
 
 #include "math.h"
 #include "xo/container/flat_map.h"
+#include "interpolation.h"
 
 namespace xo
 {

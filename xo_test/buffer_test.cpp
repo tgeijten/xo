@@ -45,21 +45,5 @@ namespace xo
 		//regular_ring_buffer< double, 100, void > ringbuf( 20 );
 		for ( int i = 0; i < 10; ++i )
 			buf.add_channel( stringf( "channel%d", i ) );
-
-		// more tests
-		std::map< float, vec3f > buf_test;
-		buf_test[ 0.0f ] = vec3f( 1, 0, 0 );
-		buf_test[ 1.0f ] = vec3f( 0, 1, 0 );
-		buf_test[ 3.0f ] = vec3f( 0, 1, 2 );
-		for ( int d = -10; d < 40; ++d )
-			log::trace( 0.1 * d, ": ", interpolated_value( buf_test, float( 0.1 * d ) ) );
-
-		// more tests
-		std::vector< vec3f > buf_test2;
-		buf_test2.push_back( vec3f( 1, 0, 0 ) );
-		buf_test2.push_back( vec3f( 0, 1, 0 ) );
-		buf_test2.push_back( vec3f( 0, 1, 2 ) );
-		for ( int d = -10; d < 40; ++d )
-			log::trace( 0.1 * d, ": ", interpolated_value( buf_test2, float( 0.1 * d ) ) );
 	}
 }

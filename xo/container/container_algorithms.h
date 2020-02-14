@@ -75,37 +75,4 @@ namespace xo
 		std::partial_sort_copy( vec.begin(), vec.end(), result.begin(), result.end() );
 		return average( result );
 	}
-
-	template< typename M >
-	typename M::mapped_type interpolated_value( const M& cont, typename M::key_type key )
-	{
-		if ( cont.empty() )
-			return typename M::mapped_type();
-		auto ub = cont.upper_bound( key );
-		if ( ub == cont.end() )
-			return (--ub)->second; // key is beyond data, return last sample
-		else if ( ub == cont.begin() )
-			return ub->second; // key is before data, return first sample
-		else {
-			auto lb = ub; lb--; // interpolate between two samples (lb and ub)
-			auto t = ( key - lb->first ) / ( ub->first - lb->first );
-			return lerp( lb->second, ub->second, t );
-		}
-	}
-
-	template< typename T, typename K >
-	T interpolated_value( const std::vector<T>& cont, K key )
-	{
-		if ( cont.empty() )
-			return T();
-		else if ( key < K( 0 ) )
-			return cont.front();
-		else {
-			auto lb = static_cast<size_t>( key );
-			auto ub = lb + 1;
-			if ( ub >= cont.size() )
-				return cont.back();
-			return lerp( cont[ lb ], cont[ ub ], key - lb );
-		}
-	}
 }
