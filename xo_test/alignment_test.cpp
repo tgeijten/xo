@@ -1,9 +1,15 @@
 #include "xo/system/log.h"
 
+#include "xo/system/test_case.h"
+#include "xo/xo_types.h"
+
 namespace xo
 {
+	struct Empty {
+	};
+
 	struct AA {
-		int x;
+		int32 x;
 	};
 
 	struct AB {
@@ -12,15 +18,21 @@ namespace xo
 	};
 
 	struct AC {
-		int a1;
-		int a2;
+		int32 a1;
+		int32 a2;
 	};
 
-	void alignment_test()
+	struct Test : Empty {
+		int32 a1;
+		int32 a2;
+	};
+
+	XO_TEST_CASE( xo_alignment_test )
 	{
-		xo_logvar( sizeof( int ) );
-		xo_logvar( sizeof( AA ) );
-		xo_logvar( sizeof( AB ) );
-		xo_logvar( sizeof( AC ) );
+		XO_CHECK( sizeof( int32 ) == 4 );
+		XO_CHECK( sizeof( AA ) == 4 );
+		XO_CHECK( sizeof( AB ) == 8 );
+		XO_CHECK( sizeof( AC ) == 8 );
+		XO_CHECK( sizeof( Test ) == 8 );
 	}
 }
