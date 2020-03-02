@@ -120,8 +120,8 @@ namespace xo
 		/// clear value and keys
 		void clear() { value.clear(); children.clear(); }
 
-		/// get raw value_t reference, does not set access flag
-		const value_t& raw_value() const { return value; }
+		/// get raw value_t reference
+		const value_t& raw_value() const { access(); return value; }
 
 		/// set the value of a child node, accessing children through delimiter character
 		template< typename T > prop_node& set_query( const key_t& query, const T& v, const char delim = '.' );
@@ -253,11 +253,12 @@ namespace xo
 	}
 
 	template< typename T > bool from_prop_node( const prop_node& pn , vector<T>& vec ) {
-		vec.resize( pn.size() );
-		bool ok = true;
+		vec.resize( pn.size(), T() );
 		for ( index_t i = 0; i < pn.size(); ++i )
-			ok &= from_prop_node( pn[ i ], vec[ i ] );
-		return ok;
+			if ( !from_prop_node( pn[ i ], vec[ i ] ) )
+				return false;
+		pn.access();
+		return true;
 	};
 
 	//
