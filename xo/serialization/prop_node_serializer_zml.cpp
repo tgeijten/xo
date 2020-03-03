@@ -188,14 +188,13 @@ namespace xo
 		if ( level > 0 )
 			str << string( level - 1, '\t' );
 
-		write_zml_kvp( str, label, pn, " = ", inside_array );
-
-		if ( pn.size() > 0 )
+		if ( pn.size() == 0 )
 		{
-			// add space if there's a label
-			if ( !label.empty() )
-				str << ' ';
-
+			// just output kvp
+			write_zml_kvp( str, label, pn, " = ", inside_array );
+		}
+		else
+		{
 			bool is_array = pn.is_array();
 
 			// try oneliner
@@ -203,13 +202,18 @@ namespace xo
 			if ( level != 0 && pn.count_layers() <= 2 && pn.count_children() <= 5 )
 			{
 				std::ostringstream oneliner;
-				write_zml_node_one_line( oneliner, "", pn, is_array );
+				write_zml_node_one_line( oneliner, label, pn, is_array );
 				if ( level + label.size() + 1 + oneliner.str().size() <= max_oneliner_length )
 				{
 					str << oneliner.str();
 					return;
 				}
 			}
+
+			// no oneliner, try normal output
+			write_zml_kvp( str, label, pn, " = ", inside_array );
+			if ( !label.empty() )
+				str << ' '; // add space before { or [
 
 			// normal multiline output
 			if ( level != 0 )
