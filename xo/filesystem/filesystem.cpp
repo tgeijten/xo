@@ -40,7 +40,7 @@ namespace xo
 		char mbsLocalAppData[ MAX_PATH ];
 		wcstombs_s( size_t(), mbsLocalAppData, MAX_PATH, wcsLocalAppData, MAX_PATH );
 		CoTaskMemFree( static_cast<void*>( wcsLocalAppData ) );
-		return path( mbsLocalAppData );
+		return path( mbsLocalAppData ).make_preferred();
 	}
 #endif
 
@@ -68,7 +68,7 @@ namespace xo
 #ifdef XO_COMP_MSVC
 		char buf[ 1024 ];
 		GetModuleFileName( 0, buf, sizeof( buf ) );
-		return path( buf ).parent_path();
+		return path( buf ).parent_path().make_preferred();
 #elif defined(__linux__)
 		char buf[ 1024 ];
 		readlink("/proc/self/exe", buf, sizeof( buf ));
