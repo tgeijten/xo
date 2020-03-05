@@ -278,7 +278,6 @@ namespace xo
 	template< typename T >
 	T prop_node::get() const {
 		typename remove_const<T>::type value;
-		access();
 		if ( from_prop_node( *this, value ) )
 			return value;
 		else xo_error( "Could not convert \"" + raw_value() + "\" to " + get_type_name<T>() );
@@ -304,7 +303,6 @@ namespace xo
 	template< typename T >
 	optional<T> prop_node::try_get() const {
 		T value;
-		access();
 		if ( from_prop_node( *this, value ) )
 			return value;
 		else return optional<T>();
