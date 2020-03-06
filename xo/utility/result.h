@@ -19,7 +19,7 @@ namespace xo
 
 	template< typename T, typename E = error_message >
 	struct result {
-		result() = default;
+		result() : value_(), error_() {}
 		result( const T& v ) : value_( v ), error_() {}
 		result( T&& v ) : value_( std::move( v ) ), error_() {}
 		result( const E& e ) : value_(), error_( e ) {}
