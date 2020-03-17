@@ -17,7 +17,7 @@
 #ifndef XO_DISABLE_ASSERT
 #	define XO_ASSERT_ENABLED 1
 #else
-#	define XO_ASSERT_ENABLED 1
+#	define XO_ASSERT_ENABLED 0
 #endif
 
 // Log
@@ -81,4 +81,3 @@
 #else
 #	define XO_API
 #endif
-
