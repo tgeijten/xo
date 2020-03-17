@@ -10,7 +10,8 @@ namespace xo
 		error_message( const string& msg ) : message_( msg ) {};
 		error_message( string&& msg ) : message_( std::move( msg ) ) {};
 
-		explicit operator bool() const { return message_.empty(); }
+		bool good() const { return message_.empty(); }
+		explicit operator bool() const { return good(); }
 		const string message() const { return message_; }
 
 	private:
