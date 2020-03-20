@@ -11,8 +11,8 @@ namespace xo
 		error_message( string&& msg ) : message_( std::move( msg ) ) {};
 
 		bool good() const { return message_.empty(); }
-		explicit operator bool() const { return good(); }
-		const string message() const { return message_; }
+		bool bad() const { return message_.empty(); }
+		const string& message() const { return message_; }
 
 	private:
 		string message_;
@@ -26,11 +26,11 @@ namespace xo
 		result( const E& e ) : value_(), error_( e ) {}
 		result( E&& e ) : value_(), error_( std::move( e ) ) {}
 
-		explicit operator bool() { return static_cast<bool>( error_ ); }
+		explicit operator bool() { return error_.good(); }
 		const T& value() const { return value_; }
 		const E& error() const { return error_; }
 
-	public:
+	private:
 		T value_;
 		E error_;
 	};

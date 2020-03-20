@@ -9,10 +9,10 @@ namespace xo
 	{
 		error_code( int errcode = 0, string msg = string( "" ) ) : error_( errcode ), message_( msg ) {}
 		error_code& set( int errcode, string msg = string( "" ) ) { error_ = errcode; message_ = msg; return *this; }
-		bool bad() { return error_ != 0; }
-		bool good() { return error_ == 0; }
-		int code() { return error_; }
-		const string& message() { return message_; }
+		bool bad() const { return error_ != 0; }
+		bool good() const { return error_ == 0; }
+		int code() const { return error_; }
+		const string& message() const { return message_; }
 
 	private:
 		int error_;
