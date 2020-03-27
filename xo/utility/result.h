@@ -26,7 +26,7 @@ namespace xo
 		result( const E& e ) : value_(), error_( e ) {}
 		result( E&& e ) : value_(), error_( std::move( e ) ) {}
 
-		explicit operator bool() { return error_.good(); }
+		explicit operator bool() const { return error_.good(); }
 		const T& value() const { return value_; }
 		const E& error() const { return error_; }
 
