@@ -21,12 +21,13 @@ namespace xo
 		using const_iterator = typename container_t::const_iterator;
 		using const_reverse_iterator = typename container_t::const_reverse_iterator;
 
-		flat_map() : data_() {}
-		flat_map( const flat_map& other ) : data_( other.data_ ) {}
-		flat_map( flat_map&& other ) : data_( std::move( other.data_ ) ) {}
+		flat_map() = default;
+		~flat_map() = default;
+		flat_map( const flat_map& ) = default;
+		flat_map( flat_map&& other ) = default;
 		flat_map( std::initializer_list< value_type > l ) : data_( l ) { sort(); }
-		flat_map& operator=( const flat_map& other ) { data_ = other.data_; return *this; }
-		flat_map& operator=( flat_map&& other ) { data_ = std::move( other.data_ ); return *this; }
+		flat_map& operator=( const flat_map& other ) = default;
+		flat_map& operator=( flat_map&& other ) = default;
 
 		bool empty() const { return data_.empty(); }
 		void clear() { data_.clear(); }
