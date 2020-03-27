@@ -8,6 +8,7 @@
 #include "xo/container/container_algorithms.h"
 #include "xo/container/circular_frame_buffer.h"
 #include "xo/string/string_tools.h"
+#include "xo/container/flat_set.h"
 
 namespace xo
 {
@@ -19,7 +20,7 @@ namespace xo
 		return s;
 	}
 
-	XO_TEST_CASE( xo_containers )
+	XO_TEST_CASE( xo_sorted_vector )
 	{
 		struct sortable
 		{
@@ -35,8 +36,16 @@ namespace xo
 		sv.insert( sortable{ 3, "banaan" } );
 		sv.insert( sortable{ 1, "banaan" } );
 
-		//for ( auto& e : sv )
-		//	cout << e.e << e.s << endl;
+		XO_CHECK( sv.front().e == 1 );
+		XO_CHECK( sv.front().s == "appel" );
+		XO_CHECK( sv[ 1 ].e == 1 );
+		XO_CHECK( sv[ 1 ].s == "banaan" );
+		XO_CHECK( sv.back().s == "peer" );
+		XO_CHECK( sv.size() == 5 );
+	}
+
+	XO_TEST_CASE( xo_flat_map )
+	{
 		flat_map< string, int > vm;
 		vm[ "Appel" ] = 1;
 		vm[ "Peer" ] = 2;
@@ -76,11 +85,35 @@ namespace xo
 
 		XO_CHECK( map1.size() == map2.size() );
 		XO_CHECK( map_equals_flat_map );
+	}
 
+	XO_TEST_CASE( xo_flat_set )
+	{
+		flat_set< string > fs;
+		XO_CHECK( fs.empty() );
+		fs.insert( "appel" );
+		fs.insert( "appel" );
+		XO_CHECK( fs.size() == 1 );
+		fs.insert( "peer" );
+		fs.insert( "banaan" );
+		fs.insert( "peer" );
+		fs.insert( "Appel" );
+		fs.insert( "banaan" );
+		XO_CHECK( !fs.empty() );
+		XO_CHECK( fs.size() == 4 );
+		XO_CHECK( fs.front() == "Appel" );
+		XO_CHECK( fs.back() == "peer" );
+	}
+
+	XO_TEST_CASE( xo_container_algorithms )
+	{
 		std::vector<double> values{ 7.0, 4.0, 2.0, 3.0 };
 		XO_CHECK( average( values ) == 4.0 );
 		XO_CHECK( median( values ) == 3.5 );
+	}
 
+	XO_TEST_CASE( xo_table )
+	{
 		table< double > t;
 		for ( int i = 0; i < 10; ++i )
 		{
@@ -88,11 +121,7 @@ namespace xo
 			t.add_row( stringf( "R%d", i ) );
 			t( stringf( "R%d", i ), stringf( "C%d", i ) ) = i;
 		}
-		XO_CHECK( t( "R1", "C1" ) == 1.0 );
 
-		circular_frame_buffer< double, string > cb( 1, 10 );
-		cb.add_frame();
-		cb.add_frame();
-		cb.get_interpolated_value( 0, 0, 0.5 );
+		XO_CHECK( t( "R1", "C1" ) == 1.0 );
 	}
 }
