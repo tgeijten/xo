@@ -66,7 +66,11 @@ namespace xo
 			{
 				auto lock = std::scoped_lock( g_log_mutex );
 				if ( result_.success() )
-					log::info( name_, ": ", result_.passed_, " checks passed" );
+				{
+					if ( result_.passed_ > 0 )
+						log::info( name_, ": ", result_.passed_, " checks passed" );
+					else log::warning( name_, ": ", " empty test case" );
+				}
 				else
 					log::error( name_, ": ", result_.failed_, " of ", result_.checks_, " checks FAILED!" );
 			}

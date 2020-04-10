@@ -31,7 +31,7 @@ namespace xo
 			int passed_ = 0;
 			int failed_ = 0;
 			string error_;
-			const bool success() const { return failed_ == 0 && checks_ > 0 && error_.empty(); }
+			const bool success() const { return failed_ == 0 && error_.empty(); }
 			test_result& operator+=( const test_result& o ) {
 				checks_ += o.checks_;
 				passed_ += o.passed_;
