@@ -29,18 +29,13 @@ namespace xo
 		while ( true )
 		{
 			string t = str.get_token();
-			if ( t == "#" )
+			if ( t == "#" || t == "//" )
+				str.get_line(); // single line comment
+			else if ( t == "/*" )
 			{
-				int n = 1;
-				while ( str.try_get( '#' ) ) ++n;
-				if ( n >= 3 )
-				{
-					// multiline comment
-					if ( !str.seek_past( "###" ) )
-						return zml_error( str, ec, "Multiline comment '###' has no matching '###'" ), string();
-					while ( str.try_get( '#' ) );
-				}
-				else str.get_line(); // single line comment
+				// multiline comment
+				if ( !str.seek_past( "*/" ) )
+					return zml_error( str, ec, "Multiline comment '/*' has no matching '*/'" ), string();
 			}
 			else return t;
 		}
@@ -134,7 +129,7 @@ namespace xo
 
 	prop_node parse_zml( char_stream& str, error_code* ec, const path& folder )
 	{
-		str.set_operators( { "=", ": ", "{", "}", "[", "]", "#", "<<", ">>" } );
+		str.set_operators( { "=", ": ", "{", "}", "[", "]", "#", "<<", ">>", "//", "/*", "*/" } );
 		str.set_delimiter_chars( " \n\r\t\v" );
 		str.set_quotation_chars( "\"'" );
 
