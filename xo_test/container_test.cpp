@@ -103,6 +103,15 @@ namespace xo
 		XO_CHECK( fs.size() == 4 );
 		XO_CHECK( fs.front() == "Appel" );
 		XO_CHECK( fs.back() == "peer" );
+		XO_CHECK( fs.count( "appel" ) == 1 );
+		XO_CHECK( fs.contains( "Appel" ) );
+		XO_CHECK( fs.find( "Appel" ) == fs.begin() );
+
+		const flat_set<int> fs2{ 4, 1, -5, 3 };
+		XO_CHECK( fs2.front() == -5 );
+		XO_CHECK( fs2.back() == 4 );
+		XO_CHECK( fs2.find( -5 ) == fs2.begin() );
+		XO_CHECK( fs2.find( 2 ) == fs2.end() );
 	}
 
 	XO_TEST_CASE( xo_container_algorithms )

@@ -72,15 +72,15 @@ namespace xo
 
 		iterator find( const key_type& key ) {
 			auto it = lower_bound( key );
-			return ( it != end() && it->first == key ) ? it : end();
+			return ( it != end() && *it == key ) ? it : end();
 		}
 		const_iterator find( const key_type& key ) const {
 			auto it = lower_bound( key );
-			return ( it != end() && it->first == key ) ? it : end();
+			return ( it != end() && *it == key ) ? it : end();
 		}
 
 		size_t count( const key_type& key ) const {
-			return std::count_if( cbegin(), cend(), [&]( const value_type& kvp ) { return kvp.first == key; } );
+			return std::count_if( cbegin(), cend(), [&]( const key_type& kvp ) { return kvp == key; } );
 		}
 		bool contains( const key_type& key ) const { return find( key ) != end(); }
 
@@ -103,7 +103,7 @@ namespace xo
 	private:
 		container_t data_;
 		void sort() {
-			std::sort( data_.begin(), data_.end(), [&]( const value_type& a, const value_type& b ) { return a.first < b.first; } );
+			std::sort( data_.begin(), data_.end(), [&]( const key_type& a, const key_type& b ) { return a < b; } );
 		}
 	};
 
