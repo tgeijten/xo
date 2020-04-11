@@ -31,7 +31,7 @@ namespace xo
 			T operator++( int ) { step_ += T( 1 ); return max_step_ - T( 1 ); }
 			bool operator==( const iterator& other ) { return other.step_ == step_; }
 			bool operator!=( const iterator& other ) { return other.step_ != step_; }
-			T operator*() { return min_ + step_ * ( max_ - min_ ) / max_step_; }
+			T operator*() const { return min_ + step_ * ( max_ - min_ ) / max_step_; }
 		};
 
 		iterator begin() const { return iterator( T( 0 ), min_, max_, max_step_ ); }

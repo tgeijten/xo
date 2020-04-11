@@ -70,16 +70,21 @@ namespace xo
 		{
 			xo_assert( points.size() >= 4 && times.size() == ( points.size() - 2 ) );
 			segments_.reserve( points.size() - 4 );
-			for ( size_t i = 0; i <= points.size() - 4 )
+			for ( size_t i = 0; i <= points.size() - 4; ++i)
 				segments_.emplace_back( points[ i ], points[ i + 1 ], points[ i + 2 ], points[ i + 3 ] );
 		}
 
 		P operator()( T t ) {
+			//assume times_ is sorted
 			auto it = std::lower_bound( times_.begin(), times_.end(), t );
-			if ( it == times_.end() ) it = times_.begin();
-			if ( it == times_.end() - 1 ) it = times_.end() - 2;
-			size_t index = it - times_.begin();
-			return segments_[ index ]( ( t - *it ) / ( *( it + 1 ) - *it ) );
+			if (it == times_.end()) {//no time is larger than t, outside the range
+				//it = times_.begin();
+				it = times_.end() - 1;
+			}
+			//if ( it == times_.end() - 1 ) it = times_.end() - 2;
+			if (it == times_.begin()) it = times_.begin() + 1;
+			size_t index = it - times_.begin() -1; //it could be begin()
+			return segments_[ index ]( ( t - *(it-1) ) / ( *it  - *(it-1) ) );
 		}
 
 	private:
