@@ -14,7 +14,7 @@ namespace xo
 
 		error_message& operator=( const error_message& ) = default;
 		error_message& operator=( const char* msg ) { message_ = msg; }
-		error_message& operator=( const string & msg ) { message_ = msg; };
+		error_message& operator=( const string& msg ) { message_ = msg; };
 		error_message& operator=( error_message&& ) noexcept = default;
 		error_message& operator=( string&& msg ) noexcept { message_ = std::move( msg ); }
 
@@ -38,10 +38,10 @@ namespace xo
 
 		result& operator=( const result& ) = default;
 		result& operator=( const T& v ) { value_ = v; error_ = E(); return *this; }
-		result& operator=( const E& E ) { error_ = e; return *this; }
+		result& operator=( const E& e ) { error_ = e; return *this; }
 		result& operator=( result&& ) noexcept = default;
 		result& operator=( T&& v ) noexcept { value_ = std::move( v ); error_ = E(); return *this; }
-		result& operator=( E&& E ) noexcept { error_ = e; return *this; }
+		result& operator=( E&& e ) noexcept { error_ = std::move( e ); return *this; }
 
 		explicit operator bool() const { return error_.good(); }
 		const T& value() const { return value_; }
