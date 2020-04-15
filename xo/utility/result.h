@@ -13,10 +13,10 @@ namespace xo
 		error_message( string&& msg ) noexcept : message_( std::move( msg ) ) {};
 
 		error_message& operator=( const error_message& ) = default;
-		error_message& operator=( const char* msg ) { message_ = msg; }
-		error_message& operator=( const string& msg ) { message_ = msg; };
+		error_message& operator=( const char* msg ) { message_ = msg; return *this; }
+		error_message& operator=( const string& msg ) { message_ = msg; return *this; };
 		error_message& operator=( error_message&& ) noexcept = default;
-		error_message& operator=( string&& msg ) noexcept { message_ = std::move( msg ); }
+		error_message& operator=( string&& msg ) noexcept { message_ = std::move( msg ); return *this; }
 
 		bool good() const { return message_.empty(); }
 		bool bad() const { return !message_.empty(); }
@@ -44,6 +44,7 @@ namespace xo
 		result& operator=( E&& e ) noexcept { error_ = std::move( e ); return *this; }
 
 		explicit operator bool() const { return error_.good(); }
+		bool has_value() const { return error_.good(); }
 		const T& value() const { return value_; }
 		const E& error() const { return error_; }
 
