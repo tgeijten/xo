@@ -27,6 +27,10 @@ namespace xo
 		template< typename T > const handle_vector<T>& get_vec() const { return std::get< handle_vector<T> >( data_ ); }
 		template< typename T > handle_vector<T>& get_vec() { return std::get< handle_vector<T> >( data_ ); }
 
+		template< typename T > handle<T> get_handle( const T& e ) const {
+			return handle<T>( static_cast<typename handle<T>::id_type>( &e - &get_vec<T>()[0] ) );
+		}
+
 		void clear() {
 			std::apply( []( auto&... v ) { ( ( v.clear() ), ... ); }, data_ ); // fold comma expression
 		}
