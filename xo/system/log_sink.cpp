@@ -8,11 +8,14 @@
 #	define WIN32_LEAN_AND_MEAN
 #	include <windows.h>
 #endif
+#include <mutex>
 
 namespace xo
 {
 	namespace log
 	{
+		std::mutex g_console_mutex;
+
 		sink::sink( level l, sink_mode m ) :
 			log_level_( l ),
 			sink_mode_( m ),
@@ -79,8 +82,9 @@ namespace xo
 		void console_sink::hande_log_message( level l, const string& msg )
 		{
 			auto str = get_date_time_str( "%H:%M:%S " );
+
+			std::scoped_lock lock( g_console_mutex );
 			stream_ << str;
-			stream_.flush();
 
 #ifdef XO_COMP_MSVC
 			// set console color
@@ -106,8 +110,9 @@ namespace xo
 				break;
 			}
 #endif
-			// output text
-			stream_ << msg << std::endl;
+			// output the log message
+			// could not find performance benefits using '\n' instead of std::endl
+			stream_ << msg << std::endl; 
 
 #ifdef XO_COMP_MSVC
 			// restore color
@@ -128,6 +133,5 @@ namespace xo
 			if ( file_stream_.good() )
 				stream_sink::hande_log_message( l, msg );
 		}
-
 	}
 }
