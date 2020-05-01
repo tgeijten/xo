@@ -11,10 +11,10 @@ namespace xo
 	struct line_
 	{
 		line_() = default;
-		line_( const vec3_<T>& pos, const vec3_<T>& dir ) : pos_( pos ), dir_( dir ) {}
+		line_( const vec3_<T>& pos, const vec3_<T>& dir ) : pos( pos ), dir( dir ) {}
 
-		vec3_<T> pos_;
-		vec3_<T> dir_;
+		vec3_<T> pos;
+		vec3_<T> dir;
 	};
 
 	using linef = line_< float >;
@@ -23,13 +23,13 @@ namespace xo
 	template< typename T >
 	pair< vec3_<T>, vec3_<T> > closest_points( const line_<T>& l1, const line_<T>& l2 )
 	{
-		// derived from http://geomalgorithms.com/a07-_distance.html
-		auto w = l1.pos_ - l2.pos_;
-		auto a = dot_product( l1.dir_, l1.dir_ );         // always >= 0
-		auto b = dot_product( l1.dir_, l2.dir_ );
-		auto c = dot_product( l2.dir_, l2.dir_ );         // always >= 0
-		auto d = dot_product( l1.dir_, w );
-		auto e = dot_product( l2.dir_, w );
+		// based on http://geomalgorithms.com/a07-_distance.html
+		auto w = l1.pos - l2.pos;
+		auto a = dot_product( l1.dir, l1.dir );         // always >= 0
+		auto b = dot_product( l1.dir, l2.dir );
+		auto c = dot_product( l2.dir, l2.dir );         // always >= 0
+		auto d = dot_product( l1.dir, w );
+		auto e = dot_product( l2.dir, w );
 		auto D = a * c - b * b;        // always >= 0
 
 		T sc, tc;
@@ -42,7 +42,7 @@ namespace xo
 		}
 
 		// get the difference of the two closest points
-		return { l1.pos_ + sc * l1.dir_, l2.pos_ + tc * l2.dir_ };  // =  L1(sc) - L2(tc)
+		return { l1.pos + sc * l1.dir, l2.pos + tc * l2.dir };  // =  L1(sc) - L2(tc)
 	}
 
 	template< typename T >
