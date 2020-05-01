@@ -14,9 +14,6 @@ namespace xo
 		/// assignment
 		vec_< S, T >& operator=( const vec_< S, T >& o ) { std::copy( o.begin(), o.end(), begin() ); return *this; }
 
-		/// convert to prop_node
-		explicit operator prop_node() const { return prop_node().set( "x", x ).set( "y", y ).set( "z", z ); }
-
 		/// element access
 		const T& operator[]( index_t idx ) const { return ( &x )[ idx ]; }
 		T& operator[]( index_t idx ) { return ( &x )[ idx ]; }

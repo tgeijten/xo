@@ -1,8 +1,6 @@
 #pragma once
 
-#include "xo/system/assert.h"
 #include "xo/xo_types.h"
-#include "xo/numerical/math.h"
 
 namespace xo
 {

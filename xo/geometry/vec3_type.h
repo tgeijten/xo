@@ -13,8 +13,8 @@ namespace xo
 
 		constexpr vec3_() : x(), y(), z() {}
 		constexpr vec3_( const vec3_<T>& o ) = default;
-		vec3_( vec3_<T>&& o ) = default;
 		constexpr vec3_( const T& px, const T& py, const T& pz ) : x( px ), y( py ), z( pz ) {}
+		constexpr vec3_( vec3_<T>&& o ) noexcept = default;
 		constexpr vec3_( T&& px, T&& py, T&& pz ) : x( std::move( px ) ), y( std::move( py ) ), z( std::move( pz ) ) {}
 
 		// conversion constructors
@@ -23,7 +23,7 @@ namespace xo
 
 		/// assignment
 		vec3_& operator=( const vec3_& o ) = default;
-		vec3_& operator=( vec3_&& o ) = default;
+		vec3_& operator=( vec3_&& o ) noexcept = default;
 		void set( const T& px, const T& py, const T& pz ) { x = px; y = py; z = pz; }
 
 		/// data
