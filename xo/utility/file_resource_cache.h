@@ -50,14 +50,12 @@ namespace xo
 				xo_error_if( !file_exists( p ), "File does not exist: " + to_str( p ) );
 				try
 				{
-					auto [it, is_new_item] = cached_items_.insert( std::make_pair( p, cached_item() ) );
+					cached_item new_item;
+					new_item.file_time_ = last_write_time( p );
+					new_item.last_checked_time_ = std::time( nullptr );
+					new_item.data_ = std::make_unique<T>( p );
+					auto [it, is_new_item] = cached_items_.insert( std::make_pair( p, std::move( new_item ) ) );
 					item = &it->second;
-					if ( is_new_item )
-					{
-						item->file_time_ = last_write_time( p );
-						item->last_checked_time_ = std::time( nullptr );
-						item->data_ = std::make_unique<T>( p );
-					}
 				}
 				catch ( std::exception& e ) {
 					xo_error( "Error creating resource: "s + e.what() );
