@@ -12,13 +12,6 @@ find_path(XO_INCLUDE_DIR
 	PATHS ${CMAKE_CURRENT_SOURCE_DIR}
 	)
 
-# Place build products (libraries, executables) in root
-# binary (build) directory. Otherwise, they get scattered around
-# the build directory and so the dll's aren't next to the executables.
-get_filename_component(CONFIG_NAME "${CMAKE_BINARY_DIR}" NAME)
-set(EXECUTABLE_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/bin/${CONFIG_NAME}")
-set(LIBRARY_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/bin/${CONFIG_NAME}")
-
 option(XO_TEST_ENABLED "Build and add xo_test" ON)
 option(XO_LUA_ENABLED "Add xo_lua" OFF)
 
