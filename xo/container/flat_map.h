@@ -143,4 +143,13 @@ namespace xo
 		s += "}";
 		return s;
 	}
+
+	template< typename K, typename V >
+	bool from_prop_node( const prop_node& pn, flat_map<K, V>& m ) {
+		m.reserve( pn.size() );
+		for ( const auto& [key, value] : pn )
+			m[ key ] = value.get<V>();
+		pn.access();
+		return true;
+	};
 }

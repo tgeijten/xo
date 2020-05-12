@@ -17,6 +17,7 @@ namespace xo
 		using value_type = T;
 		irange() : begin_( T( 0 ) ), end_( T( 0 ) ) {}
 		irange( T b, T e ) : begin_( b ), end_( e ) {}
+		irange( T e ) : begin_( T( 0 ) ), end_( e ) {}
 
 		struct iterator
 		{
