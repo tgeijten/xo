@@ -52,7 +52,7 @@ namespace xo
 
 	bool str_begins_with( const string& str, const string& substr, index_t start_pos )
 	{
-		return str.compare( start_pos, substr.size(), substr ) == 0;
+		return start_pos < str.size() && str.compare( start_pos, substr.size(), substr ) == 0;
 	}
 
 	bool str_begins_with( const string& str, char c )
