@@ -22,10 +22,10 @@ namespace xo
 	XO_API string right_str( const string& str, int n );
 
 	/// get index of a substring in a string
-	XO_API index_t in_str( const string& str, const string& substr, index_t p = 0 );
+	XO_API index_t in_str( const string& str, const string& substr, index_t pos = 0 );
 
 	/// check if a string begins with a string
-	XO_API bool str_begins_with( const string& str, const string& substr );
+	XO_API bool str_begins_with( const string& str, const string& substr, index_t pos = 0 );
 
 	/// check if a string begins with a string
 	XO_API bool str_begins_with( const string& str, char c );

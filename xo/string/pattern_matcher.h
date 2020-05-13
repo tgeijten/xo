@@ -24,6 +24,8 @@ namespace xo
 			return false;
 		}
 
+		bool empty() const { return patterns.empty(); }
+
 	private:
 		std::vector< string > patterns;
 	};

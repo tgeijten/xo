@@ -50,9 +50,9 @@ namespace xo
 		return str.find( substr, p );
 	}
 
-	bool str_begins_with( const string& str, const string& substr )
+	bool str_begins_with( const string& str, const string& substr, index_t start_pos )
 	{
-		return str.compare( 0, substr.size(), substr ) == 0;
+		return str.compare( start_pos, substr.size(), substr ) == 0;
 	}
 
 	bool str_begins_with( const string& str, char c )
