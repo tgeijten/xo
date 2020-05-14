@@ -148,9 +148,10 @@ namespace xo
 	template< typename K, typename V >
 	bool from_prop_node( const prop_node& pn, flat_map<K, V>& m ) {
 		m.reserve( pn.size() );
+		bool success = true;
 		for ( const auto& [key, value] : pn )
-			m[ key ] = value.get<typename V>();
+			success &= from_prop_node( value, m[ key ] );
 		pn.access();
-		return true;
+		return success;
 	};
 }
