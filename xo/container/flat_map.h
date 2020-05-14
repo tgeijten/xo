@@ -149,7 +149,7 @@ namespace xo
 	bool from_prop_node( const prop_node& pn, flat_map<K, V>& m ) {
 		m.reserve( pn.size() );
 		for ( const auto& [key, value] : pn )
-			m[ key ] = value.get<V>();
+			m[ key ] = value.get<typename V>();
 		pn.access();
 		return true;
 	};
