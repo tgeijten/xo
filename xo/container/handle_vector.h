@@ -14,8 +14,8 @@ namespace xo
 		using typename vector<T>::value_type;
 		using typename vector<T>::iterator;
 		using typename vector<T>::const_iterator;
-		using handle_type = typename handle<T, I>;
-		using handle_span_type = typename handle_span<T, I>;
+		using handle_type = handle<T, I>;
+		using handle_span_type = handle_span<T, I>;
 		using vector<T>::empty;
 		using vector<T>::clear;
 		using vector<T>::size;
