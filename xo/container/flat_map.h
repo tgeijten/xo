@@ -5,6 +5,7 @@
 #include "xo/container/pair_type.h"
 #include "xo/system/assert.h"
 #include "xo/string/string_cast.h"
+#include "xo/container/prop_node.h"
 
 namespace xo
 {
