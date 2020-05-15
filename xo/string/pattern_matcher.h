@@ -17,13 +17,14 @@ namespace xo
 		pattern_matcher( const string& pattern, const char* delimeters = ";" ) : patterns( split_str( pattern, delimeters ) ) {}
 
 		// returns true if string matches pattern
-		bool operator()( const string& str ) const {
+		bool match( const string& str ) const {
 			for ( auto& p : patterns )
 				if ( pattern_match( str, p ) )
 					return true;
 			return false;
 		}
 
+		bool operator()( const string& str ) const { return match( str ); }
 		bool empty() const { return patterns.empty(); }
 
 	private:
