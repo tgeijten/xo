@@ -57,14 +57,11 @@ namespace xo
 		return get_time_from_ticks( current_time );
 	}
 
-	void timer::restart()
+	time timer::restart()
 	{
+		auto prev_epoch = epoch_;
 		epoch_ = get_tick_count();
-	}
-
-	void timer::restart_and_pause()
-	{
-		epoch_ = 0;
+		return get_time_from_ticks( epoch_ - prev_epoch );
 	}
 
 	time timer::pause()

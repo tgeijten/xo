@@ -13,9 +13,7 @@ namespace xo
 
 		time pause();
 		void resume();
-
-		void restart();
-		void restart_and_pause();
+		time restart();
 
 		bool is_running() const { return epoch_ > 0; }
 
