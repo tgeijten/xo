@@ -7,11 +7,27 @@ namespace xo
 {
 	struct XO_API timer
 	{
-		timer();
+		timer( bool start = true );
+		timer( const timer& ) = delete;
 		time operator()() const;
-		void reset();
+
+		time pause();
+		void resume();
+
+		void restart();
+		void restart_and_pause();
+
+		bool is_running() const { return epoch_ > 0; }
 
 	private:
+		// contains epoch when running; constains current time when paused
 		long long epoch_;
+	};
+
+	struct scope_timer
+	{
+		scope_timer( timer& t ) : t_( t ) { t_.resume(); }
+		~scope_timer() { t_.pause(); }
+		timer& t_;
 	};
 }

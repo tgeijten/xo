@@ -47,17 +47,35 @@ namespace xo
 	}
 #endif
 
-	timer::timer() :
-		epoch_( get_tick_count() )
+	timer::timer( bool start ) :
+		epoch_( start ? get_tick_count() : 0 )
 	{}
 
 	time timer::operator()() const
 	{
-		return get_time_from_ticks( get_tick_count() - epoch_ );
+		auto current_time = epoch_ > 0 ? get_tick_count() - epoch_ : -epoch_;
+		return get_time_from_ticks( current_time );
 	}
 
-	void timer::reset()
+	void timer::restart()
 	{
 		epoch_ = get_tick_count();
+	}
+
+	void timer::restart_and_pause()
+	{
+		epoch_ = 0;
+	}
+
+	time timer::pause()
+	{
+		// store current time in epoch
+		epoch_ = -( get_tick_count() - epoch_ );
+		return get_time_from_ticks( -epoch_ );
+	}
+
+	void timer::resume()
+	{
+		epoch_ = get_tick_count() + epoch_;
 	}
 }
