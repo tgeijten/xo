@@ -140,7 +140,7 @@ namespace xo
 		double total_perc = 100.0 * total_ms / root_total;
 		double excl_ms = exclusive_time( s ).milliseconds();
 		double excl_perc = 100.0 * excl_ms / root_total;
-		double excl_avg_ns = min( 9999.0, excl_ms / s->count * 1e6 ); // nanoseconds
+		double excl_avg_ns = min( 999999.0, excl_ms / s->count * 1e6 ); // nanoseconds
 		double over = total_overhead( s ).milliseconds();
 		double over_perc = 100.0 * over / total_ms;
 
@@ -153,7 +153,7 @@ namespace xo
 			else key += "@5";
 		}
 
-		auto value = stringf( "%6.0fms %6.2f%% (%5.2f%%) %6d %4.0fns ~%2.0f%% OH", total_ms, total_perc, excl_perc, s->count, excl_avg_ns, clamped( over_perc, 0.0, 99.0 ) );
+		auto value = stringf( "%6.0fms %6.2f%% (%5.2f%%) %6d %6.0fns ~%2.0f%% OH", total_ms, total_perc, excl_perc, s->count, excl_avg_ns, clamped( over_perc, 0.0, 99.0 ) );
 		auto& child_pn = pn.add_key_value( key + s->name, value );
 		if ( total_perc >= minimum_expand_percentage )
 		{
