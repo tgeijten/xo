@@ -22,23 +22,23 @@ namespace xo
 			auto xr = make_irange( 0, n );
 
 			{
-				XO_PROFILE_SCOPE( "linear_regression" );
+				XO_PROFILE_SCOPE( xo::profiler::instance(), "linear_regression" );
 				r1 = linear_regression( x.begin(), x.end(), y.begin(), y.end() );
 			}
 			{
-				XO_PROFILE_SCOPE( "linear_regression_range" );
+				XO_PROFILE_SCOPE( xo::profiler::instance(), "linear_regression_range" );
 				r2 = linear_regression( xr.begin(), xr.end(), y.begin(), y.end() );
 			}
 			{
-				XO_PROFILE_SCOPE( "linear_regression_fixed_step" );
+				XO_PROFILE_SCOPE( xo::profiler::instance(), "linear_regression_fixed_step" );
 				r3 = linear_regression( y, 0.0f, 1.0f );
 			}
 			{
-				XO_PROFILE_SCOPE( "repeated_median_regression" );
+				XO_PROFILE_SCOPE( xo::profiler::instance(), "repeated_median_regression" );
 				r4 = repeated_median_regression( x.begin(), x.end(), y.begin(), y.end() );
 			}
 			{
-				XO_PROFILE_SCOPE( "repeated_median_regression_range" );
+				XO_PROFILE_SCOPE( xo::profiler::instance(), "repeated_median_regression_range" );
 				r5 = repeated_median_regression( xr.begin(), xr.end(), y.begin(), y.end() );
 			}
 		}

@@ -12,7 +12,7 @@ namespace xo
 
 	void do_work( int amount )
 	{
-		XO_PROFILE_FUNCTION;
+		XO_PROFILE_FUNCTION( xo::profiler::instance() );
 		double sum = 0.0;
 		for ( int x = 0; x < amount; ++x )
 			sum += sqrt( double( x ) );
@@ -21,13 +21,13 @@ namespace xo
 
 	void profile1()
 	{
-		XO_PROFILE_FUNCTION;
+		XO_PROFILE_FUNCTION( xo::profiler::instance() );
 		do_work( 10 );
 	}
 
 	void profile2( int i )
 	{
-		XO_PROFILE_FUNCTION;
+		XO_PROFILE_FUNCTION( xo::profiler::instance() );
 		do_work( 100 );
 		if ( i % 5 < 3 )
 			profile2( i + 1 );
@@ -36,7 +36,7 @@ namespace xo
 
 	void profile3( int i )
 	{
-		XO_PROFILE_FUNCTION;
+		XO_PROFILE_FUNCTION( xo::profiler::instance() );
 		do_work( 1000 );
 		profile1();
 		profile2( i );
