@@ -125,11 +125,11 @@ namespace xo
 
 	prop_node profiler::report( double minimum_expand_percentage, bool add_log_level_tag )
 	{
+		prop_node pn;
 		if ( enabled() )
 			stop();
-
-		prop_node pn;
-		report_section( root(), pn, minimum_expand_percentage, add_log_level_tag );
+		if ( root() )
+			report_section( root(), pn, minimum_expand_percentage, add_log_level_tag );
 		return pn;
 	}
 
