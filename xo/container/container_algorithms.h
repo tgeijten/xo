@@ -47,10 +47,12 @@ namespace xo
 	template< typename C > typename C::const_iterator min_element( const C& cont ) {
 		return std::min_element( std::begin( cont ), std::end( cont ) );
 	}
+	template< typename C > auto min_value( const C& cont ) { return *min_element( cont ); }
 
 	template< typename C > typename C::const_iterator max_element( const C& cont ) {
 		return std::max_element( std::begin( cont ), std::end( cont ) );
 	}
+	template< typename C > auto max_value( const C& cont ) { return *max_element( cont ); }
 
 	template< typename C > C sorted_copy( const C& cont ) { C res( cont ); std::sort( res.begin(), res.end() ); return res; }
 
