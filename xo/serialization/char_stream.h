@@ -22,9 +22,6 @@ namespace xo
 		/// construct char_stream from rvalue string
 		explicit char_stream( string&& other, string delim_chars = whitespace_characters, string quote_chars = "\"", std::vector< string > operators = {} );
 
-		/// construct char_stream with contents read from file
-		explicit char_stream( const path& filename, string delim_chars = whitespace_characters, string quote_chars = "\"", std::vector< string > operators = {} );
-
 		~char_stream() {}
 
 		/// initialize operators

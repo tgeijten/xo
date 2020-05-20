@@ -8,7 +8,7 @@
 
 namespace xo
 {
-	char_stream::char_stream( const char * buf, string delim_chars, string quote_chars, std::vector<string> operators ) :
+	char_stream::char_stream( const char* buf, string delim_chars, string quote_chars, std::vector<string> operators ) :
 	delimiters_( delim_chars ),
 	quotations_( quote_chars )
 	{
@@ -24,10 +24,6 @@ namespace xo
 		initialize( str_buffer.c_str(), str_buffer.size() );
 		set_operators( operators );
 	}
-
-	char_stream::char_stream( const path& filename, string delim_chars, string quote_chars, std::vector< string > operators ) :
-	char_stream( load_string( filename ), delim_chars, quote_chars, operators )
-	{}
 
 	void char_stream::set_operators( std::vector< string > operators )
 	{

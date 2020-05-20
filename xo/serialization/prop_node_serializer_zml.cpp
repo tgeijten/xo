@@ -8,6 +8,7 @@
 #include "xo/container/prop_node.h"
 #include "xo/container/container_tools.h"
 #include "xo/system/log.h"
+#include "xo/filesystem/filesystem.h"
 #include <algorithm>
 
 namespace xo
@@ -265,7 +266,7 @@ namespace xo
 
 	XO_API prop_node load_zml( const path& filename, error_code* ec, path parent_folder )
 	{
-		char_stream stream( filename );
+		char_stream stream( load_string( filename ) );
 		return parse_zml( stream, ec, filename.parent_path() );
 	}
 }
