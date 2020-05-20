@@ -5,17 +5,33 @@
 
 #include "xo/system/assert.h"
 #include "xo/xo_types.h"
+#include "xo/container/pair_type.h"
+#include <cmath>
 
 namespace xo
 {
 	template< typename I, typename T = typename std::iterator_traits< I >::value_type >
 	T average( I b, I e, T v = T() ) {
+		xo_assert( b != e );
 		for ( auto i = b; i != e; ++i ) v = v + *i;
 		return v / T( e - b );
 	}
 
 	template< typename C > typename C::value_type average( const C& cont )
 	{ return average( std::cbegin( cont ), std::cend( cont ) ); }
+
+	template< typename I, typename T = typename std::iterator_traits< I >::value_type >
+	pair<T, T> mean_std( I b, I e ) {
+		xo_assert( b != e );
+		T mean = average( b, e ), acc = T();
+		for ( auto i = b; i != e; ++i )
+			acc += xo::squared( *i - mean );
+		return { mean, std::sqrt( acc ) };
+	}
+
+	template< typename C > auto mean_std( const C& cont ) {
+		return mean_std( std::cbegin( cont ), std::cend( cont ) );
+	}
 
 	template < typename C, typename P > std::vector< index_t > sort_indices( const C& cont, P pred ) {
 		std::vector< size_t > idx_vec( cont.size() );
