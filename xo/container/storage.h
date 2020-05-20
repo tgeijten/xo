@@ -4,6 +4,8 @@
 #include "xo/system/assert.h"
 #include "xo/container/label_vector.h"
 #include "xo/numerical/math.h"
+#include "xo/string/string_tools.h"
+#include "xo/serialization/char_stream.h"
 
 #include <vector>
 #include <string>
@@ -42,7 +44,10 @@ namespace xo
 		virtual ~storage() {}
 
 		/// add a channel and resize buffer if needed
-		index_t add_channel( L label, const T& value = T() ) { resize( frame_size(), channel_size() + 1, value ); return labels_.set( channel_size() - 1, label ); }
+		index_t add_channel( L label, const T& value = T() ) {
+			resize( frame_size(), channel_size() + 1, value );
+			return labels_.set( channel_size() - 1, label );
+		}
 
 		/// add a channel with data, resize buffer if needed
 		index_t add_channel( L label, const std::vector< T >& data ) {
@@ -140,6 +145,14 @@ namespace xo
 			}
 		}
 
+		std::vector<T> get_channel( index_t channel ) const {
+			std::vector<T> vec( frame_size() );
+			for ( index_t fi = 0; fi < frame_size(); ++fi )
+				vec[ fi ] = ( *this )( fi, channel );
+			return vec;
+		}
+		std::vector<T> get_channel( const L& label ) const { return get_channel( find_channel( label ) ); }
+
 		const label_vector< L >& labels() const { return labels_; }
 		const container_type& data() const { return data_; }
 		container_type& data() { return data_; }
@@ -161,6 +174,23 @@ namespace xo
 				if ( ci == buf.channel_size() - 1 ) str << std::endl; else str << '\t';
 			}
 		}
+		return str;
+	}
+
+	template< typename T, typename L > std::istream& operator>>( std::istream& str, storage< T, L >& sto ) {
+		string line;
+		if ( std::getline( str, line ) )
+		{
+			for ( const auto& l : xo::split_str( line, "\t " ) )
+				sto.add_channel( l );
+			while ( std::getline( str, line ) ) {
+				auto& f = sto.add_frame();
+				xo::char_stream cstr( line.c_str() );
+				for ( index_t ci = 0; cstr.good() && ci < sto.channel_size(); ++ci )
+					cstr >> f[ ci ];
+			}
+		}
+
 		return str;
 	}
 }
