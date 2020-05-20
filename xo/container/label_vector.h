@@ -52,7 +52,7 @@ namespace xo
 		index_t set( index_t idx, const L& label ) {
 			xo_assert( idx < size() && find( label ) == no_index );
 			labels_[ idx ] = label;
-			label_indices_[ label ] = labels_.size() - 1;
+			label_indices_[ label ] = idx;
 			return idx;
 		}
 
