@@ -9,12 +9,12 @@ namespace xo
 		constexpr time() : internal_( 0 ) {}
 		explicit constexpr time( storage_t nanoseconds ) : internal_( nanoseconds ) {}
 
-		double seconds() const { return double( internal_ / 1e9 ); }
-		float secondsf() const { return float( internal_ / 1e9 ); }
-		double milliseconds() const { return double( internal_ / 1e6 ); }
-		float millisecondsf() const { return float( internal_ / 1e6 ); }
-		storage_t microseconds() const { return internal_ / 1'000; }
+		double seconds() const { return 1e-9 * internal_; }
+		float secondsf() const { return 1e-9f * internal_; }
+		double milliseconds() const { return 1e-6 * internal_; }
+		float millisecondsf() const { return 1e-6f * internal_; }
 		storage_t nanoseconds() const { return internal_; }
+		double nanosecondsd() const { return double( internal_ ); }
 
 		bool operator<( time o ) const { return internal_ < o.internal_; }
 		bool operator<=( time o ) const { return internal_ <= o.internal_; }
