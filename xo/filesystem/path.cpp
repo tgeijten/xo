@@ -6,10 +6,11 @@ namespace xo
 	path& path::replace_extension( const path& ext )
 	{
 		size_t n = data_.find_last_of( '.' );
-		if ( n != string::npos ) data_.erase( n ); // remove existing extension
+		if ( n != string::npos )
+			data_.erase( n ); // remove existing extension
 
 		if ( !ext.empty() )
-			data_ += '.' + ext.data_;
+			data_ += str_begins_with( ext.data_, '.' ) ? ext.data_ : '.' + ext.data_;
 
 		return *this;
 	}
