@@ -36,6 +36,10 @@ namespace xo
 	/// Quaternion multiplication
 	template< typename T > quat_<T>& operator*=( quat_<T>& q1, const quat_<T>& q2 ) { q1 = q1 * q2; return q1; }
 
+	/// Quaternion scaling
+	template< typename T > quat_<T>& operator*=( quat_<T>& q, const T& s )
+	{ q.w *= s; q.x *= s; q.y *= s; q.z *= s; return q; }
+
 	/// get length of a quat
 	template< typename T > T length( const quat_<T>& q )
 	{ return std::sqrt( q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z ); }
@@ -58,16 +62,22 @@ namespace xo
 	{ return equal( q1.w, q2.w, e ) && equal( q1.x, q2.x, e ) && equal( q1.y, q2.y, e ) && equal( q1.z, q2.z, e ); }
 
 	/// normalize quaternion, return length
-	template< typename T > T normalize( quat_<T>& q ) {
-		T len = length( q );
-		if ( len > constants<T>::ample_epsilon() ) {
-			T s = inv( len ); q.x *= s; q.y *= s; q.z *= s; q.w *= s;
-		}
-		return len;
-	}
+	template< typename T > T normalize( quat_<T>& q )
+	{ T len = length( q ); T s = inv( len ); q *= s; return len; }
 
 	/// get normalized quaternion
 	template< typename T > quat_<T> normalized( quat_<T> q ) { normalize( q ); return q; }
+
+	// Fast normalization, based on https://stackoverflow.com/questions/11667783/quaternion-and-normalization
+	template< typename T > void normalize_fast( quat_<T>& q, const T epsilon = T( 2.107342e-08 ) ) {
+		const auto slen = squared_length( q );
+		if ( std::abs( T( 1 ) - slen ) < epsilon )
+			q *= T( 2 ) / ( T( 1 ) + slen ); // first order Padé approximant
+		else q *= T( 1 ) / std::sqrt( slen );
+	}
+
+	/// get normalized quaternion
+	template< typename T > quat_<T> normalized_fast( quat_<T> q ) { normalize_fast( q ); return q; }
 
 	/// get quaternion conjugate
 	template< typename T > quat_<T> conjugate( quat_<T> q ) { q.x = -q.x; q.y = -q.y; q.z = -q.z; return q; }
