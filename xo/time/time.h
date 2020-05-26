@@ -25,13 +25,15 @@ namespace xo
 
 		time operator-( time o ) const { return time( internal_ - o.internal_ ); }
 		time operator+( time o ) const { return time( internal_ + o.internal_ ); }
+		time operator/( size_t n ) const { return time( internal_ / n ); }
 		time& operator-=( time o ) { internal_ -= o.internal_; return *this; }
 		time& operator+=( time o ) { internal_ += o.internal_; return *this; }
+		time& operator/=( size_t n ) { internal_ /= n; return *this; }
+
+		// ratio between times
+		double operator/( time v ) const { return double( internal_ ) / double( v.internal_ ); }
 
 		bool is_zero() const { return internal_ == 0; }
-
-		/// compute time ratio
-		double operator/( time v ) const { return double( internal_ ) / double( v.internal_ ); }
 
 		template< typename T > time operator/( T v ) const { return time( storage_t( internal_ / v ) ); }
 		template< typename T > time operator*( T v ) const { return time( storage_t( internal_ * v ) ); }
