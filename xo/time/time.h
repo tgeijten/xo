@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+
 namespace xo
 {
 	struct XO_API time
