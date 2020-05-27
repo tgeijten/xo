@@ -14,19 +14,20 @@ namespace xo
 	T average( I b, I e, T v = T() ) {
 		xo_assert( b != e );
 		for ( auto i = b; i != e; ++i ) v = v + *i;
-		return v / T( e - b );
+		return v / ( e - b );
 	}
 
 	template< typename C > typename C::value_type average( const C& cont )
 	{ return average( std::cbegin( cont ), std::cend( cont ) ); }
 
-	template< typename I, typename T = typename std::iterator_traits< I >::value_type >
-	pair<T, T> mean_std( I b, I e ) {
+	template< typename I >
+	auto mean_std( I b, I e ) {
 		xo_assert( b != e );
-		T mean = average( b, e ), acc = T();
+		auto mean = average( b, e );
+		auto acc = decltype( mean * mean )();
 		for ( auto i = b; i != e; ++i )
-			acc += xo::squared( *i - mean );
-		return { mean, std::sqrt( acc ) };
+			acc += ( *i - mean ) * ( *i - mean );
+		return std::make_pair( mean, std::sqrt( acc ) );
 	}
 
 	template< typename C > auto mean_std( const C& cont ) {
