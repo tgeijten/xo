@@ -22,6 +22,7 @@ namespace xo
 		static constexpr T min() { return std::numeric_limits<T>::min(); }
 		static constexpr T lowest() { return std::numeric_limits<T>::lowest(); }
 		static constexpr T NaN() { return std::numeric_limits<T>::quiet_NaN(); }
+		static constexpr T infinity() { return std::numeric_limits<T>::infinity(); }
 		static constexpr bool is_signed() { return std::numeric_limits<T>::is_signed; }
 		static constexpr T sentinel() {
 			static_assert( !std::is_same_v<T, bool>, "xo::constants<bool>::sentinal() is not supported" );
