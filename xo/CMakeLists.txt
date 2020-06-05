@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.16.0)
+
 SET (XO_LIB_NAMES
 	container
 	filesystem
@@ -11,11 +13,11 @@ SET (XO_LIB_NAMES
 	utility
 	)
 
-SET ( XO_ROOT xo_types.h )
+SET (XO_ROOT xo_types.h)
 
 foreach(xolib ${XO_LIB_NAMES})
-  file(GLOB XO_${xolib} ${xolib}/*.h ${xolib}/*.cpp)
-  list(APPEND XO_SOURCES ${XO_${xolib}})
+	file(GLOB XO_${xolib} ${xolib}/*.h ${xolib}/*.cpp)
+	list(APPEND XO_SOURCES ${XO_${xolib}})
 endforeach()
 
 list ( APPEND XO_SOURCES ${XO_ROOT} )
