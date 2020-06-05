@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16.0)
+cmake_minimum_required(VERSION 3.12.0)
 
 SET (XO_LIB_NAMES
 	container
@@ -22,23 +22,18 @@ endforeach()
 
 list ( APPEND XO_SOURCES ${XO_ROOT} )
 
-# include( PrecompiledHeaders )
-# use_precompiled_headers( XO_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/stdafx.h" "${CMAKE_CURRENT_SOURCE_DIR}/stdafx.cpp" 256 )
-
 add_library(xo SHARED ${XO_SOURCES} )
 
-# Require C++17 standard
 set_target_properties(xo PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 
 target_include_directories(xo PUBLIC ${XO_INCLUDE_DIR})
-
-target_precompile_headers(xo PRIVATE <string> <vector> <utility> <algorithm> <memory> <limits> <initializer_list>)
 
 if (UNIX)
     target_link_libraries(xo pthread)
 endif()
 
 if (MSVC)
+	target_precompile_headers(xo PRIVATE <string> <vector> <utility> <algorithm> <memory> <limits> <initializer_list>)
 	file (GLOB_RECURSE PRECOMPILED_HEADER_FILES ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/cmake_pch.*)
 	source_group("CMakePCH" FILES ${PRECOMPILED_HEADER_FILES})
 	source_group("" FILES ${XO_ROOT})
