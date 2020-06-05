@@ -1,4 +1,4 @@
-SET ( XO_LIB_NAMES
+SET (XO_LIB_NAMES
 	container
 	filesystem
 	geometry
@@ -20,8 +20,8 @@ endforeach()
 
 list ( APPEND XO_SOURCES ${XO_ROOT} )
 
-include( PrecompiledHeaders )
-use_precompiled_headers( XO_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/stdafx.h" "${CMAKE_CURRENT_SOURCE_DIR}/stdafx.cpp" 256 )
+# include( PrecompiledHeaders )
+# use_precompiled_headers( XO_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/stdafx.h" "${CMAKE_CURRENT_SOURCE_DIR}/stdafx.cpp" 256 )
 
 add_library(xo SHARED ${XO_SOURCES} )
 
@@ -30,12 +30,17 @@ set_target_properties(xo PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 
 target_include_directories(xo PUBLIC ${XO_INCLUDE_DIR})
 
+target_precompile_headers(xo PRIVATE <string> <vector> <utility> <algorithm> <memory> <limits> <initializer_list>)
+
 if (UNIX)
     target_link_libraries(xo pthread)
 endif()
 
 if (MSVC)
-	source_group( "" FILES ${PRECOMPILED_HEADER_FILES} ${XO_ROOT} )
+	file (GLOB_RECURSE PRECOMPILED_HEADER_FILES ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/cmake_pch.*)
+	source_group("CMakePCH" FILES ${PRECOMPILED_HEADER_FILES})
+	source_group("" FILES ${XO_ROOT})
+	source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${XO_SOURCES} )
 	foreach(xolib ${XO_LIB_NAMES})
 		source_group("${xolib}" FILES ${XO_${xolib}} )
 	endforeach()
