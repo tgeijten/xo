@@ -2,6 +2,7 @@
 
 #include "xo/xo_types.h"
 #include "xo/filesystem/path.h"
+#include <iosfwd>
 
 namespace xo
 {
