@@ -45,8 +45,3 @@ if (MSVC)
 	target_compile_options( xo PRIVATE "/MP" ) # multithreaded compilation on MSVC
 endif()
 
-set_target_properties(xo PROPERTIES 
-	PROJECT_LABEL "xo"
-	OUTPUT_NAME xo
-    FOLDER "xo"
-	)
