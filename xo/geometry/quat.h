@@ -68,8 +68,15 @@ namespace xo
 	/// get normalized quaternion
 	template< typename T > quat_<T> normalized( quat_<T> q ) { normalize( q ); return q; }
 
-	// Fast normalization, based on https://stackoverflow.com/questions/11667783/quaternion-and-normalization
-	template< typename T > void normalize_fast( quat_<T>& q, const T epsilon = T( 2.107342e-08 ) ) {
+	// Fast normalization using first order Padé approximant, works only when ||q|| ~ 1
+	template< typename T > void normalize_fast( quat_<T>& q )
+	{ T sl = squared_length( q ); q *= T( 2 ) / ( T( 1 ) + sl ); }
+
+	/// get normalized quaternion using first order Padé approximant, works only when ||q|| ~ 1
+	template< typename T > quat_<T> normalized_fast( quat_<T> q ) { normalize_fast( q ); return q; }
+
+	// Perform either fast or normal normalization, based on epsilon of squared length
+	template< typename T > void normalize_try_fast( quat_<T>& q, const T epsilon = T( 2.107342e-08 ) ) {
 		const auto slen = squared_length( q );
 		if ( std::abs( T( 1 ) - slen ) < epsilon )
 			q *= T( 2 ) / ( T( 1 ) + slen ); // first order Padé approximant
@@ -77,7 +84,7 @@ namespace xo
 	}
 
 	/// get normalized quaternion
-	template< typename T > quat_<T> normalized_fast( quat_<T> q ) { normalize_fast( q ); return q; }
+	template< typename T > quat_<T> normalized_try_fast( quat_<T> q ) { normalize_try_fast( q ); return q; }
 
 	/// get quaternion conjugate
 	template< typename T > quat_<T> conjugate( quat_<T> q ) { q.x = -q.x; q.y = -q.y; q.z = -q.z; return q; }
@@ -85,7 +92,7 @@ namespace xo
 	/// get quaternion conjugate
 	template< typename T > quat_<T> operator-( quat_<T> q ) { q.x = -q.x; q.y = -q.y; q.z = -q.z; return q; }
 
-	/// get quaternion inverse
+	/// get quaternion inverse; #todo: verify correctness
 	template< typename T > quat_<T> inverse( quat_<T> q )
 	{ auto f = T( -1 ) / squared_length( q ); q.x *= f; q.y *= f; q.z *= f; return q; }
 
