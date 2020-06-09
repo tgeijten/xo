@@ -24,5 +24,6 @@ namespace xo
 	};
 
 	XO_API prop_node load_zml( const path& filename, error_code* ec = nullptr, path parent_folder = path() );
+	XO_API void save_zml( const prop_node& pn, const path& filename, error_code* ec = nullptr );
 	XO_API prop_node parse_zml( const char* str, error_code* ec = nullptr );
 }

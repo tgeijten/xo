@@ -269,4 +269,9 @@ namespace xo
 		char_stream stream( load_string( filename ) );
 		return parse_zml( stream, ec, filename.parent_path() );
 	}
+
+	XO_API void save_zml( const prop_node& pn, const path& filename, error_code* ec )
+	{
+		prop_node_serializer_zml().save_file( pn, filename, ec );
+	}
 }

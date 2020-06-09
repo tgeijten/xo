@@ -31,6 +31,7 @@ namespace xo
 	XO_API path create_unique_directory( const path& folder, int max_attempts = 9999 );
 
 	XO_API string load_string( const path& filename, error_code* ec = nullptr );
+	XO_API void save_string( const string& s, const path& filename, error_code* ec = nullptr );
 
 	XO_API bool current_path( const path& p );
 	XO_API path current_path();

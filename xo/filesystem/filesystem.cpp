@@ -224,6 +224,11 @@ namespace xo
 		return str.str();
 	}
 
+	void save_string( const string& s, const path& filename, error_code* ec )
+	{
+		std::ofstream( filename.str() ) << s;
+	}
+
 	bool current_path( const path& p )
 	{
 		return chdir( p.c_str() ) == 0;
