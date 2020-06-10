@@ -121,7 +121,7 @@ namespace xo
 
 			auto time_str = stringf( "%.2fs", t().seconds() );
 			if ( tests_failed == 0 )
-				log::info( "Performed ", results.size(), " tests with ", total.passed_, " checks in ", time_str, "; ALL CLEAR :-)" );
+				log::info( "Successfully performed ", results.size(), " tests with ", total.passed_, " checks in ", time_str, "; ALL CLEAR :-)" );
 			else
 				log::error( "WARNING: ", tests_failed, " of ", results.size(), " tests FAILED!" );
 

@@ -9,6 +9,7 @@
 #	include <windows.h>
 #endif
 #include <mutex>
+#include "xo/string/string_tools.h"
 
 namespace xo
 {
@@ -99,7 +100,10 @@ namespace xo
 				SetConsoleTextAttribute( h, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | bg );
 				break;
 			case xo::log::level::info:
-				SetConsoleTextAttribute( h, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY | bg );
+				if ( xo::str_begins_with( msg, "Success" ) ) // make green if message starts with 'Success', ha ha
+					SetConsoleTextAttribute( h, FOREGROUND_GREEN | FOREGROUND_INTENSITY | bg );
+				else // normal boring white if not
+					SetConsoleTextAttribute( h, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY | bg );
 				break;
 			case xo::log::level::warning:
 				SetConsoleTextAttribute( h, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY | bg );
