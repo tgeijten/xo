@@ -95,7 +95,7 @@ namespace xo
 			}
 
 			if ( tests_failed == 0 )
-				log::info( "Performed ", get_test_cases().size(), " tests with ", total.passed_, " checks; ALL CLEAR :-)" );
+				log::info( "Successfully Performed ", get_test_cases().size(), " tests with ", total.passed_, " checks; ALL CLEAR :-)" );
 			else
 				log::error( "WARNING: ", tests_failed, " of ", get_test_cases().size(), " tests FAILED!" );
 

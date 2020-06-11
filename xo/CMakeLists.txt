@@ -33,7 +33,7 @@ if (UNIX)
 endif()
 
 if (MSVC)
-	target_precompile_headers(xo PRIVATE <string> <vector> <utility> <algorithm> <memory> <limits> <initializer_list>)
+	target_precompile_headers(xo PRIVATE <string> <vector> <algorithm> <memory> <limits>)
 	file (GLOB_RECURSE PRECOMPILED_HEADER_FILES ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/cmake_pch.*)
 	source_group("CMakePCH" FILES ${PRECOMPILED_HEADER_FILES})
 	source_group("" FILES ${XO_ROOT})
@@ -41,7 +41,7 @@ if (MSVC)
 	foreach(xolib ${XO_LIB_NAMES})
 		source_group("${xolib}" FILES ${XO_${xolib}} )
 	endforeach()
-	target_compile_definitions( xo PRIVATE XO_EXPORTS )
-	target_compile_options( xo PRIVATE "/MP" ) # multithreaded compilation on MSVC
+	target_compile_definitions(xo PRIVATE XO_EXPORTS)
+	target_compile_options(xo PRIVATE "/MP") # multithreaded compilation on MSVC
+	#set_target_properties(xo PROPERTIES FOLDER "xo")
 endif()
-
