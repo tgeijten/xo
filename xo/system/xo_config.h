@@ -74,7 +74,7 @@
 #		define _CRT_SECURE_NO_WARNINGS
 #	endif
 
-#	ifndef XO_DISABLE_MSVC_WARNING_5038
+#	ifdef XO_PROMOTE_MSVC_WARNING_5038
 #		pragma warning( 3: 5038 ) // Class member initialization order warning
 #	endif
 
