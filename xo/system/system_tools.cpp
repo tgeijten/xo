@@ -69,14 +69,16 @@ namespace xo
 		else return trim_str( id, "_" ); // remove underscores
 	}
 
-	XO_API string tidy_type_name( const string& name )
+	XO_API string tidy_type_name( const string& name0 )
 	{
+		std::string name = name0;
 #ifndef XO_COMP_MSVC
 		int status;
 		char* cleanType = abi::__cxa_demangle( name.c_str(), 0, 0, &status );
 		auto cleanStr = std::string( cleanType );
 		free( cleanType );
-		return cleanStr;
+		name = cleanStr;
+		//return cleanStr;
 #endif
 		auto endpos = name.find_first_of( "<" );
 		size_t pos = name.find_last_of( ": ", endpos );
