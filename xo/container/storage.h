@@ -10,6 +10,7 @@
 #include <vector>
 #include <string>
 #include <ostream>
+#include <iostream>
 
 namespace xo
 {
