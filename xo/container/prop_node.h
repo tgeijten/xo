@@ -123,6 +123,9 @@ namespace xo
 		/// get raw value_t reference
 		const value_t& raw_value() const { access(); return value; }
 
+		/// get raw value without accessing the value
+		const value_t& peek_raw_value() const { return value; }
+
 		/// set the value of a child node, accessing children through delimiter character
 		template< typename T > prop_node& set_query( const key_t& query, const T& v, const char delim = '.' );
 
@@ -213,8 +216,8 @@ namespace xo
 		/// see if this node has been accessed
 		bool is_accessed() const;
 		size_t count_unaccessed() const;
-		void set_accessed_recursively( bool access ) const;
-		void access() const { accessed_flag = true; }
+		void set_accessed_recursively( bool b ) const;
+		void access( bool b = true ) const { accessed_flag = b; }
 
 	private:
 		const prop_node* try_get_query_key( const key_t& key ) const;

@@ -35,7 +35,7 @@ namespace xo
 			else str << key;
 
 			if ( value.has_value() || value.size() == 0 )
-				str << string( align - str.str().size(), ' ' ) << " = " << value.raw_value();
+				str << string( align - str.str().size(), ' ' ) << " = " << value.peek_raw_value();
 			log::log_string( l, str.str() );
 			log_prop_node( value, indent, depth + 1, align );
 		}
@@ -53,7 +53,7 @@ namespace xo
 					if ( !n.second.is_accessed() )
 					{
 						if ( n.second.has_value() )
-							str += " = " + n.second.raw_value();
+							str += " = " + n.second.peek_raw_value();
 						str += " *";
 					}
 					log::message( level, str );
@@ -75,7 +75,7 @@ namespace xo
 					if ( !n.second.is_accessed() )
 					{
 						if ( n.second.has_value() )
-							str += " = " + n.second.raw_value();
+							str += " = " + n.second.peek_raw_value();
 						str += " *";
 					}
 					str += '\n';
