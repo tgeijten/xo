@@ -5,6 +5,7 @@
 #include "bounds.h"
 
 #include <random> // #todo: try to get rid of this header
+#include "xo/geometry/angle_type.h"
 
 namespace xo
 {
@@ -29,4 +30,12 @@ namespace xo
 	template< typename T, XO_ENABLE_IF_INTEGRAL > T rand_uni_int( T min, T max ) { return global_random_number_generator().uni( min, max ); }
 	template< typename T, XO_ENABLE_IF_INTEGRAL > T rand_uni_int( const xo::bounds<T>& b ) { return global_random_number_generator().uni( b.lower, b.upper ); }
 	template< typename T, XO_ENABLE_IF_FLOATING_POINT > T rand_norm( T mean, T stdev ) { return global_random_number_generator().norm( mean, stdev ); }
+
+	template< typename T > vec3_<T> rand_vec3( T min = T( -1 ), T max = T( 1 ), random_number_generator& rng = global_random_number_generator() ) {
+		return vec3_<T>{ rng.uni( min, max ), rng.uni( min, max ), rng.uni( min, max ) };
+	}
+
+	template< typename T > quat_<T> rand_quat( degree_<T> min = -180_deg, degree_<T> max = 180_deg, random_number_generator& rng = global_random_number_generator() ) {
+		return quat_from_euler_xyz( rng.uni( min, max ), rng.uni( min, max ), rng.uni( min, max ) );
+	}
 }

@@ -49,8 +49,8 @@ namespace xo
 		random_number_generator rng;
 		for ( index_t i = 0; i < 10; ++i )
 		{
-			auto v1 = normalized( make_random_vec3<float>( boundsf( -1, 1 ), rng ) );
-			auto v2 = normalized( make_random_vec3<float>( boundsf( -1, 1 ), rng ) );
+			auto v1 = normalized( rand_vec3<float>( -1, 1, rng ) );
+			auto v2 = normalized( rand_vec3<float>( -1, 1, rng ) );
 			auto q1 = quat_from_directions( v1, v2 );
 			auto q2 = quat_from_directions( v2, v1 );
 			auto q3 = quat_from_directions( v2, -v2 );
