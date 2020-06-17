@@ -9,6 +9,7 @@ SET (XO_LIB_NAMES
 	serialization
 	string
 	system
+	thread
 	time
 	utility
 	)

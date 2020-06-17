@@ -18,18 +18,4 @@ namespace xo
 	template< typename T > string get_clean_type_name() { return tidy_type_name( get_type_name<T>() ); }
 	template< typename T > string get_type_name( const T& obj ) { return string( typeid( obj ).name() ); }
 	template< typename T > string get_clean_type_name( const T& obj ) { return tidy_type_name( get_type_name( obj ) ); }
-
-	enum class thread_priority { idle, lowest, low, normal, high, highest, realtime };
-	XO_API void set_thread_priority( thread_priority p );
-
-#ifdef XO_ENABLE_CPU_CYCLE_COUNT
-#ifdef XO_COMP_MSVC
-#	include <intrin.h>
-	using cpu_cycle_count_t = unsigned long long;
-	inline cpu_cycle_count_t cpu_cycle_count() { return __rdtsc(); }
-#else
-#	include <x86intrin.h>
-	using cpu_cycle_count_t = unsigned long long;
-#endif
-#endif
 }

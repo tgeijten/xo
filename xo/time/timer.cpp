@@ -11,6 +11,17 @@
 #include <chrono>
 #endif
 
+#ifdef XO_ENABLE_CPU_CYCLE_COUNT
+#ifdef XO_COMP_MSVC
+#	include <intrin.h>
+using cpu_cycle_count_t = unsigned long long;
+inline cpu_cycle_count_t cpu_cycle_count() { return __rdtsc(); }
+#else
+#	include <x86intrin.h>
+using cpu_cycle_count_t = unsigned long long;
+#endif
+#endif
+
 namespace xo
 {
 #if XO_WINDOWS_PERFORMANCE_COUNTER_ENABLED
