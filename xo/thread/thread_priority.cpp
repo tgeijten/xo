@@ -84,6 +84,8 @@ namespace xo
 		result.pc_ = ::GetPriorityClass( h );
 		result.tp_= ::GetThreadPriority( h );
 		return result;
+#else
+                return {};
 #endif
 	}
 }
