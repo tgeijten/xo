@@ -85,7 +85,7 @@ namespace xo
 		result.tp_= ::GetThreadPriority( h );
 		return result;
 #else
-                return {};
+		XO_NOT_IMPLEMENTED;
 #endif
 	}
 }
