@@ -14,6 +14,7 @@ namespace xo
 
 		constexpr handle() : value_( invalid_id() ) {}
 		explicit constexpr handle( id_type v ) : value_( v ) {}
+		template<typename U> explicit constexpr handle( handle<U, I> o ) : value_( o.value() ) {}
 
 		explicit operator bool() const { return value_ != invalid_id(); }
 
