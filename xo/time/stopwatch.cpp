@@ -6,12 +6,12 @@
 
 namespace xo
 {
-	void stopwatch::split( const string& s )
+	void stopwatch::split( const char* s )
 	{
 		if ( current_split_ >= split_times_.size() )
 		{
-			split_times_.push_back( timer_.restart() );
-			split_names_.push_back( s );
+			split_times_.emplace_back( timer_.restart() );
+			split_names_.emplace_back( s );
 			current_split_++;
 		}
 		else split_times_[ current_split_++ ] += timer_.restart();
