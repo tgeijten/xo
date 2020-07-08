@@ -50,7 +50,7 @@ namespace xo
 		for ( int i = num_evals / N; i > 0; --i )
 			for ( int j = 0; j < N; ++j )
 				result += euler_yxz_from_quat( qa[ j ] );
-		sw.split( name );
+		sw.split( name.c_str() );
 		return result;
 	}
 
@@ -64,7 +64,7 @@ namespace xo
 		for ( int i = num_evals / N; i > 0; --i )
 			for ( int j = 0; j < N; ++j )
 				result += rotation_around_axis( qa[ j ], axis );
-		sw.split( name );
+		sw.split( name.c_str() );
 		return result;
 	}
 

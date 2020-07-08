@@ -1,9 +1,9 @@
 #pragma once
 
-#include "timer.h"
 #include "xo/xo_types.h"
+#include "xo/time/timer.h"
 #include "xo/string/string_type.h"
-#include <vector>
+#include "xo/container/vector_type.h"
 
 namespace xo
 {
@@ -13,16 +13,22 @@ namespace xo
 		stopwatch() : current_split_( 0 ) {}
 
 		/// restarts the stopwatch. Existing splits are kept, subsequent splits are added to existing ones.
-		void restart();
+		void restart() { current_split_ = 0; timer_.restart(); }
 
 		/// add a split with a specific tag. After a restart, splits must be performed in the same order.
-		void split( const char* name );
-		void split( const std::string& name ) { split( name.c_str() ); }
+		void split( const char* name ) {
+			if ( current_split_ >= split_times_.size() ) {
+				split_times_.emplace_back( timer_.restart() );
+				split_names_.emplace_back( name );
+				++current_split_;
+			}
+			else split_times_[ current_split_++ ] += timer_.restart();
+		}
 
 		/// get split information
 		size_t split_count() const { return split_times_.size(); }
-		const std::vector<time>& split_times() const { return split_times_; }
-		const std::vector<string>& split_names() const { return split_names_; }
+		const vector<time>& split_times() const { return split_times_; }
+		const vector<string>& split_names() const { return split_names_; }
 
 		void reserve( size_t n ) { split_times_.reserve( n ); split_names_.reserve( n ); }
 
@@ -32,7 +38,7 @@ namespace xo
 	private:
 		timer timer_;
 		index_t current_split_;
-		std::vector<time> split_times_;
-		std::vector<string> split_names_;
+		vector<time> split_times_;
+		vector<string> split_names_;
 	};
 }
