@@ -24,7 +24,7 @@ namespace xo
 		// test single-threaded
 		stopwatch sw;
 		log_some_stuff( 2000 );
-		sw.add_measure( "single_threaded" );
+		sw.split( "single_threaded" );
 
 		// test multi-thread
 		std::vector<std::thread> threads;
@@ -32,7 +32,7 @@ namespace xo
 			threads.emplace_back( &log_some_stuff, 200 );
 		for ( auto& t : threads )
 			t.join();
-		sw.add_measure( "multi_threaded" );
+		sw.split( "multi_threaded" );
 
 		// report results
 		log::info( "RESULTS\n", sw.get_report() );

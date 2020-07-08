@@ -46,11 +46,11 @@ namespace xo
 		vec3radf result;
 		auto name = stringf( "euler_test%d", N );
 		auto qa = make_random_quaternions<N>();
-		sw.start();
+		sw.restart();
 		for ( int i = num_evals / N; i > 0; --i )
 			for ( int j = 0; j < N; ++j )
 				result += euler_yxz_from_quat( qa[ j ] );
-		sw.add_measure( name );
+		sw.split( name );
 		return result;
 	}
 
@@ -60,18 +60,18 @@ namespace xo
 		vec3f axis = normalized( vec3f( 1, 2, 3 ) );
 		auto name = stringf( "angle_test%d", N );
 		auto qa = make_random_quaternions<N>();
-		sw.start();
+		sw.restart();
 		for ( int i = num_evals / N; i > 0; --i )
 			for ( int j = 0; j < N; ++j )
 				result += rotation_around_axis( qa[ j ], axis );
-		sw.add_measure( name );
+		sw.split( name );
 		return result;
 	}
 
 #define MEASURE_FUNC_1D( _cont_, _sw_, _func_, _min_, _max_ ) \
-	{ _sw_.start(); \
+	{ _sw_.restart(); \
 	auto r = test_func<double>( &_func_, _min_, _max_ ); \
-	_sw_.add_measure( #_func_ ); \
+	_sw_.split( #_func_ ); \
 	_cont_.push_back( r ); }
 
 	XO_TEST_CASE_SKIP( function_performance )

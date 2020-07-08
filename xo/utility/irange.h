@@ -8,6 +8,7 @@
 
 #include "sfinae_tools.h"
 #include "xo/system/assert.h"
+#include "xo/numerical/math.h"
 
 namespace xo
 {

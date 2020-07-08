@@ -10,24 +10,26 @@ namespace xo
 	class XO_API stopwatch
 	{
 	public:
-		using measure_t = std::pair< std::string, time >;
+		stopwatch() : current_split_( 0 ) {}
 
-		stopwatch() : timer_(), internal_measure_( 0 ) { epoch_ = timer_(); }
-		~stopwatch() {}
+		/// restarts the stopwatch. Existing splits are kept, subsequent splits are added to existing ones.
+		void restart();
 
-		/// add a measure with a specific tag. identically names measures are summed
-		void add_measure( const string& s );
+		/// add a split with a specific tag. After a restart, splits must be performed in the same order.
+		void split( const string& name = "" );
 
-		/// starts a measure, everything in between will be considered overhead
-		void start();
+		/// get split information
+		size_t split_count() const { return split_times_.size(); }
+		const std::vector<time>& split_times() const { return split_times_; }
+		const std::vector<string>& split_names() const { return split_names_; }
 
 		/// get report as a prop_node
 		prop_node get_report( int decimals = 6 );
 		
 	private:
 		timer timer_;
-		std::vector< measure_t > measures_;
-		time internal_measure_;
-		time epoch_;
+		index_t current_split_;
+		std::vector<time> split_times_;
+		std::vector<string> split_names_;
 	};
 }

@@ -2,25 +2,25 @@
 #include "xo/container/container_tools.h"
 #include "xo/string/string_tools.h"
 #include "xo/container/prop_node.h"
+#include "xo/utility/irange.h"
 
 namespace xo
 {
-	void stopwatch::add_measure( const string& s )
+	void stopwatch::split( const string& s )
 	{
-		auto now = timer_();
-		auto iter = xo::find_if( measures_, [&]( measure_t& m ) { return m.first == s; } );
-		if ( iter == measures_.end() )
-			measures_.push_back( make_pair( s, now - epoch_ ) );
-		else iter->second += now - epoch_;
-		epoch_ = timer_();
-		internal_measure_ += epoch_ - now;
+		if ( current_split_ >= split_times_.size() )
+		{
+			split_times_.push_back( timer_.restart() );
+			split_names_.push_back( s );
+			current_split_++;
+		}
+		else split_times_[ current_split_++ ] += timer_.restart();
 	}
 
-	void stopwatch::start()
+	void stopwatch::restart()
 	{
-		auto prev = epoch_;
-		epoch_ = timer_();
-		internal_measure_ += epoch_ - prev;
+		current_split_ = 0;
+		timer_.restart();
 	}
 
 	prop_node stopwatch::get_report( int decimals )
@@ -28,9 +28,8 @@ namespace xo
 		auto old_precision = set_to_str_precision( decimals );
 
 		prop_node pn;
-		for ( auto& m : measures_ )
-			pn.add_key_value( m.first, m.second );
-		pn.add_key_value( "overhead", internal_measure_ );
+		for ( index_t idx : irange( split_count() ) )
+			pn.add_key_value( split_names_[ idx ], split_times_[ idx ] );
 
 		set_to_str_precision( old_precision );
 
