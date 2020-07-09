@@ -26,7 +26,7 @@ namespace xo
 		}
 
 		/// get split information
-		size_t split_count() const { return split_times_.size(); }
+		size_t size() const { return split_times_.size(); }
 		const vector<time>& split_times() const { return split_times_; }
 		const vector<string>& split_names() const { return split_names_; }
 
