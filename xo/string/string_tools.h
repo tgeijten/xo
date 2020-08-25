@@ -25,7 +25,10 @@ namespace xo
 	XO_API index_t in_str( const string& str, const string& substr, index_t pos = 0 );
 
 	/// check if a string begins with a string
-	XO_API bool str_begins_with( const string& str, const string& substr, index_t pos = 0 );
+	XO_API bool str_begins_with( const string& str, const string& substr );
+
+	/// check if a string begins with a string
+	XO_API bool str_begins_with( const string& str, const string& substr, index_t pos );
 
 	/// check if a string begins with a string
 	XO_API bool str_begins_with( const string& str, char c );
