@@ -124,9 +124,15 @@ namespace xo
 
 	string& replace_str( string& s, const string& find_str, const string& replace_with )
 	{
-		for ( auto pos = s.find( find_str ); pos != string::npos; pos = s.find( find_str ) )
+		for ( auto pos = s.find( find_str ); pos != string::npos; pos = s.find( find_str, pos + replace_with.size() ) )
 			s.replace( pos, find_str.size(), replace_with );
 		return s;
+	}
+
+	string replace_str( string&& s, const string& find_str, const string& replace_with )
+	{
+		replace_str( s, find_str, replace_with );
+		return std::move( s );
 	}
 
 	string to_lower( string s )

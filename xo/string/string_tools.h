@@ -60,6 +60,9 @@ namespace xo
 	/// replace a substring in a string
 	XO_API string& replace_str( string& s, const string& find_str, const string& replace_with );
 
+	/// replace a substring in a temporary string
+	XO_API string replace_str( string&& s, const string& find_str, const string& replace_with );
+
 	/// convert string to lower case
 	XO_API string to_lower( string s );
 
