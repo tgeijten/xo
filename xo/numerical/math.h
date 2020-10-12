@@ -56,6 +56,10 @@ namespace xo
 	/// check if a number is whole (i.e. has no decimals)
 	template< typename T > bool is_whole( T v ) { return floor( v ) == v; }
 
+	/// round and cast to integer type
+	template< typename TI, typename TF >
+	TI round_cast( TF value ) { return static_cast<TI>( std::round( value ) ); }
+
 	/// clamp a value so that it is between min and max
 	template< typename T > T& clamp( T& v, const T& lower, const T& upper )
 	// { return v = std::max( std::min( v, upper ), lower ); } // seems slower, despite https://godbolt.org/z/dZ2nXJ 
