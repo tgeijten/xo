@@ -6,7 +6,6 @@
 #include "xo/numerical/random.h"
 #include "xo/system/test_case.h"
 #include "xo/container/container_algorithms.h"
-#include "xo/container/circular_frame_buffer.h"
 #include "xo/string/string_tools.h"
 #include "xo/container/flat_set.h"
 
