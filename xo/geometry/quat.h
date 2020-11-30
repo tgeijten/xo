@@ -168,13 +168,13 @@ namespace xo
 		return radian_<T>( 2 * std::acos( q.w / std::sqrt( q.w * q.w + q.x * q.x ) ) );
 	}
 
-	/// Rotation around local x axis
+	/// Rotation around local y axis
 	// #todo: verify and handle singularity when q.w == 0 && q.y == 0
 	template< typename T > radian_<T> rotation_around_y( const quat_<T>& q ) {
 		return radian_<T>( 2 * std::acos( q.w / std::sqrt( q.w * q.w + q.y * q.y ) ) );
 	}
 
-	/// Rotation around local x axis
+	/// Rotation around local z axis
 	// #todo: verify and handle singularity when q.w == 0 && q.z == 0
 	template< typename T > radian_<T> rotation_around_z( const quat_<T>& q ) {
 		return radian_<T>( 2 * std::acos( q.w / std::sqrt( q.w * q.w + q.z * q.z ) ) );
@@ -184,6 +184,13 @@ namespace xo
 	// #todo: verify and optimize
 	template< typename T > vec3rad_<T> rotation_around_xyz( const quat_<T>& q ) {
 		return vec3rad_<T>( rotation_around_x( q ), rotation_around_y( q ), rotation_around_z( q ) );
+	}
+
+	/// get quaternion projected on the xz plane
+	// #todo: verify and optimize
+	template< typename T > quat_<T> projected_xz( quat_<T> q ) {
+		T ha = std::acos( q.w / std::sqrt( q.w * q.w + q.y * q.y ) );
+		return quat_<T>( std::cos( ha ), T( 0 ), std::sin( ha ), T( 0 ) );
 	}
 
 	template< typename T > vec3_<T> local_x_axis( const quat_<T>& q ) {
