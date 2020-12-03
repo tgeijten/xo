@@ -10,20 +10,44 @@
 
 namespace xo
 {
-	template< typename I, typename T = typename std::iterator_traits< I >::value_type >
-	T average( I b, I e, T v = T() ) {
-		xo_assert( b != e );
-		for ( auto i = b; i != e; ++i ) v = v + *i;
-		return v / ( e - b );
+	template< typename It, typename T >
+	T accumulate( It b, It e, T init ) {
+		for ( ; b != e; ++b )
+			init = init + *b;
+		return init;
 	}
 
-	template< typename C > typename C::value_type average( const C& cont )
-	{ return average( std::cbegin( cont ), std::cend( cont ) ); }
+	template< typename It, typename T, typename Op >
+	T accumulate( It b, It e, T init, Op op ) {
+		for ( ; b != e; ++b )
+			init = Op( init, *b );
+		return init;
+	}
 
-	template< typename I >
-	auto mean_std( I b, I e ) {
+	template< typename It, typename T >
+	T average( It b, It e, T v ) {
+		xo_assert( b != e ); return xo::accumulate( b, e, v ) / ( e - b );
+	}
+
+	template< typename It, typename T, typename Op >
+	T average( It b, It e, T v, Op op ) {
+		xo_assert( b != e ); return xo::accumulate( b, e, v, op ) / ( e - b );
+	}
+
+	template< typename C >
+	auto average( const C& cont ) {
+		return average( std::cbegin( cont ), std::cend( cont ), C::value_type() );
+	}
+
+	template< typename C, typename Op >
+	auto average( const C& cont, Op op ) {
+		return average( std::cbegin( cont ), std::cend( cont ), C::value_type(), op );
+	}
+
+	template< typename It, typename T = typename std::iterator_traits<It>::value_type >
+	auto mean_std( It b, It e, T v ) {
 		xo_assert( b != e );
-		auto mean = average( b, e );
+		auto mean = average( b, e, v );
 		auto acc = decltype( mean * mean )();
 		for ( auto i = b; i != e; ++i )
 			acc += ( *i - mean ) * ( *i - mean );
@@ -31,7 +55,7 @@ namespace xo
 	}
 
 	template< typename C > auto mean_std( const C& cont ) {
-		return mean_std( std::cbegin( cont ), std::cend( cont ) );
+		return mean_std( std::cbegin( cont ), std::cend( cont ), C::value_type{} );
 	}
 
 	template < typename C, typename P > std::vector< index_t > sort_indices( const C& cont, P pred ) {
@@ -57,16 +81,16 @@ namespace xo
 
 	template< typename C > C sorted_copy( const C& cont ) { C res( cont ); std::sort( res.begin(), res.end() ); return res; }
 
-	template< typename I > typename std::iterator_traits< I >::value_type median_slow( I b, I e ) {
+	template< typename It > typename std::iterator_traits< It >::value_type median_slow( It b, It e ) {
 		auto n = e - b;
 		xo_assert( n > 0 );
-		std::vector< typename std::remove_cv< typename std::iterator_traits< I >::value_type >::type > v( n / 2 + 1 );
+		std::vector< typename std::remove_cv< typename std::iterator_traits< It >::value_type >::type > v( n / 2 + 1 );
 		std::partial_sort_copy( b, e, v.begin(), v.end() );
 		if ( n % 2 == 1 ) return v[ n / 2 ];
-		else return ( v[ n / 2 ] + v[ n / 2 - 1 ] ) / std::iterator_traits< I >::value_type( 2 );
+		else return ( v[ n / 2 ] + v[ n / 2 - 1 ] ) / std::iterator_traits< It >::value_type( 2 );
 	}
 
-	template< typename I > typename std::iterator_traits< I >::value_type median_non_const( I b, I e ) {
+	template< typename It > typename std::iterator_traits< It >::value_type median_non_const( It b, It e ) {
 		xo_error_if( e <= b, "Invalid range" );
 		auto n = e - b;
 		auto h = n / 2;
