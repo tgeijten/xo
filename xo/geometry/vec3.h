@@ -124,17 +124,14 @@ namespace xo
 	template< typename T > vec3_<T> projection( const vec3_<T>& v1, const vec3_<T>& v2 )
 	{ return ( dot_product( v1, v2 ) / squared_length( v2 ) ) * v2; }
 
-	/// Projection of v onto the xz plane
-	template< typename T > vec3_<T> project_xy( const vec3_<T>& v )
-	{ return vec3_<T>( v.x, v.y, T( 0 ) ); }
+	/// Projection of v onto the xy-plane
+	template< typename T > vec3_<T> projected_xy( vec3_<T> v ) { v.z = T( 0 ); return v; }
 
-	/// Projection of v onto the xz plane
-	template< typename T > vec3_<T> project_xz( const vec3_<T>& v )
-	{ return vec3_<T>( v.x, T( 0 ), v.z ); }
+	/// Projection of v onto the xz-plane
+	template< typename T > vec3_<T> projected_xz( vec3_<T> v ) { v.y = T( 0 ); return v; }
 
-	/// Projection of v onto the xz plane
-	template< typename T > vec3_<T> project_yz( const vec3_<T>& v )
-	{ return vec3_<T>( T( 0 ), v.y, v.z ); }
+	/// Projection of v onto the yz-plane
+	template< typename T > vec3_<T> projected_yz( vec3_<T> v ) { v.x = T( 0 ); return v; }
 
 	/// Cross product
 	template< typename T > vec3_<T> cross_product( const vec3_<T>& v1, const vec3_<T>& v2 )

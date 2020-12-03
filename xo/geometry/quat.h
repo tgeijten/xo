@@ -186,13 +186,6 @@ namespace xo
 		return vec3rad_<T>( rotation_around_x( q ), rotation_around_y( q ), rotation_around_z( q ) );
 	}
 
-	/// get quaternion projected on the xz plane
-	// #todo: verify and optimize
-	template< typename T > quat_<T> projected_xz( quat_<T> q ) {
-		T ha = std::acos( q.w / std::sqrt( q.w * q.w + q.y * q.y ) );
-		return quat_<T>( std::cos( ha ), T( 0 ), std::sin( ha ), T( 0 ) );
-	}
-
 	template< typename T > vec3_<T> local_x_axis( const quat_<T>& q ) {
 		T tx = q.x + q.x, ty = q.y + q.y, tz = q.z + q.z;
 		T twy = ty * q.w, twz = tz * q.w;
