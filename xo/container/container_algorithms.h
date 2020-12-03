@@ -20,8 +20,18 @@ namespace xo
 	template< typename It, typename T, typename Op >
 	T accumulate( It b, It e, T init, Op op ) {
 		for ( ; b != e; ++b )
-			init = Op( init, *b );
+			init = op( init, *b );
 		return init;
+	}
+
+	template< typename C, typename T >
+	T accumulate( const C& cont, T init ) {
+		return accumulate( std::cbegin( cont ), std::cend( cont ), init );
+	}
+
+	template< typename C, typename T, typename Op >
+	T accumulate( const C& cont, T init, Op op ) {
+		return accumulate( std::cbegin( cont ), std::cend( cont ), init, op );
 	}
 
 	template< typename It, typename T >
@@ -39,9 +49,9 @@ namespace xo
 		return average( std::cbegin( cont ), std::cend( cont ), C::value_type() );
 	}
 
-	template< typename C, typename Op >
-	auto average( const C& cont, Op op ) {
-		return average( std::cbegin( cont ), std::cend( cont ), C::value_type(), op );
+	template< typename C, typename T, typename Op >
+	auto average( const C& cont, T init, Op op ) {
+		return average( std::cbegin( cont ), std::cend( cont ), init, op );
 	}
 
 	template< typename It, typename T = typename std::iterator_traits<It>::value_type >
