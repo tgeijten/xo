@@ -40,12 +40,19 @@ namespace xo
 	/// Scalar division
 	template< typename T > vec3_<T> operator/( vec3_<T> v, T s )
 	{ T ms = inv( s ); v.x *= ms; v.y *= ms; v.z *= ms; return v; }
-	/// Invert elements
-	template< typename T > vec3_<T> operator/( T s, vec3_<T> v )
-	{ v.x = s / v.x; v.y = s / v.y; v.z = s / v.z; return v; }
+	/// Scalar division by size_t (useful for computing average)
+	template< typename T > vec3_<T> operator/( vec3_<T> v, size_t s )
+	{ T ms = inv( T( s ) ); v.x *= ms; v.y *= ms; v.z *= ms; return v; }
 	/// Scalar division
 	template< typename T > vec3_<T>& operator/=( vec3_<T>& v, T s )
 	{ T ms = inv( s ); v.x *= ms; v.y *= ms; v.z *= ms; return v; }
+	/// Scalar division by size_t (useful for computing average)
+	template< typename T > vec3_<T>& operator/=( vec3_<T>& v, size_t s )
+	{ T ms = inv( T( s ) ); v.x *= ms; v.y *= ms; v.z *= ms; return v; }
+
+	/// Invert elements
+	template< typename T > vec3_<T> operator/( T s, vec3_<T> v )
+	{ v.x = s / v.x; v.y = s / v.y; v.z = s / v.z; return v; }
 
 	/// Multiply vector elements
 	template< typename T > vec3_<T>& operator*=( vec3_<T>& v1, const vec3_<T>& v2 )
