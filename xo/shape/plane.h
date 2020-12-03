@@ -21,5 +21,4 @@ namespace xo
 	inline vec3f dim( const plane& s ) { XO_NOT_IMPLEMENTED; }
 	inline vec3f inertia( const plane& s, float density ) { return vec3f::zero(); }
 	inline void scale( plane& s, float f ) { }
-	XO_API vec3f intersection( const linef& r, const plane& s, const transformf& t );
 }
