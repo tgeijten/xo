@@ -54,7 +54,7 @@ namespace xo
 		return average( std::cbegin( cont ), std::cend( cont ), init, op );
 	}
 
-	template< typename It, typename T = typename std::iterator_traits<It>::value_type >
+	template< typename It, typename T >
 	auto mean_std( It b, It e, T v ) {
 		xo_assert( b != e );
 		auto mean = average( b, e, v );
@@ -100,7 +100,7 @@ namespace xo
 		else return ( v[ n / 2 ] + v[ n / 2 - 1 ] ) / std::iterator_traits< It >::value_type( 2 );
 	}
 
-	template< typename It > typename std::iterator_traits< It >::value_type median_non_const( It b, It e ) {
+	template< typename It > auto median_non_const( It b, It e ) {
 		xo_error_if( e <= b, "Invalid range" );
 		auto n = e - b;
 		auto h = n / 2;
