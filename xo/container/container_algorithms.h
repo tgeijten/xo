@@ -46,7 +46,7 @@ namespace xo
 
 	template< typename C >
 	auto average( const C& cont ) {
-		return average( std::cbegin( cont ), std::cend( cont ), C::value_type() );
+		return average( std::cbegin( cont ), std::cend( cont ), typename C::value_type() );
 	}
 
 	template< typename C, typename T, typename Op >
@@ -65,7 +65,7 @@ namespace xo
 	}
 
 	template< typename C > auto mean_std( const C& cont ) {
-		return mean_std( std::cbegin( cont ), std::cend( cont ), C::value_type() );
+		return mean_std( std::cbegin( cont ), std::cend( cont ), typename C::value_type() );
 	}
 
 	template < typename C, typename P > std::vector< index_t > sort_indices( const C& cont, P pred ) {
