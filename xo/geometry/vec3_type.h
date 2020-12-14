@@ -18,8 +18,8 @@ namespace xo
 		constexpr vec3_( T&& px, T&& py, T&& pz ) : x( std::move( px ) ), y( std::move( py ) ), z( std::move( pz ) ) {}
 
 		// conversion constructors
-		template< typename U > explicit vec3_( const U& px, const U& py, const U& pz ) : x( T( px ) ), y( T( py ) ), z( T( pz ) ) {}
-		template< typename U > explicit vec3_( const vec3_<U>& o ) : x( T( o.x ) ), y( T( o.y ) ), z( T( o.z ) ) {}
+		template< typename U > constexpr explicit vec3_( const U& px, const U& py, const U& pz ) : x( T( px ) ), y( T( py ) ), z( T( pz ) ) {}
+		template< typename U > constexpr explicit vec3_( const vec3_<U>& o ) : x( T( o.x ) ), y( T( o.y ) ), z( T( o.z ) ) {}
 
 		/// assignment
 		vec3_& operator=( const vec3_& o ) = default;
