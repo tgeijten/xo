@@ -109,14 +109,30 @@ namespace xo
 				else if ( str_begins_with( t, '$' ) )
 				{
 					// assign macro
-					auto it = std::find_if( macros.rbegin(), macros.rend(), [&]( auto& l ) { return l.first == t; } );
-					if ( it == macros.rend() )
-						zml_error( str, ec, "Undefined variable: " + t );
-					else 
+					auto it = std::find_if( macros.rbegin(), macros.rend(), [&]( auto& l ) { return t == l.first; } );
+					if ( it != macros.rend() )
 						*next_parent = it->second;
+					else return zml_error( str, ec, "Undefined variable: " + t );
 				}
-				else
+				else 
 				{
+					// replace inline macros
+					for ( auto p = t.find( "${" ); p != string::npos; p = t.find( "${", p ) )
+					{
+						if ( auto pe = t.find( '}', p ); pe != string::npos )
+						{
+							auto it = std::find_if( macros.rbegin(), macros.rend(),
+								[&]( auto& l ) { return t.compare( p + 2, pe - p - 2, l.first, 1 ) == 0; } );
+							if ( it != macros.rend() )
+							{
+								t.replace( p, pe - p + 1, it->second.raw_value() );
+								p += it->second.raw_value().size(); // advance p to avoid recursion
+							}
+							else return zml_error( str, ec, "Undefined variable: " + t.substr( p, pe - p + 1 ) );
+						}
+						else return zml_error( str, ec, "'${' without matching '}': " + t.substr( p ) );
+					}
+
 					// assign value
 					next_parent->set_value( std::move( t ) );
 				}
