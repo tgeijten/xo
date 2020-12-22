@@ -44,6 +44,10 @@ namespace xo
 	template< typename T > T length( const quat_<T>& q )
 	{ return std::sqrt( q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z ); }
 
+	/// get length of the imaginary (xyz) part of quat
+	template< typename T > T length_xyz( const quat_<T>& q )
+	{ return std::sqrt( q.x * q.x + q.y * q.y + q.z * q.z ); }
+
 	template< typename T > T squared_length( const quat_<T>& q )
 	{ return q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z; }
 
