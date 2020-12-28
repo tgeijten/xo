@@ -12,6 +12,7 @@ namespace xo
 		using iterator = T*;
 		using const_iterator = const T*;
 
+		constexpr quat_( no_init_t ) {}
 		constexpr quat_() : w( 1 ), x( 0 ), y( 0 ), z( 0 ) {}
 		constexpr quat_( T w, T x, T y, T z ) : w( w ), x( x ), y( y ), z( z ) {}
 		constexpr quat_( const quat_& o ) = default;

@@ -11,6 +11,7 @@ namespace xo
 		using iterator = T*;
 		using const_iterator = const T*;
 
+		constexpr vec3_( no_init_t ) {}
 		constexpr vec3_() : x(), y(), z() {}
 		constexpr vec3_( const vec3_<T>& o ) = default;
 		constexpr vec3_( const T& px, const T& py, const T& pz ) : x( px ), y( py ), z( pz ) {}

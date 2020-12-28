@@ -41,6 +41,10 @@ namespace xo
 	using uint32 = std::uint32_t;
 	using uint64 = std::uint64_t;
 
+	// no_init
+	struct no_init_t { explicit no_init_t() = default; };
+	inline constexpr no_init_t no_init{};
+
 	// xo index type
 	using index_t = size_t;
 	const index_t no_index = ~index_t( 0 );
