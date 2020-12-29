@@ -119,7 +119,7 @@ namespace xo
 				total += r;
 			}
 
-			auto time_str = stringf( "%.2fs", t().seconds() );
+			auto time_str = stringf( "%.2fs", t().secondsd() );
 			if ( tests_failed == 0 )
 				log::info( "Successfully performed ", results.size(), " tests with ", total.passed_, " checks in ", time_str, "; ALL CLEAR :-)" );
 			else

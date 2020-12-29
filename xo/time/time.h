@@ -11,10 +11,12 @@ namespace xo
 		constexpr time() : internal_( 0 ) {}
 		explicit constexpr time( storage_t nanoseconds ) : internal_( nanoseconds ) {}
 
-		double seconds() const { return 1e-9 * internal_; }
-		float secondsf() const { return 1e-9f * internal_; }
-		double milliseconds() const { return 1e-6 * internal_; }
-		float millisecondsf() const { return 1e-6f * internal_; }
+		template< typename T > T seconds() const { return static_cast<T>( 1e-9 * internal_ ); }
+		double secondsd() const { return seconds<double>(); }
+		float secondsf() const { return seconds<float>(); }
+		template< typename T > T milliseconds() const { return static_cast<T>( 1e-6 * internal_ ); }
+		double milliseconds() const { return milliseconds<double>(); }
+		float millisecondsf() const { return milliseconds<float>(); }
 		storage_t nanoseconds() const { return internal_; }
 		double nanosecondsd() const { return double( internal_ ); }
 
