@@ -42,7 +42,7 @@ namespace xo
 		}
 
 		void resize( size_t s ) { xo_assert( s >= size() ); labels_.resize( s ); }
-
+		void reserve( size_t s ) { labels_.reserve( s ); }
 		void clear() { labels_.clear(); label_indices_.clear(); }
 
 		size_t size() const { return labels_.size(); }
