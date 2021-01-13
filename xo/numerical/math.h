@@ -31,6 +31,9 @@ namespace xo
 	/// cubed
 	template< typename T > T cubed( T v ) { return v * v * v; }
 
+	/// midpoint between v1 and v2
+	template< typename T > T midpoint( const T& v1, const T& v2 ) { return v1 + ( v2 - v1 ) / 2; }
+
 	/// sign of v: 1 or -1
 	template< typename T > T sign( T v ) { return v >= T() ? T( 1 ) : T( -1 ); }
 
