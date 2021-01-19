@@ -2,6 +2,7 @@
 
 #include "xo/xo_types.h"
 #include <iterator>
+#include <utility>
 
 namespace xo
 {
@@ -12,9 +13,18 @@ namespace xo
 		using object_type = T;
 		using id_type = I;
 
+		// default, copy and move constructor
 		constexpr handle() : value_( invalid_id() ) {}
+		handle( const handle& o ) = default;
+		handle( handle&& o ) noexcept : value_( o.value_ ) { o.reset(); }
+
+		// explicit conversion constructors
 		explicit constexpr handle( id_type v ) : value_( v ) {}
 		template<typename U> explicit constexpr handle( handle<U, I> o ) : value_( o.value() ) {}
+
+		// default copy and move assignment
+		handle& operator=( const handle& o ) { value_ = o.value_; return *this; }
+		handle& operator=( handle&& o ) noexcept { std::swap( value_, o.value_ ); return *this; }
 
 		explicit operator bool() const { return value_ != invalid_id(); }
 
@@ -22,13 +32,12 @@ namespace xo
 		id_type& value() { return value_; }
 
 		void reset() { value_ = invalid_id(); }
-		void swap( handle& o ) { id_type tmp = value_; value_ = o.value_; o.value_ = tmp; }
 
 		friend bool operator<( const handle a, const handle b ) { return a.value_ < b.value_; }
 		friend bool operator==( const handle a, const handle b ) { return a.value_ == b.value_; }
 		friend bool operator!=( const handle a, const handle b ) { return a.value_ != b.value_; }
 
-	private:
+	protected:
 		static constexpr id_type invalid_id() { return ~id_type( 0 ); }
 		id_type value_;
 	};
@@ -45,8 +54,8 @@ namespace xo
 			using iterator_category = std::forward_iterator_tag;
 			using value_type = handle_type;
 			using difference_type = I;
-			using pointer = handle_type *;
-			using reference = handle_type &;
+			using pointer = handle_type*;
+			using reference = handle_type&;
 			iterator( handle_type v ) : handle_( v ) {}
 			iterator( I v ) : handle_( v ) {}
 			iterator& operator++() { ++handle_.value(); return *this; }
