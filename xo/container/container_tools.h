@@ -8,6 +8,16 @@
 
 namespace xo
 {
+	/// apply function to each element in a container
+	template< typename C, typename F >
+	void for_each( const C& cont, F fn )
+	{ auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) fn( *it ); }
+
+	/// apply function to each element in a container
+	template< typename C, typename F >
+	void for_each( C& cont, F fn )
+	{ auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) fn( *it ); }
+
 	/// find element in a container
 	template< typename C > auto find( C& cont, const typename C::value_type& e )
 	{ auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( *it == e ) break; return it; }
