@@ -30,6 +30,8 @@ namespace xo
 		friend bool operator==( const proxy a, const proxy b ) { return a.index_ == b.index_; }
 		friend bool operator!=( const proxy a, const proxy b ) { return a.index_ != b.index_; }
 
+		id_type index() const { return index_; }
+
 	private:
 		id_type index_;
 	};
