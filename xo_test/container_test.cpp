@@ -8,6 +8,7 @@
 #include "xo/container/container_algorithms.h"
 #include "xo/string/string_tools.h"
 #include "xo/container/flat_set.h"
+#include "xo/container/indexed_map.h"
 
 namespace xo
 {
@@ -131,5 +132,22 @@ namespace xo
 		}
 
 		XO_CHECK( t( "R1", "C1" ) == 1.0 );
+	}
+
+	XO_TEST_CASE( indexed_map )
+	{
+		indexed_map< string, string > im;
+		XO_CHECK( im.empty() );
+		im.emplace_back( "appel", "nothing" );
+		im.emplace_back( "appel", "second" );
+		im[ "banana" ] = "third";
+		XO_CHECK( im.size() == 3 );
+		XO_CHECK( im[ 0 ].second == "nothing" );
+		im[ "apple" ] = "first";
+		XO_CHECK( im[ 0 ].second == "first" );
+		XO_CHECK( im.size() == 3 );
+		XO_CHECK( im.front().first == "appel" );
+		XO_CHECK( im.count( "appel" ) == 1 );
+		XO_CHECK( im.contains( "appel" ) );
 	}
 }
