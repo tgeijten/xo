@@ -51,11 +51,11 @@ namespace xo
 		bool contains( const K& key ) const { return find( key ) != end(); }
 
 		pair< iterator, bool > insert( value_type&& value ) {
-			if ( auto it = find( key ); it != end() ) {
+			if ( auto it = find( value.first ); it != end() ) {
 				it->second = std::move( value.second ); // replace existing item
 				return { it, false };
 			}
-			else return { emplace_back( std::move( value ) ), true };
+			else return { vector<pair<K, V>>::insert( end(), std::move( value ) ), true };
 		}
 
 		V& operator[]( const K& key ) {
