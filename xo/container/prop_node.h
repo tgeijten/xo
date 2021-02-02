@@ -180,6 +180,10 @@ namespace xo
 		/// get key by index
 		const key_t& get_key( index_t idx ) const;
 
+		/// get key value pair at index
+		const pair_t& at( index_t idx ) const { return children.at( idx ); }
+		pair_t& at( index_t idx ) { return children.at( idx ); }
+
 		/// begin of child nodes
 		iterator begin() { access(); return children.begin(); }
 		const_iterator begin() const { access(); return children.begin(); }
