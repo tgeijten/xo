@@ -10,7 +10,7 @@ namespace xo
 	/// map in which elements are kept in insertion order
 	/// it basically is a map interface on top of a vector of key-value pairs
 	template< typename K, typename V >
-	class indexed_map : public vector< pair<K, V> >
+	class indexed_map : private vector< pair<K, V> >
 	{
 	public:
 		using key_type = K;
@@ -19,6 +19,22 @@ namespace xo
 		using typename vector< pair<K, V> >::value_type;
 		using typename vector< pair<K, V> >::iterator;
 		using typename vector< pair<K, V> >::const_iterator;
+
+		using vector< pair<K, V> >::push_back;
+		using vector< pair<K, V> >::emplace_back;
+		using vector< pair<K, V> >::reserve;
+		using vector< pair<K, V> >::clear;
+		using vector< pair<K, V> >::empty;
+		using vector< pair<K, V> >::size;
+		using vector< pair<K, V> >::capacity;
+		using vector< pair<K, V> >::begin;
+		using vector< pair<K, V> >::end;
+		using vector< pair<K, V> >::cbegin;
+		using vector< pair<K, V> >::cend;
+		using vector< pair<K, V> >::front;
+		using vector< pair<K, V> >::back;
+		using vector< pair<K, V> >::erase;
+		using vector< pair<K, V> >::data;
 
 		indexed_map() = default;
 		indexed_map( std::initializer_list< pair<K, V> > l ) : vector< pair<K, V> >( l ) {}
