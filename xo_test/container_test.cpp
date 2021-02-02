@@ -149,5 +149,9 @@ namespace xo
 		XO_CHECK( im.front().first == "appel" );
 		XO_CHECK( im.count( "appel" ) == 2 );
 		XO_CHECK( im.contains( "banana" ) );
+		XO_CHECK( im.find( "appel" )->second == "first" );
+		XO_CHECK( im.find( "appel", ++im.find( "appel" ) )->second == "second" );
+		XO_CHECK( im.find( "banana" )->second == "third" );
+		XO_CHECK( im.find( "banana", ++im.find( "banana" ) ) == im.end() );
 	}
 }

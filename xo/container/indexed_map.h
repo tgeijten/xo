@@ -13,9 +13,6 @@ namespace xo
 	class indexed_map : private vector< pair<K, V> >
 	{
 	public:
-		using key_type = K;
-		using mapped_type = V;
-
 		using typename vector< pair<K, V> >::value_type;
 		using typename vector< pair<K, V> >::iterator;
 		using typename vector< pair<K, V> >::const_iterator;
@@ -39,19 +36,19 @@ namespace xo
 		indexed_map() = default;
 		indexed_map( std::initializer_list< pair<K, V> > l ) : vector< pair<K, V> >( l ) {}
 
-		iterator find( const key_type& key, iterator it ) {
+		iterator find( const K& key, iterator it ) {
 			for ( ; it != end(); ++it ) if ( it->first == key )	break; return it;
 		}
-		const_iterator find( const key_type& key, const_iterator it ) const {
+		const_iterator find( const K& key, const_iterator it ) const {
 			for ( ; it != end(); ++it ) if ( it->first == key )	break; return it;
 		}
-		iterator find( const key_type& key ) { return find( key, begin() ); }
-		const_iterator find( const key_type& key ) const { return find( key, begin() ); }
+		iterator find( const K& key ) { return find( key, begin() ); }
+		const_iterator find( const K& key ) const { return find( key, begin() ); }
 
-		size_t count( const key_type& key ) const {
+		size_t count( const K& key ) const {
 			return count_if( *this, [&]( const value_type& kvp ) { return kvp.first == key; } );
 		}
-		bool contains( const key_type& key ) const { return find( key ) != end(); }
+		bool contains( const K& key ) const { return find( key ) != end(); }
 
 		pair< iterator, bool > insert( value_type&& value ) {
 			if ( auto it = find( key ); it != end() ) {
@@ -61,13 +58,13 @@ namespace xo
 			else return { emplace_back( std::move( value ) ), true };
 		}
 
-		V& operator[]( const key_type& key ) {
+		V& operator[]( const K& key ) {
 			if ( auto it = find( key ); it != end() )
 				return it->second;
 			else return emplace_back( key, V{} ).second;
 		}
 
-		const V& operator[]( const key_type& key ) const {
+		const V& operator[]( const K& key ) const {
 			if ( auto it = find( key ); it != end() )
 				return it->second;
 			else xo_error( "Could not find key " + key );
