@@ -143,11 +143,11 @@ namespace xo
 		im[ "banana" ] = "third";
 		XO_CHECK( im.size() == 3 );
 		XO_CHECK( im[ 0 ].second == "nothing" );
-		im[ "apple" ] = "first";
+		im[ "appel" ] = "first";
 		XO_CHECK( im[ 0 ].second == "first" );
 		XO_CHECK( im.size() == 3 );
 		XO_CHECK( im.front().first == "appel" );
-		XO_CHECK( im.count( "appel" ) == 1 );
-		XO_CHECK( im.contains( "appel" ) );
+		XO_CHECK( im.count( "appel" ) == 2 );
+		XO_CHECK( im.contains( "banana" ) );
 	}
 }
