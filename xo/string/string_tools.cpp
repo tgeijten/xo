@@ -135,6 +135,20 @@ namespace xo
 		return std::move( s );
 	}
 
+	string& replace_char( string& s, const char find_char, const char replace_with )
+	{
+		for ( auto& c : s )
+			if ( c == find_char )
+				c = replace_with;
+		return s;
+	}
+
+	string replace_char( string&& s, const char find_char, const char replace_with )
+	{
+		replace_char( s, find_char, replace_with );
+		return std::move( s );
+	}
+
 	string to_lower( string s )
 	{
 		for ( char& c : s )
