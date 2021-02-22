@@ -5,7 +5,7 @@
 namespace xo
 {
 	struct error_message {
-		error_message() : message_() {}
+		error_message() = default;
 		error_message( const error_message& ) = default;
 		error_message( const char* msg ) : message_( msg ) {};
 		error_message( const string& msg ) : message_( msg ) {};
@@ -17,6 +17,10 @@ namespace xo
 		error_message& operator=( const string& msg ) { message_ = msg; return *this; };
 		error_message& operator=( error_message&& ) noexcept = default;
 		error_message& operator=( string&& msg ) noexcept { message_ = std::move( msg ); return *this; }
+
+		void append( const error_message& msg ) {
+			if ( !message_.empty() ) message_ += "\n"; message_ += msg.message_;
+		}
 
 		bool good() const { return message_.empty(); }
 		bool bad() const { return !message_.empty(); }
