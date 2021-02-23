@@ -6,6 +6,7 @@
 
 #include <fstream>
 #include <thread>
+#include "log_format.h"
 
 namespace xo
 {
@@ -16,7 +17,7 @@ namespace xo
 		class XO_API sink
 		{
 		public:
-			sink( level l, sink_mode m = sink_mode::all_threads );
+			sink( level l, format_flags fmt, sink_mode m = sink_mode::all_threads );
 			virtual ~sink();
 
 			/// returns true if log_level is accepted
@@ -35,8 +36,11 @@ namespace xo
 			/// set mode, updates thread_id_ if sink_mode::current_thread
 			void set_sink_mode( sink_mode m );
 
+			format_flags& format() { return format_; }
+
 		protected:
 			level log_level_;
+			format_flags format_;
 			sink_mode sink_mode_;
 			std::thread::id thread_id_;
 

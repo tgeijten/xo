@@ -17,8 +17,9 @@ namespace xo
 	{
 		std::mutex g_console_mutex;
 
-		sink::sink( level l, sink_mode m ) :
+		sink::sink( level l, format_flags fmt, sink_mode m ) :
 			log_level_( l ),
+			format_( fmt ),
 			sink_mode_( m ),
 			thread_id_( std::this_thread::get_id() )
 		{
@@ -60,7 +61,7 @@ namespace xo
 		}
 
 		stream_sink::stream_sink( std::ostream& str, level l, sink_mode m ) :
-			sink( l, m ),
+			sink( l, { format::show_time }, m ),
 			stream_( str )
 		{}
 
@@ -82,7 +83,7 @@ namespace xo
 
 		void console_sink::hande_log_message( level l, const string& msg )
 		{
-			auto str = get_date_time_str( "%H:%M:%S " );
+			auto str = get_log_prefix( format_, l );
 
 			std::scoped_lock lock( g_console_mutex );
 			stream_ << str;
