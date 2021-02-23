@@ -15,10 +15,12 @@ namespace xo
 			never = 7
 		};
 
-		static constexpr char* const level_names_short[] =
-		{ "", "TRC", "DBG", "INF", "WRN", "ERR", "CRT", "" };
+		inline constexpr const char* level_names_short[] = {
+			"", "TRC", "DBG", "INF", "WRN", "ERR", "CRT", ""
+		};
 
-		static constexpr char* const level_names_full[] =
-		{ "", "trace", "debug", "info", "warning", "error", "critical", "" };
+		inline constexpr const char* level_names_full[] = {
+			"", "trace", "debug", "info", "warning", "error", "critical", ""
+		};
 	}
 }
