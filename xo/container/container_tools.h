@@ -26,6 +26,10 @@ namespace xo
 	template< typename C > auto find( const C& cont, const typename C::value_type& e )
 	{ auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( *it == e ) break; return it; }
 
+	/// find the index of an element in an array-type container
+	template< typename C > index_t find_index( const C& cont, const typename C::value_type& e, index_t idx = 0 )
+	{ for ( ; idx < std::size( cont ); ++idx ) if ( cont[ idx ] == e ) return idx; return no_index; }
+
 	/// find element in a container
 	template< typename C, typename P > auto find_if( C& cont, P pred )
 	{ auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( pred( *it ) ) break; return it; }
@@ -33,6 +37,10 @@ namespace xo
 	/// find element in a container
 	template< typename C, typename P > auto find_if( const C& cont, const P pred )
 	{ auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( pred( *it ) ) break; return it; }
+
+	/// find element in a container
+	template< typename C, typename P > index_t find_index_if( const C& cont, const P pred, index_t idx = 0 )
+	{ for ( ; idx < std::size( cont ); ++idx ) if ( pred( cont[ idx ] ) ) return idx; return no_index; }
 
 	/// find element in a container
 	template< typename C, typename P > typename C::value_type& find_ref_if( C& cont, P pred )
@@ -84,10 +92,6 @@ namespace xo
 	/// append a container to another
 	template< typename C1, typename C2 > C1& append( C1& c1, const C2& c2 )
 	{ c1.insert( c1.end(), c2.begin(), c2.end() ); return c1; }
-
-	/// find the index of an element in an array-type container
-	template< typename C > index_t find_index( const C& c, const typename C::value_type& e )
-	{ for ( index_t i = 0; i < std::size( c ); ++i ) if ( c[ i ] == e ) return i; return no_index; }
 
 	/// get index of last element
 	template< typename C > index_t back_index( const C& cont ) { return size( cont ) > 0 ? size( cont ) - 1 : no_index; }
