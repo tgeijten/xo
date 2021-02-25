@@ -26,6 +26,7 @@ namespace xo
 
 		bool operator()( const string& str ) const { return match( str ); }
 		bool empty() const { return patterns_.empty(); }
+		string str() const { return concatenate_str( patterns(), ";" );; }
 		const vector<string>& patterns() const { return patterns_; }
 
 	private:
@@ -42,6 +43,6 @@ namespace xo
 	}
 
 	inline string to_str( const pattern_matcher& pm ) {
-		return concatenate_str( pm.patterns(), ";" );
+		return pm.str();
 	}
 }
