@@ -5,7 +5,7 @@ namespace xo
 {
 	XO_TEST_CASE( xo_cached_var_test )
 	{
-		cached_var<string, double> test( 0, 0 );
+		cached_var<string, double> test( 0 );
 
 		XO_CHECK( test( 0.0, []() { return "No update"; } ) == "" );
 		XO_CHECK( test( 1.0, []() { return "Test1"; } ) == "Test1" );
