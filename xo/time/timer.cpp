@@ -1,6 +1,8 @@
 #include "timer.h"
 
 #include "xo/system/xo_config.h"
+#include "xo/container/pair_type.h"
+#include "xo/numerical/math.h"
 
 #if XO_WINDOWS_PERFORMANCE_COUNTER_ENABLED
 #	define NOMINMAX
@@ -32,7 +34,14 @@ namespace xo
 		return frequency.QuadPart;
 	}
 
-	const long long g_frequency = query_windows_performance_counter_frequency();
+	std::pair<long long, long long> get_time_from_ticks_factor() {
+		long long num = 1'000'000'000;
+		long long denom = query_windows_performance_counter_frequency();
+		auto d = xo::greatest_common_divisor( num, denom );
+		return { num / d, denom / d };
+	}
+
+	const auto g_time_from_ticks = get_time_from_ticks_factor();
 
 	long long get_tick_count()
 	{
@@ -43,7 +52,7 @@ namespace xo
 
 	time get_time_from_ticks( long long ticks )
 	{
-		return time( ticks * 1'000'000'000 / g_frequency ); // #todo check if this won't overflow
+		return time( ticks * g_time_from_ticks.first / g_time_from_ticks.second ); // #todo check if this won't overflow
 	}
 #else
 	long long get_tick_count()
@@ -73,6 +82,11 @@ namespace xo
 		auto prev_epoch = epoch_;
 		epoch_ = get_tick_count();
 		return get_time_from_ticks( epoch_ - prev_epoch );
+	}
+
+	long long timer::tick_count() const
+	{
+		return get_tick_count() - epoch_;
 	}
 
 	time timer::pause()

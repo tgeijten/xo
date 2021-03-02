@@ -16,6 +16,7 @@ namespace xo
 		time restart();
 
 		bool is_running() const { return epoch_ > 0; }
+		long long tick_count() const;
 
 	private:
 		// contains epoch when running; constains current time when paused
