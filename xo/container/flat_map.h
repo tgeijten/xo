@@ -146,6 +146,14 @@ namespace xo
 	}
 
 	template< typename K, typename V >
+	prop_node to_prop_node( flat_map<K, V>& m ) {
+		prop_node pn;
+		for ( const auto& [key, value] : m )
+			pn[ key ] = value;
+		return pn;
+	};
+
+	template< typename K, typename V >
 	bool from_prop_node( const prop_node& pn, flat_map<K, V>& m ) {
 		m.reserve( pn.size() );
 		bool success = true;
