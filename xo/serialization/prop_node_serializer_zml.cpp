@@ -72,7 +72,7 @@ namespace xo
 						// t is a label
 						if ( t[ 0 ] == '$' )
 							next_parent = &macros.add_child( t ); // add macro
-						else if ( !isalpha( t[ 0 ] ) )
+						else if ( !isgraph( t[ 0 ] ) )
 							return zml_error( str, ec, "Invalid label " + t );
 						else
 							next_parent = &parent.add_child( t ); // add new item
@@ -269,7 +269,8 @@ namespace xo
 	std::ostream& prop_node_serializer_zml::write_stream( std::ostream& str ) const
 	{
 		xo_assert( write_pn_ );
-		write_zml_node( str, "", *write_pn_, 0, false );
+		if ( !write_pn_->empty() )
+			write_zml_node( str, "", *write_pn_, 0, false );
 		return str;
 	}
 
