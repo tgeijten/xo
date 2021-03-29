@@ -115,33 +115,33 @@ namespace xo
 		return pn;
 	}
 
-	prop_node to_prop_node( const shape& s )
+	string to_str( const sphere& s )
 	{
-		return std::visit( []( auto&& arg ) { return to_prop_node( arg ); }, s );
+		return "sphere( radius=" + xo::to_str( s.radius_ ) + " )";
 	}
 
-	float volume( const shape& s )
+	string to_str( const box& s )
 	{
-		return std::visit( []( auto&& arg ) { return volume( arg ); }, s );
+		return "box( half_dim=" + xo::to_str( s.half_dim_ ) + " )";
 	}
 
-	void scale( shape& s, float f )
+	string to_str( const cylinder& s )
 	{
-		std::visit( [&]( auto&& arg ) { scale( arg, f ); }, s );
+		return "cylinder( radius=" + xo::to_str( s.radius_ ) + ", height=" + xo::to_str( s.height_ ) + " )";
 	}
 
-	vec3f dim( const shape& s )
+	string to_str( const capsule& s )
 	{
-		return std::visit( []( auto&& arg ) { return dim( arg ); }, s );
+		return "capsule( radius=" + xo::to_str( s.radius_ ) + ", height=" + xo::to_str( s.height_ ) + " )";
 	}
 
-	aabbf aabb( const shape& s, const transformf& t )
+	string to_str( const cone& s )
 	{
-		return std::visit( [&]( auto&& sarg ) { return aabb( sarg, t ); }, s );
+		return "cone( radius=" + xo::to_str( s.radius_ ) + ", height=" + xo::to_str( s.height_ ) + " )";
 	}
 
-	vec3f inertia( const shape& s, float density )
+	string to_str( const plane& s )
 	{
-		return std::visit( [&]( auto&& arg ) { return inertia( arg, density ); }, s );
+		return "plane( normal=" + xo::to_str( s.normal_ ) + " )";
 	}
 }
