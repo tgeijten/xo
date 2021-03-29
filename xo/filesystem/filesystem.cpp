@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <sstream>
+#include <filesystem>
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -24,6 +25,8 @@
 #include "xo/system/assert.h"
 #include "xo/container/container_tools.h"
 #include "xo/string/string_cast.h"
+
+namespace fs = std::filesystem;
 
 namespace xo
 {
@@ -264,5 +267,19 @@ namespace xo
 	else
 		xo_error( "Could not query " + p.str() );
 #endif
+	}
+
+	vector<path> find_files( const path& dir, const pattern_matcher& include, bool recursive )
+	{
+		vector<path> files;
+		for ( fs::directory_iterator it( dir.str() ); it != fs::directory_iterator(); ++it )
+		{
+			const auto& fs_path = it->path();
+			if ( recursive && fs::is_directory( fs_path ) )
+				xo::append( files, find_files( path( fs_path.string() ), include, recursive ) );
+			if ( include( fs_path.filename().string() ) )
+				files.emplace_back( fs_path.string() );
+		}
+		return files;
 	}
 }

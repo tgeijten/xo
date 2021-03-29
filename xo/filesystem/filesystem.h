@@ -5,6 +5,8 @@
 #include "xo/filesystem/path.h"
 #include "xo/system/error_code.h"
 #include "xo/utility/optional.h"
+#include "xo/string/pattern_matcher.h"
+#include "xo/container/vector_type.h"
 
 namespace xo
 {
@@ -37,4 +39,6 @@ namespace xo
 	XO_API path current_path();
 
 	XO_API std::time_t last_write_time( const path& p );
+
+	XO_API vector<path> find_files( const path& dir, const pattern_matcher& include, bool recursive = true );
 }
