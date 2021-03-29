@@ -24,6 +24,4 @@ endif()
 
 if (XO_TEST_ENABLED)
 	add_subdirectory(xo_test)
-	enable_testing()
-	add_test(xo_test "${CMAKE_SOURCE_DIR}/bin/${CONFIG_NAME}/xo_test")
 endif()
