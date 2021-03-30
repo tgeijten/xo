@@ -51,5 +51,8 @@ namespace xo
 
 		handle_type erase( handle_type h ) { vector<T>::erase( begin() + h.value() ); return h; }
 		handle_type erase( handle_span_type hs ) { vector<T>::erase( begin() + hs.begin().value(), begin() + hs.end().value() ); return *hs.begin(); }
+
+		handle_type find( handle_span_type hs, const T& e ) { for ( auto h : hs ) if ( ( *this )[ h ] == e ) return h; return handle_type{}; }
+		handle_type find( const T& e ) { return find( span(), e ); }
 	};
 }
