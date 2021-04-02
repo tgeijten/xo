@@ -71,8 +71,11 @@ namespace xo
 						log::info( name_, ": ", result_.passed_, " checks passed" );
 					else log::warning( name_, ": ", " empty test case" );
 				}
-				else
+				else if ( result_.checks_ > 1 )
+				{
+					// only show extra error message when there's more than on check
 					log::error( name_, ": ", result_.failed_, " of ", result_.checks_, " checks FAILED!" );
+				}
 			}
 			else
 			{
