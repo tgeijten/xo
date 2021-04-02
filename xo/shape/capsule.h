@@ -32,4 +32,8 @@ namespace xo
 	inline void scale( capsule& s, float f ) {
 		s.radius_ *= f; s.height_ *= f;
 	}
+
+	inline pair<vec3f, vec3f> center_positions( const capsule& s, const transformf& t ) {
+		return { t.p, t.p + s.height_ * local_y_axis( t.q ) };
+	}
 }
