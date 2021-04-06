@@ -13,4 +13,8 @@ namespace xo
 		auto p2 = dot_product( r.dir, plane_normal );
 		return r.pos - ( p1 / p2 ) * r.dir;
 	}
+
+	float distance_from_center( xo::sphere& s, const vec3f& dir ) {
+		return s.radius_;
+	}
 }
