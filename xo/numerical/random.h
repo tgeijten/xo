@@ -34,8 +34,4 @@ namespace xo
 	template< typename T > vec3_<T> rand_vec3( T min = T( -1 ), T max = T( 1 ), random_number_generator& rng = global_random_number_generator() ) {
 		return vec3_<T>{ rng.uni( min, max ), rng.uni( min, max ), rng.uni( min, max ) };
 	}
-
-	template< typename T > quat_<T> rand_quat( degree_<T> min = -180_deg, degree_<T> max = 180_deg, random_number_generator& rng = global_random_number_generator() ) {
-		return quat_from_euler_xyz( rng.uni( min, max ), rng.uni( min, max ), rng.uni( min, max ) );
-	}
 }
