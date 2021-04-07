@@ -14,7 +14,7 @@ namespace xo
 	};
 
 	inline float volume( const capsule& s ) {
-		return constantsf::pi() * squared( s.radius_ ) * ( ( 4.0f / 3.0f ) * ( s.radius_ + s.height_ ) );
+		return constantsf::pi() * squared( s.radius_ ) * ( ( 4.0f / 3.0f ) * s.radius_ + s.height_ );
 	}
 
 	inline vec3f dim( const capsule& s ) {
@@ -26,7 +26,18 @@ namespace xo
 	}
 	
 	inline vec3f inertia( const capsule& s, float density ) {
-		XO_NOT_IMPLEMENTED;
+		const auto h = s.height_;
+		const auto r = s.radius_;
+		const auto r2 = r * r;
+		const auto r3 = r2 * r;
+		const auto pi = num<float>::pi;
+
+		float m1 = pi * r2 * h * density;
+		float m2 = ( 4.0f / 3.0f ) * pi * r3 * density;
+		float Ia = m1 * ( 0.25f * r2 + ( 1.0f / 12.0f ) * m1 * h * h ) + m2 * ( 0.4f * r2 + 0.375f * r * h + 0.25f * h * h );
+		float Ib = ( m1 * 0.5f + m2 * 0.4f ) * r2;
+
+		return vec3f{ Ia, Ib, Ia };
 	}
 	
 	inline void scale( capsule& s, float f ) {
