@@ -14,7 +14,16 @@ namespace xo
 		return r.pos - ( p1 / p2 ) * r.dir;
 	}
 
-	float distance_from_center( xo::sphere& s, const vec3f& dir ) {
-		return s.radius_;
+	inline float distance_from_center( const xo::sphere& s, const vec3f& dir ) { return s.radius_; }
+	inline float distance_from_center( const xo::box& s, const vec3f& dir ) {
+		return xo::min( s.half_dim_.x / dir.x, xo::min( s.half_dim_.y / dir.y, s.half_dim_.z / dir.z ) );
+	}
+	inline float distance_from_center( const xo::cylinder& s, const vec3f& dir ) { XO_NOT_IMPLEMENTED; }
+	inline float distance_from_center( const xo::capsule& s, const vec3f& dir ) { XO_NOT_IMPLEMENTED; }
+	inline float distance_from_center( const xo::cone& s, const vec3f& dir ) { XO_NOT_IMPLEMENTED; }
+	inline float distance_from_center( const xo::plane& s, const vec3f& dir ) { return 0.0f; }
+
+	inline float distance_from_center( const shape& s, const vec3f& dir ) {
+		return std::visit( [&]( auto&& arg ) { return distance_from_center( arg, dir ); }, s );
 	}
 }
