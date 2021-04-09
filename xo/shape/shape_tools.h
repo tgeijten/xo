@@ -22,8 +22,11 @@ namespace xo
 	inline float distance_from_center( const xo::capsule& s, const vec3f& dir ) { XO_NOT_IMPLEMENTED; }
 	inline float distance_from_center( const xo::cone& s, const vec3f& dir ) { XO_NOT_IMPLEMENTED; }
 	inline float distance_from_center( const xo::plane& s, const vec3f& dir ) { return 0.0f; }
-
 	inline float distance_from_center( const shape& s, const vec3f& dir ) {
 		return std::visit( [&]( auto&& arg ) { return distance_from_center( arg, dir ); }, s );
+	}
+
+	inline vec3f intersection_from_center( const shape& s, const vec3f& dir ) {
+		return distance_from_center( s, dir ) * dir;
 	}
 }
