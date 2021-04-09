@@ -138,9 +138,9 @@ namespace xo
 	template< typename T > quat_<T> quat_from_quats( const quat_<T>& source, const quat_<T>& target )
 	{ return -source * target; }
 
-	/// Get rotation vector from quaternion
+	/// Get rotation vector from normalized quaternion
 	template< typename T > vec3_<T> rotation_vector_from_quat( const quat_<T>& q ) {
-		xo_debug_assert( is_normalized( q ) );
+		xo_debug_assert( q.w <= T( 1 ) );
 		T l = sqrt( q.x * q.x + q.y * q.y + q.z * q.z );
 		if ( l > constants<T>::ample_epsilon() ) {
 			T f = T( 2 ) * std::acos( q.w ) / l;
@@ -148,9 +148,9 @@ namespace xo
 		} else return vec3_<T>::zero();
 	}
 
-	/// Get axis angle from quaternion
+	/// Get axis angle from normalized quaternion
 	template< typename T > std::pair< vec3_<T>, radian_<T> > axis_angle_from_quat( const quat_<T>& q ) {
-		xo_debug_assert( is_normalized( q ) );
+		xo_debug_assert( q.w <= T( 1 ) );
 		T l = sqrt( q.x * q.x + q.y * q.y + q.z * q.z );
 		if ( l > constants<T>::ample_epsilon() ) {
 			T s = T( 1 ) / l;
