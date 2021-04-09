@@ -8,6 +8,7 @@
 #include "xo/container/container_algorithms.h"
 #include "xo/string/string_tools.h"
 #include "xo/container/flat_set.h"
+#include "xo/container/indexed_map.h"
 
 namespace xo
 {
@@ -30,13 +31,13 @@ namespace xo
 
 		sorted_vector< sortable > sv;
 		sv.insert( sortable{ 3, "peer" } );
-		sv.insert( sortable{ 1, "appel" } );
+		sv.insert( sortable{ 1, "apple" } );
 		sv.insert( sortable{ 2, "banaan" } );
 		sv.insert( sortable{ 3, "banaan" } );
 		sv.insert( sortable{ 1, "banaan" } );
 
 		XO_CHECK( sv.front().e == 1 );
-		XO_CHECK( sv.front().s == "appel" );
+		XO_CHECK( sv.front().s == "apple" );
 		XO_CHECK( sv[ 1 ].e == 1 );
 		XO_CHECK( sv[ 1 ].s == "banaan" );
 		XO_CHECK( sv.back().s == "peer" );
@@ -131,5 +132,32 @@ namespace xo
 		}
 
 		XO_CHECK( t( "R1", "C1" ) == 1.0 );
+	}
+
+	XO_TEST_CASE( indexed_map )
+	{
+		indexed_map< string, string > im;
+		XO_CHECK( im.empty() );
+		im.emplace_back( "apple", "nothing" );
+		im.emplace_back( "apple", "second" );
+		im[ "banana" ] = "third";
+		XO_CHECK( im.size() == 3 );
+		XO_CHECK( im[ 0 ].second == "nothing" );
+		im[ "apple" ] = "first";
+		XO_CHECK( im[ 0 ].second == "first" );
+		XO_CHECK( im.size() == 3 );
+		XO_CHECK( im.front().first == "apple" );
+		XO_CHECK( im.count( "apple" ) == 2 );
+		XO_CHECK( im.contains( "banana" ) );
+		XO_CHECK( im.find( "apple" )->second == "first" );
+		XO_CHECK( im.find( "apple", ++im.find( "apple" ) )->second == "second" );
+		XO_CHECK( im.find( "banana" )->second == "third" );
+		XO_CHECK( im.find( "banana", ++im.find( "banana" ) ) == im.end() );
+		XO_CHECK( im.insert( { "banana", "new" }  ).second == false );
+		XO_CHECK( im[ "banana" ] == "new" );
+		XO_CHECK( im.insert( { "pear", "fourth" } ).second == true );
+		XO_CHECK( im[ "pear" ] == "fourth" );
+		XO_CHECK( im.back().second == "fourth" );
+		XO_CHECK( im.size() == 4 );
 	}
 }
