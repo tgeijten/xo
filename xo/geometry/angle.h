@@ -29,4 +29,17 @@ namespace xo
 	template< angle_unit U, typename T > bool from_str( const string& str, angle_<U, T>& v ) {
 		return from_str( str, v.value );
 	}
+
+	/// alias for angle vector
+	template< typename T > using vec3rad_ = vec3_< radian_<T> >;
+	using vec3radf = vec3rad_< float >;
+	using vec3radd = vec3rad_< double >;
+	template< typename T > using vec3deg_ = vec3_< degree_<T> >;
+	using vec3degf = vec3deg_< float >;
+	using vec3degd = vec3deg_< double >;
+
+	/// convert vector of angles to vector of values
+	template< angle_unit U, typename T > vec3_<T> value( const vec3_< angle_<U, T> >& v ) {
+		return vec3_<T>( v.x.value, v.y.value, v.z.value );
+	}
 }

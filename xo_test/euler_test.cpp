@@ -73,7 +73,7 @@ namespace xo
 			XO_CHECK_MESSAGE( equal( ea_val, ea2_val, e ), to_str( ea_val ) + " != " + to_str( ea2_val ) );
 		};
 
-		vec3radd ea( 0.1_rad, 0.2_rad, 0.3_rad );
+		vec3radd ea( 0.1_radd, 0.2_radd, 0.3_radd );
 
 		test_euler_conversion( ea, euler_order::xyz );
 		test_euler_conversion( ea, euler_order::xzy );
@@ -95,11 +95,11 @@ namespace xo
 
 	XO_TEST_CASE( xo_angle_decomposition_test )
 	{
-		auto q0 = quat_from_euler( 2_rad, 0_rad, 1_rad, euler_order::zyx );
+		auto q0 = quat_from_euler( 2_radd, 0_radd, 1_radd, euler_order::zyx );
 		auto d0 = rotation_around_axis( q0, vec3d::unit_x() );
 		XO_CHECK( equal( d0.value, 2.0 ) );
 
-		auto q = quat_from_euler( 0.4_rad, 0.3_rad, 0_rad, euler_order::xyz );
+		auto q = quat_from_euler( 0.4_radd, 0.3_radd, 0_radd, euler_order::xyz );
 		auto rx = rotation_around_axis( q, vec3d::unit_x() );
 		auto ry = rotation_around_axis( q, vec3d::unit_y() );
 		auto rz = rotation_around_axis( q, vec3d::unit_z() );

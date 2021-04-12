@@ -33,7 +33,7 @@ namespace xo
 		rad_vec = vec3radf( deg_vec );
 		XO_CHECK( equal( rad_vec[ 0 ].value, radianf( degreef( 10 ) ).value ) );
 
-		auto qtest = quat_from_euler( 180.0_deg, 180_deg, 180_deg, euler_order::xyz );
+		auto qtest = quat_from_euler( 180.0_degd, 180_degd, 180_degd, euler_order::xyz );
 		auto qtest2 = quat_from_axis_angle( vec3_<float>::unit_x(), a6_df );
 		auto qtest3 = quat_from_axis_angle( vec3_<double>::unit_y(), a1_rd );
 		auto p = axis_angle_from_quat( qtest2 );

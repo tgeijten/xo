@@ -28,7 +28,7 @@ namespace xo
 
 	XO_TEST_CASE( xo_quat_axes_test )
 	{
-		auto q = quat_from_euler( 20_deg, -30_deg, 40_deg );
+		auto q = quat_from_euler( 20_degd, -30_degd, 40_degd );
 		auto qx = local_x_axis( q );
 		auto qy = local_y_axis( q );
 		auto qz = local_z_axis( q );
