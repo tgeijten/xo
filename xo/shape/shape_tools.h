@@ -16,7 +16,8 @@ namespace xo
 
 	inline float distance_from_center( const xo::sphere& s, const vec3f& dir ) { return s.radius_; }
 	inline float distance_from_center( const xo::box& s, const vec3f& dir ) {
-		return xo::min( s.half_dim_.x / dir.x, xo::min( s.half_dim_.y / dir.y, s.half_dim_.z / dir.z ) );
+		auto dist = vec3f{ s.half_dim_.x / std::abs( dir.x ), s.half_dim_.y / std::abs( dir.y ), s.half_dim_.z / std::abs( dir.z ) };
+		return xo::min( dist.x, xo::min( dist.y, dist.z ) );
 	}
 	inline float distance_from_center( const xo::cylinder& s, const vec3f& dir ) { XO_NOT_IMPLEMENTED; }
 	inline float distance_from_center( const xo::capsule& s, const vec3f& dir ) { XO_NOT_IMPLEMENTED; }
