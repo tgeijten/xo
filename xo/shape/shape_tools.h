@@ -19,8 +19,27 @@ namespace xo
 		auto dist = vec3f{ s.half_dim_.x / std::abs( dir.x ), s.half_dim_.y / std::abs( dir.y ), s.half_dim_.z / std::abs( dir.z ) };
 		return xo::min( dist.x, xo::min( dist.y, dist.z ) );
 	}
-	inline float distance_from_center( const xo::cylinder& s, const vec3f& dir ) { XO_NOT_IMPLEMENTED; }
-	inline float distance_from_center( const xo::capsule& s, const vec3f& dir ) { XO_NOT_IMPLEMENTED; }
+	inline float distance_from_center( const xo::cylinder& s, const vec3f& dir ) {
+		const auto hh = 0.5f * s.height_;
+		const auto r = s.radius_;
+		auto vxz = std::sqrt( dir.x * dir.x + dir.z * dir.z );
+		if ( std::abs( dir.y ) * r > hh * vxz ) 
+			return std::sqrt( hh * hh + vxz * vxz ); // point is on cylinder top
+		else return r / vxz; // point is on cylinder side
+	}
+	inline float distance_from_center( const xo::capsule& s, const vec3f& dir ) {
+		const auto hh = 0.5f * s.height_;
+		const auto r = s.radius_;
+		auto vxz = std::sqrt( dir.x * dir.x + dir.z * dir.z );
+		if ( std::abs( dir.y ) * r > hh * vxz ) { // point is on capsule cap
+			auto b = 2.0f * dir.y * -std::copysign( hh, dir.y );
+			auto c = hh * hh - r * r;
+			auto det = b * b - 4 * c;
+			auto sd = std::sqrt( det );
+			return std::max( (-b + sd ) / 2, (-b - sd ) / 2 );
+		}
+		else return r / vxz; // point is on capsule cylinder
+	}
 	inline float distance_from_center( const xo::cone& s, const vec3f& dir ) { XO_NOT_IMPLEMENTED; }
 	inline float distance_from_center( const xo::plane& s, const vec3f& dir ) { return 0.0f; }
 	inline float distance_from_center( const shape& s, const vec3f& dir ) {
