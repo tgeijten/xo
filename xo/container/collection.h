@@ -6,6 +6,7 @@
 
 namespace xo
 {
+	/// container that can hold multiple elements of different types
 	template <typename... Ts>
 	class collection
 	{
