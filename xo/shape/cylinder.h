@@ -4,6 +4,7 @@
 
 namespace xo
 {
+	/// cylinder shape, y-up
 	struct cylinder
 	{
 		cylinder() : radius_(), height_() {}
@@ -22,14 +23,14 @@ namespace xo
 	}
 
 	inline vec3f dim( const cylinder& s ) {
-		return vec3f( s.radius_, s.radius_, s.height_ );
+		return vec3f( 2.0f * s.radius_, s.height_, 2.0f * s.radius_ );
 	}
 
 	inline vec3f inertia( const cylinder& s, float density ) {
 		vec3f r;
 		auto m = density * volume( s );
-		r.x = r.y = m / 12.0f * ( 3 * squared( s.radius_ ) + squared( s.height_ ) );
-		r.z = 0.5f * m * squared( s.radius_ ); // cylinder along z axis
+		r.x = r.z = m / 12.0f * ( 3 * squared( s.radius_ ) + squared( s.height_ ) );
+		r.y = 0.5f * m * squared( s.radius_ ); // cylinder along y axis
 		return r;
 	}
 

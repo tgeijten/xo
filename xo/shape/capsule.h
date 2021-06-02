@@ -4,6 +4,7 @@
 
 namespace xo
 {
+	/// capsule shape, y-up
 	struct capsule
 	{
 		capsule() : radius_(), height_() {}
@@ -18,7 +19,7 @@ namespace xo
 	}
 
 	inline vec3f dim( const capsule& s ) {
-		return vec3f( s.radius_, s.radius_, s.height_ );
+		return vec3f( 2.0f * s.radius_, s.height_, 2.0f * s.radius_ );
 	}
 	
 	inline aabbf aabb( const capsule& s, const transformf& t ) {

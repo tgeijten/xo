@@ -4,6 +4,7 @@
 
 namespace xo
 {
+	/// cone shape, y-up
 	struct cone
 	{
 		cone() : radius_(), height_() {}
@@ -18,7 +19,7 @@ namespace xo
 	}
 
 	inline vec3f dim( const cone& s ) {
-		return vec3f( s.radius_, s.radius_, s.height_ );
+		return vec3f( 2.0f * s.radius_, s.height_, 2.0f * s.radius_ );
 	}
 
 	inline aabbf aabb( const cone& s, const transformf& t ) {
