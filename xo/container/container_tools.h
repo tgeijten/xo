@@ -43,11 +43,11 @@ namespace xo
 	{ for ( ; idx < std::size( cont ); ++idx ) if ( pred( cont[ idx ] ) ) return idx; return no_index; }
 
 	/// find reference to element in a container, throw if not found
-	template< typename C, typename P > typename const C::value_type& find_ref_if( const C& cont, P pred )
+	template< typename C, typename P > typename const auto& find_ref_if( const C& cont, P pred )
 	{ auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( pred( *it ) ) return *it; xo_error( "Could not find element" ); }
 
 	/// find reference to element in a container, throw if not found
-	template< typename C, typename P > typename C::value_type& find_ref_if( C& cont, P pred )
+	template< typename C, typename P > typename auto& find_ref_if( C& cont, P pred )
 	{ auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( pred( *it ) ) return *it; xo_error( "Could not find element" ); }
 
 	/// count element in a container
