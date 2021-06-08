@@ -3,6 +3,7 @@
 #include "xo/system/xo_config.h"
 #include "xo/system/error_code.h"
 #include "xo/system/version.h"
+#include <typeinfo>
 
 namespace xo
 {
