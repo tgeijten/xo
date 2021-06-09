@@ -177,10 +177,15 @@ namespace xo
 	{
 		for ( auto& f : find_paths )
 		{
-			if ( f.is_absolute() && file_exists( f ) )
-				return f;
-			else if ( auto full_path = current_find_file_path() / f; file_exists( full_path ) )
-				return full_path;
+			if ( f.is_absolute() ) {
+				if ( file_exists( f ) )
+					return f;
+			}
+			else {
+				auto full_path = current_find_file_path() / f;
+				if ( file_exists( full_path ) )
+					return full_path;
+			}
 		}
 		return optional< path >();
 	}
