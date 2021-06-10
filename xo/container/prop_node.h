@@ -247,7 +247,7 @@ namespace xo
 		return prop_node( to_str( v ) );
 	}
 
-	/// default conversion from prop_node to T, uses to_str()
+	/// default conversion from prop_node to T, uses from_str()
 	template< typename T > bool from_prop_node( const prop_node& pn, T& v ) {
 		return from_str( pn.raw_value(), v ); 
 	};
