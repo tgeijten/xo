@@ -86,7 +86,10 @@ namespace xo
 		template< typename T > T get_any( std::initializer_list< key_t > keys ) const;
 
 		/// get the value of a child node for a range of keys, or a default value if it doesn't exist
-		template< typename T > optional< T > try_get_any( std::initializer_list< key_t > keys ) const;
+		template< typename T > optional<T> try_get_any( std::initializer_list< key_t > keys ) const;
+
+		/// get all values with a specific key
+		template< typename T > vector<T> get_all( const key_t& key ) const;
 
 		/// equality operators
 		bool operator==( const prop_node& other ) const;
@@ -344,11 +347,20 @@ namespace xo
 		xo_error( "Could not find key: " + concatenate_str( keys, " or " ) );
 	}
 
-	template< typename T > optional< T >
-	prop_node::try_get_any( std::initializer_list< key_t > keys ) const {
+	template< typename T >
+	optional< T > prop_node::try_get_any( std::initializer_list< key_t > keys ) const {
 		if ( auto c = try_get_any_child( keys ) )
 			return c->get< T >();
 		return optional< T >();
+	}
+
+	template< typename T >
+	vector<T> prop_node::get_all( const key_t& key ) const {
+		vector<T> values;
+		for ( auto& c : children )
+			if ( c.first == key )
+				values.emplace_back( c.second.get<T>() );
+		return values;
 	}
 
 	template< typename T >

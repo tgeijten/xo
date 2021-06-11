@@ -16,6 +16,8 @@
 
 #define SET_PROP( _pn_, _var_ ) _pn_.set< decltype( _var_ ) >( ::xo::tidy_identifier( #_var_ ), _var_ )
 
+#define XO_DEFINE_FROM_PROP_NODE_FOR_TYPE( _type_ ) namespace xo { inline bool from_prop_node( const prop_node& pn, _type_& o ) { o = _type_( pn ); return true; } }
+
 namespace xo
 {
 	XO_API size_t prop_node_align_width( const prop_node& pn, const size_t indent = 2, const size_t depth = 0 );
