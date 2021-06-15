@@ -1,9 +1,8 @@
 #pragma once
 
 #include "xo/container/prop_node.h"
-#include "xo/system/system_tools.h"
-#include "xo/system/log_level.h"
 #include "xo/container/pair_type.h"
+#include "xo/system/log_level.h"
 
 #define INIT_PROP( _pn_, _var_, _default_ ) _var_ = _pn_.get< decltype( _var_ ) >( ::xo::tidy_identifier( #_var_ ), decltype( _var_ )( _default_ ) )
 #define TRY_INIT_PROP( _pn_, _var_ ) if ( auto c = _pn_.try_get_child( ::xo::tidy_identifier( #_var_ ) ) ) _var_ = c->get< decltype( _var_ ) >();
