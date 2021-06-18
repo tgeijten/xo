@@ -48,3 +48,6 @@ XO_SMART_ENUM_DETAIL_DEFINE_FUNCTIONS( E, #__VA_ARGS__ )
 #define xo_smart_enum_class_type( E, T, ... ) \
 enum class E : T { __VA_ARGS__ }; \
 XO_SMART_ENUM_DETAIL_DEFINE_FUNCTIONS( E, #__VA_ARGS__ )
+
+#define XO_DEFINE_ENUM_SERIALIZATION( E, ... ) \
+XO_SMART_ENUM_DETAIL_DEFINE_FUNCTIONS( E, #__VA_ARGS__ )

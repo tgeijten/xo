@@ -17,9 +17,9 @@ namespace xo
 	}
 
 	inline side str_get_side( const string& str ) {
-		if ( str_ends_with( str, "_l" ) )
+		if ( str_ends_with( str, side_postfix( side::left ) ) )
 			return side::left;
-		else if ( str_ends_with( str, "_r" ) )
+		else if ( str_ends_with( str, side_postfix( side::right ) ) )
 			return side::right;
 		else return side::none;
 	}
