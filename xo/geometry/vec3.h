@@ -127,6 +127,13 @@ namespace xo
 	template< typename T > vec3_<T> multiply( const vec3_<T>& v1, const vec3_<T>& v2 )
 	{ return vec3_<T>( v1.x * v2.x, v1.y * v2.y, v1.z * v2.z ); }
 
+	/// Scale vector elements
+	template< typename T > vec3_<T>& scale( vec3_<T>& v, const vec3_<T>& s )
+	{ v.x *= s.x; v.y *= s.y; v.z *= s.z; return v; }
+
+	/// Scale vector elements
+	template< typename T > vec3_<T>& scaled( vec3_<T> v, const vec3_<T>& s ) { return scale( v, s ); }
+
 	/// Projection of v1 onto v2
 	template< typename T > vec3_<T> projection( const vec3_<T>& v1, const vec3_<T>& v2 )
 	{ return ( dot_product( v1, v2 ) / squared_length( v2 ) ) * v2; }
