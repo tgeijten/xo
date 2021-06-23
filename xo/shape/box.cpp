@@ -42,7 +42,9 @@ namespace xo
 
 	void scale( box& s, const vec3f& sv )
 	{
-		xo::scale( s.half_dim_, sv );
+		s.half_dim_.x *= sv.x;
+		s.half_dim_.y *= sv.y;
+		s.half_dim_.z *= sv.z;
 	}
 
 	array< vec3f, 8 > corners( const box& b )

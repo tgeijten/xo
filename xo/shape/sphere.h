@@ -37,6 +37,6 @@ namespace xo
 	}
 
 	inline void scale( sphere& s, const vec3f& sv ) {
-		s.radius_ *= length( sv );
+		s.radius_ *= ( sv.x + sv.y + sv.z ) / 3.0f;
 	}
 }
