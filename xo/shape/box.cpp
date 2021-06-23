@@ -40,6 +40,11 @@ namespace xo
 		s.half_dim_ *= f;
 	}
 
+	void scale( box& s, const vec3f& sv )
+	{
+		xo::scale( s.half_dim_, sv );
+	}
+
 	array< vec3f, 8 > corners( const box& b )
 	{
 		return array< vec3f, 8 >{

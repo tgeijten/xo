@@ -20,5 +20,6 @@ namespace xo
 	XO_API vec3f dim( const box& s );
 	XO_API vec3f inertia( const box& s, float density );
 	XO_API void scale( box& s, float f );
+	XO_API void scale( box& s, const vec3f& sv );
 	XO_API array< vec3f, 8 > corners( const box& b );
 }

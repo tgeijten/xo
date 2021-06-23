@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xo/system/assert.h"
+#include <cmath>
 
 namespace xo
 {
@@ -42,7 +43,13 @@ namespace xo
 	}
 	
 	inline void scale( capsule& s, float f ) {
-		s.radius_ *= f; s.height_ *= f;
+		s.radius_ *= f;
+		s.height_ *= f;
+	}
+
+	inline void scale( capsule& s, const vec3f& sv ) {
+		s.radius_ *= std::sqrt( sv.x * sv.x + sv.z * sv.z );
+		s.height_ *= sv.y;
 	}
 
 	inline pair<vec3f, vec3f> center_positions( const capsule& s, const transformf& t ) {

@@ -21,4 +21,5 @@ namespace xo
 	inline vec3f dim( const plane& s ) { XO_NOT_IMPLEMENTED; }
 	inline vec3f inertia( const plane& s, float density ) { return vec3f::zero(); }
 	inline void scale( plane& s, float f ) { }
+	inline void scale( plane& s, const vec3f& sv ) { }
 }

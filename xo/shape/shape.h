@@ -59,6 +59,12 @@ namespace xo
 
 	inline shape scaled( shape s, float f ) { scale( s, f ); return s; }
 
+	inline void scale( shape& s, const vec3f& sv ) {
+		std::visit( [&]( auto&& arg ) { scale( arg, sv ); }, s );
+	}
+
+	inline shape scaled( shape s, const vec3f& sv ) { scale( s, sv ); return s; }
+
 	inline prop_node to_prop_node( const shape& s ) {
 		return std::visit( []( auto&& arg ) { return to_prop_node( arg ); }, s );
 	}

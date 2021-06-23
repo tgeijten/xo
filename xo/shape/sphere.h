@@ -2,7 +2,7 @@
 
 #include "xo/numerical/constants.h"
 #include "xo/numerical/math.h"
-#include "xo/geometry/vec3_type.h"
+#include "xo/geometry/vec3.h"
 #include "xo/geometry/transform.h"
 #include "xo/shape/aabb.h"
 
@@ -34,5 +34,9 @@ namespace xo
 
 	inline void scale( sphere& s, float f ) {
 		s.radius_ *= f;
+	}
+
+	inline void scale( sphere& s, const vec3f& sv ) {
+		s.radius_ *= length( sv );
 	}
 }
