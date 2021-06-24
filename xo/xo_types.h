@@ -49,6 +49,5 @@ namespace xo
 	using index_t = size_t;
 	const index_t no_index = ~index_t( 0 );
 
-	inline namespace literals {}
 	namespace log {}
 }

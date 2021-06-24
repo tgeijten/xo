@@ -5,6 +5,9 @@
 
 namespace xo
 {
+	template< typename T > T rad_to_deg( const T& value ) { return T( 57.295779513082320877L ) * value; }
+	template< typename T > T deg_to_rad( const T& value ) { return T( 0.017453292519943295769L ) * value; }
+
 	/// base angle_ definition
 	template< angle_unit U, typename T >
 	struct angle_ {};
@@ -70,7 +73,7 @@ namespace xo
 	using degreed = degree_<double>;
 
 	/// user-defined literals, add 'using namespace xo::literals' to access them outside the xo namespace
-	inline namespace literals {
+	inline namespace angle_literals {
 		inline constexpr degreef operator"" _degf( long double v ) { return degreef( v ); }
 		inline constexpr degreef operator"" _degf( unsigned long long int v ) { return degreef( v ); }
 		inline constexpr radianf operator"" _radf( long double v ) { return radianf( v ); }

@@ -235,7 +235,7 @@ namespace xo
 	};
 
 	/// prop_node literal, 'using namespace xo::literals' puts them outside the xo namespace
-	inline namespace literals {
+	inline namespace prop_node_literals {
 		inline prop_node operator"" _pn( const char* v, size_t s ) { return prop_node( v ); }
 	}
 
