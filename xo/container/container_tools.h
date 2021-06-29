@@ -51,7 +51,7 @@ namespace xo
 	{ auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( pred( *it ) ) return *it; xo_error( "Could not find element" ); }
 
 	/// count element in a container
-	template< typename C, typename P > size_t count( const C& cont, typename C::value_type& e )
+	template< typename C > size_t count( const C& cont, typename C::value_type& e )
 	{ size_t c = 0; for ( auto it = std::begin( cont ); it != std::end( cont ); ++it ) c += size_t( *it == e ); return c; }
 
 	/// count element in a container
