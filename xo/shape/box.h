@@ -11,6 +11,7 @@ namespace xo
 	{
 		box() : half_dim_() {}
 		explicit box( const vec3f& half_dim ) : half_dim_( half_dim ) {}
+		explicit box( float hx, float hy, float hz ) : half_dim_( hx, hy, hz ) {}
 
 		vec3f half_dim_;
 	};
