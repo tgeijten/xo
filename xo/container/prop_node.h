@@ -30,13 +30,13 @@ namespace xo
 		using const_reverse_iterator = container_t::const_reverse_iterator;
 
 		/// constructors
-		prop_node() : accessed_flag( false ), value() {}
+		prop_node() : value(), accessed_flag( false ) {}
 		prop_node( const prop_node& other ) = default;
 		prop_node( prop_node&& other ) = default;
-		explicit prop_node( const value_t& v ) : accessed_flag( false ), value( v ) {}
-		explicit prop_node( value_t&& v ) : accessed_flag( false ), value( std::move( v ) ) {}
-		explicit prop_node( const char* v ) : accessed_flag( false ), value( v ) {}
-		explicit prop_node( std::initializer_list< pair_t > c ) : accessed_flag( false ), children( c ) {}
+		explicit prop_node( const value_t& v ) : value( v ), accessed_flag( false ) {}
+		explicit prop_node( value_t&& v ) : value( std::move( v ) ), accessed_flag( false ) {}
+		explicit prop_node( const char* v ) : value( v ), accessed_flag( false ) {}
+		explicit prop_node( std::initializer_list< pair_t > c ) : children( c ), accessed_flag( false ) {}
 
 		/// destructor (non-virtual)
 		~prop_node() = default;
@@ -229,9 +229,9 @@ namespace xo
 	private:
 		const prop_node* try_get_query_key( const key_t& key ) const;
 
-		mutable bool accessed_flag;
 		value_t value;
 		container_t children;
+		mutable bool accessed_flag;
 	};
 
 	/// prop_node literal, 'using namespace xo::literals' puts them outside the xo namespace

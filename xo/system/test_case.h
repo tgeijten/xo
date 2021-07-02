@@ -27,10 +27,10 @@ namespace xo
 	namespace test
 	{
 		struct test_result {
+			string error_;
 			int checks_ = 0;
 			int passed_ = 0;
 			int failed_ = 0;
-			string error_;
 			const bool success() const { return failed_ == 0 && error_.empty(); }
 			test_result& operator+=( const test_result& o ) {
 				checks_ += o.checks_;
