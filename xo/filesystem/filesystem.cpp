@@ -203,6 +203,19 @@ namespace xo
 #endif
 	}
 
+	path find_unique_directory( const path& folder, int max_attempts )
+	{
+		path unique_folder = folder;
+		for ( int i = 0; i < max_attempts; ++i )
+		{
+			if ( i > 0 )
+				unique_folder = folder + stringf( " (%d)", i );
+			if ( !directory_exists( unique_folder ) )
+				return unique_folder;
+		}
+		xo_error( "Could not find unique folder after " + to_str( max_attempts ) + " attempts" );
+	}
+
 	path create_unique_directory( const path& folder, int max_attempts )
 	{
 		path unique_folder = folder;
