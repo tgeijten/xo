@@ -228,7 +228,7 @@ namespace xo
 			if ( !directory_exists( unique_folder ) )
 				success = create_directories( unique_folder ); // try to create folder
 		}
-		xo_error_if( !success, "Could not create unique folder after " + to_str( max_attempts ) + " attempts" );
+		xo_error_if( !success, "Could not create unique folder based on " + folder.str() + " after " + to_str( max_attempts ) + " attempts" );
 
 		return unique_folder;
 	}
