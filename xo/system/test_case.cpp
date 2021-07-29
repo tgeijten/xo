@@ -41,7 +41,7 @@ namespace xo
 			} else {
 				auto lock = std::scoped_lock( g_log_mutex );
 				result_.failed_++;
-				log::error( name_, ": CHECK FAILED: ", operation, " ", message );
+				log::error( "FAILED: ", name_, " (", operation, " ", message, ")" );
 				return false;
 			}
 		}
@@ -67,14 +67,15 @@ namespace xo
 				auto lock = std::scoped_lock( g_log_mutex );
 				if ( result_.success() )
 				{
+					auto nump = result_.passed_;
 					if ( result_.passed_ > 0 )
-						log::info( name_, ": ", result_.passed_, " checks passed" );
+						log::info( "PASSED: ", name_, " (", nump, nump == 1 ? " check)" : " checks)" );
 					else log::warning( name_, ": ", " empty test case" );
 				}
 				else if ( result_.checks_ > 1 )
 				{
 					// only show extra error message when there's more than on check
-					log::error( name_, ": ", result_.failed_, " of ", result_.checks_, " checks FAILED!" );
+					log::error( "FAILED: ", name_, " (", result_.failed_, " of ", result_.checks_, " checks)" );
 				}
 			}
 			else
