@@ -287,14 +287,14 @@ namespace xo
 #endif
 	}
 
-	vector<path> find_files( const path& dir, const pattern_matcher& include, bool recursive )
+	vector<path> find_files( const path& dir, const pattern_matcher& include, bool recursive, int recurse_levels )
 	{
 		vector<path> files;
 		for ( fs::directory_iterator it( dir.str() ); it != fs::directory_iterator(); ++it )
 		{
 			const auto& fs_path = it->path();
-			if ( recursive && fs::is_directory( fs_path ) )
-				xo::append( files, find_files( path( fs_path.string() ), include, recursive ) );
+			if ( recursive && recurse_levels != 0 && fs::is_directory( fs_path ) )
+				xo::append( files, find_files( path( fs_path.string() ), include, recursive, recurse_levels - 1 ) );
 			if ( include( fs_path.filename().string() ) )
 				files.emplace_back( fs_path.string() );
 		}
