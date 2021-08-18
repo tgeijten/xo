@@ -49,6 +49,9 @@ namespace xo
 	/// set if bigger
 	template< typename T > T& set_if_bigger( T& value, const T& other ) { if ( other > value ) value = other; return value; }
 
+	/// set if different, returns true if set
+	template< typename T > bool set_if_different( T& value, const T& other ) { if ( other == value ) return false; value = other; return true; }
+
 	/// check if an integer value is a power of two
 	template< typename T > bool is_power_of_two( T v ) { return v != 0 && !( v & ( v - 1 ) ); }
 
