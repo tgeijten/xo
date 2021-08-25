@@ -66,6 +66,14 @@ namespace xo
 	template< typename TI, typename TF >
 	TI round_cast( TF value ) { return static_cast<TI>( std::round( value ) ); }
 
+	/// convert float [0..1] to uint [0..255]
+	template< typename T >
+	uint32 float_to_hex( const T& value ) { return round_cast<uint32>( clamped( f, T( 0 ), T( 1 ) ) * T( 255 ) ); }
+
+	/// convert uint32 [0..255] to float [0..1]
+	template< typename T >
+	T hex_to_float( uint32 value, uint32 start_bit = 0 ) { return T( ( value >> start_bit ) & 255 ) / T( 255 ); }
+
 	/// clamp a value so that it is between min and max
 	template< typename T > T& clamp( T& v, const T& lower, const T& upper )
 	// { return v = std::max( std::min( v, upper ), lower ); } // seems slower, despite https://godbolt.org/z/dZ2nXJ 

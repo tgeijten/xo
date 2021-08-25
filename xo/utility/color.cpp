@@ -12,7 +12,7 @@ namespace xo
 	{
 		if ( pn.has_value() )
 		{
-			c = color_from_int( static_cast<unsigned int>( std::stoul( pn.get<string>(), 0, 16 ) ) );
+			c = color_from_hex_rgb( static_cast<unsigned int>( std::stoul( pn.get<string>(), 0, 16 ) ) );
 			return true;
 		}
 		else if ( pn.has_any_key( { "h", "s", "v" } ) )
@@ -64,9 +64,16 @@ namespace xo
 		return color_from_hsv( hue, sat, val );
 	}
 
-	color color_from_int( uint32 x )
+	color color_from_hex_rgb( uint32 x )
 	{
 		return color( ( x >> 16 ) / 255.0f, ( ( x & 0xff00 ) >> 8 ) / 255.0f, ( x & 0xff ) / 255.0f );
+	}
+
+	inline uint32 hex_val( float f ) { return xo::round_cast<uint32>( clamped( f, 0.0f, 1.0f ) * 255.0f ); }
+
+	uint32 hex_rgb_from_color( const color& c )
+	{
+		return hex_val( c.r ) << 16 | hex_val( c.g ) << 8 | hex_val( c.b );
 	}
 
 	float perceived_brightness( const color& c )
