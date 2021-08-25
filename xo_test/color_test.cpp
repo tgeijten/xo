@@ -14,7 +14,7 @@ namespace xo
 			uint32 hex_col = rd( re );
 			color col = color_from_hex_rgb( hex_col );
 			auto hex_rgb2 = hex_rgb_from_color( col );
-			XO_CHECK( hex_col = hex_rgb2 );
+			XO_CHECK( hex_col == hex_rgb2 );
 		}
 	}
 }

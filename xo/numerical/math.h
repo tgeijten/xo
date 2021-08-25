@@ -68,11 +68,11 @@ namespace xo
 
 	/// convert float [0..1] to uint [0..255]
 	template< typename T >
-	uint32 float_to_hex( const T& value ) { return round_cast<uint32>( clamped( f, T( 0 ), T( 1 ) ) * T( 255 ) ); }
+	uint32 float_to_byte( const T& value ) { return round_cast<uint32>( clamped( value, T( 0 ), T( 1 ) ) * T( 255 ) ); }
 
 	/// convert uint32 [0..255] to float [0..1]
 	template< typename T >
-	T hex_to_float( uint32 value, uint32 start_bit = 0 ) { return T( ( value >> start_bit ) & 255 ) / T( 255 ); }
+	T get_byte( T value, int start_bit ) { return ( value >> start_bit ) & T( 255 ); }
 
 	/// clamp a value so that it is between min and max
 	template< typename T > T& clamp( T& v, const T& lower, const T& upper )
