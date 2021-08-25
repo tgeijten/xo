@@ -76,11 +76,14 @@ namespace xo
 	// { return std::max( std::min( v, upper ), lower ); } // seems slower, despite https://godbolt.org/z/dZ2nXJ 
 	{ return clamp( v, lower, upper ); }
 
+	/// limit transform function, used by soft_clamp
+	template< typename T > T limit_transform( T x, T limit ) { return limit - limit * limit / ( x + limit ); }
+
 	/// clamp with smooth boundary transformation
 	template< typename T > T soft_clamp( T& v, const T& min, const T& max, const T& boundary ) {
 		auto r = boundary * ( max - min );
-		if ( v > max - r ) v = max - r + limit_transfer( v - max + r, r );
-		else if ( v < min + r )	v = min + r - limit_transfer( min + r - v, r );
+		if ( v > max - r ) v = max - r + limit_transform( v - max + r, r );
+		else if ( v < min + r )	v = min + r - limit_transform( min + r - v, r );
 		return v;
 	}
 
@@ -94,9 +97,6 @@ namespace xo
 	/// convert uint32 [0..255] to float [0..1]
 	template< typename T >
 	T get_byte( T value, int start_bit ) { return ( value >> start_bit ) & T( 255 ); }
-
-	/// limit transform function
-	template< typename T > T limit_transfer( T x, T limit ) { return limit - limit * limit / ( x + limit ); }
 
 	/// wrap a value to a range
 	template< typename T > T& wrap( T& v, const T& lower, const T& upper ) {
