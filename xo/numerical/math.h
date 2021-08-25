@@ -66,14 +66,6 @@ namespace xo
 	template< typename TI, typename TF >
 	TI round_cast( TF value ) { return static_cast<TI>( std::round( value ) ); }
 
-	/// convert float [0..1] to uint [0..255]
-	template< typename T >
-	uint32 float_to_byte( const T& value ) { return round_cast<uint32>( clamped( value, T( 0 ), T( 1 ) ) * T( 255 ) ); }
-
-	/// convert uint32 [0..255] to float [0..1]
-	template< typename T >
-	T get_byte( T value, int start_bit ) { return ( value >> start_bit ) & T( 255 ); }
-
 	/// clamp a value so that it is between min and max
 	template< typename T > T& clamp( T& v, const T& lower, const T& upper )
 	// { return v = std::max( std::min( v, upper ), lower ); } // seems slower, despite https://godbolt.org/z/dZ2nXJ 
@@ -83,9 +75,6 @@ namespace xo
 	template< typename T > T clamped( T v, const T& lower, const T& upper )
 	// { return std::max( std::min( v, upper ), lower ); } // seems slower, despite https://godbolt.org/z/dZ2nXJ 
 	{ return clamp( v, lower, upper ); }
-
-	/// limit transform function
-	template< typename T > T limit_transfer( T x, T limit ) { return limit - limit * limit / ( x + limit ); }
 
 	/// clamp with smooth boundary transformation
 	template< typename T > T soft_clamp( T& v, const T& min, const T& max, const T& boundary ) {
@@ -98,9 +87,19 @@ namespace xo
 	template< typename T > T soft_clamped( T v, const T& min, const T& max, const T& boundary )
 	{ return soft_clamp( v, min, max, boundary ); }
 
+	/// convert float [0..1] to uint [0..255]
+	template< typename T >
+	uint32 float_to_byte( const T& value ) { return round_cast<uint32>( clamped( value, T( 0 ), T( 1 ) ) * T( 255 ) ); }
+
+	/// convert uint32 [0..255] to float [0..1]
+	template< typename T >
+	T get_byte( T value, int start_bit ) { return ( value >> start_bit ) & T( 255 ); }
+
+	/// limit transform function
+	template< typename T > T limit_transfer( T x, T limit ) { return limit - limit * limit / ( x + limit ); }
+
 	/// wrap a value to a range
-	template< typename T > T& wrap( T& v, const T& lower, const T& upper )
-	{
+	template< typename T > T& wrap( T& v, const T& lower, const T& upper ) {
 		if ( ( v - lower ) >= 0 )
 			return v = std::fmod( v - lower, upper - lower ) + lower;
 		else return v = std::fmod( v - lower, upper - lower ) + upper;
