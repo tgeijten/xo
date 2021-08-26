@@ -25,4 +25,6 @@ namespace xo
 	XO_API string to_str_unaccessed( const prop_node& pn );
 	XO_API pair< bool, string > find_query_to_node( const prop_node* from, const prop_node* to, const char delim = '.' );
 	XO_API prop_node prop_node_from_arg( int argc, const char* argv[] );
+	XO_API string make_str_from_prop_node( const prop_node& pn );
+	XO_API string make_prop_node_query( const prop_node& root, const prop_node& item );
 }

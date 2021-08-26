@@ -180,6 +180,10 @@ namespace xo
 		prop_node* try_get_query( const key_t& query, const char delim = '.' );
 		prop_node& get_or_add_query( const key_t& query, const char delim = '.' );
 
+		/// find parent node and index of a child
+		pair<const prop_node*, index_t> try_find_parent( const prop_node& pn ) const;
+		pair<prop_node*, index_t> try_find_parent( const prop_node& pn );
+
 		/// get key by index
 		const key_t& get_key( index_t idx ) const;
 
@@ -217,7 +221,6 @@ namespace xo
 		iterator erase( const_iterator it ) { return children.erase( it ); }
 		bool erase( const key_t& key );
 		bool erase_query( const key_t& query, const char delim = '.' );
-
 		void pop_back() { children.pop_back(); }
 
 		/// see if this node has been accessed

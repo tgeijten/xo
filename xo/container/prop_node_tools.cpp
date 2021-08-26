@@ -132,4 +132,36 @@ namespace xo
 
 		return pn;
 	}
+
+	string make_str_from_prop_node( const prop_node& pn )
+	{
+		string str = pn.raw_value();
+		if ( pn.size() > 0 )
+		{
+			bool is_array = pn.is_array();
+			if ( !str.empty() )
+				str += ' ';
+			str += is_array ? '[' : '{';
+			for ( const auto& [key, value] : pn )
+				str += " " + key + " = " + make_str_from_prop_node( value );
+			str += is_array ? " ]" : " }";
+		}
+		return str;
+	}
+
+	string make_prop_node_query( const prop_node& root, const prop_node& item )
+	{
+		string str;
+		auto p = root.try_find_parent( item );
+		while ( p.first )
+		{
+			if ( str.empty() )
+				str = p.first->get_key( p.second );
+			else str = p.first->get_key( p.second ) + '.' + str;
+			if ( p.first != &root )
+				p = root.try_find_parent( *p.first );
+			else break;
+		}
+		return str;
+	}
 }

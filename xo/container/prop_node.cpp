@@ -216,6 +216,23 @@ namespace xo
 		}
 	}
 
+	pair<const prop_node*, index_t> prop_node::try_find_parent( const prop_node& pn ) const
+	{
+		for ( index_t idx = 0; idx < children.size(); ++idx )
+			if ( &children[ idx ].second == &pn )
+				return { this, idx };
+		for ( const auto& c : children )
+			if ( auto r = c.second.try_find_parent( pn ); r.first )
+				return r;
+		return { nullptr, no_index };
+	}
+
+	pair<prop_node*, index_t> prop_node::try_find_parent( const prop_node& pn )
+	{
+		auto r = const_cast<const prop_node*>( this )->try_find_parent( pn );
+		return { const_cast<prop_node*>( r.first ), r.second };
+	}
+
 	bool prop_node::erase( const key_t& key )
 	{
 		for ( auto it = begin(); it != end(); ++it )
