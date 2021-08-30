@@ -6,12 +6,13 @@
 #include "assert.h"
 #include "xo/utility/optional.h"
 #include "xo/container/container_tools.h"
+#include "xo/utility/color.h"
 
 namespace xo
 {
 	settings::settings( prop_node schema, const path& filename, const version& current_version ) :
-	schema_( std::move( schema ) ),
-	current_version_( current_version )
+		schema_( std::move( schema ) ),
+		current_version_( current_version )
 	{
 		load( filename );
 	}
@@ -28,11 +29,27 @@ namespace xo
 	{
 		if ( auto* schema_node = try_find_setting( id ) )
 		{
-			// check if value is different from default
-			if ( value == schema_node->get_child( "default" ) )
+			const auto type_pn = schema_node->try_get_child( "type" );
+			const string type = type_pn ? type_pn->raw_value() : "";
+
+			// check if value is empty or the same as the default
+			if ( value == schema_node->get_child( "default" ) || value.empty() )
 			{
 				data_.erase_query( id );
 				return true; // success, don't store value
+			}
+
+			// check if the value is valid for the type
+			if (
+				( type == "float" && !value.try_get<double>() ) ||
+				( type == "int" && !value.try_get<int>() ) ||
+				( type == "bool" && !value.try_get<bool>() ) ||
+				( type == "color" && !value.try_get<xo::color>() ) ||
+				( type == "string" && !value.try_get<string>() )
+				)
+			{
+				log::error( "Error setting ", id, ": could not convert '", value.raw_value(), "' to ", type );
+				return false;
 			}
 
 			// check if the setting is part of a specified 'allowed' list

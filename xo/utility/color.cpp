@@ -12,8 +12,11 @@ namespace xo
 	{
 		if ( pn.has_value() )
 		{
-			c = color_from_hex_rgb( static_cast<unsigned int>( std::stoul( pn.get<string>(), 0, 16 ) ) );
-			return true;
+			try {
+				c = color_from_hex_rgb( static_cast<uint32>( std::stoul( pn.get<string>(), 0, 16 ) ) );
+				return true;
+			}
+			catch ( std::exception& ) { return false; }
 		}
 		else if ( pn.has_any_key( { "h", "s", "v" } ) )
 		{
