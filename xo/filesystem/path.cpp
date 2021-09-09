@@ -36,6 +36,12 @@ namespace xo
 		return *this /= stem + ext;
 	}
 
+	path& path::concat_stem( const string_type& postfix )
+	{
+		replace_stem( stem() + postfix );
+		return *this;
+	}
+
 	path& path::make_preferred()
 	{
 		for ( char& c : data_ )
