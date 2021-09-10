@@ -6,6 +6,7 @@
 #include "xo/utility/hash.h"
 #include <sstream>
 #include "xo/string/string_cast.h"
+#include "xo/system/system_tools.h"
 
 namespace xo
 {
@@ -82,6 +83,14 @@ namespace xo
 		XO_CHECK( str_ends_with( a, "apple" ) );
 		XO_CHECK( !str_ends_with( a, "bapple" ) );
 		XO_CHECK( !str_ends_with( a, "a" ) );
+
+		XO_CHECK( tidy_identifier( "::struct::_member_" ) == "member" );
+		XO_CHECK( tidy_identifier( "a::b::c::d::e" ) == "e" );
+		XO_CHECK( tidy_identifier( "a::b::apple_" ) == "apple" );
+		XO_CHECK( tidy_identifier( "a::b::_banana" ) == "banana" );
+		XO_CHECK( tidy_identifier( "a::b::__nope__" ) == "nope" );
+		XO_CHECK( tidy_identifier( "data.member_" ) == "member" );
+		XO_CHECK( tidy_identifier( "sub.data.member_" ) == "member" );
 
 		index_t idx = 123;
 		int i = -10;

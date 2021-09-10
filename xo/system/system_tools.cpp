@@ -61,12 +61,14 @@ namespace xo
 
 	XO_API string tidy_identifier( const string& id )
 	{
-		size_t pos = id.find_last_of( ':' );
-		if ( pos != string::npos )
-			return trim_str( id.substr( pos + 1 ), "_" ); // remove anything before :: plus underscores
-		else if ( str_begins_with( id, "m_" ) )
-			return trim_right_str( id.substr( 2 ), "_" ); // remove m_ plus underscores
-		else return trim_str( id, "_" ); // remove underscores
+		size_t pos = id.find_last_of( ".:" );
+		pos = pos != string::npos ? pos + 1 : 0;
+		while ( pos < id.size() && id[ pos ] == '_' )
+			++pos;
+		size_t end_pos = id.size();
+		while ( end_pos > 0 && id[ end_pos - 1 ] == '_' )
+			--end_pos;
+		return id.substr( pos, end_pos - pos );
 	}
 
 	XO_API string tidy_type_name( const string& name0 )
