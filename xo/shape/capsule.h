@@ -5,7 +5,7 @@
 
 namespace xo
 {
-	/// capsule shape, y-up
+	/// capsule shape, y-up, height is excluding cylinder caps
 	struct capsule
 	{
 		capsule() : radius_(), height_() {}

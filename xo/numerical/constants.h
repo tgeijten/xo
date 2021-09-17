@@ -1,7 +1,7 @@
 #pragma once
 
-#include <limits> // #todo: get rid of this header
-#include <type_traits> // #todo: get rid of this header
+#include <limits> // needed for std::numeric_limits; #todo: remove
+#include <type_traits> // needed for std::is_same_v(); #todo: remove
 
 namespace xo
 {
