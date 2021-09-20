@@ -5,6 +5,7 @@
 #include "xo/geometry/vec3.h"
 #include "xo/geometry/transform.h"
 #include "xo/shape/aabb.h"
+#include <cmath>
 
 namespace xo
 {
@@ -37,6 +38,6 @@ namespace xo
 	}
 
 	inline void scale( sphere& s, const vec3f& sv ) {
-		s.radius_ *= ( sv.x + sv.y + sv.z ) / 3.0f;
+		s.radius_ *= std::cbrt( sv.x * sv.y * sv.z );
 	}
 }

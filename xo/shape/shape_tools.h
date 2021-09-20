@@ -23,7 +23,7 @@ namespace xo
 		const auto hh = 0.5f * s.height_;
 		const auto r = s.radius_;
 		auto vxz = std::sqrt( dir.x * dir.x + dir.z * dir.z );
-		if ( std::abs( dir.y ) * r > hh * vxz ) 
+		if ( std::abs( dir.y ) * r > hh * vxz )
 			return std::sqrt( hh * hh + vxz * vxz ); // point is on cylinder top
 		else return r / vxz; // point is on cylinder side
 	}
@@ -36,7 +36,7 @@ namespace xo
 			auto c = hh * hh - r * r;
 			auto det = b * b - 4 * c;
 			auto sd = std::sqrt( det );
-			return std::max( (-b + sd ) / 2, (-b - sd ) / 2 );
+			return std::max( ( -b + sd ) / 2, ( -b - sd ) / 2 );
 		}
 		else return r / vxz; // point is on capsule cylinder
 	}

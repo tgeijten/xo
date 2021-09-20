@@ -37,7 +37,7 @@ namespace xo
 	}
 
 	inline void scale( cone& s, const vec3f& sv ) {
-		s.radius_ *= ( sv.x + sv.z ) * 0.5f;
+		s.radius_ *= std::sqrt( sv.x * sv.z );
 		s.height_ *= sv.y;
 	}
 }
