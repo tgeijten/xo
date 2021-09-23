@@ -75,6 +75,7 @@ namespace xo
 
 	// returns true unless shape is default constructed sphere
 	inline bool is_valid( const shape& s ) {
-		auto ss = std::get_if<sphere>( &s ); return !ss || ss->radius_ == 0.0f;
+		auto ss = std::get_if<sphere>( &s );
+		return !ss || ss->radius_ != 0.0f;
 	}
 }
