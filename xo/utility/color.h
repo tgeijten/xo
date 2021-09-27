@@ -21,6 +21,9 @@ namespace xo
 		static color blue( float br = 1.0f, float sat = 1.0f ) { return color( br * ( 1.0f - sat ), br * ( 1.0f - sat ), br ); }
 		static color magenta( float br = 1.0f, float sat = 1.0f ) { return color( br, br * ( 1.0f - sat ), br ); }
 		static color white( float br = 1.0f ) { return color( br, br, br ); }
+
+		bool is_null() const { return r == 0.0f && g == 0.0f && b == 0.0f && a == 0.0f; }
+		static color null() { return color( 0.0f, 0.0f, 0.0f, 0.0f ); }
 	};
 
 	template< typename T > inline color operator*( T s, const color& c ) { return color( s * c.r, s * c.g, s * c.b, s * c.a ); }
@@ -29,13 +32,19 @@ namespace xo
 	inline color operator+( const color& c1, const color& c2 ) { return color( c1.r + c2.r, c1.g + c2.g, c1.b + c2.b, c1.a + c2.a ); }
 	inline color operator-( const color& c1, const color& c2 ) { return color( c1.r - c2.r, c1.g - c2.g, c1.b - c2.b, c1.a - c2.a ); }
 
+	inline bool operator==( const color& c1, const color& c2 ) { return c1.r == c2.r && c1.g == c2.g && c1.b == c2.b && c1.a == c2.a; }
+	inline bool operator!=( const color& c1, const color& c2 ) { return !( c1 == c2); }
+	XO_API bool operator<( const color& c1, const color& c2 );
+
 	inline color& clamp( color& c, float l = 0.0f, float u = 1.0f )
 	{ clamp( c.r, l, u ); clamp( c.g, l, u ); clamp( c.b, l, u ); clamp( c.a, l, u ); return c; }
 
 	XO_API float perceived_brightness( const color& c );
 	XO_API color color_from_hsv( float H, float S, float V );
 	XO_API color color_from_hex_rgb( uint32 x );
+	XO_API color color_from_hex_rgba( uint32 x );
 	XO_API uint32 hex_rgb_from_color( const color& c );
+	XO_API uint32 hex_rgba_from_color( const color& c );
 	XO_API color make_unique_color( index_t i, float brightness = 0.6 );
 	XO_API bool from_prop_node( const prop_node& pn, color& c );
 }

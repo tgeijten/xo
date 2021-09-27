@@ -5,6 +5,7 @@
 #include "xo/system/log_sink.h"
 #include "xo/numerical/math.h"
 #include "xo/container/prop_node.h"
+#include "xo/string/string_tools.h"
 
 namespace xo
 {
@@ -12,8 +13,15 @@ namespace xo
 	{
 		if ( pn.has_value() )
 		{
+			const auto& hex_str = pn.raw_value();
+			bool has_0x = xo::str_begins_with( hex_str, "0x" );
+			size_t num_digits = has_0x ? hex_str.size() - 2 : hex_str.size();
+			auto value = static_cast<uint32>( std::stoul( hex_str, 0, 16 ) );
+
 			try {
-				c = color_from_hex_rgb( static_cast<uint32>( std::stoul( pn.get<string>(), 0, 16 ) ) );
+				if ( num_digits == 8 )
+					c = color_from_hex_rgba( value );
+				else c = color_from_hex_rgb( value );
 				return true;
 			}
 			catch ( std::exception& ) { return false; }
@@ -28,6 +36,8 @@ namespace xo
 			c.r = pn.get< float >( "r", pn.get<float>( 0 ) );
 			c.g = pn.get< float >( "g", pn.get<float>( 1 ) );
 			c.b = pn.get< float >( "b", pn.get<float>( 2 ) );
+			if ( pn.size() >= 4 )
+				c.a = pn.get< float >( "a", pn.get<float>( 3 ) );
 			return true;
 		}
 		else return false;
@@ -73,9 +83,34 @@ namespace xo
 		return color( f * get_byte( x, 16 ), f * get_byte( x, 8 ), f * get_byte( x, 0 ) );
 	}
 
+	color color_from_hex_rgba( uint32 x )
+	{
+		const float f = 1.0f / 255.0f;
+		return color( f * get_byte( x, 24 ), f * get_byte( x, 16 ), f * get_byte( x, 8 ) , f * get_byte( x, 0 ) );
+	}
+
 	uint32 hex_rgb_from_color( const color& c )
 	{
 		return float_to_byte( c.r ) << 16 | float_to_byte( c.g ) << 8 | float_to_byte( c.b );
+	}
+
+	uint32 hex_rgba_from_color( const color& c )
+	{
+		return float_to_byte( c.r ) << 24 | float_to_byte( c.g ) << 16 | float_to_byte( c.b ) << 8 | float_to_byte( c.a );
+	}
+
+	bool operator<( const color& c1, const color& c2 )
+	{
+		if ( c1.r == c2.r ) {
+			if ( c1.g == c2.g ) {
+				if ( c1.b == c2.b ) {
+					return c1.a < c2.a;
+				}
+				else return c1.b < c2.b;
+			}
+			else return c1.g < c2.g;
+		}
+		else return c1.r < c2.r;
 	}
 
 	float perceived_brightness( const color& c )
