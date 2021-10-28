@@ -2,6 +2,7 @@
 
 #include "xo/system/log.h"
 #include "xo/time/timer.h"
+#include "xo/string/string_tools.h"
 
 #define XO_FUNCTION_TIMER ::xo::debug_timer _function_debug_timer_( __FUNCTION__ )
 
@@ -16,7 +17,7 @@ namespace xo
 		{}
 		~debug_timer() {
 			auto t = timer_();
-			log::message( level_, name_, " took ", t.milliseconds(), "ms" );
+			log::message( level_, name_, " took ", stringf( "%3.2fms", t.milliseconds() ) );
 		}
 
 		const char* name_;
