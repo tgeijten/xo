@@ -111,8 +111,15 @@ namespace xo
 	/// check a value is within a range
 	template< typename T > bool is_between( T v, T min, T max ) { return ( v >= min && v <= max ); }
 
-	/// square wave, period = 2, min = -1, max = 1
-	template< typename T > T square_wave( T v ) { return fmod( v, T(2) ) < T(1) ? T(1) : T(-1); }
+	/// square wave, period = 2, min = 0, max = 1
+	template< typename T > T square_wave( T v ) {
+		return std::fmod( v, T(2) ) < T(1) ? T(1) : T(0);
+	}
+
+	/// triangle wave, period = 2, min = 0, max = 1
+	template< typename T > T triangle_wave( T v ) {
+		return T( 2 ) * std::abs( T( 0.5 ) * v - std::floor( T( 0.5 ) * v + T( 0.5 ) ) );
+	}
 
 	/// greatest common divisor for integers (Euclid's algorithm)
 	template< typename T > T greatest_common_divisor( T p, T q ) {
