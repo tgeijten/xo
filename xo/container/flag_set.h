@@ -13,6 +13,7 @@ namespace xo
 		flag_set() : data_( StorageT( 0 ) ) {}
 		flag_set( const flag_set& o ) = default;
 		flag_set( std::initializer_list< EnumT > flags ) : data_( StorageT( 0 ) ) { set( flags ); }
+		flag_set( EnumT flag ) : data_( storage_bit( flag ) ) {}
 		explicit flag_set( StorageT data ) : data_( data ) {}
 
 		flag_set& operator=( const flag_set& o ) { data_ = o.data_; return *this; }
@@ -40,8 +41,8 @@ namespace xo
 		StorageT data() const { return data_; }
 
 	private:
-		StorageT storage_bit( EnumT i ) const { return StorageT( 1 ) << int( i ); }
-		StorageT storage_bit( EnumT i, bool value ) const { return StorageT( value ) << int( i ); }
+		static StorageT storage_bit( EnumT i ) { return StorageT( 1 ) << int( i ); }
+		static StorageT storage_bit( EnumT i, bool value ) { return StorageT( value ) << int( i ); }
 		StorageT data_;
 	};
 }
