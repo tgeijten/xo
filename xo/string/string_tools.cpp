@@ -76,6 +76,16 @@ namespace xo
 		return !str.empty() && str.back() == c;
 	}
 
+	bool str_contains( const string& str, const string& substr )
+	{
+		return str.find( substr ) != string::npos;
+	}
+
+	bool str_contains( const string& str, char c )
+	{
+		return str.find( c ) != string::npos;
+	}
+
 	string trim_str( const string& s, const char* space_chars )
 	{
 		auto left = s.find_first_not_of( space_chars );
