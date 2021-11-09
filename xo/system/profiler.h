@@ -65,15 +65,15 @@ namespace xo
 
 	struct scope_profiler
 	{
-		scope_profiler( const char* name, profiler& p ) : profiler_( &p )	{
-			if ( profiler_->enabled() ) profiler_->start_section( name );
-		}
-		scope_profiler( const char* name, profiler* p ) : profiler_( p )	{
-			if ( profiler_ && profiler_->enabled() ) profiler_->start_section( name );
+		scope_profiler( const char* name, profiler& p ) : enabled_( p.enabled() ), profiler_( p ) {
+			if ( enabled_ )
+				profiler_.start_section( name );
 		}
 		~scope_profiler() {
-			if ( profiler_ && profiler_->enabled() ) profiler_->end_section();
+			if ( enabled_ )
+				profiler_.end_section();
 		}
-		profiler* profiler_;
+		bool enabled_;
+		profiler& profiler_;
 	};
 }
