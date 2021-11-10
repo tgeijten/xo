@@ -1,6 +1,7 @@
 #pragma once
 
 #include "vector_type.h"
+#include "xo/system/assert.h"
 
 namespace xo
 {
@@ -18,6 +19,13 @@ namespace xo
 		void set( index_t channel, const T& value ) { data_[ in_ofs_ + channel ] = value; }
 		const T& get( index_t channel ) const { return data_[ out_ofs_ + channel ]; }
 
+		const T& front( index_t channel ) const { return data_[ out_ofs_ + channel ]; }
+		const T& back( index_t channel ) const { return data_[ in_ofs_ + channel ]; }
+		T& back( index_t channel ) { return data_[ in_ofs_ + channel ]; }
+
+		size_t capacity() const { return frames_; }
+		bool empty() const { return in_ofs_ == out_ofs_; }
+
 		void resize( size_t frames, size_t channels ) {
 			xo_error_if( in_ofs_ != out_ofs_, "Cannot resize buffer after advance()" );
 			frames_ = frames;
@@ -31,6 +39,11 @@ namespace xo
 			in_ofs_ = ( in_ofs_ + channels_ ) % ( frames_ * channels_ );
 			if ( out_ofs_ == in_ofs_ )
 				out_ofs_ = ( out_ofs_ + channels_ ) % ( frames_ * channels_ );
+		}
+
+		void clear_back( const T& clear_value = T( 0 ) ) {
+			for ( index_t channel = 0; channel < channels_; ++channel )
+				data_[ in_ofs_ + channel ] = clear_value;
 		}
 
 	private:
