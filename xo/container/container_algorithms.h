@@ -61,7 +61,7 @@ namespace xo
 		auto acc = decltype( mean * mean )();
 		for ( auto i = b; i != e; ++i )
 			acc += ( *i - mean ) * ( *i - mean );
-		return std::make_pair( mean, std::sqrt( acc ) );
+		return std::make_pair( mean, std::sqrt( acc / ( e - b ) ) );
 	}
 
 	template< typename C > auto mean_std( const C& cont ) {
