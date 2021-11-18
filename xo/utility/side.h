@@ -12,14 +12,14 @@ namespace xo
 	};
 
 	inline const char* side_postfix( side s ) {
-		static const char* side_postfixes[ 3 ] = { "_l", "", "_r" };
+		static constexpr char* side_postfixes[ 3 ] = { "_l", "", "_r" };
 		return side_postfixes[ static_cast<int>( s ) + 1 ];
 	}
 
 	inline side str_get_side( const string& str ) {
-		if ( str_ends_with( str, side_postfix( side::left ) ) )
+		if ( str_ends_with( str, "_l" ) )
 			return side::left;
-		else if ( str_ends_with( str, side_postfix( side::right ) ) )
+		else if ( str_ends_with( str, "_r" ) )
 			return side::right;
 		else return side::none;
 	}
@@ -30,7 +30,21 @@ namespace xo
 		else return str;
 	}
 
+	inline string& str_set_side_char( string& str, side s ) {
+		if ( !str.empty() )
+			str.back() = s == side::left ? 'l' : 'r';
+		return str;
+	}
+
 	inline string str_set_side( const string& str, side s ) {
-		return str_remove_side( str ) + side_postfix( s );
+		auto cs = str_get_side( str );
+		if ( cs == s )
+			return str;
+		else if ( cs == side::none )
+			return str + side_postfix( s );
+		else if ( s == side::none )
+			return str_remove_side( str );
+		else
+			return str_set_side_char( string( str ), s );
 	}
 }
