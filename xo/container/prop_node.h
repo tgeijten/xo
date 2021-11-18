@@ -124,10 +124,13 @@ namespace xo
 		void clear() { value.clear(); children.clear(); }
 
 		/// get raw value_t reference
-		const value_t& raw_value() const { access(); return value; }
+		const value_t& get_str() const { access(); return value; }
+
+		/// get raw value_t reference of key
+		const value_t& get_str( const key_t& key ) const { return get_child( key ).get_str(); }
 
 		/// get raw value without accessing the value
-		const value_t& peek_raw_value() const { return value; }
+		const value_t& peek_str() const { return value; }
 
 		/// set the value of a child node, accessing children through delimiter character
 		template< typename T > prop_node& set_query( const key_t& query, const T& v, const char delim = '.' );
@@ -255,7 +258,7 @@ namespace xo
 
 	/// default conversion from prop_node to T, uses from_str()
 	template< typename T > bool from_prop_node( const prop_node& pn, T& v ) {
-		return from_str( pn.raw_value(), v ); 
+		return from_str( pn.get_str(), v ); 
 	};
 
 	template< typename T > prop_node to_prop_node( const vector<T>& vec ) {
@@ -293,7 +296,7 @@ namespace xo
 		typename remove_const<T>::type value;
 		if ( from_prop_node( *this, value ) )
 			return value;
-		else xo_error( "Could not convert \"" + raw_value() + "\" to " + get_type_name<T>() );
+		else xo_error( "Could not convert \"" + get_str() + "\" to " + get_type_name<T>() );
 	}
 
 	template< typename T >

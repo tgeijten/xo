@@ -125,8 +125,8 @@ namespace xo
 								[&]( auto& l ) { return t.compare( p + 2, pe - p - 2, l.first, 1 ) == 0; } );
 							if ( it != macros.rend() )
 							{
-								t.replace( p, pe - p + 1, it->second.raw_value() );
-								p += it->second.raw_value().size(); // advance p to avoid recursion
+								t.replace( p, pe - p + 1, it->second.get_str() );
+								p += it->second.get_str().size(); // advance p to avoid recursion
 							}
 							else return zml_error( str, ec, "Undefined variable: " + t.substr( p, pe - p + 1 ) );
 						}
@@ -164,14 +164,14 @@ namespace xo
 	void write_zml_kvp( std::ostream& str, const string& label, const prop_node& pn, const char* equals_str, bool inside_array )
 	{
 		bool show_label = !label.empty();
-		bool show_value = !pn.raw_value().empty() || pn.size() == 0;
+		bool show_value = !pn.get_str().empty() || pn.size() == 0;
 		xo_error_if( !show_label && show_value && !inside_array, "Value without label outside array" );
 		if ( show_label )
 			str << try_quoted( label, "{}[]#<>\\/" );
 		if ( show_label && show_value )
 			str << equals_str;
 		if ( show_value )
-			str << try_quoted( pn.raw_value(), "{}[]#<>\\/" );
+			str << try_quoted( pn.get_str(), "{}[]#<>\\/" );
 	}
 
 	void write_zml_node_one_line( std::ostream& str, const string& label, const prop_node& pn, bool inside_array )

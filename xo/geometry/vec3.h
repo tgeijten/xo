@@ -165,7 +165,7 @@ namespace xo
 			else v.set( pn.get<T>( "x" ), pn.get<T>( "y" ), pn.get<T>( "z" ) ); // group: { x=1 y=2 z=3 }
 			return true;
 		} else if ( pn.size() == 0 && pn.has_value() ) {
-			if ( auto vs = split_str( pn.raw_value(), " \t" ); vs.size() == 3 ) // string: "1 2 3"
+			if ( auto vs = split_str( pn.get_str(), " \t" ); vs.size() == 3 ) // string: "1 2 3"
 				return from_str( vs[ 0 ], v.x ) && from_str( vs[ 1 ], v.y ) && from_str( vs[ 2 ], v.z );
 			else return false;
 		} else return false;

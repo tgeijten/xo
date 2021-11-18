@@ -35,7 +35,7 @@ namespace xo
 			else str << key;
 
 			if ( value.has_value() || value.size() == 0 )
-				str << string( align - str.str().size(), ' ' ) << " = " << value.peek_raw_value();
+				str << string( align - str.str().size(), ' ' ) << " = " << value.peek_str();
 			log::log_string( l, str.str() );
 			log_prop_node( value, indent, depth + 1, align );
 		}
@@ -53,7 +53,7 @@ namespace xo
 					if ( !n.second.is_accessed() )
 					{
 						if ( n.second.has_value() )
-							str += " = " + n.second.peek_raw_value();
+							str += " = " + n.second.peek_str();
 						str += " *";
 					}
 					log::message( level, str );
@@ -75,7 +75,7 @@ namespace xo
 					if ( !n.second.is_accessed() )
 					{
 						if ( n.second.has_value() )
-							str += " = " + n.second.peek_raw_value();
+							str += " = " + n.second.peek_str();
 						str += " *";
 					}
 					str += '\n';
@@ -135,7 +135,7 @@ namespace xo
 
 	string make_str_from_prop_node( const prop_node& pn )
 	{
-		string str = pn.raw_value();
+		string str = pn.get_str();
 		if ( pn.size() > 0 )
 		{
 			bool is_array = pn.is_array();

@@ -13,7 +13,7 @@ namespace xo
 	{
 		if ( pn.has_value() )
 		{
-			const auto& hex_str = pn.raw_value();
+			const auto& hex_str = pn.get_str();
 			bool has_0x = xo::str_begins_with( hex_str, "0x" );
 			size_t num_digits = has_0x ? hex_str.size() - 2 : hex_str.size();
 			auto value = static_cast<uint32>( std::stoul( hex_str, 0, 16 ) );

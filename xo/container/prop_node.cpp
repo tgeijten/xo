@@ -300,7 +300,7 @@ namespace xo
 			auto key = string( depth * 2, ' ' ) + child.first;
 			str << key;
 			if ( child.second.has_value() || child.second.size() == 0 )
-				str << string( align - key.size(), ' ' ) << " = " << child.second.raw_value();
+				str << string( align - key.size(), ' ' ) << " = " << child.second.get_str();
 			str << std::endl;
 
 			to_stream( str, child.second, depth + 1, align );

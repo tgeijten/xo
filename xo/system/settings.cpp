@@ -30,7 +30,7 @@ namespace xo
 		if ( auto* schema_node = try_find_setting( id ) )
 		{
 			const auto type_pn = schema_node->try_get_child( "type" );
-			const string type = type_pn ? type_pn->raw_value() : "";
+			const string type = type_pn ? type_pn->get_str() : "";
 
 			// check if value is empty or the same as the default
 			if ( value == schema_node->get_child( "default" ) || value.empty() )
@@ -48,7 +48,7 @@ namespace xo
 				( type == "string" && !value.try_get<string>() )
 				)
 			{
-				log::error( "Error setting ", id, ": could not convert '", value.raw_value(), "' to ", type );
+				log::error( "Error setting ", id, ": could not convert '", value.get_str(), "' to ", type );
 				return false;
 			}
 
@@ -67,7 +67,7 @@ namespace xo
 			if ( auto range = schema_node->try_get< bounds< double > >( "range" ) )
 			{
 				auto dvalue = schema_node->get< double >( "default" );
-				from_str( value.raw_value(), dvalue );
+				from_str( value.get_str(), dvalue );
 				if ( !range->is_within( dvalue ) )
 				{
 					log::warning( "Invalid value for ", id, ": ", dvalue, ", restricting to range ", *range );
