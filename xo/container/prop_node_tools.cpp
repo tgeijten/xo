@@ -143,7 +143,7 @@ namespace xo
 				str += ' ';
 			str += is_array ? '[' : '{';
 			for ( const auto& [key, value] : pn )
-				str += " " + key + " = " + make_str_from_prop_node( value );
+				str += ( is_array ? " " : " " + key + " = " ) + make_str_from_prop_node( value );
 			str += is_array ? " ]" : " }";
 		}
 		return str;
