@@ -135,11 +135,13 @@ namespace xo
 		/// set the value of a child node, accessing children through delimiter character
 		template< typename T > prop_node& set_query( const key_t& query, const T& v, const char delim = '.' );
 
-		/// add a child node with a value
+		/// add a key/value pair
 		template< typename T > prop_node& add_key_value( const key_t& key, const T& value );
-		template< typename T > void add_value( const T& value ) { children.emplace_back( key_t(), to_prop_node( value ) ); }
 
-		/// add child node values
+		/// add a child value without key
+		template< typename T > void add_value( const T& value );
+
+		/// add child values without key
 		template< typename It > prop_node& add_values( It values_begin, It values_end );
 
 		/// add a child node
@@ -381,6 +383,11 @@ namespace xo
 	prop_node& prop_node::add_key_value( const key_t& key, const T& value ) {
 		children.emplace_back( key, to_prop_node( value ) );
 		return children.back().second;
+	}
+
+	template< typename T >
+	void prop_node::add_value( const T& value ) {
+		children.emplace_back( key_t(), to_prop_node( value ) );
 	}
 
 	template< typename It >
