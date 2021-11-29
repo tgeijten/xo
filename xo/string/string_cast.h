@@ -47,6 +47,9 @@ namespace xo
 	XO_API bool from_str( const string& s, path& v );
 	XO_API string to_str( const path& p );
 
+	XO_API string to_str( const void* ptr );
+	template< typename T > string to_str( const T* ptr ) { return to_str( reinterpret_cast<const void*>( ptr ) ); }
+
 	/// convert elements in a container to a string
 	template< typename C >
 	string container_to_str( const C& cont ) {

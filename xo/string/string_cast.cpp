@@ -122,6 +122,11 @@ namespace xo
 		return std::to_string( value );
 	}
 
+	string to_str( const void* ptr )
+	{
+		return stringf( "%p", ptr );
+	}
+
 	string to_str( const version& v )
 	{
 		string s = stringf( "%d.%d.%d", v.major_, v.minor_, v.patch_ );
