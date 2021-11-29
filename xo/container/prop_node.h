@@ -139,6 +139,9 @@ namespace xo
 		template< typename T > prop_node& add_key_value( const key_t& key, const T& value );
 		template< typename T > void add_value( const T& value ) { children.emplace_back( key_t(), to_prop_node( value ) ); }
 
+		/// add child node values
+		template< typename It > prop_node& add_values( It values_begin, It values_end );
+
 		/// add a child node
 		prop_node& add_child();
 		prop_node& add_child( const key_t& key );
@@ -379,4 +382,13 @@ namespace xo
 		children.emplace_back( key, to_prop_node( value ) );
 		return children.back().second;
 	}
+
+	template< typename It >
+	prop_node& prop_node::add_values( It b, It e ) {
+		reserve( size() + e - b );
+		for ( ; b != e; ++b )
+			add_value( *b );
+		return *this;
+	}
+
 }
