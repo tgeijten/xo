@@ -174,7 +174,10 @@ namespace xo
 	/// convert to prop_node
 	template< typename T > prop_node to_prop_node( const vec3_<T>& v ) {
 		prop_node pn;
-		pn.add_values( v.begin(), v.end() );
+		pn.reserve( 3 );
+		pn.set( "x", v.x );
+		pn.set( "y", v.y );
+		pn.set( "z", v.z );
 		return pn;
 	}
 }
