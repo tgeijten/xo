@@ -5,8 +5,8 @@
 #if XO_PROFILER_ENABLED
 #	include "xo/system/profiler.h"
 #	include "xo/container/prop_node.h"
-#	define XO_PROFILE_FUNCTION( profiler ) ::xo::scope_profiler scope_profiler_var( __FUNCTION__, profiler )
-#	define XO_PROFILE_SCOPE( profiler, scope_name_arg ) ::xo::scope_profiler scope_profiler_var( scope_name_arg, profiler )
+#	define XO_PROFILE_FUNCTION( profiler ) ::xo::scoped_profiler_section scope_profiler_var( __FUNCTION__, profiler )
+#	define XO_PROFILE_SCOPE( profiler, scope_name_arg ) ::xo::scoped_profiler_section scope_profiler_var( scope_name_arg, profiler )
 inline void xo_profiler_start( const char* label = "TOTAL" ) { ::xo::profiler::instance().start( label ); }
 inline ::xo::prop_node xo_profiler_report() { return ::xo::profiler::instance().report(); }
 #else

@@ -22,7 +22,7 @@ namespace xo
 
 		static profiler& instance();
 
-		friend struct scope_profiler;
+		friend struct scoped_profiler_section;
 
 	private:
 		struct section
@@ -63,13 +63,13 @@ namespace xo
 		std::thread::id instance_thread_;
 	};
 
-	struct scope_profiler
+	struct scoped_profiler_section
 	{
-		scope_profiler( const char* name, profiler& p ) : enabled_( p.enabled() ), profiler_( p ) {
+		scoped_profiler_section( const char* name, profiler& p ) : enabled_( p.enabled() ), profiler_( p ) {
 			if ( enabled_ )
 				profiler_.start_section( name );
 		}
-		~scope_profiler() {
+		~scoped_profiler_section() {
 			if ( enabled_ )
 				profiler_.end_section();
 		}

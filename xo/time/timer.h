@@ -23,10 +23,10 @@ namespace xo
 		long long epoch_;
 	};
 
-	struct scope_timer
+	struct scoped_timer_starter
 	{
-		scope_timer( timer& t ) : t_( t ) { t_.resume(); }
-		~scope_timer() { t_.pause(); }
+		scoped_timer_starter( timer& t ) : t_( t ) { t_.resume(); }
+		~scoped_timer_starter() { t_.pause(); }
 		timer& t_;
 	};
 }
