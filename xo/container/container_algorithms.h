@@ -68,15 +68,15 @@ namespace xo
 		return mean_std( std::cbegin( cont ), std::cend( cont ), typename C::value_type() );
 	}
 
-	template < typename C, typename P > std::vector< index_t > sort_indices( const C& cont, P pred ) {
+	template < typename C, typename P > std::vector< index_t > sorted_indices( const C& cont, P pred ) {
 		std::vector< size_t > idx_vec( cont.size() );
 		for ( index_t i = 0; i < cont.size(); ++i ) idx_vec[ i ] = i;
 		std::sort( idx_vec.begin(), idx_vec.end(), [&]( size_t i1, size_t i2 ) { return pred( cont[ i1 ], cont[ i2 ] ); } );
 		return idx_vec;
 	}
 
-	template < typename C > std::vector< index_t > sort_indices( const C& cont ) {
-		return sort_indices( cont, std::less< typename C::value_type >() );
+	template < typename C > std::vector< index_t > sorted_indices( const C& cont ) {
+		return sorted_indices( cont, std::less< typename C::value_type >() );
 	}
 
 	template< typename C > typename C::const_iterator min_element( const C& cont ) {
