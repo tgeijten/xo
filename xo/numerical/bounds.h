@@ -18,6 +18,7 @@ namespace xo
 
 		bool is_within( const T& value ) const { return ( value >= lower ) && ( value <= upper ); }
 		T range() const { return upper - lower; }
+		T center() const { return T( 0.5 ) * ( lower + upper ); }
 
 		/// check bounds, return negative when value below lower, positive when value above upper, 0 when within bounds
 		T get_violation( const T& value ) const { if ( value < lower ) return value - lower; else if ( value > upper ) return value - upper; else return T( 0 ); }
