@@ -69,7 +69,7 @@ namespace xo
 		}
 		bool any( std::initializer_list<EnumT> flags ) {
 			for ( auto f : flags )
-				if get( f ) return true;
+				if ( get( f ) ) return true;
 			return false;
 		}
 		size_t count( std::initializer_list<EnumT> flags ) {
