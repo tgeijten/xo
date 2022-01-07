@@ -173,6 +173,17 @@ namespace xo
 		return s;
 	}
 
+	size_t copy_str( const string& source, char* target_buf, size_t buf_size )
+	{
+		if ( buf_size > 0 )
+		{
+			auto n = source.copy( target_buf, buf_size - 1 );
+			target_buf[ n ] = '\0';
+			return n;
+		}
+		else return 0;
+	}
+
 	std::pair< string, string > make_key_value_str( const string& s, const string& sep_char )
 	{
 		auto pos = s.find_first_of( sep_char.c_str() );

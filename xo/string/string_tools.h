@@ -81,6 +81,9 @@ namespace xo
 	/// convert string to upper case
 	XO_API string to_upper( string s );
 
+	/// copy string to C-style null-terminated string, truncate if needed, returns number of characters copied
+	XO_API size_t copy_str( const string& source, char* target_buf, size_t buf_size );
+
 	/// split string into trimmed key / value pair
 	XO_API std::pair< string, string > make_key_value_str( const string& s, const string& sep_char = "=" );
 
