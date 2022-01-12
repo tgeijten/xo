@@ -36,12 +36,14 @@ namespace xo
 
 	template< typename It, typename T >
 	T average( It b, It e, T v ) {
-		xo_assert( b != e ); return xo::accumulate( b, e, v ) / ( e - b );
+		xo_assert( b != e );
+		return xo::accumulate( b, e, v ) / ( e - b );
 	}
 
 	template< typename It, typename T, typename Op >
 	T average( It b, It e, T v, Op op ) {
-		xo_assert( b != e ); return xo::accumulate( b, e, v, op ) / ( e - b );
+		xo_assert( b != e );
+		return xo::accumulate( b, e, v, op ) / ( e - b );
 	}
 
 	template< typename C >
@@ -52,6 +54,20 @@ namespace xo
 	template< typename C, typename T, typename Op >
 	auto average( const C& cont, T init, Op op ) {
 		return average( std::cbegin( cont ), std::cend( cont ), init, op );
+	}
+
+	template< typename It >
+	auto mean_var( It b, It e ) {
+		xo_assert( b != e );
+		auto mean = average( b, e, decltype( *b ){ 0 } );
+		auto acc = decltype( mean * mean ){ 0 };
+		for ( auto i = b; i != e; ++i )
+			acc += ( *i - mean ) * ( *i - mean );
+		return std::make_pair( mean, acc / ( e - b ) );
+	}
+
+	template< typename C > auto mean_var( const C& cont ) {
+		return mean_var( std::cbegin( cont ), std::cend( cont ) );
 	}
 
 	template< typename It, typename T >
@@ -82,14 +98,20 @@ namespace xo
 	template< typename C > typename C::const_iterator min_element( const C& cont ) {
 		return std::min_element( std::begin( cont ), std::end( cont ) );
 	}
-	template< typename C > auto min_value( const C& cont ) { return *min_element( cont ); }
+	template< typename C > auto min_value( const C& cont ) {
+		return *min_element( cont );
+	}
 
 	template< typename C > typename C::const_iterator max_element( const C& cont ) {
 		return std::max_element( std::begin( cont ), std::end( cont ) );
 	}
-	template< typename C > auto max_value( const C& cont ) { return *max_element( cont ); }
+	template< typename C > auto max_value( const C& cont ) {
+		return *max_element( cont );
+	}
 
-	template< typename C > C sorted_copy( const C& cont ) { C res( cont ); std::sort( res.begin(), res.end() ); return res; }
+	template< typename C > C sorted_copy( const C& cont ) {
+		C res( cont ); std::sort( res.begin(), res.end() ); return res;
+	}
 
 	template< typename It > typename std::iterator_traits< It >::value_type median_slow( It b, It e ) {
 		auto n = e - b;
