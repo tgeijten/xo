@@ -16,6 +16,10 @@ namespace xo
 		vec3f half_dim_;
 	};
 
+	inline box make_box( float x_size, float y_size, float z_size ) {
+		return box{ 0.5f * x_size, 0.5f * y_size, 0.5f * z_size };
+	}
+
 	XO_API float volume( const box& s );
 	XO_API aabb_<float> aabb( const box& s, const transform_<float>& t );
 	XO_API vec3f dim( const box& s );
