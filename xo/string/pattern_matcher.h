@@ -11,7 +11,7 @@ namespace xo
 	class pattern_matcher
 	{
 	public:
-		pattern_matcher() {}
+		pattern_matcher() = default;
 		pattern_matcher( const prop_node& pn ) : patterns_( split_str( pn.get<string>(), ";" ) ) {}
 		pattern_matcher( const char* pattern, const char* delimeters = ";" ) : patterns_( split_str( pattern, delimeters ) ) {}
 		pattern_matcher( const string& pattern, const char* delimeters = ";" ) : patterns_( split_str( pattern, delimeters ) ) {}

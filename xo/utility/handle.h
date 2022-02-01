@@ -37,6 +37,12 @@ namespace xo
 		friend bool operator==( const handle a, const handle b ) { return a.value_ == b.value_; }
 		friend bool operator!=( const handle a, const handle b ) { return a.value_ != b.value_; }
 
+		template< typename C > auto iter( C& c ) const { return c.begin() + value_; }
+		template< typename C > auto iter( const C& c ) const { return c.begin() + value_; }
+
+		template< typename C > static handle end( const C& c ) { return handle( id_type( c.size() ) ); }
+		template< typename C > static handle back( const C& c ) { return handle( id_type( c.size() ) - 1 ); }
+
 	protected:
 		static constexpr id_type invalid_id() { return ~id_type( 0 ); }
 		id_type value_;

@@ -45,5 +45,4 @@ namespace xo
 		static constexpr index_type invalid() { return ~index_type( 0 ); }
 		index_type value_;
 	};
-
 }
