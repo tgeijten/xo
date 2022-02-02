@@ -80,6 +80,11 @@ namespace xo
 		return find_if( cont, pred ) == cont.end();
 	}
 
+	/// check if container contains element
+	template< typename C > bool contains( const C& cont, const typename C::value_type& e ) {
+		auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( *it == e ) return true; return false;
+	}
+
 	/// copy elements based on input range (no range checking)
 	template< typename InIt, typename OutIt > OutIt copy( InIt ib, InIt ie, OutIt ob ) {
 		for ( ; ib != ie; ++ib, ++ob ) *ob = *ib; return ob;
@@ -126,6 +131,9 @@ namespace xo
 
 	/// get index of last element
 	template< typename C > index_t back_index( const C& cont ) { return size( cont ) > 0 ? size( cont ) - 1 : no_index; }
+
+	/// get index of last element
+	template< typename E > index_t index_of( const std::vector<E>& vec, const E& elem ) { return &elem - &vec[ 0 ]; }
 
 	/// emplace back, return index
 	template< typename C, typename... Args> index_t emplace_back_get_index( C& c, Args&&... a ) {
