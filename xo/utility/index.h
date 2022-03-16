@@ -34,8 +34,14 @@ namespace xo
 		template< typename C > auto iter( const C& c ) const { return c.begin() + value_; }
 		template< typename C > auto iter( C& c ) const { return c.begin() + value_; }
 
+		template< typename C > static index_class end( const C& c ) { return index_class( index_type( c.size() ) ); }
+		template< typename C > static index_class back( const C& c ) { return index_class( index_type( c.size() ) - 1 ); }
+
 		index_class operator+( index_type ofs ) const { return index_class( value_ + ofs ); }
 		index_class operator-( index_type ofs ) const { return index_class( value_ - ofs ); }
+
+		index_class& operator++() { ++value_; return *this; }
+		index_class operator++( int ) { index_class org( value_ ); ++value_; return org; }
 
 		friend bool operator<( const index_class a, const index_class b ) { return a.value_ < b.value_; }
 		friend bool operator==( const index_class a, const index_class b ) { return a.value_ == b.value_; }
