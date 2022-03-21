@@ -23,6 +23,7 @@ namespace xo
 		T* operator->() { return &value_; }
 		void reset() { value_ = constants<T>::sentinel(); }
 		const T& value() const { xo_error_if( !*this, "xo::optional has no value" ); return value_; }
+		T value_or( const T& default_value ) const { return bool( *this ) ? value_ : default_value; }
 	private:
 		T value_;
 	};
@@ -41,6 +42,7 @@ namespace xo
 		T* operator->() { return &value_; }
 		void reset() { value_ = std::numeric_limits<T>::quiet_NaN(); }
 		const T& value() const { xo_error_if( !*this, "xo::optional has no value" ); return value_; }
+		T value_or( const T& default_value ) const { return bool( *this ) ? value_ : default_value; }
 	private:
 		T value_;
 	};
@@ -61,6 +63,7 @@ namespace xo
 		T* operator->() { return &value_; }
 		void reset() { has_value_ = false; }
 		const T& value() const { xo_error_if( !*this, "xo::optional has no value" ); return value_; }
+		T value_or( const T& default_value ) const { return bool( *this ) ? value_ : default_value; }
 	private:
 		T value_;
 		bool has_value_;
