@@ -100,6 +100,8 @@ namespace xo
 
 		void reserve( size_t s ) { data_.reserve( s ); }
 
+		const container_t& container() const { return data_; }
+
 	private:
 		container_t data_;
 		void sort() {
