@@ -9,8 +9,13 @@ namespace xo
 	{
 		auto old_precision = set_to_str_precision( decimals );
 		prop_node pn;
-		for ( index_t idx = 0; idx < size(); ++idx )
+		time total;
+		for ( index_t idx = 0; idx < size(); ++idx ) {
 			pn.add_key_value( split_names_[ idx ], split_times_[ idx ] );
+			total += split_times_[ idx ];
+		}
+		pn[ "TOTAL" ] = total;
+
 		set_to_str_precision( old_precision );
 
 		return pn;
