@@ -68,6 +68,11 @@ namespace xo
 		return children.emplace_back( key, std::move( pn ) ).second;
 	}
 
+	void prop_node::add_children( size_t count, const key_t& key, const value_t& value )
+	{
+		children.insert( children.end(), count, pair_t( key, value ) );
+	}
+
 	prop_node::iterator prop_node::insert( iterator pos, const_iterator first, const_iterator last )
 	{
 		return children.insert( pos, first, last );

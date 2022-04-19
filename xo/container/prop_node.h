@@ -150,6 +150,9 @@ namespace xo
 		prop_node& add_child( const key_t& key, const prop_node& pn );
 		prop_node& add_child( const key_t& key, prop_node&& pn );
 
+		/// add empty key value pairs
+		void add_children( size_t count, const key_t& key = key_t(), const value_t& value = value_t() );
+
 		/// insert children
 		iterator insert( iterator pos, const_iterator first, const_iterator last );
 
