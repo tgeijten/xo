@@ -1,15 +1,17 @@
 #include "log_sink.h"
-#include <iostream>
+
 #include "xo/filesystem/filesystem.h"
+#include "xo/string/string_tools.h"
 #include "system_tools.h"
+
+#include <iostream>
+#include <mutex>
 
 #ifdef XO_COMP_MSVC
 #	define NOMINMAX
 #	define WIN32_LEAN_AND_MEAN
 #	include <windows.h>
 #endif
-#include <mutex>
-#include "xo/string/string_tools.h"
 
 namespace xo
 {
