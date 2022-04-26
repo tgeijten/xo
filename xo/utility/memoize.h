@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <shared_mutex>
+#include "type_traits.h"
 
 namespace xo
 {
@@ -26,7 +27,8 @@ namespace xo
 		size_t size() const { return mem_.size(); }
 
 	private:
-		std::map< std::tuple< Args... >, R > mem_;
+		using key_type = std::tuple<typename remove_reference<Args>::type...>;
+		std::map< key_type, R > mem_;
 		std::function< R( Args... ) > func_;
 	};
 
@@ -60,9 +62,10 @@ namespace xo
 		}
 
 		size_t size() { std::shared_lock read_lock( mutex_ ); return mem_.size(); }
-		
+
 	private:
-		std::map< std::tuple< Args... >, R > mem_;
+		using key_type = std::tuple<typename remove_reference<Args>::type...>;
+		std::map< key_type, R > mem_;
 		std::function< R( Args... ) > func_;
 		std::shared_mutex mutex_;
 	};
