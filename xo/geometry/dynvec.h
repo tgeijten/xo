@@ -51,7 +51,11 @@ namespace xo
 	using dynvecd = dynvec< double >;
 
 	template< typename T > bool operator==( const dynvec<T>& v1, const dynvec<T>& v2 ) {
-		return std::equal( v1.begin(), v1.end(), v2.begin(), v2.end() );
+		xo_assert( v1.size() == v2.size() );
+		for ( index_t i = 0; i < v1.size(); ++i )
+			if ( v1[ i ] != v2[ i ] )
+				return false;
+		return true;
 	}
 
 	template< typename T > bool operator!=( const dynvec<T>& v1, const dynvec<T>& v2 ) { return !( v1 == v2 ); }
@@ -69,7 +73,7 @@ namespace xo
 	template< typename T > dynvec<T>& operator+=( dynvec<T>& v1, const dynvec<T>& v2 )
 	{
 		xo_assert( v1.size() == v2.size() );
-		for ( index_t i = 0; i < r.size(); ++i )
+		for ( index_t i = 0; i < v1.size(); ++i )
 			v1[ i ] += v2[ i ];
 		return v1;
 	}
@@ -87,7 +91,7 @@ namespace xo
 	template< typename T > dynvec<T>& operator-=( dynvec<T>& v1, const dynvec<T>& v2 )
 	{
 		xo_assert( v1.size() == v2.size() );
-		for ( index_t i = 0; i < r.size(); ++i )
+		for ( index_t i = 0; i < v1.size(); ++i )
 			v1[ i ] -= v2[ i ];
 		return v1;
 	}

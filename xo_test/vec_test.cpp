@@ -20,5 +20,15 @@ namespace xo
 		XO_CHECK( equal( v[ 0 ], v3[ 0 ] ) );
 		XO_CHECK( equal( v[ 1 ], v3[ 1 ] ) );
 		XO_CHECK( equal( v[ 2 ], v3[ 2 ] ) );
+
+		dynvecd vnew = v;
+		XO_CHECK( vnew == v );
+
+		vnew += v;
+		auto vn2 = v + v;
+		XO_CHECK( vnew == vn2 );
+		vnew -= v;
+		XO_CHECK( vnew == v );
+		XO_CHECK( ( v - v ).is_null() );
 	}
 }
