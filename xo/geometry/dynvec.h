@@ -3,6 +3,7 @@
 #include "xo/system/assert.h"
 #include "xo/utility/pointer_iterator.h"
 #include "xo/container/dynarray.h"
+#include "xo/numerical/constants.h"
 
 namespace xo
 {
@@ -39,7 +40,7 @@ namespace xo
 		bool empty() const { return begin() == end(); }
 		T length() const { return sqrt( squared_length() ); }
 		T squared_length() const { T sum = T(); for ( auto& e : data_ ) sum += e * e; return sum; }
-		bool is_null() const { return for ( auto& e : data_ ) if ( e != T( 0 ) ) return false; return true; }
+		bool is_null() const { for ( auto& e : data_ ) if ( e != T( 0 ) ) return false; return true; }
 
 	private:
 		dynarray< T > data_;
@@ -117,7 +118,7 @@ namespace xo
 	}
 
 	/// Normalize
-	template< typename T > T normalize( dynvec<T>& v ) { T l = length( v ); if ( l > epsilon<T>() ) { v /= l; } return l; }
+	template< typename T > T normalize( dynvec<T>& v ) { T l = v.length(); if ( l > num<T>::epsilon ) { v /= l; } return l; }
 	template< typename T > dynvec<T> normalized( dynvec<T> v ) { normalize( v ); return v; }
 
 	/// Dot product
