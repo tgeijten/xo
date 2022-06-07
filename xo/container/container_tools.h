@@ -133,7 +133,7 @@ namespace xo
 	template< typename C > index_t back_index( const C& cont ) { return size( cont ) > 0 ? size( cont ) - 1 : no_index; }
 
 	/// get index of last element
-	template< typename E > index_t index_of( const std::vector<E>& vec, const E& elem ) { return &elem - &vec[ 0 ]; }
+	template< typename E > index_t index_of( const E& elem, const std::vector<E>& vec ) { return &elem - &vec[ 0 ]; }
 
 	/// emplace back, return index
 	template< typename C, typename... Args> index_t emplace_back_get_index( C& c, Args&&... a ) {
