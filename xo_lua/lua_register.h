@@ -64,7 +64,13 @@ namespace xo
 			"inverse", []( quat& q ) -> quat { return inverse( q ); },
 			"normalize", []( quat& q ) -> T { return normalize( q ); },
 			"normalized", []( quat& q ) -> quat { return normalized( q ); },
-			"rotation_vector", []( quat& q ) -> vec3 { return rotation_vector_from_quat( q ); }
-			);
+			"rotation_vector", []( quat& q ) -> vec3 { return rotation_vector_from_quat( q ); },
+			"euler_angle_xyz", []( quat& q ) -> vec3 { return vec3( euler_xyz_from_quat( q ) ); },
+			"euler_angle_xzy", []( quat& q ) -> vec3 { return vec3( euler_xzy_from_quat( q ) ); },
+			"euler_angle_yxz", []( quat& q ) -> vec3 { return vec3( euler_yxz_from_quat( q ) ); },
+			"euler_angle_yzx", []( quat& q ) -> vec3 { return vec3( euler_yzx_from_quat( q ) ); },
+			"euler_angle_zxy", []( quat& q ) -> vec3 { return vec3( euler_zxy_from_quat( q ) ); },
+			"euler_angle_zyx", []( quat& q ) -> vec3 { return vec3( euler_zyx_from_quat( q ) ); }
+		);
 	}
 }
