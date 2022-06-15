@@ -26,9 +26,6 @@ namespace xo
 
 		explicit operator bool() const { return value_ != invalid(); }
 
-		const index_type& value() const { return value_; }
-		index_type& value() { return value_; }
-
 		void reset() { value_ = invalid(); }
 
 		template< typename C > auto iter( const C& c ) const { return c.begin() + value_; }
@@ -47,8 +44,9 @@ namespace xo
 		friend bool operator==( const index_class a, const index_class b ) { return a.value_ == b.value_; }
 		friend bool operator!=( const index_class a, const index_class b ) { return a.value_ != b.value_; }
 
+		index_type value_;
+
 	protected:
 		static constexpr index_type invalid() { return ~index_type( 0 ); }
-		index_type value_;
 	};
 }
