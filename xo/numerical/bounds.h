@@ -3,6 +3,7 @@
 #include "xo/xo_types.h"
 #include "xo/container/pair_type.h"
 #include "xo/numerical/math.h"
+#include "xo/numerical/constants.h"
 #include "xo/container/prop_node.h"
 
 namespace xo
@@ -46,6 +47,10 @@ namespace xo
 
 		T lower;
 		T upper;
+
+		static constexpr bounds<T> infinite() { return bounds<T>( num<T>::lowest, num<T>::max ); }
+		static constexpr bounds<T> positive() { return bounds<T>( T( 0 ), num<T>::max ); }
+		static constexpr bounds<T> negative() { return bounds<T>( num<T>::lowest, T( 0 ) ); }
 	};
 
 	using boundsf = bounds<float>;
