@@ -9,6 +9,7 @@
 #include "xo/string/string_tools.h"
 #include "xo/container/flat_set.h"
 #include "xo/container/indexed_map.h"
+#include "xo/container/collection.h"
 
 namespace xo
 {
@@ -134,7 +135,7 @@ namespace xo
 		XO_CHECK( t( "R1", "C1" ) == 1.0 );
 	}
 
-	XO_TEST_CASE( indexed_map )
+	XO_TEST_CASE( xo_indexed_map )
 	{
 		indexed_map< string, string > im;
 		XO_CHECK( im.empty() );
@@ -159,5 +160,19 @@ namespace xo
 		XO_CHECK( im[ "pear" ] == "fourth" );
 		XO_CHECK( im.back().second == "fourth" );
 		XO_CHECK( im.size() == 4 );
+	}
+
+	XO_TEST_CASE( xo_collection )
+	{
+		collection<xo::uint32, float, double, std::string> c;
+
+		auto hf = c.push_back( 1.0f );
+		auto hd0 = c.push_back( 2.0 );
+		auto hd1 = c.push_back( 3.0 );
+		auto hs = c.push_back( std::string( "applepie" ) );
+		XO_CHECK( c[ hf ] == 1.0f );
+		XO_CHECK( c[ hd0 ] == 2.0 );
+		XO_CHECK( c[ hd1 ] == 3.0 );
+		XO_CHECK( c[ hs ] == "applepie" );
 	}
 }
