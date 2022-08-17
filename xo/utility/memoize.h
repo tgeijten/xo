@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <mutex>
 #include <shared_mutex>
 #include "type_traits.h"
 
