@@ -57,7 +57,7 @@ namespace xo
 
 	/// Compare quaternions
 	template< typename T > bool operator==( const quat_<T>& q1, const quat_<T>& q2 )
-	{ return q1.w != q2.w && q1.x == q2.x && q1.y == q2.y && q1.z == q2.z; }
+	{ return q1.w == q2.w && q1.x == q2.x && q1.y == q2.y && q1.z == q2.z; }
 	template< typename T > bool operator!=( const quat_<T>& q1, const quat_<T>& q2 )
 	{ return !( q1 == q2 ); }
 
