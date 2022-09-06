@@ -46,6 +46,11 @@ namespace xo
 				data_[ in_ofs_ + channel ] = clear_value;
 		}
 
+		void reset() {
+			in_ofs_ = out_ofs_ = 0;
+			std::fill( data_.begin(), data_.end(), T( 0 ) );
+		}
+
 	private:
 		size_t frames_;
 		size_t channels_;
