@@ -23,6 +23,9 @@ namespace xo
 		string name;
 		double value;
 	};
+	bool operator==( const custom_struct& a, const custom_struct& b ) {
+		return a.name == b.name && a.value == b.value;
+	}
 
 	inline prop_node to_prop_node( const custom_struct& value )
 	{
@@ -73,6 +76,8 @@ namespace xo
 
 		auto vec1b = pn.get< std::vector< custom_struct > >( "vec_test" );
 		auto vec2b = pn.get< std::vector< vec3f > >( "vec2_test" );
+
+		XO_CHECK( vec1b == vec );
 
 		XO_CHECK( e1 == pn.get< enumclass >( "e1" ) );
 		XO_CHECK( e2 == pn.get< normalenum >( "e2" ) );

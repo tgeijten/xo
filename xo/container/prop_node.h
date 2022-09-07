@@ -272,7 +272,7 @@ namespace xo
 	template< typename T > prop_node to_prop_node( const vector<T>& vec ) {
 		prop_node pn;
 		for ( size_t i = 0; i < vec.size(); ++i )
-			pn.add_child( "", to_prop_node( vec[ i ] ) );
+			pn.add_value( vec[ i ] );
 		return pn;
 	}
 
