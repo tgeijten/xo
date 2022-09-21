@@ -8,7 +8,6 @@ namespace xo
 	struct XO_API timer
 	{
 		timer( bool start = true );
-		timer( const timer& ) = delete;
 		time operator()() const;
 
 		time pause();
