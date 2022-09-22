@@ -7,6 +7,7 @@
 #include <sstream>
 #include "xo/string/string_cast.h"
 #include "xo/system/system_tools.h"
+#include <filesystem>
 
 namespace xo
 {
@@ -69,6 +70,8 @@ namespace xo
 		XO_CHECK( path( "X:/test" ) / "bla" == "X:/test/bla" );
 		XO_CHECK( path( "X:/test/" ) / "bla" == "X:/test/bla" );
 		XO_CHECK( path( "X:\\test\\bla" ).make_preferred() == "X:/test/bla" );
+		XO_CHECK( path() / "SCONE" == "SCONE" );
+		XO_CHECK( std::filesystem::path() / "SCONE" == "SCONE" );
 
 		// some string testing
 		string a = "apple";

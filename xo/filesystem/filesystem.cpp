@@ -25,6 +25,7 @@
 #include "xo/system/assert.h"
 #include "xo/container/container_tools.h"
 #include "xo/string/string_cast.h"
+#include "xo/system/log.h"
 
 namespace fs = std::filesystem;
 
@@ -35,13 +36,21 @@ namespace xo
 
 #ifdef XO_COMP_MSVC
 	// define this helper function for windows, since it's so complicated
-	path get_known_windows_folder( KNOWNFOLDERID id )
+	path get_known_windows_folder( KNOWNFOLDERID id, const char* report_name )
 	{
 		// get the string, convert to single byte string, then free the original string (ugh)
 		wchar_t* wcsLocalAppData = 0;
-		SHGetKnownFolderPath( id, 0, NULL, &wcsLocalAppData );
+		if ( SHGetKnownFolderPath( id, 0, NULL, &wcsLocalAppData ) != S_OK ) {
+			log::error( "Could get folder ", report_name );
+			return path();
+		}
 		char mbsLocalAppData[ MAX_PATH ];
-		wcstombs_s( size_t(), mbsLocalAppData, MAX_PATH, wcsLocalAppData, MAX_PATH );
+		if ( wcstombs_s( size_t(), mbsLocalAppData, MAX_PATH, wcsLocalAppData, MAX_PATH ) != 0 ) {
+			log::error( "Could not convert folder ", report_name, ": ", wcsLocalAppData );
+			CoTaskMemFree( static_cast<void*>( wcsLocalAppData ) );
+			return path();
+		}
+
 		CoTaskMemFree( static_cast<void*>( wcsLocalAppData ) );
 		return path( mbsLocalAppData ).make_preferred();
 	}
@@ -50,7 +59,7 @@ namespace xo
 	path get_config_dir()
 	{
 #ifdef XO_COMP_MSVC
-		return get_known_windows_folder( FOLDERID_LocalAppData );
+		return get_known_windows_folder( FOLDERID_LocalAppData, "LocalAppData" );
 #else
 		string homeDir = std::getenv( "HOME" );
 		return path{homeDir + "/.config"};
@@ -60,7 +69,7 @@ namespace xo
 	path get_documents_dir()
 	{
 #ifdef XO_COMP_MSVC
-		return get_known_windows_folder( FOLDERID_Documents );
+		return get_known_windows_folder( FOLDERID_Documents, "Documents" );
 #else
 		return path( std::getenv( "HOME" ) );
 #endif
