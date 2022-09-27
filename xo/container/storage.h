@@ -185,7 +185,7 @@ namespace xo
 			for ( const auto& l : xo::split_str( line, "\t " ) )
 				sto.add_channel( l );
 			while ( std::getline( str, line ) ) {
-				auto& f = sto.add_frame();
+				auto f = sto.add_frame();
 				xo::char_stream cstr( line.c_str() );
 				for ( index_t ci = 0; cstr.good() && ci < sto.channel_size(); ++ci )
 					cstr >> f[ ci ];
