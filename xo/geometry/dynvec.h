@@ -137,10 +137,11 @@ namespace xo
 
 	/// stream out
 	template< typename T > std::ostream& operator<<( std::ostream& str, const dynvec<T>& v ) {
+		const auto separator = std::string( ' ' );
 		if ( v.size() > 0 ) {
 			str << v[ 0 ];
 			for ( index_t i = 1; i < v.size(); ++i )
-				str << ' ' << v[ i ];
+				str << separator << v[ i ];
 		}
 		return str;
 	}
