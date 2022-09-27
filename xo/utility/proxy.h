@@ -18,13 +18,13 @@ namespace xo
 		using value_type = T;
 		using id_type = I;
 
-		proxy() : index_( typename proxy_data< T, I >::get_index( value_type() ) ) {}
-		proxy( const value_type& value ) : index_( typename proxy_data< T, I >::get_index( value ) ) {}
+		proxy() : index_( proxy_data< T, I >::get_index( value_type() ) ) {}
+		proxy( const value_type& value ) : index_( proxy_data< T, I >::get_index( value ) ) {}
 
-		proxy& set( const value_type& value ) { index_ = typename proxy_data< T, I >::get_index( value ); return *this; }
+		proxy& set( const value_type& value ) { index_ = proxy_data< T, I >::get_index( value ); return *this; }
 		proxy& operator=( const value_type& value ) { return set( value ); }
 
-		const value_type& get() const { return typename proxy_data< T, I >::get_value( index_ ); }
+		const value_type& get() const { return proxy_data< T, I >::get_value( index_ ); }
 		operator const value_type&() const { return get(); }
 
 		friend bool operator==( const proxy a, const proxy b ) { return a.index_ == b.index_; }
