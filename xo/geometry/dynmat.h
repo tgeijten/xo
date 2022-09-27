@@ -2,6 +2,7 @@
 
 #include "dynvec.h"
 #include "xo/container/dynarray.h"
+#include "xo/numerical/math.h"
 
 namespace xo
 {
