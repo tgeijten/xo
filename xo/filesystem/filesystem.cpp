@@ -83,8 +83,12 @@ namespace xo
 		return path( buf ).parent_path().make_preferred();
 #elif defined(__linux__)
 		char buf[ 1024 ];
-		readlink("/proc/self/exe", buf, sizeof( buf ));
-		return path( buf ).parent_path();
+		auto len = readlink("/proc/self/exe", buf, sizeof( buf ) - 1 );
+		if ( len != -1 ) {
+			buf[ len ] = '\0';
+			return path( buf ).parent_path();
+		}
+		else return path();
 #elif defined(__APPLE__)
 		uint32_t bufferSize = 1024;
 		std::vector<char> buf(bufferSize + 1);
