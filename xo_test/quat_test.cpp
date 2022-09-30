@@ -46,6 +46,7 @@ namespace xo
 
 	XO_TEST_CASE( xo_quat_from_directions )
 	{
+		auto eps = 1e-4f;
 		random_number_generator rng;
 		for ( index_t i = 0; i < 10; ++i )
 		{
@@ -59,10 +60,10 @@ namespace xo
 			auto q2o = quat_from_directions_old( v2, v1 );
 			auto q3o = quat_from_directions_old( v2, -v2 );
 			auto q4o = quat_from_directions_old( v1, v1 );
-			XO_CHECK( equal( q1, q1o ) );
-			XO_CHECK( equal( q2, q2o ) );
-			XO_CHECK( equal( q3, q3o ) );
-			XO_CHECK( equal( q4, q4o ) );
+			XO_CHECK( equal( q1, q1o, eps ) );
+			XO_CHECK( equal( q2, q2o, eps ) );
+			XO_CHECK( equal( q3, q3o, eps ) );
+			XO_CHECK( equal( q4, q4o, eps ) );
 		}
 	}
 }
