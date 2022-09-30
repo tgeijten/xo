@@ -105,7 +105,9 @@ namespace xo
 
 	path temp_directory_path()
 	{
-		return path( std::getenv( "TMP" ) );
+		if ( auto* sz = std::getenv( "TMP" ) )
+			return path( sz );
+		else return path( "/tmp" );
 	}
 
 	bool copy_file( const path& from, const path& to, bool overwrite )
