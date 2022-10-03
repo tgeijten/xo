@@ -105,6 +105,9 @@ namespace xo
 		/// see if this prop_node has any specific key
 		bool has_any_key( std::initializer_list< key_t > keys ) const;
 
+		/// count the number of occurances of key
+		size_t count_key( const key_t& key ) const;
+
 		/// number of direct child keys
 		size_t size() const { return children.size(); }
 

@@ -27,6 +27,15 @@ namespace xo
 		for ( auto& k : keys ) if ( has_key( k ) ) return true; return false;
 	}
 
+	size_t prop_node::count_key( const key_t& key ) const
+	{
+		size_t n = 0;
+		for ( auto& c : children )
+			if ( c.first == key )
+				++n;
+		return n;
+	}
+
 	size_t prop_node::count_layers() const
 	{
 		size_t d = 0;
