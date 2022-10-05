@@ -121,6 +121,17 @@ namespace xo
 		return T( 2 ) * std::abs( T( 0.5 ) * v - std::floor( T( 0.5 ) * v + T( 0.5 ) ) );
 	}
 
+	/// positive modulo
+	template< typename T > T pos_mod( T x, T y ) {
+		return fmod( x, y ) + T( x < 0 ) * y;
+	}
+
+	/// triangle wave between l and u, period = 2(u-l).
+	template< typename T > T triangle_wave( T v, T l, T u ) {
+		auto a = u - l;
+		return std::abs( pos_mod( v - u, 2 * a ) - a ) + l;
+	}
+
 	/// greatest common divisor for integers (Euclid's algorithm)
 	template< typename T > T greatest_common_divisor( T p, T q ) {
 		while ( q ) { auto t = p % q; p = q; q = t; }

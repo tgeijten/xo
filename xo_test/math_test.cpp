@@ -101,10 +101,12 @@ namespace xo
 		//std::ofstream( "X:/clamp_test.txt" ) << sto;
 	}
 
-	void xo_wrap_test()
+	XO_TEST_CASE_SKIP( xo_wrap_test )
 	{
 		for ( double x = -10; x < 10; x += 0.1 )
 			log::info( x, ":\t", wrapped( x, 0.0, 1.0 ), "\t", wrapped( x, -1.5, 2.5 ), "\t", wrapped( x, -3.5, -1.5 ) );
+		for ( double x = -5; x < 5; x += 0.5 )
+			log::info( x, ":\t", triangle_wave( x, 0.0, 1.0 ), "\t", triangle_wave( x, -1.0, 1.0 ), "\t", triangle_wave( x, -3.5, -0.5 ) );
 	}
 
 	XO_TEST_CASE( xo_linear_regression_test )
