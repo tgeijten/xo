@@ -116,7 +116,7 @@ namespace xo
 			}
 			else
 			{
-				log::info( "Could not find settings file, creating defaults" );
+				log::info( "Created default settings ", filename );
 				reset();
 				save();
 			}
