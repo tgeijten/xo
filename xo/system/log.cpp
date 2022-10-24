@@ -10,7 +10,6 @@ namespace xo
 {
 	namespace log
 	{
-		level global_log_level = level::never;
 		xo::vector< sink* > global_sinks;
 
 		void log_string( level l, const string& str )
@@ -50,18 +49,6 @@ namespace xo
 				global_sinks.erase( it );
 		}
 
-// 		void set_global_log_level( level l )
-// 		{
-// 			for ( auto s : global_sinks )
-// 				s->set_log_level( l );
-// 			global_log_level = l;
-// 		}
-// 
-// 		level get_global_log_level()
-// 		{
-// 			return global_log_level;
-// 		}
-// 
 		bool test_log_level( level l )
 		{
 			for ( auto s : global_sinks )
