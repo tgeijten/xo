@@ -132,12 +132,11 @@ namespace xo
 		else return { s, string() };
 	}
 
-	string& replace_str( string& s, const string& find_str, const string& replace_with )
+	void replace_str( string& s, const string& find_str, const string& replace_with )
 	{
 		xo_assert( !find_str.empty() );
 		for ( auto pos = s.find( find_str ); pos != string::npos; pos = s.find( find_str, pos + replace_with.size() ) )
 			s.replace( pos, find_str.size(), replace_with );
-		return s;
 	}
 
 	string replace_str( string&& s, const string& find_str, const string& replace_with )
@@ -146,12 +145,11 @@ namespace xo
 		return std::move( s );
 	}
 
-	string& replace_char( string& s, const char find_char, const char replace_with )
+	void replace_char( string& s, const char find_char, const char replace_with )
 	{
 		for ( auto& c : s )
 			if ( c == find_char )
 				c = replace_with;
-		return s;
 	}
 
 	string replace_char( string&& s, const char find_char, const char replace_with )
