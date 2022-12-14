@@ -189,6 +189,9 @@ namespace xo
 		const prop_node* try_get_child( const key_t& key ) const;
 		prop_node* try_get_child( const key_t& key );
 
+		/// find child node recursively, return nullptr if not found
+		const prop_node* try_find_child_recursively( const key_t& key ) const;
+
 		/// get a child node using delimiters, return nullptr if not existing
 		const prop_node* try_get_query( const key_t& query, const char delim = '.' ) const;
 		prop_node* try_get_query( const key_t& query, const char delim = '.' );

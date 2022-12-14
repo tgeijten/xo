@@ -197,6 +197,16 @@ namespace xo
 		return nullptr;
 	}
 
+	const prop_node* prop_node::try_find_child_recursively( const key_t& key ) const
+	{
+		for ( auto& c : children )
+			if ( c.first == key )
+				return &c.second;
+			else if ( auto* pn = c.second.try_find_child_recursively( key ) )
+				return pn;
+		return nullptr;
+	}
+
 	const prop_node* prop_node::try_get_query( const key_t& key, const char delim ) const
 	{
 		auto p = key.find_first_of( delim );
