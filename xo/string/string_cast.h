@@ -2,6 +2,7 @@
 
 #include "xo/xo_types.h"
 #include "xo/string/string_type.h"
+#include "xo/container/vector_type.h"
 
 namespace xo
 {
@@ -59,4 +60,8 @@ namespace xo
 		s += "]";
 		return s;
 	}
+
+	/// convert vector of elements to string
+	template< typename T >
+	string to_str( const vector<T>& v ) { return container_to_str( v ); }
 }
