@@ -51,7 +51,7 @@ namespace xo
 	template< typename T > struct optional< T, typename std::enable_if_t< !std::is_floating_point_v<T> && !(std::is_integral_v<T> && !std::is_same_v<T, bool> ) > >
 	{
 		using value_type = T;
-		optional() : has_value_( false ) {}
+		optional() : value_(), has_value_( false ) {}
 		optional( const T& v ) : value_( v ), has_value_( true ) {}
 		optional( T&& v ) : value_( std::move( v ) ), has_value_( true ) {}
 		optional& operator=( const T& v ) { value_ = v; has_value_ = true; return *this; }
@@ -61,7 +61,7 @@ namespace xo
 		T& operator*() { return value_; }
 		const T* operator->() const { return &value_; }
 		T* operator->() { return &value_; }
-		void reset() { has_value_ = false; }
+		void reset() { value_ = T(); has_value_ = false; }
 		const T& value() const { xo_error_if( !*this, "xo::optional has no value" ); return value_; }
 		T value_or( const T& default_value ) const { return bool( *this ) ? value_ : default_value; }
 	private:
