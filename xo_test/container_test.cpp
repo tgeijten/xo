@@ -11,6 +11,8 @@
 #include "xo/container/indexed_map.h"
 #include "xo/container/collection.h"
 #include "xo/container/collection_ic.h"
+#include "xo/container/zip.h"
+#include <deque>
 
 namespace xo
 {
@@ -155,7 +157,7 @@ namespace xo
 		XO_CHECK( im.find( "apple", ++im.find( "apple" ) )->second == "second" );
 		XO_CHECK( im.find( "banana" )->second == "third" );
 		XO_CHECK( im.find( "banana", ++im.find( "banana" ) ) == im.end() );
-		XO_CHECK( im.insert( { "banana", "new" }  ).second == false );
+		XO_CHECK( im.insert( { "banana", "new" } ).second == false );
 		XO_CHECK( im[ "banana" ] == "new" );
 		XO_CHECK( im.insert( { "pear", "fourth" } ).second == true );
 		XO_CHECK( im[ "pear" ] == "fourth" );
@@ -189,5 +191,18 @@ namespace xo
 		XO_CHECK( c[ hd0 ] == 2.0 );
 		XO_CHECK( c[ hd1 ] == 3.0 );
 		XO_CHECK( c[ hs ] == "applepie" );
+	}
+
+	XO_TEST_CASE( xo_zip )
+	{
+		std::vector<double> vec1{ 1.0, 2.0, 4.0 };
+		const std::deque<std::string> vec2{ "apple", "pear", "banana" };
+
+		index_t idx = 0;
+		for ( auto&& [v1, v2] : zip( vec1, vec2 ) ) {
+			XO_CHECK( v1 == vec1[ idx ] );
+			XO_CHECK( v2 == vec2[ idx ] );
+			++idx;
+		}
 	}
 }
