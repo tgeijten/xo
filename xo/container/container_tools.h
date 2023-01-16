@@ -2,7 +2,6 @@
 
 #include "xo/system/assert.h"
 #include "xo/xo_types.h"
-#include "xo/string/string_type.h"
 #include <iterator> // #todo get rid of this header, used by std::begin / std::end
 #include <vector>
 
@@ -132,8 +131,8 @@ namespace xo
 	/// get index of last element
 	template< typename C > index_t back_index( const C& cont ) { return size( cont ) > 0 ? size( cont ) - 1 : no_index; }
 
-	/// get index of last element
-	template< typename E > index_t index_of( const E& elem, const std::vector<E>& vec ) { return &elem - &vec[ 0 ]; }
+	/// get index of element in container
+	template< typename E > index_t index_of( const E& elem, const std::vector<E>& vec ) { return index_t( &elem - &vec[ 0 ] ); }
 
 	/// emplace back, return index
 	template< typename C, typename... Args> index_t emplace_back_get_index( C& c, Args&&... a ) {
