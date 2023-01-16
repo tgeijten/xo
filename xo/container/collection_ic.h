@@ -24,7 +24,6 @@ namespace xo
 		template< typename T > T& operator[]( index_class<T, I> i ) { return get_vec<T>()[ i.idx ]; }
 
 		template< typename T > index_class<T, I> erase( index_class<T, I> i ) { auto& v = get_vec<T>(); v.erase( i.iter( v ) ); }
-		//template< typename T > index_class<T, I> erase( index_class<T, I> b, index_class<T, I> e ) { return get_vec<T>().erase( i ); }
 
 		template< typename T > const std::vector<T>& get_vec() const { return std::get< std::vector<T> >( data_ ); }
 		template< typename T > std::vector<T>& get_vec() { return std::get< std::vector<T> >( data_ ); }
@@ -38,6 +37,7 @@ namespace xo
 		template< typename T > index_class<T, I> get_index( const T& e ) const { return index_class<T, I>( I( &e - &get_vec<T>()[ 0 ] ) ); }
 
 		template< typename T > index_class<T, I> back_index() const { return index_class<T, I>::back( get_vec<T>() ); }
+		template< typename T > index_class<T, I> begin_index() const { return index_class<T, I>( I( 0 ) ); }
 		template< typename T > index_class<T, I> end_index() const { return index_class<T, I>::end( get_vec<T>() ); }
 
 		void clear() {

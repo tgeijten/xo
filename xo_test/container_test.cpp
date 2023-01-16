@@ -191,6 +191,10 @@ namespace xo
 		XO_CHECK( c[ hd0 ] == 2.0 );
 		XO_CHECK( c[ hd1 ] == 3.0 );
 		XO_CHECK( c[ hs ] == "applepie" );
+		auto& vf = c.get_vec<float>();
+		XO_CHECK( vf[ 0 ] == 1.0f );
+		auto& vs = c.get_vec<std::string>();
+		XO_CHECK( vs[ 0 ] == "applepie" );
 	}
 
 	XO_TEST_CASE( xo_zip )
