@@ -200,12 +200,16 @@ namespace xo
 	XO_TEST_CASE( xo_zip )
 	{
 		std::vector<double> vec1{ 1.0, 2.0, 4.0 };
-		const std::deque<std::string> vec2{ "apple", "pear", "banana" };
+		std::deque<std::string> vec2{ "apple", "pear", "banana" };
 
 		index_t idx = 0;
 		for ( auto&& [v1, v2] : zip( vec1, vec2 ) ) {
 			XO_CHECK( v1 == vec1[ idx ] );
 			XO_CHECK( v2 == vec2[ idx ] );
+			v1 = 5.0;
+			XO_CHECK( vec1[ idx ] == 5.0 );
+			v2 = "this is a long string, not a short string";
+			XO_CHECK( vec2[ idx ] == "this is a long string, not a short string" );
 			++idx;
 		}
 	}
