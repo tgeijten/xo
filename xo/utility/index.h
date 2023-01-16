@@ -19,11 +19,15 @@ namespace xo
 		// explicit conversion constructors
 		explicit constexpr index_class( index_type v ) : idx( v ) {}
 		template<typename U> explicit constexpr index_class( index_class<U, I> o ) : idx( o.value() ) {}
+		explicit constexpr index_class( size_t i ) : idx( i <= max_value() ? index_type( i ) : invalid_index_value() ) {}
+		explicit constexpr index_class( int i ) : idx( i >= 0 && unsigned( i ) <= max_value() ? index_type( i ) : invalid_index_value() ) {}
 
 		// default copy and move assignment
 		index_class& operator=( const index_class& o ) { idx = o.idx; return *this; }
 		index_class& operator=( index_class&& o ) noexcept { std::swap( idx, o.idx ); return *this; }
 
+		index_type value() const { return idx; }
+		index_type max_value() const { return invalid_index_value() - 1; }
 		explicit operator bool() const { return idx != invalid_index_value(); }
 
 		void reset() { idx = invalid_index_value(); }
