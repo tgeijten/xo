@@ -24,7 +24,7 @@ namespace xo
 
 		// default copy and move assignment
 		index_class& operator=( const index_class& o ) { idx = o.idx; return *this; }
-		index_class& operator=( index_class&& o ) noexcept { std::swap( idx, o.idx ); return *this; }
+		index_class& operator=( index_class&& o ) noexcept { idx = o.idx; o.reset(); return *this; }
 
 		index_type value() const { return idx; }
 		index_type max_value() const { return invalid_index_value() - 1; }
