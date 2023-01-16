@@ -10,6 +10,7 @@
 #include "xo/container/flat_set.h"
 #include "xo/container/indexed_map.h"
 #include "xo/container/collection.h"
+#include "xo/container/collection_ic.h"
 
 namespace xo
 {
@@ -165,6 +166,20 @@ namespace xo
 	XO_TEST_CASE( xo_collection )
 	{
 		collection<xo::uint32, float, double, std::string> c;
+
+		auto hf = c.push_back( 1.0f );
+		auto hd0 = c.push_back( 2.0 );
+		auto hd1 = c.push_back( 3.0 );
+		auto hs = c.push_back( std::string( "applepie" ) );
+		XO_CHECK( c[ hf ] == 1.0f );
+		XO_CHECK( c[ hd0 ] == 2.0 );
+		XO_CHECK( c[ hd1 ] == 3.0 );
+		XO_CHECK( c[ hs ] == "applepie" );
+	}
+
+	XO_TEST_CASE( xo_collection_ic )
+	{
+		collection_ic<xo::uint32, float, double, std::string> c;
 
 		auto hf = c.push_back( 1.0f );
 		auto hd0 = c.push_back( 2.0 );
