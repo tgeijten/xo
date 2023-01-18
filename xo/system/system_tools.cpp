@@ -8,6 +8,8 @@
 #	pragma warning( disable: 4996 )
 #else
 #   include <cxxabi.h>
+#	include <unistd.h>
+#	include <limits.h>
 #endif
 
 #include "xo/string/string_tools.h"
@@ -98,11 +100,14 @@ namespace xo
 #ifdef XO_COMP_MSVC
 		char buf[ 256 ] = "";
 		DWORD len = 256;
-		if ( !GetComputerName( buf, &len ) )
+		if ( ! GetComputerName( buf, &len ) )
 			return "";
-		else return buf;
-#else
-		return string( "" );
+		else
+			return buf;
+#elif defined( __GNUC__ )
+		char hostname[ HOST_NAME_MAX ];
+		gethostname( hostname, HOST_NAME_MAX );
+		return stringf( "%s-gcc%d.%d", hostname, __GNUC__, __GNUC_MINOR__ );
 #endif
 	}
 }
