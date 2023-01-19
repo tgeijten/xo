@@ -33,9 +33,9 @@ namespace xo
 	XO_API char wait_for_key()
 	{
 #ifdef XO_COMP_MSVC
-			return _getch();
+		return _getch();
 #else
-			return 0;
+		return 0;
 #endif
 	}
 
@@ -53,7 +53,7 @@ namespace xo
 			log::critical( message );
 
 		// crash!
-		*(volatile int*)(0) = 123;
+		*(volatile int*)( 0 ) = 123;
 	}
 
 	XO_API void sleep( int ms )
@@ -100,14 +100,16 @@ namespace xo
 #ifdef XO_COMP_MSVC
 		char buf[ 256 ] = "";
 		DWORD len = 256;
-		if ( ! GetComputerName( buf, &len ) )
+		if ( !GetComputerName( buf, &len ) )
 			return "";
 		else
 			return buf;
-#elif defined( __GNUC__ )
+#elif defined( __linux__ )
 		char hostname[ HOST_NAME_MAX ];
 		gethostname( hostname, HOST_NAME_MAX );
 		return stringf( "%s-gcc%d.%d", hostname, __GNUC__, __GNUC_MINOR__ );
+#else
+		return "";
 #endif
 	}
 }
