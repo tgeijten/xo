@@ -35,7 +35,15 @@ namespace xo
 			return default_value;
 		}
 
+		template< typename T >
+		T get( index_t idx, T default_value ) const {
+			if ( idx < args_.size() )
+				from_str( args_[ idx ], default_value );
+			return default_value;
+		}
+
 		const string& arg( index_t idx ) const {
+			xo_assert( idx < args_.size() );
 			return args_[ idx ];
 		}
 
