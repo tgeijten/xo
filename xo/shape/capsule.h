@@ -22,11 +22,11 @@ namespace xo
 	inline vec3f dim( const capsule& s ) {
 		return vec3f( 2.0f * s.radius_, s.height_, 2.0f * s.radius_ );
 	}
-	
+
 	inline aabbf aabb( const capsule& s, const transformf& t ) {
 		XO_NOT_IMPLEMENTED;
 	}
-	
+
 	inline vec3f inertia( const capsule& s, float density ) {
 		const auto h = s.height_;
 		const auto r = s.radius_;
@@ -41,7 +41,7 @@ namespace xo
 
 		return vec3f{ Ia, Ib, Ia };
 	}
-	
+
 	inline void scale( capsule& s, float f ) {
 		s.radius_ *= f;
 		s.height_ *= f;

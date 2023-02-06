@@ -70,7 +70,7 @@ namespace xo
 	color make_unique_color( index_t idx, float brightness )
 	{
 		static std::array< float, 12 > standard_hue{ 0, 120, 240, 45, 195, 310, 20, 75, 165, 215, 275, 330 };
-		float hue = standard_hue[ idx % standard_hue.size() ];
+		float hue = standard_hue[idx % standard_hue.size()];
 		float sat = 1.0f / ( 1.0f + idx / standard_hue.size() );
 		float pbr = perceived_brightness( color_from_hsv( hue, sat, 1.0f ) );
 		float val = xo::clamped( brightness / pbr, brightness, 1.0f );
@@ -86,7 +86,7 @@ namespace xo
 	color color_from_hex_rgba( uint32 x )
 	{
 		const float f = 1.0f / 255.0f;
-		return color( f * get_byte( x, 24 ), f * get_byte( x, 16 ), f * get_byte( x, 8 ) , f * get_byte( x, 0 ) );
+		return color( f * get_byte( x, 24 ), f * get_byte( x, 16 ), f * get_byte( x, 8 ), f * get_byte( x, 0 ) );
 	}
 
 	uint32 hex_rgb_from_color( const color& c )

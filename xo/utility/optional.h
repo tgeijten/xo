@@ -48,7 +48,7 @@ namespace xo
 	};
 
 	/// optional value that works with any value type
-	template< typename T > struct optional< T, typename std::enable_if_t< !std::is_floating_point_v<T> && !(std::is_integral_v<T> && !std::is_same_v<T, bool> ) > >
+	template< typename T > struct optional< T, typename std::enable_if_t< !std::is_floating_point_v<T> && !( std::is_integral_v<T> && !std::is_same_v<T, bool> ) > >
 	{
 		using value_type = T;
 		optional() : value_(), has_value_( false ) {}

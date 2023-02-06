@@ -17,8 +17,8 @@ namespace xo
 		T& operator[]( index_t i ) { return *reinterpret_cast<T*>( data_ + i ); }
 		const T& operator[]( index_t i ) const { return *reinterpret_cast<const T*>( data_ + i ); }
 
-		T& at( size_t i ) { xo_error_if( i >= size(), "small_vector index out of bounds" ); return ( *this )[ i ]; }
-		const T& at( size_t i ) const { xo_error_if( i >= size(), "small_vector index out of bounds" ); ( *this )data_[ i ]; }
+		T& at( size_t i ) { xo_error_if( i >= size(), "small_vector index out of bounds" ); return ( *this )[i]; }
+		const T& at( size_t i ) const { xo_error_if( i >= size(), "small_vector index out of bounds" ); ( *this )data_[i]; }
 
 		template<typename ...Args> void emplace_back( Args&&... args ) {
 			xo_error_if( size() >= N, "small_vector buffer overflow" );
@@ -48,7 +48,7 @@ namespace xo
 		const T* data() const { return reinterpret_cast<const T*>( data_ ); }
 
 	private:
-		typename std::aligned_storage< sizeof( T ), alignof( T ) >::type data[ N ];
+		typename std::aligned_storage< sizeof( T ), alignof( T ) >::type data[N];
 		T* end_;
 	};
 }

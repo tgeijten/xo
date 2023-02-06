@@ -119,7 +119,7 @@ namespace xo
 #endif
 			// output the log message
 			// could not find performance benefits using '\n' instead of std::endl
-			stream_ << msg << std::endl; 
+			stream_ << msg << std::endl;
 
 #ifdef XO_COMP_MSVC
 			// restore color

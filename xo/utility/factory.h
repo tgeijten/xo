@@ -30,7 +30,7 @@ namespace xo
 		template< typename U >
 		factory& register_type( const string& type_id = get_clean_type_name<U>() ) {
 			xo_error_if( func_map_.contains( type_id ), "Type already registered: " + type_id );
-			func_map_[ type_id ] = []( Args... args ) { return u_ptr< T >( new U( args... ) ); };
+			func_map_[type_id] = []( Args... args ) { return u_ptr< T >( new U( args... ) ); };
 			return *this;
 		}
 

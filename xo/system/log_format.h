@@ -20,7 +20,7 @@ namespace xo
 			if ( fmt.get<format::show_time>() )
 				s += get_date_time_str( "%H:%M:%S " );
 			if ( fmt.get<format::show_level>() )
-				s += level_names_short[ (int)l ], s += ' ';
+				s += level_names_short[(int)l], s += ' ';
 			return s;
 		}
 	}

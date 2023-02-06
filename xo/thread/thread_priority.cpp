@@ -15,7 +15,7 @@ namespace xo
 	XO_API void set_thread_priority( thread_priority p )
 	{
 #ifdef XO_COMP_MSVC
-		switch (p)
+		switch ( p )
 		{
 		case thread_priority::idle: // base priority = 1
 			return set_thread_priority( { IDLE_PRIORITY_CLASS, THREAD_PRIORITY_IDLE } );
@@ -61,7 +61,7 @@ namespace xo
 			default: xo_error( "Unsupported thread priority: " + to_str( p ) );
 		}
 		if (pthread_setschedparam(pthread_self(), policy, &sch_params)) {
-		    log::warning("Failed to set thread priority.");
+			log::warning("Failed to set thread priority.");
 		}
 		*/
 #endif
@@ -82,7 +82,7 @@ namespace xo
 		thread_priority_data result;
 		auto h = ::GetCurrentThread();
 		result.pc_ = ::GetPriorityClass( h );
-		result.tp_= ::GetThreadPriority( h );
+		result.tp_ = ::GetThreadPriority( h );
 		return result;
 #else
 		XO_NOT_IMPLEMENTED;

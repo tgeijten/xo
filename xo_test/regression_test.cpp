@@ -16,8 +16,8 @@ namespace xo
 			std::vector< float > y( n ), x( n );
 			for ( index_t i = 0; i < n; ++i )
 			{
-				x[ i ] = float( i );
-				y[ i ] = rand_norm< float >( float( i ), n / 10 );
+				x[i] = float( i );
+				y[i] = rand_norm< float >( float( i ), n / 10 );
 			}
 			auto xr = make_irange( 0, n );
 

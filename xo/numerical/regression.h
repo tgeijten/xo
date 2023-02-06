@@ -20,7 +20,7 @@ namespace xo
 		T den = 0.0;
 		ItX itx = x_begin;
 		ItY ity = y_begin;
-		for (; itx != x_end; ++itx, ++ity )
+		for ( ; itx != x_end; ++itx, ++ity )
 		{
 			num += ( *itx - avgx ) * ( *ity - avgY );
 			den += ( *itx - avgx ) * ( *itx - avgx );
@@ -58,7 +58,7 @@ namespace xo
 		std::vector< T > slopes;
 		slopes.reserve( cy.size() );
 		for ( index_t i = 0; i < cy.size() - 1; ++i )
-			slopes.push_back( cy[ i + 1 ] - cy[ i ] );
+			slopes.push_back( cy[i + 1] - cy[i] );
 		auto medslope = median( slopes ) / x_step;
 		auto medy = median( cy );
 		auto medx = x_begin + x_step * ( cy.size() - 1 ) / 2;
@@ -91,7 +91,7 @@ namespace xo
 
 		std::vector< T > intercepts( n );
 		for ( int i = 0; i < n; ++i )
-			intercepts[ i ] = *( yb + i ) - slope * *( xb + i );
+			intercepts[i] = *( yb + i ) - slope * *( xb + i );
 		auto offset = median_non_const( intercepts );
 
 		return linear_function< T >( offset, slope );

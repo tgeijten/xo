@@ -14,8 +14,8 @@ namespace xo
 		vec4_( T px, T py, T pz, T pw ) : x( px ), y( py ), z( pz ), w( pw ) {}
 
 		// element access
-		const T& operator[]( index_t idx ) const { return (&x)[idx]; }
-		T& operator[]( index_t idx ) { return (&x)[idx]; }
+		const T& operator[]( index_t idx ) const { return ( &x )[idx]; }
+		T& operator[]( index_t idx ) { return ( &x )[idx]; }
 		T x, y, z, w;
 
 		// const properties
@@ -25,10 +25,10 @@ namespace xo
 
 		// static initializers
 		static vec4_<T> zero() { return vec4_<T>( T(), T(), T(), T() ); }
-		static vec4_<T> unit_x() { return vec4_<T>( T(1), T(), T(), T() ); }
-		static vec4_<T> unit_y() { return vec4_<T>( T(), T(1), T(), T() ); }
-		static vec4_<T> unit_z() { return vec4_<T>( T(), T(), T(1), T() ); }
-		static vec4_<T> unit_w() { return vec4_<T>( T(), T(), T(), T(1) ); }
+		static vec4_<T> unit_x() { return vec4_<T>( T( 1 ), T(), T(), T() ); }
+		static vec4_<T> unit_y() { return vec4_<T>( T(), T( 1 ), T(), T() ); }
+		static vec4_<T> unit_z() { return vec4_<T>( T(), T(), T( 1 ), T() ); }
+		static vec4_<T> unit_w() { return vec4_<T>( T(), T(), T(), T( 1 ) ); }
 	};
 
 	/// template instantiations

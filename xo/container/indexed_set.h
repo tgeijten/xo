@@ -15,7 +15,7 @@ namespace xo
 		indexed_set() {}
 		~indexed_set() {}
 
-		const T& operator[]( I idx ) const { return values_[ idx ]; }
+		const T& operator[]( I idx ) const { return values_[idx]; }
 
 		optional<I> try_get( const T& value ) const {
 			if ( auto it = indices_.find( value ); it != indices_.end() )
@@ -30,7 +30,7 @@ namespace xo
 				auto index = values_.size() - 1;
 				// check if the index is valid (must be SMALLER than max to avoid sentinel)
 				xo_error_if( index >= size_t( constants<I>::max() ), "index_set overflow" );
-				return indices_[ value ] = static_cast<I>( index );
+				return indices_[value] = static_cast<I>( index );
 			}
 			else return it->second; // get existing
 		}

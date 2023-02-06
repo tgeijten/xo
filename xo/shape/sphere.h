@@ -29,7 +29,7 @@ namespace xo
 		return vec3f::diagonal( 2.0f * s.radius_ );
 	}
 
-	inline vec3f inertia( const sphere& s, float density )	{
+	inline vec3f inertia( const sphere& s, float density ) {
 		return  vec3f::diagonal( ( 2.0f / 5.0f ) * volume( s ) * density * squared( s.radius_ ) );
 	}
 

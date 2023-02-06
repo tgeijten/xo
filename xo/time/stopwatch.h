@@ -22,7 +22,7 @@ namespace xo
 				split_names_.emplace_back( name );
 				++current_split_;
 			}
-			else split_times_[ current_split_++ ] += timer_.restart();
+			else split_times_[current_split_++] += timer_.restart();
 		}
 
 		/// get split information
@@ -44,7 +44,7 @@ namespace xo
 
 		/// get report as a prop_node
 		prop_node get_report( int decimals = 6 );
-		
+
 	private:
 		timer timer_;
 		index_t current_split_;

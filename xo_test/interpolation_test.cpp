@@ -14,9 +14,9 @@ namespace xo
 	{
 		// map interpolation
 		std::map< float, vec3f > m;
-		m[ 0.0f ] = vec3f( 1, 0, 0 );
-		m[ 1.0f ] = vec3f( 0, 1, 0 );
-		m[ 3.0f ] = vec3f( 0, 1, 2 );
+		m[0.0f] = vec3f( 1, 0, 0 );
+		m[1.0f] = vec3f( 0, 1, 0 );
+		m[3.0f] = vec3f( 0, 1, 2 );
 		XO_CHECK( equal( lerp_map( m, -1.0f ), vec3f( 1, 0, 0 ) ) );
 		XO_CHECK( equal( lerp_map( m, 0.0f ), vec3f( 1, 0, 0 ) ) );
 		XO_CHECK( equal( lerp_map( m, 0.1f ), vec3f( 0.9f, 0.1f, 0.0f ) ) );
@@ -40,9 +40,9 @@ namespace xo
 		XO_CHECK( equal( lerp_vec( vec, 100.0f ), vec3f( 0, 1, 2 ) ) );
 
 		flat_map<double, double> fm;
-		fm[ -1.0 ] = 9.0;
-		fm[ 0.0 ] = 10.0;
-		fm[ 3.0 ] = 40.0;
+		fm[-1.0] = 9.0;
+		fm[0.0] = 10.0;
+		fm[3.0] = 40.0;
 		XO_CHECK( equal( lerp_map( fm, -10 ), 9.0 ) );
 		XO_CHECK( equal( lerp_map( fm, -0.5 ), 9.5 ) );
 		XO_CHECK( equal( lerp_map( fm, 0 ), 10.0 ) );

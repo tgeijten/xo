@@ -9,10 +9,10 @@ namespace xo
 	struct catmull_rom_segment
 	{
 		catmull_rom_segment( const P& p0, const P& p1, const P& p2, const P& p3 ) :
-		a_( 2 * p1 ),
-		b_( -p0 + p2 ),
-		c_( 2 * p0 - 5 * p1 + 4 * p2 - p3 ),
-		d_( -p0 + 3 * p1 - 3 * p2 + p3 )
+			a_( 2 * p1 ),
+			b_( -p0 + p2 ),
+			c_( 2 * p0 - 5 * p1 + 4 * p2 - p3 ),
+			d_( -p0 + 3 * p1 - 3 * p2 + p3 )
 		{}
 
 		template< typename T > P operator()( T t ) const { return T( 0.5 ) * ( a_ + b_ * t + c_ * t * t + d_ * t * t * t ); }
@@ -25,7 +25,7 @@ namespace xo
 	struct catmull_rom_segment_alpha
 	{
 		catmull_rom_segment_alpha( const P& p0, const P& p1, const P& p2, const P& p3, float alpha ) :
-		p0_( p0 ), p1_( p1 ), p2_( p2 ), p3_( p3 ) {
+			p0_( p0 ), p1_( p1 ), p2_( p2 ), p3_( p3 ) {
 			t0 = 0.0f;
 			t1 = pow( distance( p0, p1 ), alpha );
 			t2 = t1 + pow( distance( p1, p2 ), alpha );
@@ -66,25 +66,25 @@ namespace xo
 	{
 	public:
 		catmull_rom( const std::vector< P >& points, const std::vector< T >& times, T alpha = T( 0.5 ) ) :
-		times_( times )
+			times_( times )
 		{
 			xo_assert( points.size() >= 4 && times.size() == ( points.size() - 2 ) );
 			segments_.reserve( points.size() - 4 );
-			for ( size_t i = 0; i <= points.size() - 4; ++i)
-				segments_.emplace_back( points[ i ], points[ i + 1 ], points[ i + 2 ], points[ i + 3 ] );
+			for ( size_t i = 0; i <= points.size() - 4; ++i )
+				segments_.emplace_back( points[i], points[i + 1], points[i + 2], points[i + 3] );
 		}
 
 		P operator()( T t ) {
 			//assume times_ is sorted
 			auto it = std::lower_bound( times_.begin(), times_.end(), t );
-			if (it == times_.end()) {//no time is larger than t, outside the range
+			if ( it == times_.end() ) {//no time is larger than t, outside the range
 				//it = times_.begin();
 				it = times_.end() - 1;
 			}
 			//if ( it == times_.end() - 1 ) it = times_.end() - 2;
-			if (it == times_.begin()) it = times_.begin() + 1;
-			size_t index = it - times_.begin() -1; //it could be begin()
-			return segments_[ index ]( ( t - *(it-1) ) / ( *it  - *(it-1) ) );
+			if ( it == times_.begin() ) it = times_.begin() + 1;
+			size_t index = it - times_.begin() - 1; //it could be begin()
+			return segments_[index]( ( t - *( it - 1 ) ) / ( *it - *( it - 1 ) ) );
 		}
 
 	private:

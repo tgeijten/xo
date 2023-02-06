@@ -24,11 +24,11 @@ namespace xo
 		{
 			auto f = sto.add_frame();
 			auto s = filter_test_function( x );
-			f[ "signal" ] = s;
-			f[ "f1" ] = f1( s );
-			f[ "f2" ] = f2( s );
-			f[ "f3" ] = f3( s );
-			f[ "f4" ] = f4( s );
+			f["signal"] = s;
+			f["f1"] = f1( s );
+			f["f2"] = f2( s );
+			f["f3"] = f3( s );
+			f["f4"] = f4( s );
 		}
 		std::ofstream( "X:/filter_test.txt" ) << sto;
 	}

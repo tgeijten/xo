@@ -68,7 +68,8 @@ namespace xo
 			if ( auto p = s.find( ".." ); p != string::npos )
 				return from_str( s.substr( p + 2 ), v.upper );
 			else { v.upper = v.lower; return true; }
-		} else return false;
+		}
+		else return false;
 	}
 
 	/// convert bounds from prop_node

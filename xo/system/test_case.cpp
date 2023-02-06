@@ -27,7 +27,7 @@ namespace xo
 		}
 
 		test_case::test_case( const string& name, test_func_t func ) :
-			name_( name ) ,
+			name_( name ),
 			func_( func )
 		{}
 
@@ -38,7 +38,8 @@ namespace xo
 			{
 				result_.passed_++;
 				return true;
-			} else {
+			}
+			else {
 				auto lock = std::scoped_lock( g_log_mutex );
 				result_.failed_++;
 				log::error( "FAILED: ", name_, " (", operation, " ", message, ")" );
@@ -113,7 +114,7 @@ namespace xo
 			test_result total;
 			std::vector< std::future< const test_result& > > results;
 			for ( index_t i = 0; i < get_test_cases().size(); ++i )
-				results.push_back( std::async( &test_case::run, get_test_cases()[ i ].get() ) );
+				results.push_back( std::async( &test_case::run, get_test_cases()[i].get() ) );
 
 			int tests_failed = 0;
 			for ( auto& fut : results )

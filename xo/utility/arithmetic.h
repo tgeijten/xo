@@ -51,5 +51,5 @@ namespace xo
 
 	/// absolute value
 	template< typename T, typename C >
-	C abs( const arithmetic<T, C>& v ) { return C( v.value < T(0) ? -v.value : v.value ); }
+	C abs( const arithmetic<T, C>& v ) { return C( v.value < T( 0 ) ? -v.value : v.value ); }
 }

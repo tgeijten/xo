@@ -31,7 +31,7 @@ namespace xo
 
 		while ( str.good() )
 		{
-			char buf[ 1024 ];
+			char buf[1024];
 			str.getline( buf, sizeof( buf ) );
 			if ( str.fail() && !str.eof() )
 				return set_error_or_throw( ec_, "Error reading ini file, line too long" ), str;
@@ -41,10 +41,10 @@ namespace xo
 			if ( line.length() == 0 ) // empty line
 				continue;
 
-			if ( line[ 0 ] == ';' ) // comment
+			if ( line[0] == ';' ) // comment
 				continue;
 
-			if ( line.size() > 2 && line[ 0 ] == '[' && line[ line.size() - 1 ] == ']' )
+			if ( line.size() > 2 && line[0] == '[' && line[line.size() - 1] == ']' )
 			{
 				cur_group = &read_pn_->add_child( line.substr( 1, line.size() - 2 ) );
 				continue;

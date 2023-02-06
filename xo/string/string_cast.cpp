@@ -33,7 +33,7 @@ namespace xo
 
 	bool from_str( const string& s, int& v )
 	{
-		char* p; 
+		char* p;
 		v = (int)( std::strtol( s.c_str(), &p, 10 ) );
 		return p != s.c_str();
 	}
@@ -75,14 +75,14 @@ namespace xo
 
 	string to_str( float value )
 	{
-		char buf[ 32 ];
+		char buf[32];
 		std::snprintf( buf, sizeof( buf ), "%g", value );
 		return string( buf );
 	}
 
 	string to_str( double value )
 	{
-		char buf[ 32 ];
+		char buf[32];
 		std::snprintf( buf, sizeof( buf ), "%g", value );
 		return string( buf );
 	}
@@ -148,15 +148,15 @@ namespace xo
 
 	bool from_str( const string& s, version& ver )
 	{
-		auto[ numbers, postfix ] = split_str_at_first( s, whitespace_characters );
+		auto [numbers, postfix] = split_str_at_first( s, whitespace_characters );
 		if ( auto vs = split_str( numbers, "." ); vs.size() >= 3 )
 		{
-			if ( from_str( vs[ 0 ], ver.major_ )
-				&& from_str( vs[ 1 ], ver.minor_ )
-				&& from_str( vs[ 2 ], ver.patch_ ) )
+			if ( from_str( vs[0], ver.major_ )
+				&& from_str( vs[1], ver.minor_ )
+				&& from_str( vs[2], ver.patch_ ) )
 			{
 				if ( vs.size() >= 4 )
-					from_str( vs[ 3 ], ver.build_ );
+					from_str( vs[3], ver.build_ );
 				ver.postfix_ = postfix;
 				return true;
 			}

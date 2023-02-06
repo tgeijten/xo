@@ -49,28 +49,28 @@ namespace xo
 	}
 
 	template< typename T > void write( typename storage<T>::frame& f, const string& str, const vec3_<T>& v ) {
-		f[ str + ".x" ] = v.x;
-		f[ str + ".y" ] = v.y;
-		f[ str + ".z" ] = v.z;
+		f[str + ".x"] = v.x;
+		f[str + ".y"] = v.y;
+		f[str + ".z"] = v.z;
 	}
 
 	template< typename T > void write( typename storage<T>::frame& f, const string& str, const quat_<T>& q ) {
-		f[ str + ".w" ] = q.w;
-		f[ str + ".x" ] = q.x;
-		f[ str + ".y" ] = q.y;
-		f[ str + ".z" ] = q.z;
+		f[str + ".w"] = q.w;
+		f[str + ".x"] = q.x;
+		f[str + ".y"] = q.y;
+		f[str + ".z"] = q.z;
 	}
 
 	template< typename T > void read( const typename storage<T>::const_frame& f, const string& str, vec3_<T>& v ) {
-		v.x = f[ str + ".x" ];
-		v.y = f[ str + ".y" ];
-		v.z = f[ str + ".z" ];
+		v.x = f[str + ".x"];
+		v.y = f[str + ".y"];
+		v.z = f[str + ".z"];
 	}
 
 	template< typename T > void read( const typename storage<T>::const_frame& f, const string& str, quat_<T>& q ) {
-		q.w = f[ str + ".w" ];
-		q.x = f[ str + ".x" ];
-		q.y = f[ str + ".y" ];
-		q.z = f[ str + ".z" ];
+		q.w = f[str + ".w"];
+		q.x = f[str + ".x"];
+		q.y = f[str + ".y"];
+		q.z = f[str + ".z"];
 	}
 }

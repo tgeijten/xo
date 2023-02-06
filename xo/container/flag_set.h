@@ -12,7 +12,7 @@ namespace xo
 	{
 		flag_set() : data_() {}
 		flag_set( const flag_set& o ) = default;
-		flag_set( std::initializer_list<EnumT> flags ) : data_( ) { set( flags ); }
+		flag_set( std::initializer_list<EnumT> flags ) : data_() { set( flags ); }
 		flag_set( EnumT flag ) : data_( storage_bit( flag ) ) {}
 		explicit flag_set( StorageT data ) : data_( data ) {}
 

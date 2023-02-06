@@ -79,7 +79,7 @@ namespace xo
 
 	/// Test if a vec3 is of unit length
 	template< typename T > bool is_normalized( const vec3_<T>& v )
-	{ return equal( v.x * v.x + v.y * v.y + v.z * v.z, T(1) ); }
+	{ return equal( v.x * v.x + v.y * v.y + v.z * v.z, T( 1 ) ); }
 
 	/// Get distance between two vec3
 	template< typename T > T distance( const vec3_<T>& v1, const vec3_<T>& v2 )
@@ -87,7 +87,7 @@ namespace xo
 
 	/// Get squared distance between two vec3
 	template< typename T > T squared_distance( const vec3_<T>& v1, const vec3_<T>& v2 )
-	{ return squared_length( v1 - v2 );	}
+	{ return squared_length( v1 - v2 ); }
 
 	/// Compare vec3
 	template< typename T > bool operator==( const vec3_<T>& v1, const vec3_<T>& v2 )
@@ -164,11 +164,13 @@ namespace xo
 				v.set( pn.get<T>( 0 ), pn.get<T>( 1 ), pn.get<T>( 2 ) );
 			else v.set( pn.get<T>( "x" ), pn.get<T>( "y" ), pn.get<T>( "z" ) ); // group: { x=1 y=2 z=3 }
 			return true;
-		} else if ( pn.size() == 0 && pn.has_value() ) {
+		}
+		else if ( pn.size() == 0 && pn.has_value() ) {
 			if ( auto vs = split_str( pn.get_str(), " \t" ); vs.size() == 3 ) // string: "1 2 3"
-				return from_str( vs[ 0 ], v.x ) && from_str( vs[ 1 ], v.y ) && from_str( vs[ 2 ], v.z );
+				return from_str( vs[0], v.x ) && from_str( vs[1], v.y ) && from_str( vs[2], v.z );
 			else return false;
-		} else return false;
+		}
+		else return false;
 	};
 
 	/// convert to prop_node

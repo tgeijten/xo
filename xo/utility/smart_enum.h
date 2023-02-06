@@ -17,7 +17,7 @@ namespace smart_enum_detail
 			va_args += enum_len + sep_len;
 		}
 		return false;
-	} 
+	}
 	inline std::string to_str( int e, const char* va_args ) {
 		while ( e-- > 0 && *va_args ) {
 			va_args += std::strcspn( va_args, sep_chars );

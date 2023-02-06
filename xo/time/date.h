@@ -21,9 +21,9 @@ namespace xo
 	{
 		if ( auto sv = split_str( s, "-./" ); sv.size() == 3 ) {
 			bool success = true;
-			success &= from_str( sv[ 0 ], v.year );
-			success &= from_str( sv[ 1 ], v.month );
-			success &= from_str( sv[ 2 ], v.day );
+			success &= from_str( sv[0], v.year );
+			success &= from_str( sv[1], v.month );
+			success &= from_str( sv[2], v.day );
 			return success;
 		}
 		else return false;

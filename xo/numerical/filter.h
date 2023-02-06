@@ -13,20 +13,20 @@ namespace xo
 		const T& operator()( const T& x ) {
 			auto y = b0_ * x;
 			for ( int i = 0; i < N; ++i )
-				y += b_[ i ] * x_[ i ] + a_[ i ] * y_[ i ];
+				y += b_[i] * x_[i] + a_[i] * y_[i];
 
 			// shift values, #todo: use indices instead for better performance
 			for ( int i = N - 1; i > 0; --i ) {
-				x_[ i ] = x_[ i - 1 ];
-				y_[ i ] = y_[ i - 1 ];
+				x_[i] = x_[i - 1];
+				y_[i] = y_[i - 1];
 			}
 
-			x_[ 0 ] = x;
-			y_[ 0 ] = y;
-			return y_[ 0 ];
+			x_[0] = x;
+			y_[0] = y;
+			return y_[0];
 		}
-		const T& operator()() const { return y_[ 0 ]; }
-		T velocity() const { return y_[ 0 ] - y_[ 1 ]; }
+		const T& operator()() const { return y_[0]; }
+		T velocity() const { return y_[0] - y_[1]; }
 
 		T b0_;
 		std::array< T, N > x_;
@@ -39,13 +39,13 @@ namespace xo
 	{
 		// https://stackoverflow.com/questions/20924868/calculate-coefficients-of-2nd-order-butterworth-low-pass-filter
 		iir_filter< T, 2 > f;
-		const T ita = T(1) / std::tan( constants<T>::pi() * cutoff_ratio );
-		const T q = sqrt( T(2) );
-		f.b0_ = T(1) / ( T(1) + q * ita + ita * ita );
-		f.b_[ 0 ] = T(2) * f.b0_;
-		f.b_[ 1 ] = f.b0_;
-		f.a_[ 0 ] = T(2) * ( ita * ita - T(1) ) * f.b0_;
-		f.a_[ 1 ] = -( T(1) - q * ita + ita * ita ) * f.b0_;
+		const T ita = T( 1 ) / std::tan( constants<T>::pi() * cutoff_ratio );
+		const T q = sqrt( T( 2 ) );
+		f.b0_ = T( 1 ) / ( T( 1 ) + q * ita + ita * ita );
+		f.b_[0] = T( 2 ) * f.b0_;
+		f.b_[1] = f.b0_;
+		f.a_[0] = T( 2 ) * ( ita * ita - T( 1 ) ) * f.b0_;
+		f.a_[1] = -( T( 1 ) - q * ita + ita * ita ) * f.b0_;
 		return f;
 	}
 }

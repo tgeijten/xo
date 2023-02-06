@@ -6,14 +6,14 @@
 // Forward declarations for rapidxml
 namespace rapidxml {
 	namespace internal {
-		template<class OutIt, class Ch> inline OutIt print_cdata_node( OutIt out, const xml_node<Ch> *node, int flags, int indent );
-		template<class OutIt, class Ch> inline OutIt print_children( OutIt out, const xml_node<Ch> *node, int flags, int indent );
-		template<class OutIt, class Ch> inline OutIt print_comment_node( OutIt out, const xml_node<Ch> *node, int flags, int indent );
-		template<class OutIt, class Ch> inline OutIt print_data_node( OutIt out, const xml_node<Ch> *node, int flags, int indent );
-		template<class OutIt, class Ch> inline OutIt print_declaration_node( OutIt out, const xml_node<Ch> *node, int flags, int indent );
-		template<class OutIt, class Ch> inline OutIt print_doctype_node( OutIt out, const xml_node<Ch> *node, int flags, int indent );
-		template<class OutIt, class Ch> inline OutIt print_element_node( OutIt out, const xml_node<Ch> *node, int flags, int indent );
-		template<class OutIt, class Ch> inline OutIt print_pi_node( OutIt out, const xml_node<Ch> *node, int flags, int indent );
+		template<class OutIt, class Ch> inline OutIt print_cdata_node( OutIt out, const xml_node<Ch>* node, int flags, int indent );
+		template<class OutIt, class Ch> inline OutIt print_children( OutIt out, const xml_node<Ch>* node, int flags, int indent );
+		template<class OutIt, class Ch> inline OutIt print_comment_node( OutIt out, const xml_node<Ch>* node, int flags, int indent );
+		template<class OutIt, class Ch> inline OutIt print_data_node( OutIt out, const xml_node<Ch>* node, int flags, int indent );
+		template<class OutIt, class Ch> inline OutIt print_declaration_node( OutIt out, const xml_node<Ch>* node, int flags, int indent );
+		template<class OutIt, class Ch> inline OutIt print_doctype_node( OutIt out, const xml_node<Ch>* node, int flags, int indent );
+		template<class OutIt, class Ch> inline OutIt print_element_node( OutIt out, const xml_node<Ch>* node, int flags, int indent );
+		template<class OutIt, class Ch> inline OutIt print_pi_node( OutIt out, const xml_node<Ch>* node, int flags, int indent );
 	}
 }
 
@@ -60,7 +60,7 @@ namespace xo
 		xo_assert( read_pn_ );
 		rapidxml::xml_document<> doc;
 		std::string file_contents( std::istreambuf_iterator<char>( str ), {} );
-		doc.parse< 0 >( &file_contents[ 0 ] ); // not officially supported but probably safe
+		doc.parse< 0 >( &file_contents[0] ); // not officially supported but probably safe
 		if ( doc.first_node() )
 			read_pn_->add_child( doc.first_node()->name(), get_rapid_xml_node( doc.first_node() ) );
 		return str;

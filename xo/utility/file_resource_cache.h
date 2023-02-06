@@ -47,14 +47,14 @@ namespace xo
 							item->data_.reset( create_( p ) );
 						}
 					}
-					catch( std::exception& e ) {
+					catch ( std::exception& e ) {
 						xo_error( "Error reading " + to_str( p ) + ": " + e.what() );
 					}
 					read_lock.lock();
 				}
 			}
 			else
-			{				
+			{
 				// file not found in cache, create new cached_item
 				xo_error_if( !file_exists( p ), "File does not exist: " + to_str( p ) );
 
@@ -64,7 +64,7 @@ namespace xo
 					std::unique_lock write_lock( mutex_ );
 					// find the item again, to make sure another thread didn't just create it
 					item = find( p );
-					if ( !item ) 
+					if ( !item )
 					{
 						cached_item new_item;
 						new_item.file_time_ = last_write_time( p );

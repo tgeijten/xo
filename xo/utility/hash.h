@@ -20,7 +20,7 @@ namespace xo
 
 	inline hash_t hash( char const* str ) {
 		hash_t ret = fnv1a_64_basis;
-		while ( *str ) { ret ^= *str; ret *= fnv1a_64_prime; ++str;	}
+		while ( *str ) { ret ^= *str; ret *= fnv1a_64_prime; ++str; }
 		return ret;
 	}
 

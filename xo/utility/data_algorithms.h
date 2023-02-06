@@ -13,7 +13,7 @@ namespace xo
 		std::vector< T > means( sto.channel_size() );
 		for ( index_t row = 0; row < sto.frame_size(); ++row )
 			for ( index_t col = 0; col < sto.channel_size(); ++col )
-				means[ col ] += sto( row, col );
+				means[col] += sto( row, col );
 		for ( auto& m : means )
 			m /= sto.frame_size();
 
@@ -34,7 +34,7 @@ namespace xo
 			{
 				T v = T( 0 );
 				for ( index_t i = 0; i < sto.frame_size(); ++i )
-					v += ( sto( i, row ) - means[ row ] ) * ( sto( i, col ) - means[ col ] );
+					v += ( sto( i, row ) - means[row] ) * ( sto( i, col ) - means[col] );
 				cv( row, col ) = v / nframes;
 			}
 		}

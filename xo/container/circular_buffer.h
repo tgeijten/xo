@@ -11,17 +11,17 @@ namespace xo
 	public:
 		using value_type = T;
 
-		circular_buffer( size_t frames = 0, size_t channels = 0 ) :	in_ofs_( 0 ), out_ofs_( 0 )
+		circular_buffer( size_t frames = 0, size_t channels = 0 ) : in_ofs_( 0 ), out_ofs_( 0 )
 		{
 			resize( frames, channels );
 		}
 
-		void set( index_t channel, const T& value ) { data_[ in_ofs_ + channel ] = value; }
-		const T& get( index_t channel ) const { return data_[ out_ofs_ + channel ]; }
+		void set( index_t channel, const T& value ) { data_[in_ofs_ + channel] = value; }
+		const T& get( index_t channel ) const { return data_[out_ofs_ + channel]; }
 
-		const T& front( index_t channel ) const { return data_[ out_ofs_ + channel ]; }
-		const T& back( index_t channel ) const { return data_[ in_ofs_ + channel ]; }
-		T& back( index_t channel ) { return data_[ in_ofs_ + channel ]; }
+		const T& front( index_t channel ) const { return data_[out_ofs_ + channel]; }
+		const T& back( index_t channel ) const { return data_[in_ofs_ + channel]; }
+		T& back( index_t channel ) { return data_[in_ofs_ + channel]; }
 
 		size_t capacity() const { return frames_; }
 		bool empty() const { return in_ofs_ == out_ofs_; }
@@ -43,7 +43,7 @@ namespace xo
 
 		void clear_back( const T& clear_value = T( 0 ) ) {
 			for ( index_t channel = 0; channel < channels_; ++channel )
-				data_[ in_ofs_ + channel ] = clear_value;
+				data_[in_ofs_ + channel] = clear_value;
 		}
 
 		void reset() {

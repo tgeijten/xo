@@ -43,20 +43,20 @@ namespace xo
 		auto str = std::vector<std::string>( height, std::string( width, ' ' ) );
 
 		int yi0 = grid_y( 0 );
-		str[ 0 ] = std::string( width, char( 196 ) );
-		str[ height - 1 ] = std::string( width, char( 196 ) );
+		str[0] = std::string( width, char( 196 ) );
+		str[height - 1] = std::string( width, char( 196 ) );
 		if ( yi0 >= 0 && yi0 < height )
-			str[ yi0 ] = std::string( width, char( 196 ) );
+			str[yi0] = std::string( width, char( 196 ) );
 
 		int xi0 = grid_x( 0 );
 		if ( x_min <= 0 && x_max >= 0 )
 			for ( int yi = 0; yi < height; ++yi )
-				str[ yi ][ xi0 ] = char( yi == 0 ? 194 : yi == yi0 ? 197 : yi == ( height - 1 ) ? 193 : 179 );
+				str[yi][xi0] = char( yi == 0 ? 194 : yi == yi0 ? 197 : yi == ( height - 1 ) ? 193 : 179 );
 
 		static std::array plot_chars = { char( 219 ), char( 178 ), char( 177 ), char( 176 ) };
 		for ( int fni = 0; fni < fns.size(); ++fni ) {
 			for ( int xi = 0; xi < width; ++xi ) {
-				str[ grid_y( fn_ys[ fni ][ xi ] ) ][ xi ] = plot_chars[ fni % plot_chars.size() ];
+				str[grid_y( fn_ys[fni][xi] )][xi] = plot_chars[fni % plot_chars.size()];
 			}
 		}
 

@@ -11,10 +11,10 @@ namespace xo
 		prop_node pn;
 		time total;
 		for ( index_t idx = 0; idx < size(); ++idx ) {
-			pn.add_key_value( split_names_[ idx ], split_times_[ idx ] );
-			total += split_times_[ idx ];
+			pn.add_key_value( split_names_[idx], split_times_[idx] );
+			total += split_times_[idx];
 		}
-		pn[ "TOTAL" ] = total;
+		pn["TOTAL"] = total;
 
 		set_to_str_precision( old_precision );
 

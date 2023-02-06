@@ -65,10 +65,10 @@ namespace xo
 	{
 		size_t pos = id.find_last_of( ".:" );
 		pos = pos != string::npos ? pos + 1 : 0;
-		while ( pos < id.size() && id[ pos ] == '_' )
+		while ( pos < id.size() && id[pos] == '_' )
 			++pos;
 		size_t end_pos = id.size();
-		while ( end_pos > 0 && id[ end_pos - 1 ] == '_' )
+		while ( end_pos > 0 && id[end_pos - 1] == '_' )
 			--end_pos;
 		return id.substr( pos, end_pos - pos );
 	}
@@ -98,14 +98,14 @@ namespace xo
 	string get_computer_name()
 	{
 #ifdef XO_COMP_MSVC
-		char buf[ 256 ] = "";
+		char buf[256] = "";
 		DWORD len = 256;
 		if ( !GetComputerName( buf, &len ) )
 			return "";
 		else
 			return buf;
 #elif defined( __linux__ )
-		char hostname[ HOST_NAME_MAX ];
+		char hostname[HOST_NAME_MAX];
 		gethostname( hostname, HOST_NAME_MAX );
 		return stringf( "%s-gcc%d.%d", hostname, __GNUC__, __GNUC_MINOR__ );
 #else

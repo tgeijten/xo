@@ -17,7 +17,7 @@ namespace xo
 		~mat33_() {}
 
 		T e00, e01, e02, e10, e11, e12, e20, e21, e22;
-		T* operator[]( index_t row ) { return &ptr()[ row * 3 ]; }
+		T* operator[]( index_t row ) { return &ptr()[row * 3]; }
 		T* ptr() { return &e00; }
 	};
 

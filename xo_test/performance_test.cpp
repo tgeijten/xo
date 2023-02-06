@@ -17,7 +17,7 @@ namespace xo
 #else
 	constexpr static int num_evals = 10000000;
 #endif
-	template< typename T > T test_func( T(*f)(T), T min = T(-1), T max = T(1) )
+	template< typename T > T test_func( T( *f )( T ), T min = T( -1 ), T max = T( 1 ) )
 	{
 		T res = 0, inc = ( max - min ) / T( num_evals ), x = min;
 		for ( int i = num_evals; i > 0; --i, x += inc )
@@ -37,7 +37,7 @@ namespace xo
 		random_number_generator rng;
 		array< quatf, N > res;
 		for ( int i = 0; i < N; ++i )
-			res[ i ] = make_random_quat<float>( euler_order::xyz, rng ).first;
+			res[i] = make_random_quat<float>( euler_order::xyz, rng ).first;
 		return res;
 	}
 
@@ -49,7 +49,7 @@ namespace xo
 		sw.restart();
 		for ( int i = num_evals / N; i > 0; --i )
 			for ( int j = 0; j < N; ++j )
-				result += euler_yxz_from_quat( qa[ j ] );
+				result += euler_yxz_from_quat( qa[j] );
 		sw.split( name.c_str() );
 		return result;
 	}
@@ -63,7 +63,7 @@ namespace xo
 		sw.restart();
 		for ( int i = num_evals / N; i > 0; --i )
 			for ( int j = 0; j < N; ++j )
-				result += rotation_around_axis( qa[ j ], axis );
+				result += rotation_around_axis( qa[j], axis );
 		sw.split( name.c_str() );
 		return result;
 	}

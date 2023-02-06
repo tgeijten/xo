@@ -272,20 +272,20 @@ namespace xo
 
 	/// default conversion from prop_node to T, uses from_str()
 	template< typename T > bool from_prop_node( const prop_node& pn, T& v ) {
-		return from_str( pn.get_str(), v ); 
+		return from_str( pn.get_str(), v );
 	};
 
 	template< typename T > prop_node to_prop_node( const vector<T>& vec ) {
 		prop_node pn;
 		for ( size_t i = 0; i < vec.size(); ++i )
-			pn.add_value( vec[ i ] );
+			pn.add_value( vec[i] );
 		return pn;
 	}
 
-	template< typename T > bool from_prop_node( const prop_node& pn , vector<T>& vec ) {
+	template< typename T > bool from_prop_node( const prop_node& pn, vector<T>& vec ) {
 		vec.resize( pn.size(), T() );
 		for ( index_t i = 0; i < pn.size(); ++i )
-			if ( !from_prop_node( pn[ i ], vec[ i ] ) )
+			if ( !from_prop_node( pn[i], vec[i] ) )
 				return false;
 		pn.access();
 		return true;
@@ -346,7 +346,7 @@ namespace xo
 	}
 
 	template< typename T >
-	bool prop_node::try_get( T& value, const key_t& key ) const	{
+	bool prop_node::try_get( T& value, const key_t& key ) const {
 		if ( auto c = try_get_child( key ) ) {
 			value = c->get< T >(); return true;
 		}
@@ -354,7 +354,7 @@ namespace xo
 	}
 
 	template< typename T >
-	T prop_node::get_any( std::initializer_list< key_t > keys, const T& def ) const	{
+	T prop_node::get_any( std::initializer_list< key_t > keys, const T& def ) const {
 		if ( auto c = try_get_any_child( keys ) )
 			return c->get< T >();
 		return def;

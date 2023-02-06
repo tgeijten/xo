@@ -12,8 +12,8 @@ namespace xo
 	};
 
 	inline const char* side_postfix( side s ) {
-		static constexpr const char* side_postfixes[ 3 ] = { "_l", "", "_r" };
-		return side_postfixes[ static_cast<int>( s ) + 1 ];
+		static constexpr const char* side_postfixes[3] = { "_l", "", "_r" };
+		return side_postfixes[static_cast<int>( s ) + 1];
 	}
 
 	inline side str_get_side( const string& str ) {

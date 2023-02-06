@@ -42,8 +42,8 @@ namespace xo
 
 		XO_CHECK( sv.front().e == 1 );
 		XO_CHECK( sv.front().s == "apple" );
-		XO_CHECK( sv[ 1 ].e == 1 );
-		XO_CHECK( sv[ 1 ].s == "banaan" );
+		XO_CHECK( sv[1].e == 1 );
+		XO_CHECK( sv[1].s == "banaan" );
 		XO_CHECK( sv.back().s == "peer" );
 		XO_CHECK( sv.size() == 5 );
 	}
@@ -51,13 +51,13 @@ namespace xo
 	XO_TEST_CASE( xo_flat_map )
 	{
 		flat_map< string, int > vm;
-		vm[ "Appel" ] = 1;
-		vm[ "Peer" ] = 2;
-		vm[ "Banaan" ] = 3;
-		vm[ "Peer" ] = 4;
-		XO_CHECK( vm[ "Appel" ] == 1 );
-		XO_CHECK( vm[ "Peer" ] == 4 );
-		XO_CHECK( vm[ "Banaan" ] == 3 );
+		vm["Appel"] = 1;
+		vm["Peer"] = 2;
+		vm["Banaan"] = 3;
+		vm["Peer"] = 4;
+		XO_CHECK( vm["Appel"] == 1 );
+		XO_CHECK( vm["Peer"] == 4 );
+		XO_CHECK( vm["Banaan"] == 3 );
 
 		// compare flat map to map
 		flat_map< string, int > map1;
@@ -66,8 +66,8 @@ namespace xo
 		{
 			// fill with random data
 			string key = random_string( i / 100 + 1 );
-			map1[ key ] = i;
-			map2[ key ] = i;
+			map1[key] = i;
+			map2[key] = i;
 
 			if ( i % 10 == 0 )
 			{
@@ -144,11 +144,11 @@ namespace xo
 		XO_CHECK( im.empty() );
 		im.emplace_back( "apple", "nothing" );
 		im.emplace_back( "apple", "second" );
-		im[ "banana" ] = "third";
+		im["banana"] = "third";
 		XO_CHECK( im.size() == 3 );
-		XO_CHECK( im[ 0 ].second == "nothing" );
-		im[ "apple" ] = "first";
-		XO_CHECK( im[ 0 ].second == "first" );
+		XO_CHECK( im[0].second == "nothing" );
+		im["apple"] = "first";
+		XO_CHECK( im[0].second == "first" );
 		XO_CHECK( im.size() == 3 );
 		XO_CHECK( im.front().first == "apple" );
 		XO_CHECK( im.count( "apple" ) == 2 );
@@ -158,9 +158,9 @@ namespace xo
 		XO_CHECK( im.find( "banana" )->second == "third" );
 		XO_CHECK( im.find( "banana", ++im.find( "banana" ) ) == im.end() );
 		XO_CHECK( im.insert( { "banana", "new" } ).second == false );
-		XO_CHECK( im[ "banana" ] == "new" );
+		XO_CHECK( im["banana"] == "new" );
 		XO_CHECK( im.insert( { "pear", "fourth" } ).second == true );
-		XO_CHECK( im[ "pear" ] == "fourth" );
+		XO_CHECK( im["pear"] == "fourth" );
 		XO_CHECK( im.back().second == "fourth" );
 		XO_CHECK( im.size() == 4 );
 	}
@@ -173,10 +173,10 @@ namespace xo
 		auto hd0 = c.push_back( 2.0 );
 		auto hd1 = c.push_back( 3.0 );
 		auto hs = c.push_back( std::string( "applepie" ) );
-		XO_CHECK( c[ hf ] == 1.0f );
-		XO_CHECK( c[ hd0 ] == 2.0 );
-		XO_CHECK( c[ hd1 ] == 3.0 );
-		XO_CHECK( c[ hs ] == "applepie" );
+		XO_CHECK( c[hf] == 1.0f );
+		XO_CHECK( c[hd0] == 2.0 );
+		XO_CHECK( c[hd1] == 3.0 );
+		XO_CHECK( c[hs] == "applepie" );
 	}
 
 	XO_TEST_CASE( xo_collection_ic )
@@ -187,14 +187,14 @@ namespace xo
 		auto hd0 = c.push_back( 2.0 );
 		auto hd1 = c.push_back( 3.0 );
 		auto hs = c.push_back( std::string( "applepie" ) );
-		XO_CHECK( c[ hf ] == 1.0f );
-		XO_CHECK( c[ hd0 ] == 2.0 );
-		XO_CHECK( c[ hd1 ] == 3.0 );
-		XO_CHECK( c[ hs ] == "applepie" );
+		XO_CHECK( c[hf] == 1.0f );
+		XO_CHECK( c[hd0] == 2.0 );
+		XO_CHECK( c[hd1] == 3.0 );
+		XO_CHECK( c[hs] == "applepie" );
 		auto& vf = c.get_vec<float>();
-		XO_CHECK( vf[ 0 ] == 1.0f );
+		XO_CHECK( vf[0] == 1.0f );
 		auto& vs = c.get_vec<std::string>();
-		XO_CHECK( vs[ 0 ] == "applepie" );
+		XO_CHECK( vs[0] == "applepie" );
 	}
 
 	XO_TEST_CASE( xo_zip )
@@ -204,12 +204,12 @@ namespace xo
 
 		index_t idx = 0;
 		for ( auto&& [v1, v2] : zip( vec1, vec2 ) ) {
-			XO_CHECK( v1 == vec1[ idx ] );
-			XO_CHECK( v2 == vec2[ idx ] );
+			XO_CHECK( v1 == vec1[idx] );
+			XO_CHECK( v2 == vec2[idx] );
 			v1 = 5.0;
-			XO_CHECK( vec1[ idx ] == 5.0 );
+			XO_CHECK( vec1[idx] == 5.0 );
 			v2 = "this is a long string, not a short string";
-			XO_CHECK( vec2[ idx ] == "this is a long string, not a short string" );
+			XO_CHECK( vec2[idx] == "this is a long string, not a short string" );
 			++idx;
 		}
 	}

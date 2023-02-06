@@ -14,7 +14,7 @@ namespace xo
 	class table
 	{
 	public:
-		table( size_t rows = 0, size_t cols = 0 ) : row_labels( rows ), col_labels( cols ), data( rows * cols ) {}
+		table( size_t rows = 0, size_t cols = 0 ) : row_labels( rows ), col_labels( cols ), data( rows* cols ) {}
 		~table() {}
 
 		index_t add_row( const L& label, const T& default_value = T() ) {
@@ -45,7 +45,7 @@ namespace xo
 			data.resize( row_size() * cols );
 			for ( index_t ri = rows; ri-- > 0; )
 				for ( index_t ci = cols; ci-- > 0; )
-					data[ cols * ri + ci ] = ( ri < row_size() && ci < column_size() ) ? data[ column_size() * ri + ci ] : default_value;
+					data[cols * ri + ci] = ( ri < row_size() && ci < column_size() ) ? data[column_size() * ri + ci] : default_value;
 			col_labels.resize( cols );
 			row_labels.resize( rows );
 		}
@@ -53,8 +53,8 @@ namespace xo
 		size_t row_size() const { return row_labels.size(); }
 		size_t column_size() const { return col_labels.size(); }
 
-		const T& operator()( index_t row, index_t col ) const { xo_assert( row < row_size() && col < column_size() ); return data[ row * column_size() + col ]; }
-		T& operator()( index_t row, index_t col ) { xo_assert( row < row_size() && col < column_size() ); return data[ row * column_size() + col ]; }
+		const T& operator()( index_t row, index_t col ) const { xo_assert( row < row_size() && col < column_size() ); return data[row * column_size() + col]; }
+		T& operator()( index_t row, index_t col ) { xo_assert( row < row_size() && col < column_size() ); return data[row * column_size() + col]; }
 
 		const T& operator()( const L& row, const L& col ) const { operator()( row_index( row ), col_index( col ) ); }
 		T& operator()( const L& row, const L& col ) { return operator()( get_or_add_row( row ), get_or_add_column( col ) ); }
@@ -78,7 +78,7 @@ namespace xo
 
 		for ( index_t row = 0; row < t.row_size(); ++row )
 		{
-			str << t.row_labels[ row ];
+			str << t.row_labels[row];
 			for ( index_t col = 0; col < t.column_size(); ++col )
 				str << "\t" << t( row, col );
 			str << std::endl;

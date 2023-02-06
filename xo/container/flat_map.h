@@ -149,7 +149,7 @@ namespace xo
 	prop_node to_prop_node( flat_map<K, V>& m ) {
 		prop_node pn;
 		for ( const auto& [key, value] : m )
-			pn[ key ] = value;
+			pn[key] = value;
 		return pn;
 	};
 
@@ -158,7 +158,7 @@ namespace xo
 		m.reserve( pn.size() );
 		bool success = true;
 		for ( const auto& [key, value] : pn )
-			success &= from_prop_node( value, m[ key ] );
+			success &= from_prop_node( value, m[key] );
 		pn.access();
 		return success;
 	};

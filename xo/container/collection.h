@@ -19,8 +19,8 @@ namespace xo
 		template< typename T > handle<T, I> push_back( const T& e ) { return get_vec<T>().push_back( e ); }
 		template< typename T > handle<T, I> push_back( T&& e ) { return get_vec<T>().push_back( std::move( e ) ); }
 
-		template< typename T > const T& operator[]( handle<T, I> i ) const { return get_vec<T>()[ i ]; }
-		template< typename T > T& operator[]( handle<T, I> i ) { return get_vec<T>()[ i ]; }
+		template< typename T > const T& operator[]( handle<T, I> i ) const { return get_vec<T>()[i]; }
+		template< typename T > T& operator[]( handle<T, I> i ) { return get_vec<T>()[i]; }
 
 		template< typename T > handle<T, I> erase( handle<T, I> h ) { return get_vec<T>().erase( h ); }
 		template< typename T > handle<T, I> erase( handle_span<T, I> hs ) { return get_vec<T>().erase( hs ); }
@@ -29,7 +29,7 @@ namespace xo
 		template< typename T > handle_vector<T, I>& get_vec() { return std::get< handle_vector<T, I> >( data_ ); }
 
 		template< typename T > handle<T, I> get_handle( const T& e ) const {
-			return handle<T, I>( static_cast<I>( &e - &get_vec<T>()[ 0 ] ) );
+			return handle<T, I>( static_cast<I>( &e - &get_vec<T>()[0] ) );
 		}
 
 		void clear() {

@@ -26,9 +26,9 @@ namespace xo
 		using label_type = L;
 
 		struct const_frame {
-			const_frame( const storage< T, L >& s, index_t f ) : sto_( s ), ofs_( f * s.channel_size() ) {}
-			const T& operator[]( index_t i ) const { return sto_.data()[ ofs_ + i ]; }
-			const T& operator[]( const L& l ) const { return sto_.data()[ ofs_ + sto_.find_channel( l ) ]; }
+			const_frame( const storage< T, L >& s, index_t f ) : sto_( s ), ofs_( f* s.channel_size() ) {}
+			const T& operator[]( index_t i ) const { return sto_.data()[ofs_ + i]; }
+			const T& operator[]( const L& l ) const { return sto_.data()[ofs_ + sto_.find_channel( l )]; }
 			const storage< T, L >& sto_;
 			index_t ofs_;
 		};
@@ -41,7 +41,7 @@ namespace xo
 			index_t fidx_;
 		};
 
-		storage( size_t frames = 0, size_t channels = 0, T value = T() ) : frame_size_( frames ), labels_( channels ), data_( channels * frames, value ) {}
+		storage( size_t frames = 0, size_t channels = 0, T value = T() ) : frame_size_( frames ), labels_( channels ), data_( channels* frames, value ) {}
 		virtual ~storage() {}
 
 		/// add a channel and resize buffer if needed
@@ -55,7 +55,7 @@ namespace xo
 			resize( max( frame_size(), std::size( data ) ), channel_size() + 1 );
 			labels_.set( channel_size() - 1, label );
 			auto cidx = channel_size() - 1;
-			for ( index_t fidx = 0; fidx < std::size( data ); ++fidx ) ( *this )( fidx, cidx ) = data[ fidx ];
+			for ( index_t fidx = 0; fidx < std::size( data ); ++fidx ) ( *this )( fidx, cidx ) = data[fidx];
 			return cidx;
 		}
 
@@ -75,7 +75,7 @@ namespace xo
 		void set_label( index_t channel, L label ) { labels_.set( channel, label ); }
 
 		/// get channel label
-		const L& get_label( index_t channel ) const { return labels_[ channel ]; }
+		const L& get_label( index_t channel ) const { return labels_[channel]; }
 
 		/// add frame to storage
 		frame add_frame( T value = T( 0 ) ) { data_.resize( data_.size() + channel_size(), value ); ++frame_size_; return back(); }
@@ -102,8 +102,8 @@ namespace xo
 		void clear() { frame_size_ = 0; labels_.clear(); data_.clear(); }
 
 		/// access value (no bounds checking)
-		const T& operator()( index_t frame, index_t channel ) const { return data_[ frame * channel_size() + channel ]; }
-		T& operator()( index_t frame, index_t channel ) { return data_[ frame * channel_size() + channel ]; }
+		const T& operator()( index_t frame, index_t channel ) const { return data_[frame * channel_size() + channel]; }
+		T& operator()( index_t frame, index_t channel ) { return data_[frame * channel_size() + channel]; }
 
 		/// access frame
 		const_frame operator[]( index_t f ) const { return const_frame( *this, f ); }
@@ -120,7 +120,7 @@ namespace xo
 			index_t frame0 = static_cast<index_t>( frame_f );
 			xo_assert( frame0 + 1 < frame_size() );
 			index_t ofs = frame0 * this->channel_size() + channel;
-			return ( T( 1 ) - frame_w ) * data_[ ofs ] + frame_w * data_[ ofs + this->channel_size() ];
+			return ( T( 1 ) - frame_w ) * data_[ofs] + frame_w * data_[ofs + this->channel_size()];
 		}
 
 		void resize( size_t nframes, size_t nchannels, T value = T() ) {
@@ -131,7 +131,7 @@ namespace xo
 					container_type new_data( nchannels * nframes, value );
 					for ( index_t fi = 0; fi < frame_size(); ++fi )
 						for ( index_t ci = 0; ci < channel_size(); ++ci )
-							new_data[ nchannels * fi + ci ] = data_[ channel_size() * fi + ci ];
+							new_data[nchannels * fi + ci] = data_[channel_size() * fi + ci];
 					data_ = std::move( new_data );
 				}
 				else data_.resize( nframes * nchannels, value ); // just resize
@@ -149,7 +149,7 @@ namespace xo
 		std::vector<T> get_channel( index_t channel ) const {
 			std::vector<T> vec( frame_size() );
 			for ( index_t fi = 0; fi < frame_size(); ++fi )
-				vec[ fi ] = ( *this )( fi, channel );
+				vec[fi] = ( *this )( fi, channel );
 			return vec;
 		}
 		std::vector<T> get_channel( const L& label ) const { return get_channel( find_channel( label ) ); }
@@ -188,7 +188,7 @@ namespace xo
 				auto f = sto.add_frame();
 				xo::char_stream cstr( line.c_str() );
 				for ( index_t ci = 0; cstr.good() && ci < sto.channel_size(); ++ci )
-					cstr >> f[ ci ];
+					cstr >> f[ci];
 			}
 		}
 

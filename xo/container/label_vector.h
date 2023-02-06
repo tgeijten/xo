@@ -18,7 +18,7 @@ namespace xo
 		index_t add( const L& label ) {
 			xo_assert( find( label ) == no_index );
 			labels_.push_back( label );
-			return label_indices_[ label ] = labels_.size() - 1;
+			return label_indices_[label] = labels_.size() - 1;
 		}
 
 		index_t find( const L& label ) const {
@@ -36,7 +36,7 @@ namespace xo
 			auto it = label_indices_.find( label );
 			if ( it == label_indices_.end() ) {
 				labels_.push_back( label );
-				return label_indices_[ label ] = labels_.size() - 1;
+				return label_indices_[label] = labels_.size() - 1;
 			}
 			else return it->second;
 		}
@@ -47,12 +47,12 @@ namespace xo
 
 		size_t size() const { return labels_.size(); }
 
-		const L& operator[]( index_t idx ) const { return labels_[ idx ]; }
+		const L& operator[]( index_t idx ) const { return labels_[idx]; }
 
 		index_t set( index_t idx, const L& label ) {
 			xo_assert( idx < size() && find( label ) == no_index );
-			labels_[ idx ] = label;
-			label_indices_[ label ] = idx;
+			labels_[idx] = label;
+			label_indices_[label] = idx;
 			return idx;
 		}
 

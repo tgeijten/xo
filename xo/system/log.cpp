@@ -23,7 +23,7 @@ namespace xo
 		{
 			if ( test_log_level( l ) ) // check for global log level first
 			{
-				char buf[ 1024 ];
+				char buf[1024];
 				vsnprintf( buf, sizeof( buf ), format, list );
 				log_string( l, string( buf ) ); // #todo: use string_view
 			}

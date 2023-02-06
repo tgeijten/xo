@@ -90,7 +90,7 @@ namespace xo
 
 		// test delimiters
 		pn.set_query( "this.is.a.subfolder", 1.5 );
-		XO_CHECK( pn[ "this" ][ "is" ][ "a" ][ "subfolder" ].get< double >() == 1.5 );
+		XO_CHECK( pn["this"]["is"]["a"]["subfolder"].get< double >() == 1.5 );
 		//XO_CHECK( pn.get_delimited< double >( "this.is.a.subfolder" ) == 1.5 );
 
 		pn.add_key_value( "duplicate", 4 );

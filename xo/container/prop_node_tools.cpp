@@ -29,7 +29,7 @@ namespace xo
 			if ( str_begins_with( key, '@' ) && key.size() >= 2 )
 			{
 				str << mid_str( key, 2 );
-				l = static_cast<log::level>( int( key[ 1 ] - '0' ) );
+				l = static_cast<log::level>( int( key[1] - '0' ) );
 
 			}
 			else str << key;
@@ -113,11 +113,11 @@ namespace xo
 		prop_node pn;
 
 		xo_assert( argc >= 1 );
-		pn.set_value( argv[ 0 ] );
+		pn.set_value( argv[0] );
 		prop_node* value_pn = nullptr;
 		for ( int i = 1; i < argc; ++i )
 		{
-			string arg = argv[ i ];
+			string arg = argv[i];
 			if ( str_begins_with( arg, '-' ) )
 			{
 				value_pn = &pn.add_child( mid_str( arg, 1 ) );
@@ -127,7 +127,7 @@ namespace xo
 				value_pn->set_value( arg );
 				value_pn = nullptr;
 			}
-			else pn[ "" ].set_value( arg );
+			else pn[""].set_value( arg );
 		}
 
 		return pn;

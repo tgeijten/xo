@@ -11,15 +11,15 @@ namespace xo
 		vec3d v3{ 1, 2, 3 };
 
 		XO_CHECK( v.is_null() );
-		v[ 0 ] = 1; v[ 1 ] = 2; v[ 2 ] = 3;
+		v[0] = 1; v[1] = 2; v[2] = 3;
 
 		XO_CHECK( equal( v.length(), length( v3 ) ) );
 		normalize( v );
 		normalize( v3 );
 
-		XO_CHECK( equal( v[ 0 ], v3[ 0 ] ) );
-		XO_CHECK( equal( v[ 1 ], v3[ 1 ] ) );
-		XO_CHECK( equal( v[ 2 ], v3[ 2 ] ) );
+		XO_CHECK( equal( v[0], v3[0] ) );
+		XO_CHECK( equal( v[1], v3[1] ) );
+		XO_CHECK( equal( v[2], v3[2] ) );
 
 		dynvecd vnew = v;
 		XO_CHECK( vnew == v );

@@ -9,17 +9,17 @@
 namespace xo
 {
 	char_stream::char_stream( const char* buf, string delim_chars, string quote_chars, std::vector<string> operators ) :
-	delimiters_( delim_chars ),
-	quotations_( quote_chars )
+		delimiters_( delim_chars ),
+		quotations_( quote_chars )
 	{
 		initialize( buf, strlen( buf ) );
 		set_operators( operators );
 	}
 
 	char_stream::char_stream( string&& other, string delim_chars, string quote_chars, std::vector< string > operators ) :
-	str_buffer( std::move( other ) ),
-	delimiters_( delim_chars ),
-	quotations_( quote_chars )
+		str_buffer( std::move( other ) ),
+		delimiters_( delim_chars ),
+		quotations_( quote_chars )
 	{
 		initialize( str_buffer.c_str(), str_buffer.size() );
 		set_operators( operators );
@@ -59,7 +59,7 @@ namespace xo
 	{
 		skip_delimiters();
 		string s;
-		cur_pos_end = const_cast< char* >( cur_pos );
+		cur_pos_end = const_cast<char*>( cur_pos );
 		while ( good() )
 		{
 			if ( cur_pos_end == buffer_end || strchr( delimiters_.c_str(), *cur_pos_end ) ) // check for delimiter

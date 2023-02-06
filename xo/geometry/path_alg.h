@@ -25,10 +25,10 @@ namespace xo
 		// check if this matches the first existing point
 		if ( less_than_or_equal( insert_len, T( 0 ) ) )
 			return 0;
-			
+
 		for ( index_t idx = 1; idx < s; ++idx )
 		{
-			auto svec = path[ idx ] - path[ idx - 1 ];
+			auto svec = path[idx] - path[idx - 1];
 			auto slen = length( svec );
 
 			if ( equal( insert_len, slen ) )
@@ -39,7 +39,7 @@ namespace xo
 			else if ( insert_len < slen )
 			{
 				// new point inside this segment
-				path.insert( path.begin() + idx, path[ idx - 1 ] + ( insert_len / slen ) * svec );
+				path.insert( path.begin() + idx, path[idx - 1] + ( insert_len / slen ) * svec );
 				return idx;
 			}
 			insert_len -= slen;

@@ -8,7 +8,7 @@
 namespace xo
 {
 	template< typename T >
-	vector<T> evaluate_function( std::function<T(T)> f, const frange<T>& range ) {
+	vector<T> evaluate_function( std::function<T( T )> f, const frange<T>& range ) {
 		vector<T> v;
 		v.reserve( size_t( range.max_step_ ) );
 		for ( auto x : range )
@@ -17,7 +17,7 @@ namespace xo
 	}
 
 	template< typename T >
-	vector<T> evaluate_function( std::function<T(T)> f, T begin, T end, T interval ) {
+	vector<T> evaluate_function( std::function<T( T )> f, T begin, T end, T interval ) {
 		return evaluate_function( f, frange( begin, end, interval ) );
 	}
 }

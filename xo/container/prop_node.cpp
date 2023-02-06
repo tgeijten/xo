@@ -128,13 +128,13 @@ namespace xo
 	const prop_node& prop_node::get_child( index_t idx ) const
 	{
 		xo_error_if( idx >= size(), "Invalid index: " + to_str( idx ) );
-		return children[ idx ].second;
+		return children[idx].second;
 	}
 
 	prop_node& prop_node::get_child( index_t idx )
 	{
 		xo_error_if( idx >= size(), "Invalid index: " + to_str( idx ) );
-		return children[ idx ].second;
+		return children[idx].second;
 	}
 
 	const prop_node& prop_node::get_any_child( std::initializer_list< key_t > keys ) const
@@ -164,18 +164,18 @@ namespace xo
 	{
 		xo_assert( idx < size() );
 		access();
-		return children[ idx ].first;
+		return children[idx].first;
 	}
 
 	const prop_node* prop_node::try_get_query_key( const key_t& key ) const
 	{
 		if ( auto* c = try_get_child( key ) )
 			return c;
-		else if ( key.size() > 0 && key[ 0 ] == '#' )
+		else if ( key.size() > 0 && key[0] == '#' )
 		{
 			auto idx = no_index;
 			if ( from_str( key.substr( 1 ), idx ) && idx >= 1 && idx <= size() )
-				return &children[ idx - 1 ].second;
+				return &children[idx - 1].second;
 			else return nullptr;
 		}
 		else return nullptr;
@@ -243,7 +243,7 @@ namespace xo
 	pair<const prop_node*, index_t> prop_node::try_find_parent( const prop_node& pn ) const
 	{
 		for ( index_t idx = 0; idx < children.size(); ++idx )
-			if ( &children[ idx ].second == &pn )
+			if ( &children[idx].second == &pn )
 				return { this, idx };
 		for ( const auto& c : children )
 			if ( auto r = c.second.try_find_parent( pn ); r.first )

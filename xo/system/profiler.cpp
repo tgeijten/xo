@@ -77,7 +77,7 @@ namespace xo
 #endif
 		//xo_assert_msg( instance_thread_ == std::this_thread::get_id(), "Invalid thread ID" );
 		auto* prev_section = current_section_;
-		current_section_ = &sections_[ prev_section->parent_id ];
+		current_section_ = &sections_[prev_section->parent_id];
 
 #ifdef XO_PROFILER_MEASURE_OVERHEAD
 		auto t2 = now();

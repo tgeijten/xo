@@ -5,7 +5,7 @@
 
 namespace xo
 {
-	
+
 	float volume( const box& s )
 	{
 		return 8.0f * s.half_dim_.x * s.half_dim_.y * s.half_dim_.z;
@@ -16,7 +16,7 @@ namespace xo
 		aabbf bb;
 		auto clist = corners( s );
 		for ( index_t i = 0; i < 8; ++i )
-			bb += t * clist[ i ];
+			bb += t * clist[i];
 		return bb;
 	}
 

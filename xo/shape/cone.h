@@ -26,7 +26,7 @@ namespace xo
 	inline aabbf aabb( const cone& s, const transformf& t ) {
 		XO_NOT_IMPLEMENTED;
 	}
-	
+
 	inline vec3f inertia( const cone& s, float density ) {
 		XO_NOT_IMPLEMENTED;
 	}

@@ -22,7 +22,7 @@ namespace xo
 
 		/// assignment
 		quat_& operator=( const quat_& o ) = default;
-		void set( T pw, T px, T py, T pz ) { w = pw; x = px ; y = py; z = pz; }
+		void set( T pw, T px, T py, T pz ) { w = pw; x = px; y = py; z = pz; }
 
 		/// member access
 		T w, x, y, z;
@@ -35,9 +35,9 @@ namespace xo
 		const_iterator end() const { return &w + 4; }
 
 		/// generate quat with zero rotation
-		static constexpr quat_<T> identity() { return quat_<T>( T(1), T(0), T(0), T(0) ); }
+		static constexpr quat_<T> identity() { return quat_<T>( T( 1 ), T( 0 ), T( 0 ), T( 0 ) ); }
 	};
-		
+
 	using quatf = quat_< float >;
 	using quatd = quat_< double >;
 }

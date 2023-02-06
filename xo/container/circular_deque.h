@@ -25,17 +25,17 @@ namespace xo
 			else { front_ = ( front_ + capacity() - 1 ) % capacity(); front() = value; }
 		}
 
-		T& operator[]( index_t idx ) { return buffer_[ ( front_ + idx ) % buffer_.size() ]; }
-		const T& operator[]( index_t idx ) const { return buffer_[ ( front_ + idx ) % buffer_.size() ]; }
+		T& operator[]( index_t idx ) { return buffer_[( front_ + idx ) % buffer_.size()]; }
+		const T& operator[]( index_t idx ) const { return buffer_[( front_ + idx ) % buffer_.size()]; }
 
 		void pop_back() { xo_assert( size_ > 0 ); --size_; }
 		void pop_front() { xo_assert( size_ > 0 ); front_ = ( front_ + 1 ) % capacity(); --size_; }
 
-		T& back() { xo_assert( size_ > 0 ); return buffer_[ ( front_ + size_ - 1 ) % capacity() ]; }
-		const T& back() const { xo_assert( size_ > 0 ); return buffer_[ ( front_ + size_ ) % capacity() ]; }
+		T& back() { xo_assert( size_ > 0 ); return buffer_[( front_ + size_ - 1 ) % capacity()]; }
+		const T& back() const { xo_assert( size_ > 0 ); return buffer_[( front_ + size_ ) % capacity()]; }
 
-		T& front() { xo_assert( size_ > 0 ); return buffer_[ front_ ]; }
-		const T& front() const { xo_assert( size_ > 0 ); return buffer_[ front_ ]; }
+		T& front() { xo_assert( size_ > 0 ); return buffer_[front_]; }
+		const T& front() const { xo_assert( size_ > 0 ); return buffer_[front_]; }
 
 		size_t size() const { return size_; }
 
@@ -61,8 +61,8 @@ namespace xo
 			auto operator-( const iterator_impl< IT >& other ) const { return index_ - other.index_; }
 			bool operator==( const iterator_impl< IT >& other ) { return other.index_ == index_; }
 			bool operator!=( const iterator_impl< IT >& other ) { return other.index_ != index_; }
-			IT& operator*() { return const_cast<IT&>( buffer_[ index_ % buffer_.size() ] ); }
-			IT* operator->() { return const_cast<IT*>( &buffer_[ index_ % buffer_.size() ] ); }
+			IT& operator*() { return const_cast<IT&>( buffer_[index_ % buffer_.size()] ); }
+			IT* operator->() { return const_cast<IT*>( &buffer_[index_ % buffer_.size()] ); }
 
 			size_t index_;
 			const buffer_type& buffer_;

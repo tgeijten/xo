@@ -177,7 +177,7 @@ namespace xo
 		if ( buf_size > 0 )
 		{
 			auto n = source.copy( target_buf, buf_size - 1 );
-			target_buf[ n ] = '\0';
+			target_buf[n] = '\0';
 			return n;
 		}
 		else return 0;
@@ -187,7 +187,7 @@ namespace xo
 	{
 		auto pos = s.find_first_of( sep_char.c_str() );
 		if ( pos == string::npos )
-			return make_pair( s, string("") );
+			return make_pair( s, string( "" ) );
 		else return make_pair( trim_str( s.substr( 0, pos ) ), trim_str( mid_str( s, pos + 1 ) ) );
 	}
 
@@ -264,7 +264,7 @@ namespace xo
 			return *buf;
 
 		*len = 2;
-		switch ( *(++buf) )
+		switch ( *( ++buf ) )
 		{
 		case 0: return '?'; // this is an error
 		case '\\': return '\\';
@@ -277,7 +277,7 @@ namespace xo
 			// read oct digits
 			int value = 0;
 			int max_len = std::min( (int)buf_size - 1, 3 );
-			for ( *len = 1; *len <= max_len; ++(*len) )
+			for ( *len = 1; *len <= max_len; ++( *len ) )
 			{
 				if ( *buf >= '0' && *buf < '8' )
 					value = value * 8 + *buf++ - '0';

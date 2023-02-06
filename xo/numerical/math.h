@@ -14,13 +14,13 @@ namespace xo
 	template< typename T > const T& max( const T& v1, const T& v2, const T& v3 ) { return max( v1, max( v2, v3 ) ); }
 
 	/// abs
-	template< typename T > T abs( T v ) { return v < T(0) ? -v : v; }
+	template< typename T > T abs( T v ) { return v < T( 0 ) ? -v : v; }
 
 	/// inverse of v (1 / v)
-	template< typename T > T inv( T v ) { return T(1) / v; }
+	template< typename T > T inv( T v ) { return T( 1 ) / v; }
 
 	/// inverse of sqrt
-	template< typename T > T invsqrt( T v ) { return T(1) / sqrt( v ); }
+	template< typename T > T invsqrt( T v ) { return T( 1 ) / sqrt( v ); }
 
 	/// sqrt based on sign: if v >= 0 sqrt( v ) else -sqrt( -v )
 	template< typename T > T signed_sqrt( T v ) { return v >= T() ? sqrt( v ) : -sqrt( -v ); }
@@ -38,7 +38,7 @@ namespace xo
 	template< typename T > T sign( T v ) { return v >= T() ? T( 1 ) : T( -1 ); }
 
 	/// signum of v: 1, 0 or -1
-	template< typename T > int signum( T v ) { return ( T(0) < v ) - ( v < T(0) ); }
+	template< typename T > int signum( T v ) { return ( T( 0 ) < v ) - ( v < T( 0 ) ); }
 
 	/// check if sign of v1 equals sign of v2
 	template< typename T > bool same_sign( T v1, T v2 ) { return signum( v1 ) == signum( v2 ); }
@@ -68,13 +68,13 @@ namespace xo
 
 	/// clamp a value so that it is between min and max
 	template< typename T > T& clamp( T& v, const T& lower, const T& upper )
-	// { return v = std::max( std::min( v, upper ), lower ); } // seems slower, despite https://godbolt.org/z/dZ2nXJ 
 	{ if ( v < lower ) v = lower; else if ( v > upper ) v = upper; return v; }
+	// { return v = std::max( std::min( v, upper ), lower ); } // seems slower, despite https://godbolt.org/z/dZ2nXJ 
 
 	/// return clamped value that is between min and max
 	template< typename T > T clamped( T v, const T& lower, const T& upper )
-	// { return std::max( std::min( v, upper ), lower ); } // seems slower, despite https://godbolt.org/z/dZ2nXJ 
 	{ return clamp( v, lower, upper ); }
+	// { return std::max( std::min( v, upper ), lower ); } // seems slower, despite https://godbolt.org/z/dZ2nXJ 
 
 	/// limit transform function, used by soft_clamp
 	template< typename T > T limit_transform( T x, T limit ) { return limit - limit * limit / ( x + limit ); }
@@ -113,7 +113,7 @@ namespace xo
 
 	/// square wave, period = 2, min = 0, max = 1
 	template< typename T > T square_wave( T v ) {
-		return std::fmod( v, T(2) ) < T(1) ? T(1) : T(0);
+		return std::fmod( v, T( 2 ) ) < T( 1 ) ? T( 1 ) : T( 0 );
 	}
 
 	/// triangle wave, period = 2, min = 0, max = 1

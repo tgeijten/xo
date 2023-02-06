@@ -40,6 +40,6 @@ namespace xo
 
 	/// convert from prop_node
 	template< typename T > bool from_prop_node( const prop_node& pn, transform_<T>& tf ) {
-		return from_prop_node( pn[ "p" ], tf.p ) && from_prop_node( pn[ "q" ], tf.q );
+		return from_prop_node( pn["p"], tf.p ) && from_prop_node( pn["q"], tf.q );
 	}
 }

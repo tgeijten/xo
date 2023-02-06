@@ -12,7 +12,7 @@ namespace xo
 	public:
 		arg_parser( const int argc, const char** argv ) {
 			for ( int i = 1; i < argc; ++i )
-				args_.emplace_back( argv[ i ] );
+				args_.emplace_back( argv[i] );
 		}
 
 		index_t find_flag( const string& f ) const {
@@ -38,13 +38,13 @@ namespace xo
 		template< typename T >
 		T get( index_t idx, T default_value ) const {
 			if ( idx < args_.size() )
-				from_str( args_[ idx ], default_value );
+				from_str( args_[idx], default_value );
 			return default_value;
 		}
 
 		const string& arg( index_t idx ) const {
 			xo_assert( idx < args_.size() );
-			return args_[ idx ];
+			return args_[idx];
 		}
 
 		size_t size() const { return args_.size(); }
@@ -53,9 +53,9 @@ namespace xo
 		vector<string> args_;
 
 		size_t count_dashes( index_t idx ) const {
-			const auto& a = args_[ idx ];
+			const auto& a = args_[idx];
 			size_t c = 0;
-			while ( c < a.size() && a[ c ] == '-' )
+			while ( c < a.size() && a[c] == '-' )
 				++c;
 			return c;
 		}

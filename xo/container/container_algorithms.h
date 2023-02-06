@@ -74,7 +74,7 @@ namespace xo
 	auto mean_std( It b, It e, T v ) {
 		xo_assert( b != e );
 		auto mean = average( b, e, v );
-		auto acc = decltype( mean * mean )();
+		auto acc = decltype( mean * mean )( );
 		for ( auto i = b; i != e; ++i )
 			acc += ( *i - mean ) * ( *i - mean );
 		return std::make_pair( mean, std::sqrt( acc / ( e - b ) ) );
@@ -86,8 +86,8 @@ namespace xo
 
 	template < typename C, typename P > std::vector< index_t > sorted_indices( const C& cont, P pred ) {
 		std::vector< size_t > idx_vec( cont.size() );
-		for ( index_t i = 0; i < cont.size(); ++i ) idx_vec[ i ] = i;
-		std::sort( idx_vec.begin(), idx_vec.end(), [&]( size_t i1, size_t i2 ) { return pred( cont[ i1 ], cont[ i2 ] ); } );
+		for ( index_t i = 0; i < cont.size(); ++i ) idx_vec[i] = i;
+		std::sort( idx_vec.begin(), idx_vec.end(), [&]( size_t i1, size_t i2 ) { return pred( cont[i1], cont[i2] ); } );
 		return idx_vec;
 	}
 
@@ -118,8 +118,8 @@ namespace xo
 		xo_assert( n > 0 );
 		std::vector< typename std::remove_cv< typename std::iterator_traits< It >::value_type >::type > v( n / 2 + 1 );
 		std::partial_sort_copy( b, e, v.begin(), v.end() );
-		if ( n % 2 == 1 ) return v[ n / 2 ];
-		else return ( v[ n / 2 ] + v[ n / 2 - 1 ] ) / std::iterator_traits< It >::value_type( 2 );
+		if ( n % 2 == 1 ) return v[n / 2];
+		else return ( v[n / 2] + v[n / 2 - 1] ) / std::iterator_traits< It >::value_type( 2 );
 	}
 
 	template< typename It > auto median_non_const( It b, It e ) {

@@ -120,7 +120,8 @@ namespace xo
 			T ha = T( 0.5 ) * l;
 			T hs = std::sin( ha );
 			return quat_<T>( std::cos( ha ), hs * v.x, hs * v.y, hs * v.z );
-		} else return quat_<T>::identity();
+		}
+		else return quat_<T>::identity();
 	}
 
 	/// Get quaternion to represent the rotation from source to target vector
@@ -144,7 +145,8 @@ namespace xo
 		if ( ( l > constants<T>::ample_epsilon() ) & ( q.w < T( 1 ) ) ) {
 			T f = T( 2 ) * std::acos( q.w ) / l;
 			return vec3_<T>( f * q.x, f * q.y, f * q.z );
-		} else return vec3_<T>::zero();
+		}
+		else return vec3_<T>::zero();
 	}
 
 	/// Get axis angle from normalized quaternion
@@ -153,7 +155,8 @@ namespace xo
 		if ( ( l > constants<T>::ample_epsilon() ) & ( q.w < T( 1 ) ) ) {
 			T s = T( 1 ) / l;
 			return { vec3f( s * q.x, s * q.y, s * q.z ), radian_<T>( T( 2 ) * std::acos( q.w ) ) };
-		} else return { vec3_<T>::unit_x(), radian_<T>() };
+		}
+		else return { vec3_<T>::unit_x(), radian_<T>() };
 	}
 
 	/// Get rotation around specific axis
@@ -379,12 +382,14 @@ namespace xo
 			// quaternion with w, x, y, z components
 			q.set( pn.get<T>( "w" ), pn.get<T>( "x" ), pn.get<T>( "y" ), pn.get<T>( "z" ) );
 			return true;
-		} else if ( vec3_< degree_<T> > v; from_prop_node( pn, v ) ) {
+		}
+		else if ( vec3_< degree_<T> > v; from_prop_node( pn, v ) ) {
 			// quaternion from Euler angles
 			auto order = pn.get< euler_order >( "order", euler_order::xyz );
 			q = quat_from_euler( v, order );
 			return true;
-		} else return false;
+		}
+		else return false;
 	};
 
 

@@ -12,7 +12,7 @@ namespace xo
 
 		piecewise_constant_function() : data_() {}
 
-		void insert_point( T x, T y ) { data_[ x ] = y; }
+		void insert_point( T x, T y ) { data_[x] = y; }
 
 		T operator()( const T& x ) const
 		{
@@ -23,7 +23,7 @@ namespace xo
 				return data_.back().second;
 			else if ( it == data_.begin() )
 				return data_.front().second;
-			else return (--it)->second;
+			else return ( --it )->second;
 		}
 
 		const container_t& data() { return data_; }

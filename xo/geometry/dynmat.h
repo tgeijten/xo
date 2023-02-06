@@ -14,10 +14,10 @@ namespace xo
 		using const_iterator = typename dynarray< T >::const_iterator;
 
 		dynmat() : cols_(), data_() {}
-		dynmat( size_t col, size_t row, const T& value = T() ) : cols_( col ), data_( row * col, value ) {}
+		dynmat( size_t col, size_t row, const T& value = T() ) : cols_( col ), data_( row* col, value ) {}
 
-		const T& operator()( index_t col, index_t row ) const { return data_[ row * cols_ + col ]; }
-		T& operator()( index_t col, index_t row ) { return data_[ row * cols_ + col ]; }
+		const T& operator()( index_t col, index_t row ) const { return data_[row * cols_ + col]; }
+		T& operator()( index_t col, index_t row ) { return data_[row * cols_ + col]; }
 
 		void resize( size_t newcols, size_t newrows ) {
 			dynmat<T> newmat( newcols, newrows, T() );
@@ -25,7 +25,7 @@ namespace xo
 			auto cmin = xo::min( cols(), newcols );
 			for ( auto r = 0; r < rmin; ++r )
 				for ( auto c = 0; c < cmin; ++c )
-					newmat( c, r ) = (*this)( c, r );
+					newmat( c, r ) = ( *this )( c, r );
 			*this = std::move( newmat );
 		}
 
@@ -56,8 +56,8 @@ namespace xo
 		{
 			T sum = 0.0;
 			for ( index_t col = 0; col < m.cols(); ++col )
-				sum += m( row, col ) * v[ col ];
-			r[ row ] = sum;
+				sum += m( row, col ) * v[col];
+			r[row] = sum;
 		}
 		return r;
 	}

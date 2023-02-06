@@ -40,7 +40,7 @@ namespace xo
 
 	bool from_prop_node( const prop_node& pn, plane& s )
 	{
-		s.normal_= pn.get<vec3f>( "normal", vec3f::unit_x() );
+		s.normal_ = pn.get<vec3f>( "normal", vec3f::unit_x() );
 		return true;
 	}
 
@@ -68,50 +68,50 @@ namespace xo
 	prop_node to_prop_node( const sphere& s )
 	{
 		prop_node pn;
-		pn[ "type" ] = "sphere";
-		pn[ "radius" ] = s.radius_;
+		pn["type"] = "sphere";
+		pn["radius"] = s.radius_;
 		return pn;
 	}
 
 	prop_node to_prop_node( const box& s )
 	{
 		prop_node pn;
-		pn[ "type" ] = "box";
-		pn[ "dim" ] = 2 * s.half_dim_;
+		pn["type"] = "box";
+		pn["dim"] = 2 * s.half_dim_;
 		return pn;
 	}
 
 	prop_node to_prop_node( const cylinder& s )
 	{
 		prop_node pn;
-		pn[ "type" ] = "cylinder";
-		pn[ "radius" ] = s.radius_;
-		pn[ "height" ] = s.height_;
+		pn["type"] = "cylinder";
+		pn["radius"] = s.radius_;
+		pn["height"] = s.height_;
 		return pn;
 	}
 	prop_node to_prop_node( const capsule& s )
 	{
 		prop_node pn;
-		pn[ "type" ] = "capsule";
-		pn[ "radius" ] = s.radius_;
-		pn[ "height" ] = s.height_;
+		pn["type"] = "capsule";
+		pn["radius"] = s.radius_;
+		pn["height"] = s.height_;
 		return pn;
 	}
 
 	prop_node to_prop_node( const cone& s )
 	{
 		prop_node pn;
-		pn[ "type" ] = "cone";
-		pn[ "radius" ] = s.radius_;
-		pn[ "height" ] = s.height_;
+		pn["type"] = "cone";
+		pn["radius"] = s.radius_;
+		pn["height"] = s.height_;
 		return pn;
 	}
 
 	prop_node to_prop_node( const plane& s )
 	{
 		prop_node pn;
-		pn[ "type" ] = "plane";
-		pn[ "normal" ] = s.normal_;
+		pn["type"] = "plane";
+		pn["normal"] = s.normal_;
 		return pn;
 	}
 

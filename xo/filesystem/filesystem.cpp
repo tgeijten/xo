@@ -44,7 +44,7 @@ namespace xo
 			log::error( "Could get folder ", report_name );
 			return path();
 		}
-		char mbsLocalAppData[ MAX_PATH ];
+		char mbsLocalAppData[MAX_PATH];
 		if ( wcstombs_s( size_t(), mbsLocalAppData, MAX_PATH, wcsLocalAppData, MAX_PATH ) != 0 ) {
 			log::error( "Could not convert folder ", report_name, ": ", wcsLocalAppData );
 			CoTaskMemFree( static_cast<void*>( wcsLocalAppData ) );
@@ -62,7 +62,7 @@ namespace xo
 		return get_known_windows_folder( FOLDERID_LocalAppData, "LocalAppData" );
 #else
 		string homeDir = std::getenv( "HOME" );
-		return path{homeDir + "/.config"};
+		return path{ homeDir + "/.config" };
 #endif
 	}
 
@@ -78,24 +78,24 @@ namespace xo
 	path get_application_dir()
 	{
 #ifdef XO_COMP_MSVC
-		char buf[ 1024 ];
+		char buf[1024];
 		GetModuleFileName( 0, buf, sizeof( buf ) );
 		return path( buf ).parent_path().make_preferred();
 #elif defined(__linux__)
-		char buf[ 1024 ];
-		auto len = readlink("/proc/self/exe", buf, sizeof( buf ) - 1 );
+		char buf[1024];
+		auto len = readlink( "/proc/self/exe", buf, sizeof( buf ) - 1 );
 		if ( len != -1 ) {
-			buf[ len ] = '\0';
+			buf[len] = '\0';
 			return path( buf ).parent_path();
 		}
 		else return path();
 #elif defined(__APPLE__)
 		uint32_t bufferSize = 1024;
-		std::vector<char> buf(bufferSize + 1);
-		if (_NSGetExecutablePath(buf.data(), &bufferSize))
+		std::vector<char> buf( bufferSize + 1 );
+		if ( _NSGetExecutablePath( buf.data(), &bufferSize ) )
 		{
-			buf.resize(bufferSize);
-			_NSGetExecutablePath(buf.data(), &bufferSize);
+			buf.resize( bufferSize );
+			_NSGetExecutablePath( buf.data(), &bufferSize );
 		}
 		return path( buf.data() ).parent_path();
 #else
@@ -294,11 +294,11 @@ namespace xo
 #	endif
 
 #else
-	struct stat attr;
-	if ( stat(p.c_str(), &attr) == 0 )
-		return attr.st_mtime;
-	else
-		xo_error( "Could not query " + p.str() );
+		struct stat attr;
+		if ( stat( p.c_str(), &attr ) == 0 )
+			return attr.st_mtime;
+		else
+			xo_error( "Could not query " + p.str() );
 #endif
 	}
 

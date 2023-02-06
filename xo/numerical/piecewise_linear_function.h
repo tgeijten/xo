@@ -13,7 +13,7 @@ namespace xo
 
 		piecewise_linear_function() : data_() {}
 
-		void insert_point( T x, T y ) { data_[ x ] = y; }
+		void insert_point( T x, T y ) { data_[x] = y; }
 
 		T operator()( const T& x ) const
 		{

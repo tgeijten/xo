@@ -3,7 +3,7 @@
 namespace xo
 {
 	template< typename T >
-	struct delta 
+	struct delta
 	{
 		delta() : previous_( 0 ) {}
 		delta( const T& initial_value ) : previous_( initial_value ) {}

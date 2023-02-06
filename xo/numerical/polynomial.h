@@ -14,19 +14,19 @@ namespace xo
 		polynomial& operator=( const polynomial& o ) { coeff = o.coeff; return *this; }
 
 		T operator()( const T& v ) const {
-			T result = coeff[ 0 ];
+			T result = coeff[0];
 			T factor = T( v );
 			for ( auto it = std::begin( coeff ) + 1; it != std::end( coeff ); ++it ) { result += factor * *it; factor *= v; }
 			return result;
 		}
 
-		T& operator[]( size_t idx ) { return coeff[ idx ]; }
-		const T& operator[]( size_t idx ) const { return coeff[ idx ]; }
+		T& operator[]( size_t idx ) { return coeff[idx]; }
+		const T& operator[]( size_t idx ) const { return coeff[idx]; }
 
-		const T& offset() const { return coeff[ 0 ]; }
-		const T& slope() const { return coeff[ 1 ]; }
-		T& offset() { return coeff[ 0 ]; }
-		T& slope() { return coeff[ 1 ]; }
+		const T& offset() const { return coeff[0]; }
+		const T& slope() const { return coeff[1]; }
+		T& offset() { return coeff[0]; }
+		T& slope() { return coeff[1]; }
 
 	private:
 		std::array< T, D + 1 > coeff;

@@ -31,7 +31,7 @@ namespace xo
 
 	/// find the index of an element in an array-type container
 	template< typename C > index_t find_index( const C& cont, const typename C::value_type& e, index_t idx = 0 ) {
-		for ( ; idx < std::size( cont ); ++idx ) if ( cont[ idx ] == e ) return idx; return no_index;
+		for ( ; idx < std::size( cont ); ++idx ) if ( cont[idx] == e ) return idx; return no_index;
 	}
 
 	/// find element in a container, returns iterator
@@ -46,7 +46,7 @@ namespace xo
 
 	/// find index to element in a container
 	template< typename C, typename P > index_t find_index_if( const C& cont, const P pred, index_t idx = 0 ) {
-		for ( ; idx < std::size( cont ); ++idx ) if ( pred( cont[ idx ] ) ) return idx; return no_index;
+		for ( ; idx < std::size( cont ); ++idx ) if ( pred( cont[idx] ) ) return idx; return no_index;
 	}
 
 	/// find reference to element in a container, throw if not found
@@ -132,7 +132,7 @@ namespace xo
 	template< typename C > index_t back_index( const C& cont ) { return size( cont ) > 0 ? size( cont ) - 1 : no_index; }
 
 	/// get index of element in container
-	template< typename E > index_t index_of( const E& elem, const std::vector<E>& vec ) { return index_t( &elem - &vec[ 0 ] ); }
+	template< typename E > index_t index_of( const E& elem, const std::vector<E>& vec ) { return index_t( &elem - &vec[0] ); }
 
 	/// emplace back, return index
 	template< typename C, typename... Args> index_t emplace_back_get_index( C& c, Args&&... a ) {

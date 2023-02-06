@@ -36,7 +36,8 @@ namespace xo
 		if ( D < constants<T>::ample_epsilon() ) {
 			sc = 0.0;
 			tc = ( b > c ? d / b : e / c );    // use the largest denominator
-		} else {
+		}
+		else {
 			sc = ( b * e - c * d ) / D;
 			tc = ( a * e - b * d ) / D;
 		}

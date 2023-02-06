@@ -44,14 +44,14 @@ namespace xo
 #endif // 0
 
 		auto vs = split_str( s, " " );
-		XO_CHECK( vs[ 0 ] == "Test" );
-		XO_CHECK( vs[ 1 ] == "0.123" );
-		XO_CHECK( vs[ 2 ] == "24" );
+		XO_CHECK( vs[0] == "Test" );
+		XO_CHECK( vs[1] == "0.123" );
+		XO_CHECK( vs[2] == "24" );
 
 		auto vs2 = xo::split_str( "appel; peer,,, banaan", ";., " );
-		XO_CHECK( vs2[ 0 ] == "appel" );
-		XO_CHECK( vs2[ 1 ] == "peer" );
-		XO_CHECK( vs2[ 2 ] == "banaan" );
+		XO_CHECK( vs2[0] == "appel" );
+		XO_CHECK( vs2[1] == "peer" );
+		XO_CHECK( vs2[2] == "banaan" );
 
 		auto nasty_string = string( "String with \"quotes\" and spaces\nand\tspecial\001\002\003characters" );
 		auto quoted_nasty = try_quoted( nasty_string );
@@ -62,8 +62,8 @@ namespace xo
 		XO_CHECK( p.empty() == false );
 		XO_CHECK( p.extension_no_dot() == "txt" );
 		XO_CHECK( p.replace_extension( "new_ext" ).str() == "X:/appel/taart.new_ext" );
-		XO_CHECK( p.filename() == "taart.new_ext");
-		XO_CHECK( p.stem() == "taart");
+		XO_CHECK( p.filename() == "taart.new_ext" );
+		XO_CHECK( p.stem() == "taart" );
 		XO_CHECK( path( "foo/bar.txt" ).stem() == "bar" );
 		XO_CHECK( path( "foo/.bar" ).stem() == "" );
 		XO_CHECK( p.replace_filename( "new" ) == "X:/appel/new" );

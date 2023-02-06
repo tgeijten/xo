@@ -32,6 +32,6 @@ namespace xo
 #else
 	struct scoped_thread_priority {
 		scoped_thread_priority( thread_priority p ) { log::warning( "get_thread_priority() is not implemented for this platform" ); }
-};
+	};
 #endif
 }

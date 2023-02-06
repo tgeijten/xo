@@ -20,8 +20,8 @@ namespace xo
 		template< typename T > index_class<T, I> push_back( const T& e ) { get_vec<T>().push_back( e ); return back_index<T>(); }
 		template< typename T > index_class<T, I> push_back( T&& e ) { get_vec<T>().push_back( std::move( e ) ); return back_index<T>(); }
 
-		template< typename T > const T& operator[]( index_class<T, I> i ) const { return get_vec<T>()[ i.idx ]; }
-		template< typename T > T& operator[]( index_class<T, I> i ) { return get_vec<T>()[ i.idx ]; }
+		template< typename T > const T& operator[]( index_class<T, I> i ) const { return get_vec<T>()[i.idx]; }
+		template< typename T > T& operator[]( index_class<T, I> i ) { return get_vec<T>()[i.idx]; }
 
 		template< typename T > index_class<T, I> erase( index_class<T, I> i ) { auto& v = get_vec<T>(); v.erase( i.iter( v ) ); }
 
@@ -34,7 +34,7 @@ namespace xo
 		template< typename T > auto end() { return get_vec<T>().end(); }
 
 		/// Get index of element in container. Behavior is not defined when e is not part of container.
-		template< typename T > index_class<T, I> get_index( const T& e ) const { return index_class<T, I>( I( &e - &get_vec<T>()[ 0 ] ) ); }
+		template< typename T > index_class<T, I> get_index( const T& e ) const { return index_class<T, I>( I( &e - &get_vec<T>()[0] ) ); }
 
 		template< typename T > index_class<T, I> back_index() const { return index_class<T, I>::back( get_vec<T>() ); }
 		template< typename T > index_class<T, I> begin_index() const { return index_class<T, I>( I( 0 ) ); }

@@ -93,10 +93,10 @@ namespace xo
 			double a = soft_clamped( x, 10.0, 20.0, 0.1 );
 			double b = soft_clamped( x, -50.0, 50.0, 0.1 );
 			double c = soft_clamped( x, -200.0, 0.0, 0.1 );
-			f[ "x" ] = x;
-			f[ "10..20" ] = a;
-			f[ "-50..50" ] = b;
-			f[ "-200..0" ] = c;
+			f["x"] = x;
+			f["10..20"] = a;
+			f["-50..50"] = b;
+			f["-200..0"] = c;
 		}
 		//std::ofstream( "X:/clamp_test.txt" ) << sto;
 	}
@@ -135,8 +135,8 @@ namespace xo
 		//xo::linear_regression lg( x.begin(), x.end(), y.begin(), y.end() );
 
 		auto lg1 = linear_regression( x.begin(), x.end(), y.begin(), y.end() );
-		XO_CHECK( equal( lg1[ 1 ], 2.5 ) );
-		XO_CHECK( equal( lg1[ 0 ], 4.0 ) );
+		XO_CHECK( equal( lg1[1], 2.5 ) );
+		XO_CHECK( equal( lg1[0], 4.0 ) );
 
 		x.clear();
 		y.clear();
@@ -145,12 +145,12 @@ namespace xo
 			y.push_back( xre * -1.5 - 100 );
 
 		auto lg2 = linear_regression( xr, y );
-		XO_CHECK( equal( lg2[ 1 ], -1.5 ) );
-		XO_CHECK( equal( lg2[ 0 ], -100.0 ) );
+		XO_CHECK( equal( lg2[1], -1.5 ) );
+		XO_CHECK( equal( lg2[0], -100.0 ) );
 
 		auto lg3 = linear_regression( y, -50.0, 2.0 );
-		XO_CHECK( equal( lg3[ 1 ], -1.5 ) );
-		XO_CHECK( equal( lg3[ 0 ], -100.0 ) );
+		XO_CHECK( equal( lg3[1], -1.5 ) );
+		XO_CHECK( equal( lg3[0], -100.0 ) );
 
 		auto x0 = intersect_y( lg3, 0.0 );
 		auto x1 = intersect_y( lg3, 10.0 );
@@ -184,27 +184,27 @@ namespace xo
 			std::vector< double > rv( 16 );
 			std::generate( rv.begin(), rv.end(), [&]() { return rd( re ); } );
 
-			auto xo_v1 = vec3( rv[ 0 ], rv[ 1 ], rv[ 2 ] );
-			auto xo_v2 = vec3( rv[ 3 ], rv[ 4 ], rv[ 5 ] );
+			auto xo_v1 = vec3( rv[0], rv[1], rv[2] );
+			auto xo_v2 = vec3( rv[3], rv[4], rv[5] );
 			auto xo_x = normalized( xo_v2 - xo_v1 );
 			auto xo_y = normalized( cross_product( xo_x, normalized( xo_v2 ) ) );
 			auto xo_z = cross_product( xo_x, xo_y );
 			xo_logvar3( length( xo_x ), length( xo_y ), length( xo_z ) );
 			auto xo_q1 = quat_from_axes( xo_x, xo_y, xo_z );
-			auto xo_q2 = quat_from_axis_angle( normalized( vec3( rv[ 6 ], rv[ 7 ], rv[ 8 ] ) ), rad( rv[ 9 ] ) );
+			auto xo_q2 = quat_from_axis_angle( normalized( vec3( rv[6], rv[7], rv[8] ) ), rad( rv[9] ) );
 			auto xo_q3 = xo_q1 * xo_q2;
 			auto xo_q4 = normalized( xo_q3 );
 			xo_logvar3( length( xo_q1 ), length( xo_q2 ), length( xo_q3 ) );
 			auto xo_v4 = xo_q4 * xo_v1;
 			auto xo_v5 = rotation_vector_from_quat( xo_q4 );
 
-			auto scone_v1 = scone::Vec3( rv[ 0 ], rv[ 1 ], rv[ 2 ] );
-			auto scone_v2 = scone::Vec3( rv[ 3 ], rv[ 4 ], rv[ 5 ] );
+			auto scone_v1 = scone::Vec3( rv[0], rv[1], rv[2] );
+			auto scone_v2 = scone::Vec3( rv[3], rv[4], rv[5] );
 			auto scone_x = ( scone_v2 - scone_v1 ).GetNormalized();
 			auto scone_y = ( scone_x.GetCrossProduct( scone_v2.GetNormalized() ) ).GetNormalized();
 			auto scone_z = scone_x.GetCrossProduct( scone_y );
 			auto scone_q1 = QuatFromAxes( scone_x, scone_y, scone_z );
-			auto scone_q2 = QuatFromAxisAngle( scone::Vec3( rv[ 6 ], rv[ 7 ], rv[ 8 ] ).GetNormalized(), scone::Radian( rv[ 9 ] ) );
+			auto scone_q2 = QuatFromAxisAngle( scone::Vec3( rv[6], rv[7], rv[8] ).GetNormalized(), scone::Radian( rv[9] ) );
 			auto scone_q3 = scone_q1 * scone_q2;
 			auto scone_q4 = scone_q3.GetNormalized();
 			auto scone_v4 = scone_q4 * scone_v1;
@@ -227,10 +227,10 @@ namespace xo
 
 			for ( int j = 0; j < 6; ++j )
 			{
-				auto xo_qeo = quat_from_euler( rad( rv[ 0 ] ), rad( rv[ 1 ] ), rad( rv[ 2 ] ), xo_eo[ j ] );
-				auto scone_qeo = QuatFromEuler( Radian( rv[ 0 ] ), Radian( rv[ 1 ] ), Radian( rv[ 2 ] ), scone_eo[ j ] );
+				auto xo_qeo = quat_from_euler( rad( rv[0] ), rad( rv[1] ), rad( rv[2] ), xo_eo[j] );
+				auto scone_qeo = QuatFromEuler( Radian( rv[0] ), Radian( rv[1] ), Radian( rv[2] ), scone_eo[j] );
 				compare( xo_qeo, scone_qeo );
 			}
 		}
 #endif
-}
+	}

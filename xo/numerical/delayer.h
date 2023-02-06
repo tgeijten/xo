@@ -9,7 +9,7 @@ namespace xo
 	template< typename T, int N = 2 >
 	struct delayer
 	{
-		delayer( float delay = 1.0f, const T & init_value = T() ) :
+		delayer( float delay = 1.0f, const T& init_value = T() ) :
 			window_( delay / ( N - 1 ) ),
 			time_( 0 ),
 			idx_( 0 ),
@@ -21,13 +21,13 @@ namespace xo
 			if ( time_ + 0.5f * delta_time > window_ ) {
 				time_ -= window_;
 				++idx_ %= N;
-				data_[ idx_ ] = value;
+				data_[idx_] = value;
 			}
 		}
 
 		T delayed_value() const {
 			auto w = time_ / window_;
-			return w * data_[ ( idx_ + N + 2 ) % N ] + ( 1.0f - w ) * data_[ ( idx_ + N + 1 ) % N ];
+			return w * data_[( idx_ + N + 2 ) % N] + ( 1.0f - w ) * data_[( idx_ + N + 1 ) % N];
 		}
 
 		T operator()( const T& value, float delta_time ) { add_sample( value, delta_time ); return delayed_value(); }
@@ -55,7 +55,7 @@ namespace xo
 			if ( time_ >= window_ ) {
 				inter_ += ( window_ - time_ + delta_time ) * value;
 				++idx_ %= N;
-				data_[ idx_ ] = inter_ / window_;
+				data_[idx_] = inter_ / window_;
 				time_ -= window_;
 				inter_ = time_ * value;
 			}
@@ -64,7 +64,7 @@ namespace xo
 
 		T delayed_value() const {
 			auto w = time_ / window_;
-			return w * data_[ ( idx_ + N + 2 ) % N ] + ( 1.0f - w ) * data_[ ( idx_ + N + 1 ) % N ];
+			return w * data_[( idx_ + N + 2 ) % N] + ( 1.0f - w ) * data_[( idx_ + N + 1 ) % N];
 		}
 
 		T operator()( const T& value, float delta_time ) { add_sample( value, delta_time ); return delayed_value(); }

@@ -45,7 +45,7 @@ namespace xo
 	void read_zml_layer( char_stream& str, prop_node& parent, const string& close, error_code* ec, const path& folder, const prop_node& root, prop_node& macros )
 	{
 		// keep track of the number of macros so we can delete them at the end of this scope
-		auto macro_count = macros.size(); 
+		auto macro_count = macros.size();
 
 		// iterate over all items in this scope
 		for ( string t = get_zml_token( str, ec ); t != close; t = get_zml_token( str, ec ) )
@@ -70,9 +70,9 @@ namespace xo
 					if ( t != "{" && t != "[" )
 					{
 						// t is a label
-						if ( t[ 0 ] == '$' )
+						if ( t[0] == '$' )
 							next_parent = &macros.add_child( t ); // add macro
-						else if ( !isgraph( t[ 0 ] ) )
+						else if ( !isgraph( t[0] ) )
 							return zml_error( str, ec, "Invalid label " + t );
 						else
 							next_parent = &parent.add_child( t ); // add new item
@@ -114,7 +114,7 @@ namespace xo
 						*next_parent = it->second;
 					else return zml_error( str, ec, "Undefined variable: " + t );
 				}
-				else 
+				else
 				{
 					// replace inline macros
 					for ( auto p = t.find( "${" ); p != string::npos; p = t.find( "${", p ) )
