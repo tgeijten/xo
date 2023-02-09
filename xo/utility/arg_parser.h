@@ -37,8 +37,11 @@ namespace xo
 
 		template< typename T >
 		T get( index_t idx, T default_value ) const {
-			if ( idx < args_.size() )
-				from_str( args_[idx], default_value );
+			index_t cur_idx = 0;
+			for ( index_t i = 0; i < size() && cur_idx <= idx; ++i )
+				if ( !is_flag( i ) )
+					if ( cur_idx++ == idx )
+						from_str( args_[i], default_value );
 			return default_value;
 		}
 
@@ -52,6 +55,9 @@ namespace xo
 	private:
 		vector<string> args_;
 
+		bool is_flag( index_t idx ) const {
+			return count_dashes( idx ) > 0;
+		}
 		size_t count_dashes( index_t idx ) const {
 			const auto& a = args_[idx];
 			size_t c = 0;
