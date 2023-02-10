@@ -37,11 +37,11 @@ namespace xo
 
 		template< typename T >
 		T get( index_t idx, T default_value ) const {
-			index_t cur_idx = 0;
-			for ( index_t i = 0; i < size() && cur_idx <= idx; ++i )
-				if ( !is_flag( i ) )
-					if ( cur_idx++ == idx )
-						from_str( args_[i], default_value );
+			for ( index_t i = 0; i < size() && !is_flag( i ); ++i )
+				if ( i == idx ) {
+					from_str( args_[i], default_value );
+					break;
+				}
 			return default_value;
 		}
 
