@@ -31,7 +31,7 @@ namespace xo
 			func_( func )
 		{}
 
-		bool test_case::check( bool result, const char* operation, const string& message )
+		bool test_case::check( bool result, const string& message )
 		{
 			result_.checks_++;
 			if ( result )
@@ -42,7 +42,7 @@ namespace xo
 			else {
 				auto lock = std::scoped_lock( g_log_mutex );
 				result_.failed_++;
-				log::error( "FAILED: ", name_, " (", operation, " ", message, ")" );
+				log::error( "FAILED: ", name_, " (", message, ")" );
 				return false;
 			}
 		}

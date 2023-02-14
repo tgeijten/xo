@@ -16,11 +16,11 @@
 
 #define XO_CHECK( _operation_ ) \
 	try { bool _result_ = ( _operation_ ); XO_ACTIVE_TEST_CASE.check( _result_, #_operation_ ); } \
-	catch( std::exception& e ) { XO_ACTIVE_TEST_CASE.check( false, #_operation_, e.what() ); }
+	catch( std::exception& e ) { XO_ACTIVE_TEST_CASE.check( false, e.what() ); }
 
 #define XO_CHECK_MESSAGE( _operation_, _message_ ) \
-	try { bool _result_ = ( _operation_ ); XO_ACTIVE_TEST_CASE.check( _result_, #_operation_, _message_ ); } \
-	catch( std::exception& e ) { XO_ACTIVE_TEST_CASE.check( false, #_operation_, e.what() ); }
+	try { bool _result_ = ( _operation_ ); XO_ACTIVE_TEST_CASE.check( _result_, _message_ ); } \
+	catch( std::exception& e ) { XO_ACTIVE_TEST_CASE.check( false, e.what() ); }
 
 namespace xo
 {
@@ -46,7 +46,7 @@ namespace xo
 		{
 		public:
 			test_case( const string& name, test_func_t func );
-			bool check( bool result, const char* operation, const string& message = "" );
+			bool check( bool result, const string& message = "" );
 			const test_result& run();
 
 		private:
