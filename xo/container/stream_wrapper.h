@@ -12,6 +12,7 @@ namespace xo
 		using value_type = typename It::value_type;
 		input_iterator_stream( It pos ) : pos_( pos ) {}
 		input_iterator_stream& operator>>( value_type& v ) { v = *pos_++; return *this; }
+		template< typename T > input_iterator_stream& get( T& v ) { v = static_cast<T>( *pos_++ ); return *this; }
 		It pos_;
 	};
 
@@ -23,6 +24,7 @@ namespace xo
 		using value_type = typename It::value_type;
 		output_iterator_stream( It pos ) : pos_( pos ) {}
 		output_iterator_stream& operator<<( value_type&& v ) { *pos_++ = std::move( v ); return *this; }
+		template< typename T > output_iterator_stream& set( T& v ) { *pos_++ = static_cast<value_type>( v ); return *this; }
 		It pos_;
 	};
 
@@ -39,13 +41,9 @@ namespace xo
 
 	/// support for convertible types
 	template< typename It, typename T >
-	output_iterator_stream<It>& operator<<( output_iterator_stream<It>& str, const T& v ) {
-		*str.pos_++ = static_cast<typename output_iterator_stream<It>::value_type>( v ); return str;
-	}
+	output_iterator_stream<It>& operator<<( output_iterator_stream<It>& str, const T& v ) { return str.set( v ); }
 	template< typename It, typename T >
-	input_iterator_stream<It>& operator>>( input_iterator_stream<It>& str, T& v ) {
-		v = static_cast<T>( *str.pos_++ ); return str;
-	}
+	input_iterator_stream<It>& operator>>( input_iterator_stream<It>& str, T& v ) { return str.get( v ); }
 
 	/// support for vec3_
 	template< typename It, typename T >
