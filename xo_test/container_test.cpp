@@ -13,6 +13,11 @@
 #include "xo/container/collection_ic.h"
 #include "xo/container/zip.h"
 #include <deque>
+#include "xo/geometry/quat_type.h"
+#include "xo/geometry/vec3_type.h"
+#include "xo/geometry/quat.h"
+#include "xo/geometry/angle.h"
+#include "xo/container/stream_wrapper.h"
 
 namespace xo
 {
@@ -212,5 +217,22 @@ namespace xo
 			XO_CHECK( vec2[idx] == "this is a long string, not a short string" );
 			++idx;
 		}
+	}
+
+	XO_TEST_CASE( xo_stream_wrapper ) {
+		std::vector<double> cont( 100 );
+		float x = 0.1f;
+		xo::vec3f v{ 1, 2, 3 };
+		auto q = xo::quat_from_euler_xyz( vec3degd( 10_degf, 20_degf, 30_degf ) );
+		xo::output_iterator_stream str( cont.begin() );
+		str << x << v << q;
+		float x2;
+		xo::vec3f v2;
+		xo::quatd q2;
+		xo::input_iterator_stream str2( cont.begin() );
+		str2 >> x2 >> v2 >> q2;
+		XO_CHECK( x == x2 );
+		XO_CHECK( v == v2 );
+		XO_CHECK( q == q2 );
 	}
 }

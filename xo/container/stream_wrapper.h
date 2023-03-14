@@ -40,7 +40,7 @@ namespace xo
 	/// support for convertible types
 	template< typename It, typename T >
 	output_iterator_stream<It>& operator<<( output_iterator_stream<It>& str, const T& v ) {
-		*str.pos_++ = static_cast<typename It::value_type>( v ); return str;
+		*str.pos_++ = static_cast<typename output_iterator_stream<It>::value_type>( v ); return str;
 	}
 	template< typename It, typename T >
 	input_iterator_stream<It>& operator>>( input_iterator_stream<It>& str, T& v ) {
