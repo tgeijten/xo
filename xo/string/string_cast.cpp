@@ -164,9 +164,29 @@ namespace xo
 		return false;
 	}
 
-	string to_str( const time& v )
+	string to_str( const time& v, double hide_decimals_after_seconds )
 	{
-		return to_str( v.secondsd() );
+		string str;
+		auto sd = v.seconds<double>();
+		auto si = size_t( sd );
+		auto h = si / 3600;
+		if ( h > 0 ) {
+			str += stringf( "%d:", h );
+			si -= h * 3600;
+		}
+		auto m = si / 60;
+		if ( h > 0 || m > 0 ) {
+			str += stringf( str.empty() ? "%d:" : "%02d:", m );
+			si -= m * 60;
+		}
+		if ( h > 0 || m > 0 ) // show whole seconds
+			str += stringf( "%02d", si );
+		else if ( sd >= hide_decimals_after_seconds ) // show whole seconds with zero minutes
+			str += stringf( "0:%02d", si );
+		else // show decimal points
+			str += stringf( "%.2f", sd );
+
+		return str;
 	}
 
 	bool from_str( const string& s, time& v )
