@@ -70,6 +70,8 @@ namespace xo
 	{
 #ifdef XO_COMP_MSVC
 		return get_known_windows_folder( FOLDERID_Documents, "Documents" );
+#elif defined(__APPLE__)
+		return path( std::getenv( "HOME" ) ) / "Documents";
 #else
 		return path( std::getenv( "HOME" ) );
 #endif
