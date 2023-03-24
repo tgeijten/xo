@@ -7,7 +7,6 @@
 
 namespace xo
 {
-
 	bool from_str( const string& s, float& v )
 	{
 		char* p;
@@ -127,25 +126,6 @@ namespace xo
 		return stringf( "%p", ptr );
 	}
 
-	string to_str( const version& v )
-	{
-		string s = stringf( "%d.%d.%d", v.major_, v.minor_, v.patch_ );
-		if ( v.build_ > 0 ) s += stringf( ".%d", v.build_ );
-		if ( !v.postfix_.empty() ) s += ' ' + v.postfix_;
-		return s;
-	}
-
-	string to_str( const path& p )
-	{
-		return p.str();
-	}
-
-	bool from_str( const string& s, path& v )
-	{
-		v = path( s );
-		return true;
-	}
-
 	bool from_str( const string& s, version& ver )
 	{
 		auto [numbers, postfix] = split_str_at_first( s, whitespace_characters );
@@ -162,6 +142,25 @@ namespace xo
 			}
 		}
 		return false;
+	}
+
+	string to_str( const version& v )
+	{
+		string s = stringf( "%d.%d.%d", v.major_, v.minor_, v.patch_ );
+		if ( v.build_ > 0 ) s += stringf( ".%d", v.build_ );
+		if ( !v.postfix_.empty() ) s += v.postfix_;
+		return s;
+	}
+
+	bool from_str( const string& s, path& v )
+	{
+		v = path( s );
+		return true;
+	}
+
+	string to_str( const path& p )
+	{
+		return p.str();
 	}
 
 	string to_str( const time& v, double hide_decimals_after_seconds )
