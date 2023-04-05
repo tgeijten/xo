@@ -23,6 +23,7 @@ namespace xo
 
 		/// concatenate transforms
 		transform_<T> operator*( const transform_<T>& t ) const { return transform_<T>( p + q * t.p, q * t.q ); }
+		transform_<T>& operator*=( const transform_<T>& t ) { p += q * t.p; q *= t.q; return *this; }
 		transform_<T> inv() const { auto iq = -q; return transform_<T>( iq * -p, iq ); }
 		transform_<T> inv_trans( const transform_<T>& t ) const { return transform_<T>( conjugate( q ) * ( t.p - p ), conjugate( q ) * t.q ); }
 
