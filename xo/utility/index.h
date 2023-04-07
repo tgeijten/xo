@@ -35,6 +35,7 @@ namespace xo
 		template< typename C > auto iter( const C& c ) const { return c.begin() + idx; }
 		template< typename C > auto iter( C& c ) const { return c.begin() + idx; }
 
+		static constexpr index_class zero() { return index_class( index_type( 0 ) ); }
 		template< typename C > static index_class end( const C& c ) { return index_class( index_type( c.size() ) ); }
 		template< typename C > static index_class back( const C& c ) { return index_class( index_type( c.size() ) - 1 ); }
 
