@@ -262,9 +262,22 @@ namespace xo
 		return str.str();
 	}
 
-	void save_string( const string& s, const path& filename, error_code* ec )
+	void save_string( const path& filename, const string& s, error_code* ec )
 	{
-		std::ofstream( filename.str() ) << s;
+		xo::create_directories( filename.parent_path().str() );
+		std::ofstream ofstr( filename.str() );
+		if ( ofstr.good() )
+			ofstr << s;
+		else set_error_or_throw( ec, "Could not open " + filename.str() );
+	}
+
+	void append_string( const path& filename, const string& s, error_code* ec )
+	{
+		xo::create_directories( filename.parent_path().str() );
+		std::ofstream ofstr( filename.str(), std::ios_base::app );
+		if ( ofstr.good() )
+			ofstr << s;
+		else set_error_or_throw( ec, "Could not open " + filename.str() );
 	}
 
 	bool current_path( const path& p )
