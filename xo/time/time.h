@@ -27,6 +27,7 @@ namespace xo
 		bool operator==( time o ) const { return internal_ == o.internal_; }
 		bool operator!=( time o ) const { return internal_ != o.internal_; }
 
+		time operator-() const { return time( -internal_ ); }
 		time operator-( time o ) const { return time( internal_ - o.internal_ ); }
 		time operator+( time o ) const { return time( internal_ + o.internal_ ); }
 		time operator/( size_t n ) const { return time( internal_ / n ); }
@@ -38,11 +39,11 @@ namespace xo
 		double operator/( time v ) const { return double( internal_ ) / double( v.internal_ ); }
 		double operator*( time v ) const { return double( internal_ ) * double( v.internal_ ); }
 
-		bool is_zero() const { return internal_ == 0; }
-		void reset() { internal_ = 0; }
-
 		template< typename T > time operator/( T v ) const { return time( storage_t( internal_ / v ) ); }
 		template< typename T > time operator*( T v ) const { return time( storage_t( internal_ * v ) ); }
+
+		bool is_zero() const { return internal_ == 0; }
+		void reset() { internal_ = 0; }
 
 	private:
 		storage_t internal_;
