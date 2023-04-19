@@ -53,6 +53,8 @@ namespace xo
 	template< typename T > time time_from_milliseconds( T s ) { return time( time::storage_t( double( s ) * 1e6 + 0.5 ) ); }
 	template< typename T > time time_from_nanoseconds( T s ) { return time( time::storage_t( double( s ) + 0.5 ) ); }
 
+	inline time distance( const time& t1, const time& t2 ) { return t1 > t2 ? t1 - t2 : t2 - t1; }
+
 	inline namespace time_literals {
 		constexpr time operator ""_ns( unsigned long long ns ) { return time( time::storage_t( ns ) ); }
 		constexpr time operator ""_ms( unsigned long long ms ) { return time( time::storage_t( ms * 1'000'000 ) ); }
