@@ -19,7 +19,7 @@ namespace xo
 				x[i] = float( i );
 				y[i] = rand_norm< float >( float( i ), n / 10 );
 			}
-			auto xr = make_irange( 0, n );
+			auto xr = irange( 0, n );
 
 			{
 				XO_PROFILE_SCOPE( xo::profiler::instance(), "linear_regression" );

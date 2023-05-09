@@ -18,6 +18,8 @@
 #include "xo/geometry/quat.h"
 #include "xo/geometry/angle.h"
 #include "xo/container/stream_wrapper.h"
+#include <sstream>
+#include "xo/utility/irange.h"
 
 namespace xo
 {
@@ -141,6 +143,16 @@ namespace xo
 		}
 
 		XO_CHECK( t( "R1", "C1" ) == 1.0 );
+		std::stringstream str;
+		str << t;
+		auto t2 = read_table< double >( str );
+		XO_CHECK( t2( "R1", "C1" ) == 1.0 );
+		XO_CHECK( t.column_size() == t2.column_size() );
+		XO_CHECK( t.row_size() == t2.row_size() );
+		for ( auto c : irange( t.column_size() ) )
+			for ( auto r : irange( t.row_size() ) )
+				XO_CHECK( t2( r, c ) == t( r, c ) );
+		//std::cout << t2;
 	}
 
 	XO_TEST_CASE( xo_indexed_map )

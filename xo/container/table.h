@@ -7,6 +7,8 @@
 
 #include <vector>
 #include <ostream>
+#include <string>
+#include "xo/string/string_tools.h"
 
 namespace xo
 {
@@ -28,13 +30,16 @@ namespace xo
 			return col_labels.set( column_size() - 1, label );
 		}
 
+		index_t find_column( const L& label ) const { return col_labels.find( label ); }
+		index_t find_row( const L& label ) const { return row_labels.find( label ); }
+
 		index_t get_or_add_row( const L& label, const T& default_value = T() ) {
-			auto idx = row_labels.find( label );
+			auto idx = find_row( label );
 			return idx == no_index ? add_row( label, default_value ) : idx;
 		}
 
 		index_t get_or_add_column( const L& label, const T& default_value = T() ) {
-			auto idx = col_labels.find( label );
+			auto idx = find_column( label );
 			return idx == no_index ? add_column( label, default_value ) : idx;
 		}
 
@@ -52,12 +57,18 @@ namespace xo
 
 		size_t row_size() const { return row_labels.size(); }
 		size_t column_size() const { return col_labels.size(); }
+		bool empty() const { return data.empty(); }
 
 		const T& operator()( index_t row, index_t col ) const { xo_assert( row < row_size() && col < column_size() ); return data[row * column_size() + col]; }
 		T& operator()( index_t row, index_t col ) { xo_assert( row < row_size() && col < column_size() ); return data[row * column_size() + col]; }
 
-		const T& operator()( const L& row, const L& col ) const { operator()( row_index( row ), col_index( col ) ); }
+		const T& operator()( const L& row, const L& col ) const { operator()( find_row( row ), find_column( col ) ); }
 		T& operator()( const L& row, const L& col ) { return operator()( get_or_add_row( row ), get_or_add_column( col ) ); }
+
+		const T& operator()( index_t row, const L& col ) const { return operator()( row, find_column( col ) ); }
+
+		const T& back_row( index_t col ) const { return operator()( row_size() - 1, col ); }
+		T& back_row( index_t col ) { return operator()( row_size() - 1, col ); }
 
 		template< typename T1 >
 		friend std::ostream& operator<<( std::ostream& str, const table< T1 >& t );
@@ -85,5 +96,31 @@ namespace xo
 		}
 
 		return str;
+	}
+
+	template< typename T, typename S = string >
+	table<T, S> read_table( std::istream& str, bool first_row_has_header = true ) {
+		table<T, S> t;
+		string header;
+		std::getline( str, header );
+		auto columns = split_str( header, " \t" );
+		for ( index_t i = first_row_has_header ? 1 : 0; i < columns.size(); ++i )
+			t.add_column( columns[i] );
+		while ( str.good() ) {
+			string row_label;
+			str >> row_label;
+			if ( str.good() ) {
+				t.add_row( row_label );
+				for ( index_t i = 0; i < t.column_size(); ++i )
+					str >> t.back_row( i );
+			}
+		}
+		return t;
+	}
+
+	template< typename T, typename S = string >
+	table<T, S> load_table( const path& filename, bool first_row_has_header = true ) {
+		auto str = std::ifstream( filename.str() );
+		return read_table<T, S>( str, first_row_has_header );
 	}
 }

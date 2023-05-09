@@ -140,7 +140,7 @@ namespace xo
 
 		x.clear();
 		y.clear();
-		auto xr = make_irange( -50, 100, 2 );
+		auto xr = irange_step( -50, 100, 2 );
 		for ( auto xre : xr )
 			y.push_back( xre * -1.5 - 100 );
 
