@@ -66,6 +66,10 @@ namespace xo
 	template< typename TI, typename TF >
 	TI round_cast( TF value ) { return static_cast<TI>( std::round( value ) ); }
 
+	/// round to number of decimals
+	template< typename T >
+	T round_decimals( T value, int decimals ) { auto f = std::pow( T( 10 ), T( decimals ) ); return std::round( value * f ) / f; }
+
 	/// clamp a value so that it is between min and max
 	template< typename T > T& clamp( T& v, const T& lower, const T& upper )
 	{ if ( v < lower ) v = lower; else if ( v > upper ) v = upper; return v; }
