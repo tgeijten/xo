@@ -4,11 +4,12 @@
 #include "xo/container/container_tools.h"
 #include "xo/container/label_vector.h"
 #include "xo/string/string_type.h"
+#include "xo/string/string_tools.h"
+#include "xo/filesystem/path.h"
 
 #include <vector>
-#include <ostream>
+#include <iostream>
 #include <string>
-#include "xo/string/string_tools.h"
 
 namespace xo
 {
