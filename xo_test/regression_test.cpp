@@ -10,6 +10,7 @@ namespace xo
 		const int n = 500;
 
 		linear_function< float > r1, r2, r3, r4, r5;
+		random_number_generator_default rng;
 
 		for ( int t = 0; t < 1; ++t )
 		{
@@ -17,7 +18,7 @@ namespace xo
 			for ( index_t i = 0; i < n; ++i )
 			{
 				x[i] = float( i );
-				y[i] = rand_norm< float >( float( i ), n / 10 );
+				y[i] = rng.normal< float >( float( i ), n / 10 );
 			}
 			auto xr = irange( 0, n );
 

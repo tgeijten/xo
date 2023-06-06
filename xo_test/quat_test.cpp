@@ -47,11 +47,11 @@ namespace xo
 	XO_TEST_CASE( xo_quat_from_directions )
 	{
 		auto eps = 1e-4f;
-		random_number_generator rng;
+		random_number_generator_fast rng;
 		for ( index_t i = 0; i < 10; ++i )
 		{
-			auto v1 = normalized( rand_vec3<float>( -1, 1, rng ) );
-			auto v2 = normalized( rand_vec3<float>( -1, 1, rng ) );
+			auto v1 = normalized( rng.uniform_vec3<float>( -1, 1 ) );
+			auto v2 = normalized( rng.uniform_vec3<float>( -1, 1 ) );
 			auto q1 = quat_from_directions( v1, v2 );
 			auto q2 = quat_from_directions( v2, v1 );
 			auto q3 = quat_from_directions( v2, -v2 );

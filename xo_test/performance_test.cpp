@@ -34,7 +34,7 @@ namespace xo
 	}
 
 	template< int N = 100 > array< quatf, N > make_random_quaternions() {
-		random_number_generator rng;
+		random_number_generator_fast rng;
 		array< quatf, N > res;
 		for ( int i = 0; i < N; ++i )
 			res[i] = make_random_quat<float>( euler_order::xyz, rng ).first;

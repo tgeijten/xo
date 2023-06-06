@@ -23,11 +23,12 @@
 
 namespace xo
 {
+	random_number_generator_fast g_rng;
 	string random_string( size_t n )
 	{
 		string s;
 		for ( auto i = 0; i < n; ++i )
-			s += char( rand_uni_int( int( 'A' ), int( 'Z' ) ) );
+			s += char( g_rng.uniform_int( int( 'A' ), int( 'Z' ) ) );
 		return s;
 	}
 
@@ -79,7 +80,7 @@ namespace xo
 			if ( i % 10 == 0 )
 			{
 				// erase random element
-				int idx = rand_uni_int( 0, (int)map1.size() - 1 );
+				int idx = g_rng.uniform_int( 0, (int)map1.size() - 1 );
 				map1.erase( map1.begin() + idx );
 				auto map2it = map2.begin();
 				for ( int i = 0; i < idx; ++i )

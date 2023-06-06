@@ -1,37 +1,35 @@
 #pragma once
 
 #include "xo/system/xo_config.h"
-#include "xo/utility/sfinae_tools.h"
 #include "bounds.h"
 
-#include <random> // #todo: try to get rid of this header
-#include "xo/geometry/angle_type.h"
+#include <random>
 
 namespace xo
 {
-	struct XO_API random_number_generator
+	// #todo: std::default_random_engine is mt19937 on msvc and minstd_rand0 on gcc
+	// #todo: normal distribution is different on msvc and gcc (order is reversed)
+	template< typename RandomEngineT >
+	struct random_number_generator_
 	{
-		random_number_generator( unsigned int seed = 123 ) : engine( seed ) {}
-		void seed( unsigned int s ) { engine.seed( s ); }
+		random_number_generator_( unsigned int seed = 123 ) : re( seed ) {}
+		void seed( unsigned int s ) { re.seed( s ); }
 
-		template< typename T, XO_ENABLE_IF_FLOATING_POINT >	T uni( T min, T max ) { return std::uniform_real_distribution<T>( min, max )( engine ); }
-		template< typename T, XO_ENABLE_IF_FLOATING_POINT >	T uni( const xo::bounds< T >& b ) { return std::uniform_real_distribution<T>( b.lower, b.upper )( engine ); }
-		template< typename T, XO_ENABLE_IF_INTEGRAL > T uni( T min, T max ) { return std::uniform_int_distribution<T>( min, max )( engine ); }
-		template< typename T, XO_ENABLE_IF_INTEGRAL > T uni( const xo::bounds< T >& b ) { return std::uniform_int_distribution<T>( b.lower, b.upper )( engine ); }
-		template< typename T, XO_ENABLE_IF_FLOATING_POINT  > T norm( T mean, T stdev ) { return std::normal_distribution<T>( mean, stdev )( engine ); }
+		template< typename T > T uniform( T min, T max ) { return std::uniform_real_distribution<T>( min, max )( re ); }
+		template< typename T > T uniform( const xo::bounds<T>& b ) { return std::uniform_real_distribution<T>( b.lower, b.upper )( re ); }
+		template< typename T > T uniform_int( T min, T max ) { return std::uniform_int_distribution<T>( min, max )( re ); }
+		template< typename T > T uniform_int( const xo::bounds<T>& b ) { return std::uniform_int_distribution<T>( b.lower, b.upper )( re ); }
+		template< typename T > T normal( T mean, T stdev ) { return std::normal_distribution<T>( mean, stdev )( re ); }
+
+		template< typename T > vec3_<T> uniform_vec3( T min, T max ) { std::uniform_real_distribution<T> rd{ min, max }; return { rd( re ), rd( re ), rd( re ) }; }
 
 	private:
-		std::default_random_engine engine;
+		RandomEngineT re;
 	};
 
-	XO_API random_number_generator& global_random_number_generator();
-	template< typename T, XO_ENABLE_IF_FLOATING_POINT > T rand_uni( T min, T max ) { return global_random_number_generator().uni( min, max ); }
-	template< typename T, XO_ENABLE_IF_FLOATING_POINT > T rand_uni( const xo::bounds<T>& b ) { return global_random_number_generator().uni( b.lower, b.upper ); }
-	template< typename T, XO_ENABLE_IF_INTEGRAL > T rand_uni_int( T min, T max ) { return global_random_number_generator().uni( min, max ); }
-	template< typename T, XO_ENABLE_IF_INTEGRAL > T rand_uni_int( const xo::bounds<T>& b ) { return global_random_number_generator().uni( b.lower, b.upper ); }
-	template< typename T, XO_ENABLE_IF_FLOATING_POINT > T rand_norm( T mean, T stdev ) { return global_random_number_generator().norm( mean, stdev ); }
-
-	template< typename T > vec3_<T> rand_vec3( T min = T( -1 ), T max = T( 1 ), random_number_generator& rng = global_random_number_generator() ) {
-		return vec3_<T>{ rng.uni( min, max ), rng.uni( min, max ), rng.uni( min, max ) };
-	}
+	using random_number_generator_default = random_number_generator_<std::default_random_engine>;
+	using random_number_generator_fast = random_number_generator_<std::minstd_rand>;
+	using random_number_generator_accurate = random_number_generator_<std::mt19937>;
+	using random_number_generator_default_msvc = random_number_generator_<std::mt19937>;
+	using random_number_generator_default_gcc = random_number_generator_<std::minstd_rand0>;
 }
