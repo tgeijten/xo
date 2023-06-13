@@ -43,4 +43,5 @@ namespace xo
 	XO_API std::time_t last_write_time( const path& p );
 
 	XO_API vector<path> find_files( const path& dir, const pattern_matcher& include, bool recursive = true, int recurse_levels = -1 );
+	XO_API vector<path> find_files( const path& dir, const pattern_matcher& include, const pattern_matcher& exclude, bool recursive = true, int recurse_levels = -1 );
 }

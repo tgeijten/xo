@@ -330,4 +330,18 @@ namespace xo
 		}
 		return files;
 	}
+
+	vector<path> find_files( const path& dir, const pattern_matcher& include, const pattern_matcher& exclude, bool recursive, int recurse_levels )
+	{
+		vector<path> files;
+		for ( fs::directory_iterator it( dir.str() ); it != fs::directory_iterator(); ++it )
+		{
+			const auto& fs_path = it->path();
+			if ( recursive && recurse_levels != 0 && fs::is_directory( fs_path ) )
+				xo::append( files, find_files( path( fs_path.string() ), include, exclude, recursive, recurse_levels - 1 ) );
+			if ( include( fs_path.filename().string() ) && !exclude( fs_path.filename().string() ) )
+				files.emplace_back( fs_path.string() );
+		}
+		return files;
+	}
 }
