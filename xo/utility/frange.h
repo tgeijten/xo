@@ -14,7 +14,7 @@ namespace xo
 		using value_type = T;
 		frange( T lower, T upper, T increment ) : min_( lower ), max_( upper ), max_step_( std::round( ( upper - lower ) / increment ) ) {}
 		frange( T lower, T upper, int steps ) : min_( lower ), max_( upper ), max_step_( steps - 1 ) {}
-		frange( bounds<T> bounds, T increment ) : min_( bounds.lower ), max_( bounds.upper ), max_step_( std::round( bounds.range() / increment ) ) {}
+		frange( bounds<T> bounds, T increment ) : min_( bounds.lower ), max_( bounds.upper ), max_step_( std::round( bounds.length() / increment ) ) {}
 		frange( bounds<T> bounds, int steps ) : min_( bounds.lower ), max_( bounds.upper ), max_step_( steps - 1 ) {}
 
 		struct iterator

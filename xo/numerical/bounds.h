@@ -18,7 +18,7 @@ namespace xo
 		template< typename U > constexpr bounds( const bounds< U >& other ) : lower( T( other.lower ) ), upper( T( other.upper ) ) {};
 
 		bool is_within( const T& value ) const { return ( value >= lower ) && ( value <= upper ); }
-		T range() const { return upper - lower; }
+		T length() const { return upper - lower; }
 		T center() const { return T( 0.5 ) * ( lower + upper ); }
 
 		/// check bounds, return negative when value below lower, positive when value above upper, 0 when within bounds
