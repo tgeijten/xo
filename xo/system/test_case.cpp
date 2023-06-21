@@ -63,6 +63,7 @@ namespace xo
 
 		const test_result& test_case::run()
 		{
+			log::debug( "STARTING: ", name_ );
 			if ( try_run_func() )
 			{
 				auto lock = std::scoped_lock( g_log_mutex );
