@@ -163,27 +163,27 @@ namespace xo
 		return p.str();
 	}
 
-	string to_str( const time& v, double hide_decimals_after_seconds )
+	string to_str( const time& v, int decimals, double hide_decimals_after_seconds )
 	{
 		string str;
-		auto sd = v.seconds<double>();
-		auto si = size_t( sd );
-		auto h = si / 3600;
-		if ( h > 0 ) {
-			str += stringf( "%d:", h );
-			si -= h * 3600;
+		double secondsd = v.seconds<double>();
+		int secondsi = int( secondsd );
+		int hours = secondsi / 3600;
+		if ( hours > 0 ) {
+			str += stringf( "%d:", hours );
+			secondsi -= hours * 3600;
 		}
-		auto m = si / 60;
-		if ( h > 0 || m > 0 ) {
-			str += stringf( str.empty() ? "%d:" : "%02d:", m );
-			si -= m * 60;
+		auto minutes = secondsi / 60;
+		if ( hours > 0 || minutes > 0 ) {
+			str += stringf( str.empty() ? "%d:" : "%02d:", minutes );
+			secondsi -= minutes * 60;
 		}
-		if ( h > 0 || m > 0 ) // show whole seconds
-			str += stringf( "%02d", si );
-		else if ( sd >= hide_decimals_after_seconds ) // show whole seconds with zero minutes
-			str += stringf( "0:%02d", si );
+		if ( hours > 0 || minutes > 0 ) // show whole seconds
+			str += stringf( "%02d", secondsi );
+		else if ( decimals <= 0 || secondsd >= hide_decimals_after_seconds ) // show whole seconds with zero minutes
+			str += stringf( "0:%02d", secondsi );
 		else // show decimal points
-			str += stringf( "%.2f", sd );
+			str += stringf( "%.*f", decimals, secondsd );
 
 		return str;
 	}

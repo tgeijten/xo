@@ -43,7 +43,7 @@ namespace xo
 	XO_API string to_str( const version& v );
 
 	XO_API bool from_str( const string& s, time& v );
-	XO_API string to_str( const time& v, double hide_decimals_after_seconds = 10.0 );
+	XO_API string to_str( const time& v, int decimals = 3, double hide_decimals_after_seconds = 10.0 );
 
 	XO_API bool from_str( const string& s, path& v );
 	XO_API string to_str( const path& p );
