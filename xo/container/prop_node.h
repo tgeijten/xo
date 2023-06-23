@@ -270,6 +270,11 @@ namespace xo
 		return prop_node( to_str( v ) );
 	}
 
+	/// make prop_node with single key value pair
+	template< typename T > prop_node make_prop_node( const prop_node::key_t& key, const T& v ) {
+		prop_node pn; pn.set( key, v ); return pn;
+	}
+
 	/// default conversion from prop_node to T, uses from_str()
 	template< typename T > bool from_prop_node( const prop_node& pn, T& v ) {
 		return from_str( pn.get_str(), v );
