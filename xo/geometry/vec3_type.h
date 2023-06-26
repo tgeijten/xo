@@ -36,6 +36,7 @@ namespace xo
 
 		/// const properties
 		bool is_null() const { return x == T( 0 ) && y == T( 0 ) && z == T( 0 ); }
+		bool is_nan() const { return !( x == x ) || !( y == y ) || !( z == z ); }
 
 		/// modify vec3
 		void clear() { x = y = z = T( 0 ); }
