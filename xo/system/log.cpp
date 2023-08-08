@@ -5,16 +5,19 @@
 #include "xo/container/vector_type.h"
 #include "xo/container/container_tools.h"
 #include <stdarg.h>
+#include <shared_mutex>
 
 namespace xo
 {
 	namespace log
 	{
 		xo::vector< sink* > global_sinks;
+		std::shared_mutex global_sink_mutex;
 
 		void log_string( level l, const string& str )
 		{
 			// no need to do additional test_log_level(), no performance gain
+			std::shared_lock lock{ global_sink_mutex };
 			for ( auto s : global_sinks )
 				s->submit_log_message( l, str );
 		}
@@ -31,6 +34,7 @@ namespace xo
 
 		void flush()
 		{
+			std::shared_lock lock{ global_sink_mutex };
 			for ( auto s : global_sinks )
 				s->flush();
 		}
@@ -38,12 +42,14 @@ namespace xo
 		void add_sink( sink* s )
 		{
 			xo_assert( s != nullptr );
+			std::unique_lock lock{ global_sink_mutex };
 			if ( xo::find( global_sinks, s ) == global_sinks.end() )
 				global_sinks.push_back( s );
 		}
 
 		void remove_sink( sink* s )
 		{
+			std::unique_lock lock{ global_sink_mutex };
 			auto it = xo::find( global_sinks, s );
 			if ( it != global_sinks.end() )
 				global_sinks.erase( it );
@@ -51,6 +57,7 @@ namespace xo
 
 		bool test_log_level( level l )
 		{
+			std::shared_lock lock{ global_sink_mutex };
 			for ( auto s : global_sinks )
 				if ( s->test_log_level( l ) )
 					return true;
