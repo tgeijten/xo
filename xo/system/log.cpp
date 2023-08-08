@@ -5,6 +5,7 @@
 #include "xo/container/vector_type.h"
 #include "xo/container/container_tools.h"
 #include <stdarg.h>
+#include <mutex>
 #include <shared_mutex>
 
 namespace xo
