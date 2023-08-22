@@ -44,10 +44,10 @@ namespace xo
 	template< typename T > bool same_sign( T v1, T v2 ) { return signum( v1 ) == signum( v2 ); }
 
 	/// set if smaller
-	template< typename T > T& set_if_smaller( T& value, const T& other ) { if ( other < value ) value = other; return value; }
+	template< typename T > void set_if_smaller( T& value, const T& other ) { if ( other < value ) value = other; }
 
 	/// set if bigger
-	template< typename T > T& set_if_bigger( T& value, const T& other ) { if ( other > value ) value = other; return value; }
+	template< typename T > void set_if_bigger( T& value, const T& other ) { if ( other > value ) value = other; }
 
 	/// set if different, returns true if set
 	template< typename T > bool set_if_different( T& value, const T& other ) { if ( other == value ) return false; value = other; return true; }

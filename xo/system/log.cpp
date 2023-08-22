@@ -14,6 +14,7 @@ namespace xo
 	{
 		xo::vector< sink* > global_sinks;
 		std::shared_mutex global_sink_mutex;
+		level global_lowest_log_level = level::never;
 
 		void log_string( level l, const string& str )
 		{
@@ -46,6 +47,8 @@ namespace xo
 			std::unique_lock lock{ global_sink_mutex };
 			if ( xo::find( global_sinks, s ) == global_sinks.end() )
 				global_sinks.push_back( s );
+			for ( auto s : global_sinks )
+				xo::set_if_smaller( global_lowest_log_level, s->get_log_level() );
 		}
 
 		void remove_sink( sink* s )
@@ -58,6 +61,9 @@ namespace xo
 
 		bool test_log_level( level l )
 		{
+			if ( l < global_lowest_log_level )
+				return false;
+
 			std::shared_lock lock{ global_sink_mutex };
 			for ( auto s : global_sinks )
 				if ( s->test_log_level( l ) )
