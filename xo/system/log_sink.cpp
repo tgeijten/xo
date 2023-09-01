@@ -49,6 +49,8 @@ namespace xo
 		void sink::set_log_level( level l )
 		{
 			log_level_ = l;
+			remove_sink( this );
+			add_sink( this ); // re-add to update global log level
 		}
 
 		level sink::get_log_level()

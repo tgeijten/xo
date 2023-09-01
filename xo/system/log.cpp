@@ -41,14 +41,20 @@ namespace xo
 				s->flush();
 		}
 
+		void update_global_log_level_thread_unsafe()
+		{
+			global_lowest_log_level = log::level::never;
+			for ( auto s : global_sinks )
+				xo::set_if_smaller( global_lowest_log_level, s->get_log_level() );
+		}
+
 		void add_sink( sink* s )
 		{
 			xo_assert( s != nullptr );
 			std::unique_lock lock{ global_sink_mutex };
 			if ( xo::find( global_sinks, s ) == global_sinks.end() )
 				global_sinks.push_back( s );
-			for ( auto s : global_sinks )
-				xo::set_if_smaller( global_lowest_log_level, s->get_log_level() );
+			update_global_log_level_thread_unsafe();
 		}
 
 		void remove_sink( sink* s )
@@ -57,6 +63,7 @@ namespace xo
 			auto it = xo::find( global_sinks, s );
 			if ( it != global_sinks.end() )
 				global_sinks.erase( it );
+			update_global_log_level_thread_unsafe();
 		}
 
 		bool test_log_level( level l )
