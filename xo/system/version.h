@@ -12,6 +12,8 @@ namespace xo
 			major_( maj ), minor_( min ), patch_( patch ), build_( bld ), postfix_( post ) {}
 
 		bool empty() const { return major_ == 0 && minor_ == 0 && patch_ == 0 && build_ == 0 && postfix_.empty(); }
+		bool is_at_least( int maj, int min, int patch = 0, int bld = 0 ) const;
+		bool is_below( int maj, int min, int patch = 0, int bld = 0 ) const;
 
 		int major_;
 		int minor_;
@@ -33,10 +35,14 @@ namespace xo
 			return -3;
 		else if ( v1.patch_ > v2.patch_ )
 			return 3;
-		else if ( v1.build_ < v2.build_ )
-			return -4;
-		else if ( v1.build_ > v2.build_ )
-			return 4;
+		else if ( v1.build_ > 0 && v2.build_ > 0 ) {
+			// only compare build when they are nonzero in both versions
+			if ( v1.build_ < v2.build_ )
+				return -4;
+			else if ( v1.build_ > v2.build_ )
+				return 4;
+			else return 0;
+		}
 		else return 0;
 	}
 
@@ -46,4 +52,11 @@ namespace xo
 	inline bool operator>=( const version& v1, const version& v2 ) { return version_compare( v1, v2 ) >= 0; }
 	inline bool operator==( const version& v1, const version& v2 ) { return version_compare( v1, v2 ) == 0; }
 	inline bool operator!=( const version& v1, const version& v2 ) { return version_compare( v1, v2 ) != 0; }
+
+	inline bool version::is_at_least( int maj, int min, int patch, int bld ) const {
+		return *this >= xo::version( maj, min, patch, bld );
+	}
+	inline bool version::is_below( int maj, int min, int patch, int bld ) const {
+		return *this < xo::version( maj, min, patch, bld );
+	}
 }
