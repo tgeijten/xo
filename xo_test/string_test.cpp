@@ -48,7 +48,7 @@ namespace xo
 		XO_CHECK( vs[1] == "0.123" );
 		XO_CHECK( vs[2] == "24" );
 
-		auto vs2 = xo::split_str( "appel; peer,,, banaan", ";., " );
+		auto vs2 = xo::split_str( "appel; peer,,, banaan"s, ";., " );
 		XO_CHECK( vs2[0] == "appel" );
 		XO_CHECK( vs2[1] == "peer" );
 		XO_CHECK( vs2[2] == "banaan" );
