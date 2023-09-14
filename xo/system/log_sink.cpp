@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <mutex>
+#include <string>
 
 #ifdef XO_COMP_MSVC
 #	define NOMINMAX
@@ -87,46 +88,50 @@ namespace xo
 
 		void console_sink::hande_log_message( level l, const string& msg )
 		{
-			auto str = get_log_prefix( format_, l );
+			auto prefix = get_log_prefix( format_, l );
+			auto msg_lines = xo::split_str( string_view( msg ), "\r\n" );
 
 			std::scoped_lock lock( g_console_mutex );
-			stream_ << str;
-
-#ifdef XO_COMP_MSVC
-			// set console color
-			HANDLE h = GetStdHandle( STD_OUTPUT_HANDLE );
-			CONSOLE_SCREEN_BUFFER_INFO info;
-			GetConsoleScreenBufferInfo( h, &info );
-			auto bg = info.wAttributes & ( BACKGROUND_RED | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_INTENSITY );
-			switch ( l )
+			for ( auto& line : msg_lines )
 			{
-			case xo::log::level::trace:
-			case xo::log::level::debug:
-				SetConsoleTextAttribute( h, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | bg );
-				break;
-			case xo::log::level::info:
-				if ( xo::str_begins_with( msg, "Success" ) ) // make green if message starts with 'Success', ha ha
-					SetConsoleTextAttribute( h, FOREGROUND_GREEN | FOREGROUND_INTENSITY | bg );
-				else // normal boring white if not
-					SetConsoleTextAttribute( h, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY | bg );
-				break;
-			case xo::log::level::warning:
-				SetConsoleTextAttribute( h, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY | bg );
-				break;
-			case xo::log::level::error:
-			case xo::log::level::critical:
-				SetConsoleTextAttribute( h, FOREGROUND_RED | FOREGROUND_INTENSITY | bg );
-				break;
-			}
-#endif
-			// output the log message
-			// could not find performance benefits using '\n' instead of std::endl
-			stream_ << msg << std::endl;
+				stream_ << prefix;
 
 #ifdef XO_COMP_MSVC
-			// restore color
-			SetConsoleTextAttribute( h, info.wAttributes );
+				// set console color
+				HANDLE h = GetStdHandle( STD_OUTPUT_HANDLE );
+				CONSOLE_SCREEN_BUFFER_INFO info;
+				GetConsoleScreenBufferInfo( h, &info );
+				auto bg = info.wAttributes & ( BACKGROUND_RED | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_INTENSITY );
+				switch ( l )
+				{
+				case xo::log::level::trace:
+				case xo::log::level::debug:
+					SetConsoleTextAttribute( h, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | bg );
+					break;
+				case xo::log::level::info:
+					if ( xo::str_begins_with( msg, "Success" ) ) // make green if message starts with 'Success', ha ha
+						SetConsoleTextAttribute( h, FOREGROUND_GREEN | FOREGROUND_INTENSITY | bg );
+					else // normal boring white if not
+						SetConsoleTextAttribute( h, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY | bg );
+					break;
+				case xo::log::level::warning:
+					SetConsoleTextAttribute( h, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY | bg );
+					break;
+				case xo::log::level::error:
+				case xo::log::level::critical:
+					SetConsoleTextAttribute( h, FOREGROUND_RED | FOREGROUND_INTENSITY | bg );
+					break;
+				}
 #endif
+				// output the log message
+				// could not find performance benefits using '\n' instead of std::endl
+				stream_ << line << std::endl;
+
+#ifdef XO_COMP_MSVC
+				// restore color
+				SetConsoleTextAttribute( h, info.wAttributes );
+#endif
+			}
 		}
 
 		file_sink::file_sink( const path& file, level l, sink_mode m ) :
