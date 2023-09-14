@@ -106,9 +106,21 @@ namespace xo
 		return s.substr( 0, 1 + right );
 	}
 
-	std::vector< string > split_str( const string& s, const string& sep_chars )
+	vector< string > split_str( const string& s, const string& sep_chars )
 	{
 		std::vector< string > strings;
+		size_t ofs = s.find_first_not_of( sep_chars.c_str(), 0 );
+		while ( ofs != string::npos ) {
+			size_t ofsend = s.find_first_of( sep_chars.c_str(), ofs );
+			strings.push_back( s.substr( ofs, ofsend - ofs ) );
+			ofs = s.find_first_not_of( sep_chars.c_str(), ofsend );
+		}
+		return strings;
+	}
+
+	vector< string_view > split_str( const string_view& s, const string& sep_chars )
+	{
+		std::vector< string_view > strings;
 		size_t ofs = s.find_first_not_of( sep_chars.c_str(), 0 );
 		while ( ofs != string::npos ) {
 			size_t ofsend = s.find_first_of( sep_chars.c_str(), ofs );

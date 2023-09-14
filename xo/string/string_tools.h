@@ -57,6 +57,9 @@ namespace xo
 	/// split a string into a vector of strings
 	XO_API vector< string > split_str( const string& s, const string& sep_chars );
 
+	/// split a string_view into a vector of string_view
+	XO_API vector< string_view > split_str( const string_view& s, const string& sep_chars );
+
 	/// split string into pair at first occurrence of sep_char, second is empty if not occurring
 	XO_API std::pair< string, string > split_str_at_first( const string& s, const string& sep_chars );
 

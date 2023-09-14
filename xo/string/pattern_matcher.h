@@ -13,7 +13,7 @@ namespace xo
 	public:
 		pattern_matcher() = default;
 		pattern_matcher( const prop_node& pn ) : patterns_( split_str( pn.get<string>(), ";" ) ) {}
-		pattern_matcher( const char* pattern, const char* delimeters = ";" ) : patterns_( split_str( pattern, delimeters ) ) {}
+		pattern_matcher( const char* pattern, const char* delimeters = ";" ) : patterns_( split_str( string( pattern ), delimeters ) ) {}
 		pattern_matcher( const string& pattern, const char* delimeters = ";" ) : patterns_( split_str( pattern, delimeters ) ) {}
 
 		// returns true if string matches pattern
