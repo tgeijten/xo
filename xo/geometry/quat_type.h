@@ -27,6 +27,10 @@ namespace xo
 		/// member access
 		T w, x, y, z;
 
+		/// const properties
+		bool is_identity() const { return w == T( 1 ) && x == T( 0 ) && y == T( 0 ) && z == T( 0 ); }
+		bool is_nan() const { return !( w == w ) || !( x == x ) || !( y == y ) || !( z == z ); }
+
 		/// container methods
 		size_t size() const { return 4; }
 		iterator begin() { return &w; }
