@@ -112,23 +112,17 @@ namespace xo
 		else return path( "/tmp" );
 	}
 
-	bool copy_file( const path& from, const path& to, bool overwrite )
+	bool copy_file( const path& from, const path& to, bool overwrite, error_code* ec )
 	{
-#ifdef XO_COMP_MSVC
-		return CopyFile( from.c_str(), to.c_str(), overwrite ) == TRUE;
-#else
-		if ( overwrite || !file_exists( to ) )
-		{
-			std::ifstream src( from.str(), std::ios::binary );
-			std::ofstream dst( to.str(), std::ios::binary );
-			if ( src.good() && dst.good() )
-			{
-				dst << src.rdbuf();
-				return true;
-			}
+		auto opt = overwrite ? fs::copy_options::overwrite_existing : fs::copy_options::none;
+		if ( ec ) {
+			std::error_code stdec;
+			auto success = fs::copy_file( fs::path( from.str() ), fs::path( to.str() ), opt, stdec );
+			if ( !success )
+				ec->set( stdec.value(), stdec.message() );
+			return success;
 		}
-		return false;
-#endif
+		else return fs::copy_file( fs::path( from.str() ), fs::path( to.str() ), opt );
 	}
 
 	bool remove( const path& file )

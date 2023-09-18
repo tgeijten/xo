@@ -15,7 +15,7 @@ namespace xo
 	XO_API path get_application_dir();
 	XO_API path temp_directory_path();
 
-	XO_API bool copy_file( const path& from, const path& to, bool overwrite_existing );
+	XO_API bool copy_file( const path& from, const path& to, bool overwrite_existing, error_code* ec = nullptr );
 
 	XO_API bool remove( const path& file );
 
