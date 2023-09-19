@@ -13,8 +13,10 @@ namespace xo
 		time pause();
 		void resume();
 		time restart();
+		void set( time t );
 
 		bool is_running() const { return epoch_ > 0; }
+		bool is_paused() const { return !is_running(); }
 		long long tick_count() const;
 
 	private:

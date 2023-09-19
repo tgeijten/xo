@@ -54,6 +54,10 @@ namespace xo
 	{
 		return time( ticks * g_time_from_ticks.first / g_time_from_ticks.second ); // #todo check if this won't overflow
 	}
+	long long get_ticks_from_time( time t )
+	{
+		return t.nanoseconds() * g_time_from_ticks.second / g_time_from_ticks.first; // #todo check if this won't overflow
+	}
 #else
 	long long get_tick_count()
 	{
@@ -64,6 +68,11 @@ namespace xo
 	{
 		auto ticks_duration = std::chrono::high_resolution_clock::duration( ticks );
 		return time( std::chrono::duration_cast<std::chrono::nanoseconds>( ticks_duration ).count() );
+	}
+	long long get_ticks_from_time( time t )
+	{
+		auto nano_duration = std::chrono::nanoseconds( t.nanoseconds() );
+		return std::chrono::duration_cast<std::chrono::high_resolution_clock::duration>( nano_duration ).count();
 	}
 #endif
 
@@ -82,6 +91,14 @@ namespace xo
 		auto prev_epoch = epoch_;
 		epoch_ = get_tick_count();
 		return get_time_from_ticks( epoch_ - prev_epoch );
+	}
+
+	void timer::set( time t )
+	{
+		auto ticks = get_ticks_from_time( t );
+		if ( is_running() )
+			epoch_ = get_tick_count() - ticks;
+		else epoch_ = -ticks;
 	}
 
 	long long timer::tick_count() const
