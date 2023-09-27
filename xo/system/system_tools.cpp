@@ -108,8 +108,8 @@ namespace xo
 		gethostname( hostname, HOST_NAME_MAX );
 		return string( hostname );
 #elif defined( __APPLE__ )
-		char hostname[HOST_NAME_MAX];
-		gethostname( hostname, HOST_NAME_MAX );
+		char hostname[256];
+		gethostname( hostname, 256 );
 		return string( hostname );
 #else
 		return "";
