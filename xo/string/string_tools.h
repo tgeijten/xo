@@ -69,13 +69,16 @@ namespace xo
 	/// replace a substring in a string
 	XO_API void replace_str( string& s, const string& find_str, const string& replace_with );
 
+	/// replace a substring in a const string
+	XO_API string replace_str( const string& s, const string& find_str, const string& replace_with );
+
 	/// replace a substring in a temporary string
 	XO_API string replace_str( string&& s, const string& find_str, const string& replace_with );
 
 	/// replace a character in a string
 	XO_API void replace_char( string& s, const char find_char, const char replace_with );
 
-	/// replace a character in a string
+	/// replace a character in a temporary string
 	XO_API string replace_char( string&& s, const char find_char, const char replace_with );
 
 	/// convert string to lower case

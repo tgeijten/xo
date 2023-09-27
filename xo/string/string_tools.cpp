@@ -151,6 +151,11 @@ namespace xo
 			s.replace( pos, find_str.size(), replace_with );
 	}
 
+	string replace_str( const string& s, const string& find_str, const string& replace_with )
+	{
+		return replace_str( string( s ), find_str, replace_with );
+	}
+
 	string replace_str( string&& s, const string& find_str, const string& replace_with )
 	{
 		replace_str( s, find_str, replace_with );
