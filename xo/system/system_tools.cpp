@@ -97,19 +97,36 @@ namespace xo
 
 	string get_computer_name()
 	{
-#ifdef XO_COMP_MSVC
-		char buf[256] = "";
-		DWORD len = 256;
-		if ( !GetComputerName( buf, &len ) )
-			return "";
-		else
+#if defined( _WIN32 )
+		char buf[MAX_COMPUTERNAME_LENGTH + 1] = "";
+		DWORD len = MAX_COMPUTERNAME_LENGTH;
+		if ( GetComputerName( buf, &len ) )
 			return buf;
+		else return "";
 #elif defined( __linux__ )
 		char hostname[HOST_NAME_MAX];
 		gethostname( hostname, HOST_NAME_MAX );
-		return stringf( "%s-gcc%d.%d", hostname, __GNUC__, __GNUC_MINOR__ );
+		return string( hostname );
+#elif defined( __APPLE__ )
+		char hostname[HOST_NAME_MAX];
+		gethostname( hostname, HOST_NAME_MAX );
+		return string( hostname );
 #else
 		return "";
 #endif
 	}
+
+	string get_compiler_id()
+	{
+#if defined( _MSC_VER )
+		return stringf( "msvc%d", _MSC_VER );
+#elif defined( __GNUC__ )
+		return stringf( "gcc%d.%d", __GNUC__, __GNUC_MINOR__ );
+#elif defined( __clang__ )
+		return stringf( "clang%d.%d", __clang_major__, __clang_minor__ );
+#else
+		return "";
+#endif
+	}
+
 }
