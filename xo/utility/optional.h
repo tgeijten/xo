@@ -68,4 +68,11 @@ namespace xo
 		T value_;
 		bool has_value_;
 	};
+
+	template< typename T > bool operator==( const optional<T>& lhs, const T& rhs ) { return lhs && *lhs == rhs; }
+	template< typename T > bool operator!=( const optional<T>& lhs, const T& rhs ) { return !( lhs == rhs ); }
+	template< typename T > bool operator==( const T& lhs, const optional<T>& rhs ) { return rhs == lhs; }
+	template< typename T > bool operator!=( const T& lhs, const optional<T>& rhs ) { return rhs != lhs; }
+	template< typename T > bool operator==( const optional<T>& lhs, const optional<T>& rhs ) { return ( lhs && rhs && *rhs == *lhs ) || ( !lhs && !rhs ); }
+	template< typename T > bool operator!=( const optional<T>& lhs, const optional<T>& rhs ) { return rhs != lhs; }
 }

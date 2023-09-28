@@ -4,6 +4,7 @@
 #include "xo/filesystem/path.h"
 #include "xo/string/dictionary.h"
 #include "xo/utility/hash.h"
+#include "xo/utility/optional.h"
 #include <sstream>
 #include "xo/string/string_cast.h"
 #include "xo/system/system_tools.h"
@@ -94,6 +95,12 @@ namespace xo
 		XO_CHECK( tidy_identifier( "a::b::__nope__" ) == "nope" );
 		XO_CHECK( tidy_identifier( "data.member_" ) == "member" );
 		XO_CHECK( tidy_identifier( "sub.data.member_" ) == "member" );
+
+
+		// optional string
+		xo::optional<std::string> so( "appel" );
+		XO_CHECK( so == string( "appel" ) )
+		XO_CHECK( so != string( "peer" ) )
 
 		index_t idx = 123;
 		int i = -10;
