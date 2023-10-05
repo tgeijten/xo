@@ -45,7 +45,7 @@ namespace xo
 	path& path::make_preferred()
 	{
 		for ( char& c : data_ )
-			if ( c == '/' || c == '\\' )
+			if ( ( c == '/' || c == '\\' ) && c != preferred_separator )
 				c = preferred_separator;
 		return *this;
 	}
