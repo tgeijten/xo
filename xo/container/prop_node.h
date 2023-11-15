@@ -13,6 +13,7 @@
 #include "xo/container/view_if.h"
 
 #include <initializer_list>
+#include <array>
 
 namespace xo
 {
@@ -291,6 +292,15 @@ namespace xo
 		vec.resize( pn.size(), T() );
 		for ( index_t i = 0; i < pn.size(); ++i )
 			if ( !from_prop_node( pn[i], vec[i] ) )
+				return false;
+		pn.access();
+		return true;
+	};
+
+	template< typename T, std::size_t N > bool from_prop_node( const prop_node& pn, std::array<T, N>& arr ) {
+		auto n = std::min( arr.size(), pn.size() );
+		for ( index_t i = 0; i < n; ++i )
+			if ( !from_prop_node( pn[i], arr[i] ) )
 				return false;
 		pn.access();
 		return true;
