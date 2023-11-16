@@ -12,6 +12,7 @@
 #define INIT_PROP_NAMED_REQUIRED( _pn_, _var_, _name_ ) _var_ = _pn_.get< decltype( _var_ ) >( _name_ )
 
 #define INIT_MEMBER( _pn_, _var_, _default_ ) _var_( _pn_.get< decltype( _var_ ) >( ::xo::tidy_identifier( #_var_ ), decltype( _var_ )( _default_ ) ) )
+#define INIT_OPTIONAL_MEMBER( _pn_, _var_ ) _var_( _pn_.try_get< decltype( _var_ )::value_type >( ::xo::tidy_identifier( #_var_ ) ) )
 #define INIT_MEMBER_REQUIRED( _pn_, _var_ ) _var_( _pn_.get< decltype( _var_ ) >( ::xo::tidy_identifier( #_var_ ) ) )
 
 #define SET_PROP( _pn_, _var_ ) _pn_.set< decltype( _var_ ) >( ::xo::tidy_identifier( #_var_ ), _var_ )
