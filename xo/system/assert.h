@@ -32,5 +32,8 @@
 #define xo_error_if( CONDITION_, MESSAGE_ ) \
 	if ( CONDITION_ ) xo_error( std::string( MESSAGE_ ) )
 
+#define xo_range_assert( VAR_, VAL_MIN_, VAL_MAX_ ) \
+	if ( VAR_ < VAL_MIN_ || VAR_ > VAL_MAX_ ) xo_error( "Variable out of range: "#VAR_ )
+
 #define XO_NOT_IMPLEMENTED \
 	xo_error( std::string( __FUNCTION__ ) + "(): Function not implemented" );
