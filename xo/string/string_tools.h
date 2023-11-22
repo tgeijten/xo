@@ -125,11 +125,12 @@ namespace xo
 	XO_API bool pattern_match( const string& str, const string& pattern );
 
 	/// concatenate strings with delimiters
-	XO_API string concatenate_str( std::initializer_list< string > lst, const string& delim = "" );
+	XO_API string concat_str( std::initializer_list< string > lst, const string& delim = "" );
+	XO_API string concat_str( const string& s1, const string& s2, const char delim = '.' );
 
 	/// concatenate container of strings with delimiters
 	template< typename C >
-	string concatenate_str( const C& container, const string& delim = "" ) {
+	string concat_str( const C& container, const string& delim = "" ) {
 		string str;
 		bool first = true;
 		for ( auto& element : container ) {

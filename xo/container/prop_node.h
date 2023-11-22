@@ -379,7 +379,7 @@ namespace xo
 	T prop_node::get_any( std::initializer_list< key_t > keys ) const {
 		if ( auto c = try_get_any_child( keys ) )
 			return c->get< T >();
-		xo_error( "Could not find key: " + concatenate_str( keys, " or " ) );
+		xo_error( "Could not find key: " + concat_str( keys, " or " ) );
 	}
 
 	template< typename T >

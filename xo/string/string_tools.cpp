@@ -208,7 +208,7 @@ namespace xo
 		else return make_pair( trim_str( s.substr( 0, pos ) ), trim_str( mid_str( s, pos + 1 ) ) );
 	}
 
-	string concatenate_str( std::initializer_list< string > string_list, const string& delim )
+	string concat_str( std::initializer_list< string > string_list, const string& delim )
 	{
 		string str;
 		bool first = true;
@@ -221,6 +221,15 @@ namespace xo
 			}
 		}
 		return str;
+	}
+
+	string concat_str( const string& s1, const string& s2, const char delim )
+	{
+		if ( s1.empty() )
+			return s2;
+		else if ( s2.empty() )
+			return s1;
+		else return s1 + delim + s2;
 	}
 
 	string stringf( const char* format, ... )
