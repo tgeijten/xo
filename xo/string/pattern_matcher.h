@@ -26,7 +26,7 @@ namespace xo
 
 		bool operator()( const string& str ) const { return match( str ); }
 		bool empty() const { return patterns_.empty(); }
-		string str() const { return concat_str( patterns(), ";" );; }
+		string str() const { return concat_str( patterns(), ";" ); }
 		const vector<string>& patterns() const { return patterns_; }
 
 	private:
