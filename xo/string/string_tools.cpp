@@ -189,6 +189,20 @@ namespace xo
 		return s;
 	}
 
+	void replace_special_chars( string& s )
+	{
+		static const std::vector<std::pair<string, string>> fixes = {
+			{ "ÁÀ", "A" }, { "Ä", "Ae" }, { "ÜÛÙ", "U" },
+			{ "áà", "a" }, { "ä", "ae" }, { "ç", "c" },
+			{ "ëêéè", "e" }, { "ï", "i" }, { "ñ", "n" },
+			{ "óö", "o" }, { "ûù", "u" }, { "ü", "ue" }
+		};
+
+		for ( auto& [chars, subst] : fixes )
+			for ( auto& c : chars )
+				replace_str( s, std::string{ c }, subst );
+	}
+
 	size_t copy_str( const string& source, char* target_buf, size_t buf_size )
 	{
 		if ( buf_size > 0 )

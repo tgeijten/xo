@@ -81,6 +81,9 @@ namespace xo
 	/// replace a character in a temporary string
 	XO_API string replace_char( string&& s, const char find_char, const char replace_with );
 
+	/// replace marked letters with normal letters
+	XO_API void replace_special_chars( string& s );
+
 	/// convert string to lower case
 	XO_API string to_lower( string s );
 
