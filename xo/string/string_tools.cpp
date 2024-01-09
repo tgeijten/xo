@@ -387,6 +387,13 @@ namespace xo
 #endif
 	}
 
+	void append_str( string& str, const string& append, const string& delim )
+	{
+		if ( !str.empty() && !str_ends_with( str, delim ) )
+			str += delim;
+		str += append;
+	}
+
 	string get_filename_ext( const string& str )
 	{
 		size_t n = str.find_last_of( '.' );

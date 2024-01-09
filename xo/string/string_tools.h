@@ -127,6 +127,9 @@ namespace xo
 	/// match pattern (glob, i.e. name* or name?)
 	XO_API bool pattern_match( const string& str, const string& pattern );
 
+	/// append a string, adding delimiters if needed
+	XO_API void append_str( string& str, const string& append, const string& delim = " " );
+
 	/// concatenate strings with delimiters
 	XO_API string concat_str( std::initializer_list< string > lst, const string& delim = "" );
 	XO_API string concat_str( const string& s1, const string& s2, const char delim = '.' );
