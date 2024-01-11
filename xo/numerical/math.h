@@ -62,6 +62,10 @@ namespace xo
 	/// check if a number is whole (i.e. has no decimals)
 	template< typename T > bool is_whole( T v ) { return floor( v ) == v; }
 
+	/// count the digits if a positive integer, given a base
+	inline size_t count_digits( size_t value, size_t base = 10 )
+	{ size_t digits = 1; for ( ; value >= base; ++digits ) value /= 10; return digits; }
+
 	/// round and cast to integer type
 	template< typename TI, typename TF >
 	TI round_cast( TF value ) { return static_cast<TI>( std::round( value ) ); }
