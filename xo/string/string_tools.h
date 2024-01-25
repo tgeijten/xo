@@ -5,6 +5,9 @@
 #include "xo/container/vector_type.h"
 #include "xo/container/pair_type.h"
 #include "xo/string/string_cast.h"
+#include "xo/geometry/angle_type.h"
+#include "xo/geometry/vec3_type.h"
+#include "xo/geometry/quat_type.h"
 
 #include <initializer_list>
 
@@ -147,4 +150,15 @@ namespace xo
 		}
 		return str;
 	}
+
+	/// convert vec3 angle to nicely formatted degree string
+	template< angle_unit U, typename T > string vec3deg_str( const vec3_< angle_<U, T> >& a ) {
+		return stringf( "%7.2f\t%7.2f\t%7.2f", a.x.deg_value(), a.y.deg_value(), a.z.deg_value() );
+	}
+
+	/// convert quat to fancy string
+	template< typename T > string quat_str( const quat_<T>& q ) {
+		return stringf( "%7.3f\t%7.3f\t%7.3f\t%7.3f", q.w, q.x, q.y, q.z );
+	}
+
 }
