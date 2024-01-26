@@ -159,34 +159,54 @@ namespace xo
 		else return { vec3_<T>::unit_x(), radian_<T>() };
 	}
 
-	/// Get rotation around specific axis
-	// #todo: verify and optimize
+	/// Get quaternion and angle around specific unit-length axis, does not handle singularity
+	template< typename T > std::pair< quat_<T>, radian_<T> > quat_angle_around_axis_fast( const quat_<T>& q, const vec3_<T>& a ) {
+		auto d = dot_product( vec3_<T>( q.x, q.y, q.z ), a );
+		auto qa = xo::normalized( quat_<T>( q.w, d * a.x, d * a.y, d * a.z ) ); // assume ||a|| == 1
+		return { qa, radian_<T>( std::copysign( 2 * std::acos( qa.w ), d ) ) };
+	}
+
+	/// Get quaternion and angle around specific unit-length axis
+	// #todo: better singularity handling
+	template< typename T > std::pair< quat_<T>, radian_<T> > quat_angle_around_axis( const quat_<T>& q, const vec3_<T>& a ) {
+		auto d = dot_product( vec3_<T>( q.x, q.y, q.z ), a );
+		auto qa = quat_<T>( q.w, d * a.x, d * a.y, d * a.z ); // assume ||a|| == 1
+		if ( auto l = length( qa ); l > constants<T>::epsilon() )
+			qa *= inv( l );
+		else qa.w = 1; // is this the best we can do?
+		return { qa, radian_<T>( std::copysign( 2 * std::acos( qa.w ), d ) ) };
+	}
+
+	/// Get rotation around specific unit-length axis
+	// #todo: better singularity handling
 	template< typename T > radian_<T> rotation_around_axis( const quat_<T>& q, const vec3_<T>& a ) {
-		auto p = projection( vec3_<T>( q.x, q.y, q.z ), a );
-		auto qp = quat_<T>( q.w, p.x, p.y, p.z );
-		return radian_<T>( 2 * std::acos( qp.w / length( qp ) ) );
+		auto d = dot_product( vec3_<T>( q.x, q.y, q.z ), a );
+		auto qa = quat_<T>( q.w, d * a.x, d * a.y, d * a.z ); // assume ||a|| == 1
+		auto l = length( qa );
+		if ( l > constants<T>::ample_epsilon() )
+			return radian_<T>( std::copysign( 2 * std::acos( qa.w / l ), d ) );
+		else return radian_<T>( 0 );
 	}
 
 	/// Rotation around local x axis
-	// #todo: verify and handle singularity when q.w == 0 && q.x == 0
+	// #todo: handle singularity when q.w == 0 && q.x == 0
 	template< typename T > radian_<T> rotation_around_x( const quat_<T>& q ) {
-		return radian_<T>( 2 * std::acos( q.w / std::sqrt( q.w * q.w + q.x * q.x ) ) );
+		return radian_<T>( std::copysign( 2 * std::acos( q.w / std::sqrt( q.w * q.w + q.x * q.x ) ), q.x ) );
 	}
 
 	/// Rotation around local y axis
-	// #todo: verify and handle singularity when q.w == 0 && q.y == 0
+	// #todo: handle singularity when q.w == 0 && q.y == 0
 	template< typename T > radian_<T> rotation_around_y( const quat_<T>& q ) {
-		return radian_<T>( 2 * std::acos( q.w / std::sqrt( q.w * q.w + q.y * q.y ) ) );
+		return radian_<T>( std::copysign( 2 * std::acos( q.w / std::sqrt( q.w * q.w + q.y * q.y ) ), q.y ) );
 	}
 
 	/// Rotation around local z axis
-	// #todo: verify and handle singularity when q.w == 0 && q.z == 0
+	// #todo: handle singularity when q.w == 0 && q.z == 0
 	template< typename T > radian_<T> rotation_around_z( const quat_<T>& q ) {
-		return radian_<T>( 2 * std::acos( q.w / std::sqrt( q.w * q.w + q.z * q.z ) ) );
+		return radian_<T>( std::copysign( 2 * std::acos( q.w / std::sqrt( q.w * q.w + q.z * q.z ) ), q.z ) );
 	}
 
 	/// Get rotations around the local xyz axes of the quaternion
-	// #todo: verify and optimize
 	template< typename T > vec3rad_<T> rotation_around_xyz( const quat_<T>& q ) {
 		return vec3rad_<T>( rotation_around_x( q ), rotation_around_y( q ), rotation_around_z( q ) );
 	}
