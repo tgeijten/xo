@@ -48,6 +48,7 @@ namespace xo
 			test_case( const string& name, test_func_t func );
 			bool check( bool result, const string& message = "" );
 			const test_result& run();
+			const string& name() const { return name_; }
 
 		private:
 			bool try_run_func();
