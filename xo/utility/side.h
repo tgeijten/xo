@@ -44,4 +44,9 @@ namespace xo
 			return new_str;
 		}
 	}
+
+	inline string str_append_before_side( const string& str, const string& postfix ) {
+		auto cur_side = str_get_side( str );
+		return str_remove_side( str ) + postfix + side_postfix( cur_side );
+	}
 }
