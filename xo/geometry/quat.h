@@ -55,6 +55,10 @@ namespace xo
 	template< typename T > bool is_normalized( const quat_<T>& q )
 	{ return std::abs( squared_length( q ) - T( 1 ) ) <= constants<T>::ample_epsilon(); }
 
+	/// test if a quat is identity, based on epsilon (use this instead of equal)
+	template< typename T > bool is_identity( const quat_<T>& q, T e = constants<T>::ample_epsilon() )
+	{ return equal( q.w, T( 1 ), e ) && fabs( q.x ) <= e && fabs( q.y ) <= e && fabs( q.z ) <= e; }
+
 	/// Compare quaternions
 	template< typename T > bool operator==( const quat_<T>& q1, const quat_<T>& q2 )
 	{ return q1.w == q2.w && q1.x == q2.x && q1.y == q2.y && q1.z == q2.z; }
