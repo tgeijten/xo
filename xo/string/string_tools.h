@@ -156,6 +156,11 @@ namespace xo
 		return stringf( "%7.2f\t%7.2f\t%7.2f", a.x.deg_value(), a.y.deg_value(), a.z.deg_value() );
 	}
 
+	/// convert vec3 angle to nicely formatted position string
+	template< typename T > string vec3_str( const vec3_<T>& v ) {
+		return stringf( "%.3f %.3f %.3f", v.x, v.y, v.z );
+	}
+
 	/// convert quat to fancy string
 	template< typename T > string quat_str( const quat_<T>& q ) {
 		return stringf( "%7.3f\t%7.3f\t%7.3f\t%7.3f", q.w, q.x, q.y, q.z );
