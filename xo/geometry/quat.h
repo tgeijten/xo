@@ -153,6 +153,17 @@ namespace xo
 		else return vec3_<T>::zero();
 	}
 
+	/// Get rotation vector from normalized quaternion
+	template< typename T > std::pair< vec3_<T>, radian_<T> > rotation_vector_angle_from_quat( const quat_<T>& q ) {
+		T l = sqrt( q.x * q.x + q.y * q.y + q.z * q.z );
+		if ( ( l > constants<T>::ample_epsilon() ) & ( q.w < T( 1 ) ) ) {
+			T a = T( 2 ) * std::acos( q.w );
+			T s = a / l;
+			return { vec3_<T>( s * q.x, s * q.y, s * q.z ), radian_<T>( a ) };
+		}
+		else return { vec3_<T>::zero(), radian_<T>( 0 ) };
+	}
+
 	/// Get axis angle from normalized quaternion
 	template< typename T > std::pair< vec3_<T>, radian_<T> > axis_angle_from_quat( const quat_<T>& q ) {
 		T l = sqrt( q.x * q.x + q.y * q.y + q.z * q.z );
