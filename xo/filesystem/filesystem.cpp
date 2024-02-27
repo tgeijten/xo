@@ -172,7 +172,7 @@ namespace xo
 		return g_current_find_file_folder;
 	}
 
-	path find_file( std::initializer_list< path > find_paths )
+	path find_file( std::initializer_list<path> find_paths )
 	{
 		for ( auto& f : find_paths )
 		{
@@ -184,7 +184,7 @@ namespace xo
 		xo_error( "Could not find any of the following files: " + container_to_str( find_paths ) );
 	}
 
-	optional< path > try_find_file( std::initializer_list< path > find_paths )
+	optional<path> try_find_file( std::initializer_list<path> find_paths )
 	{
 		for ( auto& f : find_paths )
 		{
@@ -198,7 +198,25 @@ namespace xo
 					return full_path;
 			}
 		}
-		return optional< path >();
+		return optional<path>();
+	}
+
+	optional<path> try_find_file( const path& file, const std::vector<path>& search_dirs )
+	{
+		// file path is absolute, try first or use search paths with filename
+		if ( file.is_absolute() ) {
+			if ( file_exists( file ) )
+				return file;
+			else return try_find_file( file.filename(), search_dirs );
+		}
+
+		// check search dirs
+		for ( auto& dir : search_dirs ) {
+			auto full_path = dir / file;
+			if ( file_exists( full_path ) )
+				return full_path;
+		}
+		return optional<path>();
 	}
 
 	bool create_directories( const path& folder )
@@ -225,7 +243,7 @@ namespace xo
 				return unique_folder;
 		}
 		xo_error( "Could not find unique folder after " + to_str( max_attempts ) + " attempts" );
-	}
+}
 
 	path create_unique_directory( const path& folder, int max_attempts )
 	{
