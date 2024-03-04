@@ -11,6 +11,7 @@ namespace xo
 	struct transform_
 	{
 		transform_() : p(), q() {}
+		transform_( no_init_t ) : p( no_init ), q( no_init ) {}
 		transform_( vec3_<T> pos, quat_<T> ori ) : p( pos ), q( ori ) {}
 		transform_( vec3_<T> pos ) : p( pos ), q( quat_<T>::identity() ) {}
 		transform_( quat_<T> ori ) : p( vec3_<T>::zero() ), q( ori ) {}
@@ -36,6 +37,7 @@ namespace xo
 		quat_<T> trans( const quat_<T>& o ) const { return q * o; }
 		quat_<T> inv_trans( const quat_<T>& o ) const { return conjugate( q ) * o; }
 
+		bool is_identity() const { return p.is_null() && q.is_identity(); }
 		static transform_<T> identity() { return transform_<T>( vec3_<T>::zero(), quat_<T>::identity() ); }
 	};
 
