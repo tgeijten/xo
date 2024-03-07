@@ -90,7 +90,6 @@ namespace xo
 		pair< iterator, bool > insert( const value_type& value ) {
 			auto it = lower_bound( value.first );
 			if ( it != end() && it->first == value.first ) {
-				it->second = value.second; // replace existing item
 				return make_pair( it, false );
 			}
 			else return make_pair( data_.insert( it, value ), true );
@@ -99,7 +98,6 @@ namespace xo
 		pair< iterator, bool > insert( value_type&& value ) {
 			auto it = lower_bound( value.first );
 			if ( it != end() && it->first == value.first ) {
-				it->second = std::move( value.second ); // replace existing item
 				return make_pair( it, false );
 			}
 			else return make_pair( data_.insert( it, std::move( value ) ), true );
