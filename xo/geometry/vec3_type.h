@@ -50,6 +50,7 @@ namespace xo
 
 		/// static initializers
 		static constexpr vec3_<T> zero() { return vec3_<T>( T( 0 ), T( 0 ), T( 0 ) ); }
+		static constexpr vec3_<T> one() { return vec3_<T>( T( 1 ), T( 1 ), T( 1 ) ); }
 		static constexpr vec3_<T> unit_x() { return vec3_<T>( T( 1 ), T( 0 ), T( 0 ) ); }
 		static constexpr vec3_<T> unit_y() { return vec3_<T>( T( 0 ), T( 1 ), T( 0 ) ); }
 		static constexpr vec3_<T> unit_z() { return vec3_<T>( T( 0 ), T( 0 ), T( 1 ) ); }
