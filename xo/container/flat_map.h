@@ -114,13 +114,13 @@ namespace xo
 
 		V& at( const key_type& key ) {
 			auto it = find( key );
-			xo_error_if( it == end(), "Could not find key: " + to_str( key ) );
+			xo_error_if( it == end(), "key not found" );
 			return it->second;
 		}
 
 		const V& at( const key_type& key ) const {
 			auto it = find( key );
-			xo_error_if( it == end(), "Could not find key: " + to_str( key ) );
+			xo_error_if( it == end(), "key not found" );
 			return it->second;
 		}
 
