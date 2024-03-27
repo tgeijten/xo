@@ -10,6 +10,14 @@ namespace xo
 		none = 0,
 		right = 1
 	};
+	
+	inline side mirrored( side s ) {
+		switch( s ) {
+		case side::left: return side::right;
+		case side::right: return side::left;
+		default: return side::none;
+		}
+	}
 
 	inline const char* side_postfix( side s ) {
 		static constexpr const char* side_postfixes[3] = { "_l", "", "_r" };
@@ -43,6 +51,16 @@ namespace xo
 			new_str.back() = ( new_side == side::left ) ? 'l' : 'r';
 			return new_str;
 		}
+	}
+
+	inline string str_mirror_side( const string& str ) {
+		auto cur_side = str_get_side( str );
+		if ( cur_side != side::none ) {
+			auto new_str = string( str );
+			new_str.back() = ( cur_side == side::left ) ? 'r' : 'l';
+			return new_str;
+		}
+		else return str;
 	}
 
 	inline string str_append_before_side( const string& str, const string& postfix ) {
