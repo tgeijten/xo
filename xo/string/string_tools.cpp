@@ -50,6 +50,14 @@ namespace xo
 		return str.find( substr, p );
 	}
 
+	index_t find_nth_str( const string& str, const string& substr, size_t n )
+	{
+		index_t idx = 0;
+		for ( ; n > 0 && idx != string::npos; --n )
+			idx = str.find( substr, idx );
+		return idx;
+	}
+
 	bool str_begins_with( const string& str, const string& substr )
 	{
 		return str.compare( 0, substr.size(), substr ) == 0;

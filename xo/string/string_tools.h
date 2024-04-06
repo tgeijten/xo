@@ -27,6 +27,9 @@ namespace xo
 	/// get index of a substring in a string
 	XO_API index_t in_str( const string& str, const string& substr, index_t pos = 0 );
 
+	/// find nth occurrence of substr
+	XO_API index_t find_nth_str( const string& str, const string& substr, size_t n );
+
 	/// check if a string begins with a string
 	XO_API bool str_begins_with( const string& str, const string& substr );
 
