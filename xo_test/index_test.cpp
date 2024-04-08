@@ -12,5 +12,12 @@ namespace xo
 		XO_CHECK( v[( idx + 1 ).idx] == 3.0 );
 		auto i3 = idx + 2;
 		XO_CHECK( v[i3.idx] == 4.0 );
+
+		index_span sp = { xo::index_class<double>( 3 ), xo::index_class<double>( 9 ) };
+		auto icheck = *sp.begin();
+		XO_CHECK( sp.size() == 6 );
+		XO_CHECK( !sp.empty() );
+		for ( auto i : sp )
+			XO_CHECK( i == icheck++ )
 	}
 }

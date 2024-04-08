@@ -44,6 +44,7 @@ namespace xo
 
 		index_class& operator++() { ++idx; return *this; }
 		index_class operator++( int ) { index_class org( idx ); ++idx; return org; }
+		const index_class& operator*() const { return *this; }
 
 		friend bool operator<( const index_class a, const index_class b ) { return a.idx < b.idx; }
 		friend bool operator==( const index_class a, const index_class b ) { return a.idx == b.idx; }
@@ -53,5 +54,19 @@ namespace xo
 
 	protected:
 		static constexpr index_type invalid_index_value() { return ~index_type( 0 ); }
+	};
+
+	/// strongly typed index span
+	template< typename T, typename I = uint32 >
+	struct index_span
+	{
+		constexpr index_span( index_class<T, I> b, index_class<T, I> e ) : begin_( b ), end_( e ) {}
+
+		constexpr index_class<T, I> begin() const { return begin_; }
+		constexpr index_class<T, I> end() const { return end_; }
+		constexpr I size() const { return end_.idx - begin_.idx; }
+		constexpr bool empty() const { return begin_ == end_; }
+
+		index_class<T, I> begin_, end_;
 	};
 }
