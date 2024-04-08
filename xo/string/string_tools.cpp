@@ -54,7 +54,7 @@ namespace xo
 	{
 		index_t idx = 0;
 		for ( ; n > 0 && idx != string::npos; --n )
-			idx = str.find( substr, idx );
+			idx = str.find( substr, idx > 0 ? idx + 1 : idx );
 		return idx;
 	}
 
