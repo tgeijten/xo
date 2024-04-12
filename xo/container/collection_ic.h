@@ -40,6 +40,7 @@ namespace xo
 		template< typename T > index_class<T, I> back_index() const { return index_class<T, I>::back( get_vec<T>() ); }
 		template< typename T > index_class<T, I> begin_index() const { return index_class<T, I>( I( 0 ) ); }
 		template< typename T > index_class<T, I> end_index() const { return index_class<T, I>::end( get_vec<T>() ); }
+		template< typename T > index_span<T, I> get_index_span() const { return index_span<T, I>{ begin_index<T>(), end_index<T>() }; }
 
 		void clear() {
 			std::apply( []( auto&... v ) { ( ( v.clear() ), ... ); }, data_ ); // fold comma expression
