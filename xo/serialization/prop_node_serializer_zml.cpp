@@ -106,9 +106,9 @@ namespace xo
 						*next_parent = std::move( *ref_pn );
 					else return zml_error( str, ec, "Could not find " + t );
 				}
-				else if ( str_begins_with( t, '$' ) )
+				else if ( t.size() >= 2 && t[0] == '$' && t[1] != '{' )
 				{
-					// assign macro
+					// replace non-inline macro
 					auto it = std::find_if( macros.rbegin(), macros.rend(), [&]( auto& l ) { return t == l.first; } );
 					if ( it != macros.rend() )
 						*next_parent = it->second;
