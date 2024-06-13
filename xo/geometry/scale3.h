@@ -7,25 +7,25 @@ namespace xo
 	template< typename T > struct scale3_ : vec3_<T>
 	{
 		constexpr scale3_( no_init_t ) {}
-		constexpr scale3_() : x( T( 1 ) ), y( T( 1 ) ), z( T( 1 ) ) {}
+		constexpr scale3_() : vec3_<T>( T( 1 ), T( 1 ), T( 1 ) ) {}
 		constexpr scale3_( const scale3_<T>& o ) = default;
-		constexpr scale3_( const T& px, const T& py, const T& pz ) : x( px ), y( py ), z( pz ) {}
+		constexpr scale3_( const T& sx, const T& sy, const T& sz ) : vec3_<T>( sx, sy, sz ) {}
 		constexpr scale3_( scale3_<T>&& o ) noexcept = default;
 
 		// conversion constructors
-		template< typename U > constexpr explicit scale3_( const U& px, const U& py, const U& pz ) : x( T( px ) ), y( T( py ) ), z( T( pz ) ) {}
-		template< typename U > constexpr explicit scale3_( const scale3_<U>& o ) : x( T( o.x ) ), y( T( o.y ) ), z( T( o.z ) ) {}
+		template< typename U > constexpr explicit scale3_( const U& sx, const U& sy, const U& sz ) : vec3_<T>( sx, sy, sz ) {}
+		template< typename U > constexpr explicit scale3_( const scale3_<U>& o ) : vec3_<T>( o ) {} 
 
 		/// assignment
 		scale3_& operator=( const scale3_& o ) = default;
 		scale3_& operator=( scale3_&& o ) noexcept = default;
-		void set( const T& px, const T& py, const T& pz ) { x = px; y = py; z = pz; }
+		void set( const T& sx, const T& sy, const T& sz ) { this->x = sx; this->y = sy; this->z = sz; }
 
 		/// const properties
-		bool is_one() const { return x == T( 1 ) && y == T( 1 ) && z == T( 1 ); }
+		bool is_one() const { return this->x == T( 1 ) && this->y == T( 1 ) && this->z == T( 1 ); }
 
 		/// set scale back to one
-		void reset() { x = y = z = T( 1 ); }
+		void reset() { this->x = this->y = this->z = T( 1 ); }
 	};
 
 	/// template instantiations
