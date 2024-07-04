@@ -7,6 +7,7 @@
 #include "xo/utility/optional.h"
 #include "xo/container/container_tools.h"
 #include "xo/utility/color.h"
+#include "xo/geometry/vec3.h"
 
 namespace xo
 {
@@ -17,7 +18,7 @@ namespace xo
 		load( filename );
 	}
 
-	const xo::prop_node* settings::try_find_setting( const string& id ) const
+	const prop_node* settings::try_find_setting( const string& id ) const
 	{
 		const auto* schema_node = schema_.try_get_query( id );
 		if ( schema_node && schema_node->has_key( "default" ) )
@@ -44,7 +45,8 @@ namespace xo
 				( type == "float" && !value.try_get<double>() ) ||
 				( type == "int" && !value.try_get<int>() ) ||
 				( type == "bool" && !value.try_get<bool>() ) ||
-				( type == "color" && !value.try_get<xo::color>() ) ||
+				( type == "color" && !value.try_get<color>() ) ||
+				( type == "vec3" && !value.try_get<vec3d>() ) ||
 				( type == "string" && !value.try_get<string>() )
 				)
 			{
