@@ -61,7 +61,10 @@
 #		define XO_API __declspec(dllimport)
 #	endif
 
-	// windows performance counter
+	// inline
+#	define XO_FORCE_INLINE __forceinline
+
+	// Windows performance counter
 #	ifndef XO_DISABLE_WINDOWS_PERFORMANCE_COUNTER
 #		define XO_WINDOWS_PERFORMANCE_COUNTER_ENABLED 1 // use windows performance counter for timing (faster)
 #	else
@@ -79,5 +82,9 @@
 #	endif
 
 #else
+	// dll export
 #	define XO_API
+
+	// inline
+#	define XO_FORCE_INLINE __attribute__((always_inline)) inline
 #endif
