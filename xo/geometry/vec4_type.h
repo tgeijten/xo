@@ -19,7 +19,7 @@ namespace xo
 		T x, y, z, w;
 
 		// const properties
-		T length() const { return sqrt( x * x + y * y + z * z + w * w ); }
+		T length() const { return std::sqrt( x * x + y * y + z * z + w * w ); }
 		T squared_length() const { return x * x + y * y + z * z + w * w; }
 		bool is_null() const { return x == T() && y == T() && z == T() && w == T(); }
 

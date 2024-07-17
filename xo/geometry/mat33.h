@@ -19,7 +19,7 @@ namespace xo
 		quat_<T> q;
 		T t = m.e00 + m.e11 + m.e22;
 		if ( t > 0.0 ) {
-			T root = sqrt( t + T( 1 ) );
+			T root = std::sqrt( t + T( 1 ) );
 			q.w = T( 0.5 ) * root;
 			root = T( 0.5 ) / root;
 			q.x = ( m.e21 - m.e12 ) * root;
@@ -32,7 +32,7 @@ namespace xo
 			if ( m[2][2] > m[i][i] ) i = 2;
 			size_t j = ( i + 1 ) % 3;
 			size_t k = ( j + 1 ) % 3;
-			T root = sqrt( m[i][i] - m[j][j] - m[k][k] + T( 1 ) );
+			T root = std::sqrt( m[i][i] - m[j][j] - m[k][k] + T( 1 ) );
 			T* q_xyz = &q.x;
 			q_xyz[i] = T( 0.5 ) * root;
 			root = T( 0.5 ) / root;

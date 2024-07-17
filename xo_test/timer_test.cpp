@@ -15,7 +15,7 @@ namespace xo
 		XO_PROFILE_FUNCTION( xo::profiler::instance() );
 		double sum = 0.0;
 		for ( int x = 0; x < amount; ++x )
-			sum += sqrt( double( x ) );
+			sum += std::sqrt( double( x ) );
 		work_result.push_back( sum );
 	}
 

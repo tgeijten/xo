@@ -20,10 +20,10 @@ namespace xo
 	template< typename T > T inv( T v ) { return T( 1 ) / v; }
 
 	/// inverse of sqrt
-	template< typename T > T invsqrt( T v ) { return T( 1 ) / sqrt( v ); }
+	template< typename T > T invsqrt( T v ) { return T( 1 ) / std::sqrt( v ); }
 
 	/// sqrt based on sign: if v >= 0 sqrt( v ) else -sqrt( -v )
-	template< typename T > T signed_sqrt( T v ) { return v >= T() ? sqrt( v ) : -sqrt( -v ); }
+	template< typename T > T signed_sqrt( T v ) { return v >= T() ? std::sqrt( v ) : -std::sqrt( -v ); }
 
 	/// squared
 	template< typename T > T squared( T v ) { return v * v; }

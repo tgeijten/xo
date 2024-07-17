@@ -38,7 +38,7 @@ namespace xo
 		/// properties
 		size_t size() const { return end() - begin(); }
 		bool empty() const { return begin() == end(); }
-		T length() const { return sqrt( squared_length() ); }
+		T length() const { return std::sqrt( squared_length() ); }
 		T squared_length() const { T sum = T(); for ( auto& e : data_ ) sum += e * e; return sum; }
 		bool is_null() const { for ( auto& e : data_ ) if ( e != T( 0 ) ) return false; return true; }
 
@@ -118,7 +118,7 @@ namespace xo
 		T sum = T( 0 );
 		for ( index_t i = 0; i < v1.size(); ++i )
 			sum += squared( v1[i] - v2[i] );
-		return sqrt( sum );
+		return std::sqrt( sum );
 	}
 
 	/// Normalize

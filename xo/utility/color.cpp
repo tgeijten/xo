@@ -116,6 +116,6 @@ namespace xo
 	float perceived_brightness( const color& c )
 	{
 		// see http://alienryderflex.com/hsp.html
-		return sqrt( 0.299f * c.r * c.r + 0.587f * c.g * c.g + 0.114f * c.b * c.b );
+		return std::sqrt( 0.299f * c.r * c.r + 0.587f * c.g * c.g + 0.114f * c.b * c.b );
 	}
 }
