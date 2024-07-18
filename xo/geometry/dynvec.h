@@ -4,6 +4,7 @@
 #include "xo/utility/pointer_iterator.h"
 #include "xo/container/dynarray.h"
 #include "xo/numerical/constants.h"
+#include <cmath>
 
 namespace xo
 {
