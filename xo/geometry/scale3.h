@@ -32,13 +32,25 @@ namespace xo
 	using scale3f = scale3_<float>;
 	using scale3d = scale3_<double>;
 
-	/// Scale vector elements
+	/// Scale operator *
 	template< typename T > vec3_<T> operator*( const scale3_<T>& s, const vec3_<T>& v )
 	{ return vec3_<T>( s.x * v.x, s.y * v.y, s.z * v.z ); }
 	template< typename T > vec3_<T> operator*( const vec3_<T>& v, const scale3_<T>& s )
 	{ return vec3_<T>( s.x * v.x, s.y * v.y, s.z * v.z ); }
+	template< typename T > scale3_<T> operator*( const scale3_<T>& v, const scale3_<T>& s )
+	{ return scale3_<T>( s.x * v.x, s.y * v.y, s.z * v.z ); }
+	template< typename T > vec3_<T>& operator*=( vec3_<T>& v1, const scale3_<T>& v2 )
+	{ v1.x *= v2.x; v1.y *= v2.y; v1.z *= v2.z; return v1; }
+	template< typename T > scale3_<T>& operator*=( scale3_<T>& v1, const scale3_<T>& v2 )
+	{ v1.x *= v2.x; v1.y *= v2.y; v1.z *= v2.z; return v1; }
 
-	/// Inverse scale vector elements
+	/// Inverse scale operator /
 	template< typename T > vec3_<T> operator/( const vec3_<T>& v, const scale3_<T>& s )
 	{ return vec3_<T>( v.x / s.x, v.y / s.y, v.z / s.z ); }
+	template< typename T > scale3_<T> operator/( const scale3_<T>& v, const scale3_<T>& s )
+	{ return scale3_<T>( v.x / s.x, v.y / s.y, v.z / s.z ); }
+	template< typename T > vec3_<T>& operator/=( vec3_<T>& v1, const scale3_<T>& v2 )
+	{ v1.x /= v2.x; v1.y /= v2.y; v1.z /= v2.z; return v1; }
+	template< typename T > scale3_<T>& operator/=( scale3_<T>& v1, const scale3_<T>& v2 )
+	{ v1.x /= v2.x; v1.y /= v2.y; v1.z /= v2.z; return v1; }
 }
