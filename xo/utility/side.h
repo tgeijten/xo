@@ -53,7 +53,7 @@ namespace xo
 		}
 	}
 
-	inline string str_mirror_side( const string& str ) {
+	inline string str_mirrored_side( const string& str ) {
 		auto cur_side = str_get_side( str );
 		if ( cur_side != side::none ) {
 			auto new_str = string( str );
@@ -61,6 +61,13 @@ namespace xo
 			return new_str;
 		}
 		else return str;
+	}
+
+	inline void str_mirror_side( string& name ) {
+		if ( xo::str_ends_with( name, "_r" ) )
+			name.back() = 'l';
+		else if ( xo::str_ends_with( name, "_l" ) )
+			name.back() = 'r';
 	}
 
 	inline string str_append_before_side( const string& str, const string& postfix ) {
