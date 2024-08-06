@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xo/geometry/vec3_type.h"
+#include "xo/container/prop_node.h"
 
 namespace xo
 {
@@ -8,6 +9,7 @@ namespace xo
 	{
 		constexpr scale3_( no_init_t ) {}
 		constexpr scale3_() : vec3_<T>( T( 1 ), T( 1 ), T( 1 ) ) {}
+		constexpr scale3_( T v ) : vec3_<T>( v, v, v ) {}
 		constexpr scale3_( const scale3_<T>& o ) = default;
 		constexpr scale3_( const T& sx, const T& sy, const T& sz ) : vec3_<T>( sx, sy, sz ) {}
 		constexpr scale3_( scale3_<T>&& o ) noexcept = default;
@@ -53,4 +55,23 @@ namespace xo
 	{ v1.x /= v2.x; v1.y /= v2.y; v1.z /= v2.z; return v1; }
 	template< typename T > scale3_<T>& operator/=( scale3_<T>& v1, const scale3_<T>& v2 )
 	{ v1.x /= v2.x; v1.y /= v2.y; v1.z /= v2.z; return v1; }
+
+	/// convert from prop_node
+	template< typename T > bool from_prop_node( const prop_node& pn, scale3_<T>& v ) {
+		// load vec3_ from array [ 1 2 3 ], group { x=1 y=2 z=3 }, or scalar: "x"
+		if ( pn.size() == 3 ) {
+			if ( pn.is_array() ) // array
+				v.set( pn.get<T>( 0 ), pn.get<T>( 1 ), pn.get<T>( 2 ) );
+			else v.set( pn.get<T>( "x" ), pn.get<T>( "y" ), pn.get<T>( "z" ) ); // group
+			return true;
+		}
+		else if ( pn.size() == 0 && pn.has_value() ) {
+			if ( auto sv = pn.try_get<T>() ) {
+				v.set( *sv, *sv, *sv );
+				return true;
+			}
+			else return false;
+		}
+		else return false;
+	};
 }
