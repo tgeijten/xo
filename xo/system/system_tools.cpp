@@ -39,12 +39,21 @@ namespace xo
 #endif
 	}
 
+	XO_API std::time_t get_current_time()
+	{
+		return std::chrono::system_clock::to_time_t( std::chrono::system_clock::now() );
+	}
+
+	XO_API string get_date_time_str( const std::time_t& t, const char* format )
+	{
+		std::stringstream ss;
+		ss << std::put_time( std::localtime( &t ), format );
+		return ss.str();
+	}
+
 	XO_API string get_date_time_str( const char* format )
 	{
-		auto in_time_t = std::chrono::system_clock::to_time_t( std::chrono::system_clock::now() );
-		std::stringstream ss;
-		ss << std::put_time( std::localtime( &in_time_t ), format );
-		return ss.str();
+		return get_date_time_str( get_current_time(), format );
 	}
 
 	XO_API void crash( const string& message )

@@ -4,11 +4,14 @@
 #include "xo/system/error_code.h"
 #include "xo/system/version.h"
 #include <typeinfo>
+#include <ctime>
 
 namespace xo
 {
 	XO_API version get_xo_version();
 	XO_API char wait_for_key();
+	XO_API std::time_t get_current_time();
+	XO_API string get_date_time_str( const std::time_t& t, const char* format = "%Y-%m-%d_%H.%M.%S" );
 	XO_API string get_date_time_str( const char* format = "%Y-%m-%d_%H.%M.%S" );
 	XO_API void crash( const string& message = "" );
 	XO_API void sleep( int milliseconds );
