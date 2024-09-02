@@ -84,6 +84,11 @@ namespace xo
 		auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( *it == e ) return true; return false;
 	}
 
+	/// check if container contains element
+	template< typename C, typename P > bool contains_if( const C& cont, P pred ) {
+		auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( pred( *it ) ) return true; return false;
+	}
+
 	/// copy elements based on input range (no range checking)
 	template< typename InIt, typename OutIt > OutIt copy( InIt ib, InIt ie, OutIt ob ) {
 		for ( ; ib != ie; ++ib, ++ob ) *ob = *ib; return ob;
