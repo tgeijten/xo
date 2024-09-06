@@ -56,9 +56,9 @@ namespace xo
 			if ( t == "<<" ) // check directive statement
 			{
 				auto filename = path( get_zml_token( str, ec ) );
-				parent.append( load_zml( folder / filename, ec ) );
 				if ( get_zml_token( str, ec ) != ">>" )
 					zml_error( str, ec, "'<<' has no find matching '>>'" );
+				parent.append( load_zml( folder / filename, ec ) );
 			}
 			else
 			{
