@@ -47,6 +47,9 @@ namespace xo
 		const index_class& operator*() const { return *this; }
 
 		friend bool operator<( const index_class a, const index_class b ) { return a.idx < b.idx; }
+		friend bool operator<=( const index_class a, const index_class b ) { return a.idx <= b.idx; }
+		friend bool operator>( const index_class a, const index_class b ) { return a.idx > b.idx; }
+		friend bool operator>=( const index_class a, const index_class b ) { return a.idx >= b.idx; }
 		friend bool operator==( const index_class a, const index_class b ) { return a.idx == b.idx; }
 		friend bool operator!=( const index_class a, const index_class b ) { return a.idx != b.idx; }
 
