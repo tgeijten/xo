@@ -9,7 +9,7 @@ namespace xo
 	public:
 		filter_1st_order( TimeT rate, T init_value = T() ) : value_( init_value ), rate_( rate ) {};
 
-		T operator()( const T& value, TimeT dt ) { return update_accurate( value, dt;) }
+		T operator()( const T& value, TimeT dt ) { return update_accurate( value, dt ); }
 
 		T update_accurate( const T& value, TimeT dt ) {
 			return value_ = value + ( value_ - value ) * std::exp( -rate_ * dt );
