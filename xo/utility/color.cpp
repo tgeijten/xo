@@ -1,6 +1,7 @@
 #include "color.h"
 
 #include <array>
+#include <string>
 
 #include "xo/system/log_sink.h"
 #include "xo/numerical/math.h"
@@ -11,36 +12,52 @@ namespace xo
 {
 	bool from_prop_node( const prop_node& pn, color& c )
 	{
-		if ( pn.has_value() )
-		{
-			const auto& hex_str = pn.get_str();
-			bool has_0x = xo::str_begins_with( hex_str, "0x" );
-			size_t num_digits = has_0x ? hex_str.size() - 2 : hex_str.size();
-			auto value = static_cast<uint32>( std::stoul( hex_str, 0, 16 ) );
+		try {
+			if ( pn.has_value() ) {
+				auto str = xo::to_lower( pn.get_str() );
+				bool has_rgb = xo::str_begins_with( str, "rgb" );
+				bool has_hsv = xo::str_begins_with( str, "hsv" );
+				if ( has_rgb || has_hsv ) {
+					auto v = xo::split_str( str, ",; ()" );
+					if ( v.size() == 4 ) {
+						if ( has_rgb ) {
+							c = color{ std::stof( v[1] ) / 255, std::stof( v[2] ) / 255, std::stof( v[3] ) / 255 };
+							return true;
+						}
+						else if ( has_hsv ) {
+							c = color_from_hsv( std::stof( v[1] ), std::stof( v[2] ) / 100, std::stof( v[3] ) / 100 );
+							return true;
+						}
+						else return false;
+					}
+					else return false;
+				}
+				else {
+					bool has_0x = xo::str_begins_with( str, "0x" );
+					size_t num_digits = has_0x ? str.size() - 2 : str.size();
+					auto value = static_cast<uint32>( std::stoul( str, 0, 16 ) );
 
-			try {
-				if ( num_digits == 8 )
-					c = color_from_hex_rgba( value );
-				else c = color_from_hex_rgb( value );
+					if ( num_digits == 8 )
+						c = color_from_hex_rgba( value );
+					else c = color_from_hex_rgb( value );
+					return true;
+				}
+			}
+			else if ( pn.has_any_key( { "h", "s", "v" } ) ) {
+				c = color_from_hsv( pn.get<float>( "h", 0 ), pn.get<float>( "s", 1 ), pn.get<float>( "v", 1 ) );
 				return true;
 			}
-			catch ( std::exception& ) { return false; }
+			else if ( pn.size() >= 3 ) {
+				c.r = pn.get< float >( "r", pn.get<float>( 0 ) );
+				c.g = pn.get< float >( "g", pn.get<float>( 1 ) );
+				c.b = pn.get< float >( "b", pn.get<float>( 2 ) );
+				if ( pn.size() >= 4 )
+					c.a = pn.get< float >( "a", pn.get<float>( 3 ) );
+				return true;
+			}
+			else return false;
 		}
-		else if ( pn.has_any_key( { "h", "s", "v" } ) )
-		{
-			c = color_from_hsv( pn.get<float>( "h", 0 ), pn.get<float>( "s", 1 ), pn.get<float>( "v", 1 ) );
-			return true;
-		}
-		else if ( pn.size() >= 3 )
-		{
-			c.r = pn.get< float >( "r", pn.get<float>( 0 ) );
-			c.g = pn.get< float >( "g", pn.get<float>( 1 ) );
-			c.b = pn.get< float >( "b", pn.get<float>( 2 ) );
-			if ( pn.size() >= 4 )
-				c.a = pn.get< float >( "a", pn.get<float>( 3 ) );
-			return true;
-		}
-		else return false;
+		catch ( std::exception& ) { return false; }
 	}
 
 	color color_from_hsv( float H, float S, float V )
