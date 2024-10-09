@@ -31,6 +31,14 @@ namespace xo
 	/// cubed
 	template< typename T > T cubed( T v ) { return v * v * v; }
 
+	/// any integer power
+	template< int E, typename T > constexpr T power( T base ) {
+		if constexpr ( E == 0 ) return T( 1 );
+		else if constexpr ( E == 1 ) return T( base );
+		else if constexpr ( E > 1 ) return base * power<E - 1>( base );
+		else return 1.0 / power<-E>( base );
+	}
+
 	/// midpoint between v1 and v2
 	template< typename T > T midpoint( const T& v1, const T& v2 ) { return v1 + ( v2 - v1 ) / 2; }
 
