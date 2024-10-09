@@ -33,7 +33,7 @@ namespace xo
 	XO_API string to_str( unsigned long long value );
 	XO_API bool from_str( const string& s, unsigned long long& v );
 
-	inline string to_str( const char* value ) { return string( value ); }
+	inline string to_str( const char* value ) { return string( value ? value : "NULL" ); }
 	inline bool from_str( const string& s, const char*& v ) { v = s.c_str(); return true; }
 
 	inline string to_str( string value ) { return value; }
