@@ -33,7 +33,7 @@ namespace xo
 		// flush all sinks, happens automatically if level >= level::error
 		XO_API void flush();
 
-		template< typename T, typename... Args > void log_string( level l, std::string& s, T v, const Args&... args ) {
+		template< typename T, typename... Args > void log_string( level l, std::string& s, const T& v, const Args&... args ) {
 			s += to_str( v );
 			log_string( l, s, args... );
 		}
