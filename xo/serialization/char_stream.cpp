@@ -48,8 +48,11 @@ namespace xo
 		{
 			size_t len = strcspn( cur_pos, "\r\n" );
 			string s = string( cur_pos, len );
-			cur_pos_end = const_cast<char*>( cur_pos ) + len;
-			process_end_pos();
+			if ( len > 0 ) {
+				// only process end_pos when s is not empty or it will fail incorrectly (e.g. empty comment)
+				cur_pos_end = const_cast<char*>( cur_pos ) + len;
+				process_end_pos();
+			}
 			return s;
 		}
 		else return "";

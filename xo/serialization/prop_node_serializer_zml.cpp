@@ -30,10 +30,11 @@ namespace xo
 		while ( true )
 		{
 			string t = str.get_token();
-			if ( t == "#" || t == "//" )
-				str.get_line(); // single line comment
-			else if ( t == "/*" )
-			{
+			if ( t == "#" || t == "//" ) {
+				// single line comment
+				str.get_line(); 
+			}
+			else if ( t == "/*" ) {
 				// multiline comment
 				if ( !str.seek_past( "*/" ) )
 					return zml_error( str, ec, "Multiline comment '/*' has no matching '*/'" ), string();
