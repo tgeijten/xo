@@ -27,7 +27,9 @@ namespace xo
 	bool from_prop_node( const prop_node& pn, capsule& s )
 	{
 		s.radius_ = pn.get<float>( "radius" );
-		s.height_ = pn.get<float>( "height" );
+		if ( const auto* lpn = pn.try_get_child( "total_length" ) )
+			s.height_ = lpn->get<float>() - 2 * s.radius_;
+		else s.height_ = pn.get<float>( "height" );
 		return true;
 	}
 
