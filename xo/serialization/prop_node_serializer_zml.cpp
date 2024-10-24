@@ -43,7 +43,7 @@ namespace xo
 		}
 	}
 
-	void read_zml_layer( char_stream& str, prop_node& parent, const string& close, error_code* ec, const path& folder, const prop_node& root, prop_node& macros )
+	void read_zml_layer( char_stream& str, prop_node& parent, const string& close, error_code* ec, const path& folder, vector<path>* included, const prop_node& root, prop_node& macros )
 	{
 		// keep track of the number of macros so we can delete them at the end of this scope
 		auto macro_count = macros.size();
@@ -60,6 +60,8 @@ namespace xo
 				if ( get_zml_token( str, ec ) != ">>" )
 					zml_error( str, ec, "'<<' has no find matching '>>'" );
 				parent.append( load_zml( folder / filename, ec ) );
+				if ( included )
+					included->emplace_back( std::move( filename ) );
 			}
 			else
 			{
@@ -97,9 +99,9 @@ namespace xo
 
 				// parse value element after
 				if ( t == "{" ) // new group
-					read_zml_layer( str, *next_parent, "}", ec, folder, root, macros );
+					read_zml_layer( str, *next_parent, "}", ec, folder, included, root, macros );
 				else if ( t == "[" ) // new array
-					read_zml_layer( str, *next_parent, "]", ec, folder, root, macros );
+					read_zml_layer( str, *next_parent, "]", ec, folder, included, root, macros );
 				else if ( str_begins_with( t, '@' ) )
 				{
 					// assign previous value
@@ -145,14 +147,14 @@ namespace xo
 			macros.pop_back();
 	}
 
-	prop_node parse_zml( char_stream& str, error_code* ec, const path& folder )
+	prop_node parse_zml( char_stream& str, error_code* ec, const path& folder, vector<path>* included = nullptr )
 	{
 		str.set_operators( { "=", ": ", "{", "}", "[", "]", "#", "<<", ">>", "//", "/*", "*/" } );
 		str.set_delimiter_chars( " \n\r\t\v" );
 		str.set_quotation_chars( "\"'" );
 
 		prop_node root, macros;
-		read_zml_layer( str, root, "", ec, folder, root, macros );
+		read_zml_layer( str, root, "", ec, folder, included, root, macros );
 		return root;
 	}
 
@@ -263,7 +265,7 @@ namespace xo
 		xo_assert( read_pn_ );
 		// #todo: more efficient. parser should be able to take any stream type.
 		char_stream stream( string( std::istreambuf_iterator<char>( str ), {} ) );
-		*read_pn_ = parse_zml( stream, ec_, file_folder_ );
+		*read_pn_ = parse_zml( stream, ec_, file_folder_, &included_files_ );
 		return str;
 	}
 

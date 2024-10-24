@@ -23,6 +23,7 @@ namespace xo
 		const prop_node* write_pn_;
 		error_code* ec_;
 		path file_folder_;
+		std::vector<path> included_files_;
 	};
 
 	inline std::istream& operator>>( std::istream& str, prop_node_serializer& pns ) { return pns.read_stream( str ); }
