@@ -1,6 +1,7 @@
 #pragma once
 
 #include "prop_node_serializer.h"
+#include <vector>
 
 namespace xo
 {
@@ -23,7 +24,7 @@ namespace xo
 		virtual std::ostream& write_stream( std::ostream& str ) const override;
 	};
 
-	XO_API prop_node load_zml( const path& filename, error_code* ec = nullptr, path parent_folder = path() );
+	XO_API prop_node load_zml( const path& filename, error_code* ec = nullptr, path parent_folder = path(), std::vector<path>* included_files = nullptr );
 	XO_API void save_zml( const prop_node& pn, const path& filename, error_code* ec = nullptr );
 	XO_API prop_node parse_zml( const char* str, error_code* ec = nullptr );
 }

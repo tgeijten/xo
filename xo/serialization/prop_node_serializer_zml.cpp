@@ -43,7 +43,7 @@ namespace xo
 		}
 	}
 
-	void read_zml_layer( char_stream& str, prop_node& parent, const string& close, error_code* ec, const path& folder, vector<path>* included, const prop_node& root, prop_node& macros )
+	void read_zml_layer( char_stream& str, prop_node& parent, const string& close, error_code* ec, const path& folder, vector<path>* included_files, const prop_node& root, prop_node& macros )
 	{
 		// keep track of the number of macros so we can delete them at the end of this scope
 		auto macro_count = macros.size();
@@ -60,8 +60,8 @@ namespace xo
 				if ( get_zml_token( str, ec ) != ">>" )
 					zml_error( str, ec, "'<<' has no find matching '>>'" );
 				parent.append( load_zml( folder / filename, ec ) );
-				if ( included )
-					included->emplace_back( std::move( filename ) );
+				if ( included_files )
+					included_files->emplace_back( std::move( filename ) );
 			}
 			else
 			{
@@ -99,9 +99,9 @@ namespace xo
 
 				// parse value element after
 				if ( t == "{" ) // new group
-					read_zml_layer( str, *next_parent, "}", ec, folder, included, root, macros );
+					read_zml_layer( str, *next_parent, "}", ec, folder, included_files, root, macros );
 				else if ( t == "[" ) // new array
-					read_zml_layer( str, *next_parent, "]", ec, folder, included, root, macros );
+					read_zml_layer( str, *next_parent, "]", ec, folder, included_files, root, macros );
 				else if ( str_begins_with( t, '@' ) )
 				{
 					// assign previous value
@@ -147,14 +147,14 @@ namespace xo
 			macros.pop_back();
 	}
 
-	prop_node parse_zml( char_stream& str, error_code* ec, const path& folder, vector<path>* included = nullptr )
+	prop_node parse_zml( char_stream& str, error_code* ec, const path& folder, vector<path>* included_files = nullptr )
 	{
 		str.set_operators( { "=", ": ", "{", "}", "[", "]", "#", "<<", ">>", "//", "/*", "*/" } );
 		str.set_delimiter_chars( " \n\r\t\v" );
 		str.set_quotation_chars( "\"'" );
 
 		prop_node root, macros;
-		read_zml_layer( str, root, "", ec, folder, included, root, macros );
+		read_zml_layer( str, root, "", ec, folder, included_files, root, macros );
 		return root;
 	}
 
@@ -284,10 +284,10 @@ namespace xo
 		return str;
 	}
 
-	XO_API prop_node load_zml( const path& filename, error_code* ec, path parent_folder )
+	XO_API prop_node load_zml( const path& filename, error_code* ec, path parent_folder, vector<path>* included_files )
 	{
 		char_stream stream( load_string( filename ) );
-		return parse_zml( stream, ec, filename.parent_path() );
+		return parse_zml( stream, ec, filename.parent_path(), included_files );
 	}
 
 	XO_API void save_zml( const prop_node& pn, const path& filename, error_code* ec )
