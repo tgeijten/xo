@@ -101,7 +101,7 @@ namespace xo
 
 	bool path::is_absolute() const
 	{
-		return str_begins_with( data_, '/' ) || data_.find( ':' ) != string::npos;
+		return str_begins_with( data_, '/' ) || str_begins_with( data_, '~' ) || data_.find( ':' ) != string::npos;
 	}
 
 	bool path::is_relative() const
