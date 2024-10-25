@@ -59,7 +59,9 @@ namespace xo
 				auto filename = path( get_zml_token( str, ec ) );
 				if ( get_zml_token( str, ec ) != ">>" )
 					zml_error( str, ec, "'<<' has no find matching '>>'" );
-				parent.append( load_zml( folder / filename, ec ) );
+				if ( filename.is_relative() )
+					filename = folder / filename;
+				parent.append( load_zml( filename, ec ) );
 				if ( included_files )
 					included_files->emplace_back( std::move( filename ) );
 			}
