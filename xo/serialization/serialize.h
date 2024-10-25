@@ -17,6 +17,6 @@ namespace xo
 	XO_API prop_node load_file( const path& filename, const string& file_type, error_code* ec = nullptr );
 	XO_API prop_node load_file_with_include( const path& filename, const string& include_directive = "INCLUDE" );
 
-	XO_API void save_file( const prop_node& pn, const path& filename, error_code* ec = nullptr );
-	XO_API void save_file( const prop_node& pn, const path& filename, const string& file_type, error_code* ec = nullptr );
+	XO_API bool save_file( const prop_node& pn, const path& filename, error_code* ec = nullptr );
+	XO_API bool save_file( const prop_node& pn, const path& filename, const string& file_type, error_code* ec = nullptr );
 }

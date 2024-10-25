@@ -59,18 +59,20 @@ namespace xo
 		else return set_error_or_throw( ec, "Unknown file format: " + file_type ), prop_node();
 	}
 
-	void save_file( const prop_node& pn, const path& filename, error_code* ec )
+	bool save_file( const prop_node& pn, const path& filename, error_code* ec )
 	{
 		if ( auto s = make_serializer( filename.extension_no_dot().str(), pn, ec ) )
 			s->save_file( pn, filename, ec );
 		else set_error_or_throw( ec, "Could not deduce file format for " + filename.str() );
+		return ec ? ec->good() : true;
 	}
 
-	void save_file( const prop_node& pn, const path& filename, const string& file_type, error_code* ec )
+	bool save_file( const prop_node& pn, const path& filename, const string& file_type, error_code* ec )
 	{
 		if ( auto s = make_serializer( file_type, pn, ec ) )
 			s->save_file( pn, filename, ec );
 		else set_error_or_throw( ec, "Unknown file format: " + file_type );
+		return ec ? ec->good() : true;
 	}
 
 	prop_node load_file_with_include( const path& filename, const string& include_directive, int level );
