@@ -17,7 +17,7 @@
 #   include <unistd.h>
 #endif
 
-#ifdef __APPLE__
+#if defined(__APPLE__)
 #	include <mach-o/dyld.h>
 #endif
 
