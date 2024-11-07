@@ -28,6 +28,10 @@ namespace xo
 
 		/// set scale back to one
 		void reset() { this->x = this->y = this->z = T( 1 ); }
+
+		/// static initializers
+		static constexpr vec3_<T> one() { return scale3_<T>( T( 1 ), T( 1 ), T( 1 ) ); }
+		static constexpr vec3_<T> uniform( T v ) { return scale3_<T>( v, v, v ); }
 	};
 
 	/// template instantiations
@@ -66,6 +70,7 @@ namespace xo
 			return true;
 		}
 		else if ( pn.size() == 0 && pn.has_value() ) {
+			// uniform scaling
 			if ( auto sv = pn.try_get<T>() ) {
 				v.set( *sv, *sv, *sv );
 				return true;
