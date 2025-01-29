@@ -7,6 +7,7 @@ namespace xo
 	template< typename T, typename C >
 	struct arithmetic {
 		constexpr arithmetic() : value() {}
+		constexpr arithmetic( no_init_t ) {}
 		explicit constexpr arithmetic( const T& v ) : value( v ) {}
 
 		/// scalar multiplication / division

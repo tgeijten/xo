@@ -17,7 +17,8 @@ namespace xo
 	struct angle_< angle_unit::degrees, T > : arithmetic< T, angle_<angle_unit::degrees, T>>
 	{
 		/// default constructor
-		constexpr angle_() : arithmetic< T, angle_<angle_unit::degrees, T>>( T() ) {}
+		constexpr angle_() : arithmetic< T, angle_<angle_unit::degrees, T> >( T() ) {}
+		constexpr angle_( no_init_t ) : arithmetic< T, angle_<angle_unit::degrees, T> >( no_init ) {}
 
 		/// copy / conversion constructor
 		template< angle_unit U, typename T2 > explicit constexpr angle_( const angle_<U, T2>& a )
@@ -44,6 +45,7 @@ namespace xo
 	{
 		/// default constructor
 		constexpr angle_() : arithmetic< T, angle_<angle_unit::radians, T> >( T() ) {}
+		constexpr angle_( no_init_t ) : arithmetic< T, angle_<angle_unit::radians, T> >( no_init ) {}
 
 		/// copy / conversion constructor
 		template< angle_unit U, typename T2 > explicit constexpr angle_( const angle_<U, T2>& a )
