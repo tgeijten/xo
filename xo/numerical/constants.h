@@ -5,8 +5,9 @@
 
 namespace xo
 {
-	inline constexpr long double XO_PI_LONG_DOUBLE = 3.141592653589793238L;
-	inline constexpr long double XO_E_LONG_DOUBLE = 2.71828182845904523536L;
+	inline constexpr long double XO_PI_LONG_DOUBLE =	3.14159265358979323846L;
+	inline constexpr long double XO_E_LONG_DOUBLE =		2.71828182845904523536L;
+	inline constexpr long double XO_SQRT2_LONG_DOUBLE = 1.41421356237309504880L;
 
 	// numerical constants via constexpr functions (pre C++17), will be deprecated
 	template< typename T >
@@ -39,6 +40,8 @@ namespace xo
 		static constexpr T half_pi = T( 0.5 ) * T( XO_PI_LONG_DOUBLE );
 		static constexpr T two_pi = T( 2 ) * T( XO_PI_LONG_DOUBLE );
 		static constexpr T e = T( XO_E_LONG_DOUBLE );
+		static constexpr T sqrt2 = T( XO_SQRT2_LONG_DOUBLE );
+		static constexpr T half_sqrt2 = T( 0.5 ) * T( XO_SQRT2_LONG_DOUBLE );
 		static constexpr T epsilon = std::numeric_limits< T >::epsilon();
 		static constexpr T ample_epsilon = T( 8 * std::numeric_limits< T >::epsilon() );
 		static constexpr T max = std::numeric_limits<T>::max();
