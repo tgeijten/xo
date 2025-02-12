@@ -49,6 +49,7 @@ namespace xo
 	// xo index type
 	using index_t = size_t;
 	const index_t no_index = ~index_t( 0 );
+	const size_t no_size = ~size_t( 0 );
 
 	namespace log {}
 }
