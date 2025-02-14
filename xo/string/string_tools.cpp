@@ -152,6 +152,24 @@ namespace xo
 		else return { s, string() };
 	}
 
+	void remove_str( string& s, const string& find_str )
+	{
+		xo_assert( !find_str.empty() );
+		for ( auto pos = s.find( find_str ); pos != string::npos; pos = s.find( find_str, pos ) )
+			s.erase( pos, find_str.size() );
+	}
+
+	string remove_str( const string& s, const string& find_str )
+	{
+		return remove_str( string( s ), find_str );
+	}
+
+	string remove_str( string&& s, const string& find_str )
+	{
+		remove_str( s, find_str );
+		return std::move( s );
+	}
+
 	void replace_str( string& s, const string& find_str, const string& replace_with )
 	{
 		xo_assert( !find_str.empty() );

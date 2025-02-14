@@ -72,6 +72,15 @@ namespace xo
 	/// split string into pair at first occurrence of sep_char, second is empty if not occurring
 	XO_API std::pair< string, string > split_str_at_last( const string& s, const string& sep_chars );
 
+	/// remove a substring from a string
+	XO_API void remove_str( string& s, const string& find_str );
+
+	/// remove a substring from a const string
+	XO_API string remove_str( const string& s, const string& find_str );
+
+	/// remove a substring from a temporary string
+	XO_API string remove_str( string&& s, const string& find_str );
+
 	/// replace a substring in a string
 	XO_API void replace_str( string& s, const string& find_str, const string& replace_with );
 
