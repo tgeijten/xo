@@ -25,28 +25,31 @@ namespace xo
 	XO_API string right_str( const string& str, int n );
 
 	/// get index of a substring in a string
-	XO_API index_t in_str( const string& str, const string& substr, index_t pos = 0 );
+	XO_API index_t in_str( const string& str, string_view substr, index_t pos = 0 );
 
 	/// find nth occurrence of substr
-	XO_API index_t find_nth_str( const string& str, const string& substr, size_t n );
+	XO_API index_t find_nth_str( const string& str, string_view substr, size_t n );
 
 	/// check if a string begins with a string
-	XO_API bool str_begins_with( const string& str, const string& substr );
+	XO_API bool str_begins_with( const string& str, string_view substr );
 
 	/// check if a string begins with a string
-	XO_API bool str_begins_with( const string& str, const string& substr, index_t pos );
+	XO_API bool str_begins_with( const string& str, string_view substr, index_t pos );
 
 	/// check if a string begins with a string
 	XO_API bool str_begins_with( const string& str, char c );
 
 	/// check if a string ends with a string
-	XO_API bool str_ends_with( const string& str, const string& substr );
+	XO_API bool str_ends_with( const string& str, string_view substr );
 
 	/// check if a string ends with a string
 	XO_API bool str_ends_with( const string& str, char c );
 
+	/// check if a string ends with a string
+	XO_API bool str_ends_with_any_of( const string& str, std::initializer_list<string_view> str_list );
+
 	/// check if a string contains a string
-	XO_API bool str_contains( const string& str, const string& substr );
+	XO_API bool str_contains( const string& str, string_view substr );
 
 	/// check if a string contains a string
 	XO_API bool str_contains( const string& str, char c );
@@ -61,34 +64,34 @@ namespace xo
 	XO_API string trim_right_str( const string& str, const char* trim_chars = " \t\r\n\f\v" );
 
 	/// split a string into a vector of strings
-	XO_API vector< string > split_str( const string& s, const string& sep_chars );
+	XO_API vector< string > split_str( const string& s, string_view sep_chars );
 
 	/// split a string_view into a vector of string_view
-	XO_API vector< string_view > split_str( const string_view& s, const string& sep_chars );
+	XO_API vector< string_view > split_str( const string_view& s, string_view sep_chars );
 
 	/// split string into pair at first occurrence of sep_char, second is empty if not occurring
-	XO_API std::pair< string, string > split_str_at_first( const string& s, const string& sep_chars );
+	XO_API std::pair< string, string > split_str_at_first( const string& s, string_view sep_chars );
 
 	/// split string into pair at first occurrence of sep_char, second is empty if not occurring
-	XO_API std::pair< string, string > split_str_at_last( const string& s, const string& sep_chars );
+	XO_API std::pair< string, string > split_str_at_last( const string& s, string_view sep_chars );
 
 	/// remove a substring from a string
-	XO_API void remove_str( string& s, const string& find_str );
+	XO_API void remove_str( string& s, string_view find_str );
 
 	/// remove a substring from a const string
-	XO_API string remove_str( const string& s, const string& find_str );
+	XO_API string remove_str( const string& s, string_view find_str );
 
 	/// remove a substring from a temporary string
-	XO_API string remove_str( string&& s, const string& find_str );
+	XO_API string remove_str( string&& s, string_view find_str );
 
 	/// replace a substring in a string
-	XO_API void replace_str( string& s, const string& find_str, const string& replace_with );
+	XO_API void replace_str( string& s, string_view find_str, string_view replace_with );
 
 	/// replace a substring in a const string
-	XO_API string replace_str( const string& s, const string& find_str, const string& replace_with );
+	XO_API string replace_str( const string& s, string_view find_str, string_view replace_with );
 
 	/// replace a substring in a temporary string
-	XO_API string replace_str( string&& s, const string& find_str, const string& replace_with );
+	XO_API string replace_str( string&& s, string_view find_str, string_view replace_with );
 
 	/// replace a character in a string
 	XO_API void replace_char( string& s, const char find_char, const char replace_with );
@@ -115,7 +118,7 @@ namespace xo
 	XO_API string stringf( const char* format, ... );
 
 	/// match any of the strings
-	XO_API bool str_equals_any_of( const string& str, std::initializer_list< const char* > str_list );
+	XO_API bool str_equals_any_of( const string& str, std::initializer_list<const char*> str_list );
 
 	/// set precision used in to_str calls, returns previous precision
 	XO_API int set_to_str_precision( int p );
@@ -146,7 +149,7 @@ namespace xo
 	XO_API void append_str( string& str, const string& append, const string& delim = " " );
 
 	/// concatenate strings with delimiters
-	XO_API string concat_str( std::initializer_list< string > lst, const string& delim = "" );
+	XO_API string concat_str( std::initializer_list<string> lst, const string& delim = "" );
 	XO_API string concat_str( const string& s1, const string& s2, const char delim = '.' );
 
 	/// concatenate container of strings with delimiters

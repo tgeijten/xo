@@ -45,12 +45,12 @@ namespace xo
 		else return str.substr( size_t( -n ), string::npos );
 	}
 
-	index_t in_str( const string& str, const string& substr, index_t p /*= 0 */ )
+	index_t in_str( const string& str, string_view substr, index_t p /*= 0 */ )
 	{
 		return str.find( substr, p );
 	}
 
-	index_t find_nth_str( const string& str, const string& substr, size_t n )
+	index_t find_nth_str( const string& str, string_view substr, size_t n )
 	{
 		index_t idx = 0;
 		for ( ; n > 0 && idx != string::npos; --n )
@@ -58,12 +58,12 @@ namespace xo
 		return idx;
 	}
 
-	bool str_begins_with( const string& str, const string& substr )
+	bool str_begins_with( const string& str, string_view substr )
 	{
 		return str.compare( 0, substr.size(), substr ) == 0;
 	}
 
-	bool str_begins_with( const string& str, const string& substr, index_t start_pos )
+	bool str_begins_with( const string& str, string_view substr, index_t start_pos )
 	{
 		return start_pos < str.size() && str.compare( start_pos, substr.size(), substr ) == 0;
 	}
@@ -73,7 +73,7 @@ namespace xo
 		return !str.empty() && str.front() == c;
 	}
 
-	bool str_ends_with( const string& str, const string& substr )
+	bool str_ends_with( const string& str, string_view substr )
 	{
 		return str.size() >= substr.size()
 			&& str.compare( str.size() - substr.size(), substr.size(), substr ) == 0;
@@ -84,7 +84,15 @@ namespace xo
 		return !str.empty() && str.back() == c;
 	}
 
-	bool str_contains( const string& str, const string& substr )
+	bool str_ends_with_any_of( const string& str, std::initializer_list<string_view> str_list )
+	{
+		for ( const auto& s : str_list )
+			if ( str_ends_with( str, s ) )
+				return true;
+		return false;
+	}
+
+	bool str_contains( const string& str, string_view substr )
 	{
 		return str.find( substr ) != string::npos;
 	}
@@ -114,75 +122,75 @@ namespace xo
 		return s.substr( 0, 1 + right );
 	}
 
-	vector< string > split_str( const string& s, const string& sep_chars )
+	vector< string > split_str( const string& s, string_view sep_chars )
 	{
 		std::vector< string > strings;
-		size_t ofs = s.find_first_not_of( sep_chars.c_str(), 0 );
+		size_t ofs = s.find_first_not_of( sep_chars, 0 );
 		while ( ofs != string::npos ) {
-			size_t ofsend = s.find_first_of( sep_chars.c_str(), ofs );
+			size_t ofsend = s.find_first_of( sep_chars, ofs );
 			strings.push_back( s.substr( ofs, ofsend - ofs ) );
-			ofs = s.find_first_not_of( sep_chars.c_str(), ofsend );
+			ofs = s.find_first_not_of( sep_chars, ofsend );
 		}
 		return strings;
 	}
 
-	vector< string_view > split_str( const string_view& s, const string& sep_chars )
+	vector< string_view > split_str( const string_view& s, string_view sep_chars )
 	{
 		std::vector< string_view > strings;
-		size_t ofs = s.find_first_not_of( sep_chars.c_str(), 0 );
+		size_t ofs = s.find_first_not_of( sep_chars, 0 );
 		while ( ofs != string::npos ) {
-			size_t ofsend = s.find_first_of( sep_chars.c_str(), ofs );
+			size_t ofsend = s.find_first_of( sep_chars, ofs );
 			strings.push_back( s.substr( ofs, ofsend - ofs ) );
-			ofs = s.find_first_not_of( sep_chars.c_str(), ofsend );
+			ofs = s.find_first_not_of( sep_chars, ofsend );
 		}
 		return strings;
 	}
 
-	std::pair< string, string > split_str_at_first( const string& s, const string& sep_chars )
+	std::pair< string, string > split_str_at_first( const string& s, string_view sep_chars )
 	{
-		if ( auto pos = s.find_first_of( sep_chars.c_str() ); pos != string::npos )
+		if ( auto pos = s.find_first_of( sep_chars ); pos != string::npos )
 			return { s.substr( 0, pos ), s.substr( pos + 1 ) };
 		else return { s, string() };
 	}
 
-	std::pair< string, string > split_str_at_last( const string& s, const string& sep_chars )
+	std::pair< string, string > split_str_at_last( const string& s, string_view sep_chars )
 	{
-		if ( auto pos = s.find_last_of( sep_chars.c_str() ); pos != string::npos )
+		if ( auto pos = s.find_last_of( sep_chars ); pos != string::npos )
 			return { s.substr( 0, pos ), s.substr( pos + 1 ) };
 		else return { s, string() };
 	}
 
-	void remove_str( string& s, const string& find_str )
+	void remove_str( string& s, string_view find_str )
 	{
 		xo_assert( !find_str.empty() );
 		for ( auto pos = s.find( find_str ); pos != string::npos; pos = s.find( find_str, pos ) )
 			s.erase( pos, find_str.size() );
 	}
 
-	string remove_str( const string& s, const string& find_str )
+	string remove_str( const string& s, string_view find_str )
 	{
 		return remove_str( string( s ), find_str );
 	}
 
-	string remove_str( string&& s, const string& find_str )
+	string remove_str( string&& s, string_view find_str )
 	{
 		remove_str( s, find_str );
 		return std::move( s );
 	}
 
-	void replace_str( string& s, const string& find_str, const string& replace_with )
+	void replace_str( string& s, string_view find_str, string_view replace_with )
 	{
 		xo_assert( !find_str.empty() );
 		for ( auto pos = s.find( find_str ); pos != string::npos; pos = s.find( find_str, pos + replace_with.size() ) )
 			s.replace( pos, find_str.size(), replace_with );
 	}
 
-	string replace_str( const string& s, const string& find_str, const string& replace_with )
+	string replace_str( const string& s, string_view find_str, string_view replace_with )
 	{
 		return replace_str( string( s ), find_str, replace_with );
 	}
 
-	string replace_str( string&& s, const string& find_str, const string& replace_with )
+	string replace_str( string&& s, string_view find_str, string_view replace_with )
 	{
 		replace_str( s, find_str, replace_with );
 		return std::move( s );
@@ -248,7 +256,7 @@ namespace xo
 		else return make_pair( trim_str( s.substr( 0, pos ) ), trim_str( mid_str( s, pos + 1 ) ) );
 	}
 
-	string concat_str( std::initializer_list< string > string_list, const string& delim )
+	string concat_str( std::initializer_list<string> string_list, const string& delim )
 	{
 		string str;
 		bool first = true;
@@ -289,7 +297,7 @@ namespace xo
 #endif
 	}
 
-	bool str_equals_any_of( const string& str, std::initializer_list< const char* > str_list )
+	bool str_equals_any_of( const string& str, std::initializer_list<const char*> str_list )
 	{
 		for ( const char* c : str_list )
 			if ( str == c )
