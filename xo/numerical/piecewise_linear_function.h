@@ -17,8 +17,13 @@ namespace xo
 
 		T operator()( const T& x ) const
 		{
-			xo_assert( data_.size() >= 2 );
+			xo_assert( !data_.empty() );
 
+			// handle special case with 1 data point
+			if ( data_.size() == 1 )
+				return data_.front().second;
+
+			// normal case with >= 2 data points
 			auto it1 = data_.lower_bound( x );
 			if ( it1 == data_.end() )
 				--it1;
