@@ -45,14 +45,15 @@ namespace xo
 			return path();
 		}
 		char mbsLocalAppData[MAX_PATH];
-		if ( wcstombs_s( size_t(), mbsLocalAppData, MAX_PATH, wcsLocalAppData, MAX_PATH ) != 0 ) {
-			log::error( "Could not convert folder ", report_name, ": ", wcsLocalAppData );
-			CoTaskMemFree( static_cast<void*>( wcsLocalAppData ) );
-			return path();
-		}
+		size_t numCharsConverted = 0;
+		auto err = wcstombs_s( &numCharsConverted, mbsLocalAppData, MAX_PATH, wcsLocalAppData, MAX_PATH );
+		path folder;
+		if ( err != 0 )
+			log::error( "Could not convert folder ", report_name, ": ", err );
+		else folder = path( mbsLocalAppData ).make_preferred();
 
 		CoTaskMemFree( static_cast<void*>( wcsLocalAppData ) );
-		return path( mbsLocalAppData ).make_preferred();
+		return folder;
 	}
 #endif
 
