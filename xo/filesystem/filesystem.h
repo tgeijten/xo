@@ -33,6 +33,7 @@ namespace xo
 	XO_API bool create_directories( const path& folder );
 	XO_API path find_unique_directory( const path& folder, int max_attempts = 9999 );
 	XO_API path create_unique_directory( const path& folder, int max_attempts = 9999 );
+	XO_API path find_unique_path( const path& filename, int max_attempts = 9999 );
 
 	XO_API string load_string( const path& filename, error_code* ec = nullptr );
 	XO_API void save_string( const path& filename, const string& s, error_code* ec = nullptr  );
