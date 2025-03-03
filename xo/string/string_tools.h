@@ -108,6 +108,12 @@ namespace xo
 	/// convert string to upper case
 	XO_API string to_upper( string s );
 
+	/// capitalize first letter of words in string
+	XO_API string capitalize_str( string s, string_view sep_chars = " \t\r\n\f\v" );
+
+	/// make letters lower-case that are not first of word in string
+	XO_API string convert_all_caps_str( string s, string_view sep_chars = " \t\r\n\f\v" );
+
 	/// copy string to C-style null-terminated string, truncate if needed, returns number of characters copied
 	XO_API size_t copy_str( const string& source, char* target_buf, size_t buf_size );
 
