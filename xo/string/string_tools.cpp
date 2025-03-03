@@ -223,6 +223,27 @@ namespace xo
 		return s;
 	}
 
+	string capitalize_str( string s, string_view sep_chars )
+	{
+		bool new_word = true;
+		for ( char& c : s ) {
+			c = new_word ? std::toupper( c ) : std::tolower( c );
+			new_word = sep_chars.find( c ) != string::npos;
+		}
+		return s;
+	}
+
+	string convert_all_caps_str( string s, string_view sep_chars )
+	{
+		bool new_word = true;
+		for ( char& c : s ) {
+			if ( !new_word )
+				c = std::tolower( c );
+			new_word = sep_chars.find( c ) != string::npos;
+		}
+		return s;
+	}
+
 	void replace_special_chars( string& s )
 	{
 		static const std::vector<std::pair<string, string>> fixes = {
