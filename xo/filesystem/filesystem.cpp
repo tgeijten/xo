@@ -263,6 +263,21 @@ namespace xo
 		return unique_folder;
 	}
 
+	path find_unique_path( const path& filename, int max_attempts )
+	{
+		path unique_filename = filename;
+		for ( int i = 0; i < max_attempts; ++i )
+		{
+			if ( i > 0 ) {
+				unique_filename = filename;
+				unique_filename.concat_stem( stringf( " (%d)", i ) );
+			}
+			if ( !file_exists( unique_filename ) )
+				return unique_filename;
+		}
+		xo_error( "Could not find unique path after " + to_str( max_attempts ) + " attempts" );
+	}
+
 	string load_string( const path& filename, error_code* ec )
 	{
 		// this method uses a stringbuf, which requires an extra copy (C++ suckiness)
