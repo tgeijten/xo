@@ -22,7 +22,7 @@ namespace xo
 		T center() const { return T( 0.5 ) * ( lower + upper ); }
 
 		/// check bounds, return negative when value below lower, positive when value above upper, 0 when within bounds
-		T get_violation( const T& value ) const { if ( value < lower ) return value - lower; else if ( value > upper ) return value - upper; else return T( 0 ); }
+		T get_excess( const T& value ) const { if ( value < lower ) return value - lower; else if ( value > upper ) return value - upper; else return T( 0 ); }
 
 		/// check bounds, return negative when value below lower, positive when value above upper, 0 when within bounds
 		pair< bool, T > check( const T& value ) const {
