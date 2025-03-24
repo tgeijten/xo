@@ -82,6 +82,10 @@ namespace xo
 	template< typename T >
 	T round_decimals( T value, int decimals ) { auto f = std::pow( T( 10 ), T( decimals ) ); return std::round( value * f ) / f; }
 
+	/// get bounds excess (negative if l smaller than lower, positive if l bigger than upper)
+	template< typename T > T bounds_excess( T v, T lower, T upper )
+	{ return std::max( v - upper, std::min( x - lower, T( 0 ) ) ); }
+
 	/// clamp a value so that it is between min and max
 	template< typename T > T& clamp( T& v, const T& lower, const T& upper )
 	{ if ( v < lower ) v = lower; else if ( v > upper ) v = upper; return v; }
