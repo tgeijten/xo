@@ -76,6 +76,16 @@ namespace xo
 	/// get normalized quaternion
 	template< typename T > quat_<T> normalized( quat_<T> q ) { normalize( q ); return q; }
 
+	/// normalize quaternion, return length, handles zero quaternion
+	template< typename T > T normalize_safe( quat_<T>& q ) {
+		T len = length( q );
+		if ( len > constants<T>::epsilon() ) q *= inv( len ); else q = quat_<T>::identity();
+		return len;
+	}
+
+	/// get normalized quaternion, handles zero quaternion
+	template< typename T > quat_<T> normalized_safe( quat_<T> q ) { normalize_safe( q ); return q; }
+
 	// Fast normalization using first order Padé approximant, works only when ||q|| ~ 1
 	template< typename T > void normalize_fast( quat_<T>& q )
 	{ T sl = squared_length( q ); q *= T( 2 ) / ( T( 1 ) + sl ); }
@@ -193,14 +203,39 @@ namespace xo
 	}
 
 	/// Get rotation around specific unit-length axis
-	// #todo: better singularity handling
 	template< typename T > radian_<T> rotation_around_axis( const quat_<T>& q, const vec3_<T>& a ) {
 		auto d = dot_product( vec3_<T>( q.x, q.y, q.z ), a );
 		auto qa = quat_<T>( q.w, d * a.x, d * a.y, d * a.z ); // assume ||a|| == 1
-		auto l = length( qa );
-		if ( l > constants<T>::ample_epsilon() )
+		if ( auto l = length( qa ); l > constants<T>::epsilon() )
 			return radian_<T>( std::copysign( 2 * std::acos( qa.w / l ), d ) );
 		else return radian_<T>( 0 );
+	}
+
+	/// Get quaternion and angle around x-axis
+	template< typename T > std::pair< quat_<T>, radian_<T> > quat_angle_around_x( const quat_<T>& q ) {
+		if ( auto l = std::sqrt( q.w * q.w + q.x * q.x ); l > constants<T>::epsilon() ) {
+			auto s = inv( l ); auto w = s * q.w;
+			return { quat_<T>( w, s * q.x, T( 0 ), T( 0 ) ), radian_<T>( std::copysign( 2 * std::acos( w ), q.x ) ) };
+		}
+		else return { {}, {} };
+	}
+
+	/// Get quaternion and angle around x-axis
+	template< typename T > std::pair< quat_<T>, radian_<T> > quat_angle_around_y( const quat_<T>& q ) {
+		if ( auto l = std::sqrt( q.w * q.w + q.y * q.y ); l > constants<T>::epsilon() ) {
+			auto s = inv( l ); auto w = s * q.w;
+			return { quat_<T>( w, T( 0 ), s * q.y, T( 0 ) ), radian_<T>( std::copysign( 2 * std::acos( w ), q.y ) ) };
+		}
+		else return { {}, {} };
+	}
+
+	/// Get quaternion and angle around x-axis
+	template< typename T > std::pair< quat_<T>, radian_<T> > quat_angle_around_z( const quat_<T>& q ) {
+		if ( auto l = std::sqrt( q.w * q.w + q.z * q.z ); l > constants<T>::epsilon() ) {
+			auto s = inv( l ); auto w = s * q.w;
+			return { quat_<T>( w, T( 0 ), T( 0 ), s * q.z ), radian_<T>( std::copysign( 2 * std::acos( w ), q.z ) ) };
+		}
+		else return { {}, {} };
 	}
 
 	/// Rotation around local x axis
