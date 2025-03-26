@@ -42,15 +42,25 @@ namespace xo
 		T value;
 	};
 
-	/// scalar multiplication
+	/// multiplication
 	template< typename T, typename C >
 	C operator*( const T& s, const arithmetic<T, C>& a ) { return C( s * a.value ); }
-
-	/// scalar division
 	template< typename T, typename C >
-	C operator/( const T& s, const arithmetic<T, C>& a ) { return C( s / a.value ); }
+	C operator*( const arithmetic<T, C>& a, const T& s ) { return C( a.value * s ); }
+	template< typename T, typename C >
+	C operator*( const arithmetic<T, C>& a1, const arithmetic<T, C>& a2 ) { return C( a1.value * a2.value ); }
+
+	/// division
+	template< typename T, typename C >
+	C operator/( const arithmetic<T, C>& a, const T& s ) { return C( a.value / s ); }
+	template< typename T, typename C >
+	C operator/( const arithmetic<T, C>& a1, const arithmetic<T, C>& a2 ) { return C( a1.value / a2.value ); }
 
 	/// absolute value
 	template< typename T, typename C >
 	C abs( const arithmetic<T, C>& v ) { return C( v.value < T( 0 ) ? -v.value : v.value ); }
+
+	/// square root
+	template< typename T, typename C >
+	C sqrt( const arithmetic<T, C>& v ) { return C( std::sqrt( v.value ) ); }
 }

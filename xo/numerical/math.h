@@ -19,6 +19,10 @@ namespace xo
 	/// inverse of v (1 / v)
 	template< typename T > T inv( T v ) { return T( 1 ) / v; }
 
+	/// sqrt
+	inline float sqrt( float v ) { return std::sqrt( v ); }
+	inline double sqrt( double v ) { return std::sqrt( v ); }
+
 	/// inverse of sqrt
 	template< typename T > T invsqrt( T v ) { return T( 1 ) / std::sqrt( v ); }
 
@@ -84,7 +88,8 @@ namespace xo
 
 	/// get bounds excess (negative if l smaller than lower, positive if l bigger than upper)
 	template< typename T > T bounds_excess( T v, T lower, T upper )
-	{ return std::max( v - upper, std::min( x - lower, T( 0 ) ) ); }
+	{ if ( v < lower ) return v - lower; else if ( v > upper ) return v - upper; else return T( 0 ); }
+	//{ return std::max( v - upper, std::min( v - lower, T( 0 ) ) ); }
 
 	/// clamp a value so that it is between min and max
 	template< typename T > T& clamp( T& v, const T& lower, const T& upper )
