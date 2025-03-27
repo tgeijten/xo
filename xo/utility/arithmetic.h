@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 namespace xo
 {
 	/// base class for arithmetic value types, such as angle
