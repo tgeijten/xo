@@ -50,6 +50,15 @@
 #	define XO_PROFILER_ENABLED 0
 #endif
 
+// Force inline
+#if defined( _MSC_VER )
+#	define XO_FORCE_INLINE __forceinline
+#elif defined(__GNUC__) || defined(__clang__)
+#	define XO_FORCE_INLINE __attribute__((always_inline)) inline
+#else
+#	define FORCE_INLINE inline
+#endif
+
 // MSVC settings
 #if defined( _MSC_VER )
 #	define XO_COMP_MSVC
@@ -60,9 +69,6 @@
 #	else
 #		define XO_API __declspec(dllimport)
 #	endif
-
-	// inline
-#	define XO_FORCE_INLINE __forceinline
 
 	// Windows performance counter
 #	ifndef XO_DISABLE_WINDOWS_PERFORMANCE_COUNTER
@@ -84,7 +90,4 @@
 #else
 	// dll export
 #	define XO_API
-
-	// inline
-#	define XO_FORCE_INLINE __attribute__((always_inline)) inline
 #endif
