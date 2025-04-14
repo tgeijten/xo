@@ -123,15 +123,19 @@ namespace xo
 	template< typename T > T dot_product( const vec3_<T>& v1, const vec3_<T>& v2 )
 	{ return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z; }
 
-	/// Multiply vector elements
+	/// Multiply vector components
 	template< typename T > vec3_<T> multiply( const vec3_<T>& v1, const vec3_<T>& v2 )
 	{ return vec3_<T>( v1.x * v2.x, v1.y * v2.y, v1.z * v2.z ); }
 
-	/// Scale vector elements
+	/// Divide vector components
+	template< typename T > vec3_<T> divide( const vec3_<T>& v1, const vec3_<T>& v2 )
+	{ return vec3_<T>( v1.x / v2.x, v1.y / v2.y, v1.z / v2.z ); }
+
+	/// Scale vector components
 	template< typename T > vec3_<T>& scale( vec3_<T>& v, const vec3_<T>& s )
 	{ v.x *= s.x; v.y *= s.y; v.z *= s.z; return v; }
 
-	/// Scale vector elements
+	/// Scale vector components
 	template< typename T > vec3_<T>& scaled( vec3_<T> v, const vec3_<T>& s ) { return scale( v, s ); }
 
 	/// Projection of v1 onto v2
