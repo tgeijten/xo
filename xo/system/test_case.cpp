@@ -95,7 +95,6 @@ namespace xo
 			int tests_failed = 0;
 			for ( auto& tc : get_test_cases() )
 			{
-				log::info( "TRYING: ", tc->name() );
 				const auto& r = tc->run();
 				tests_failed += int( !r.success() );
 				total += r;
