@@ -61,7 +61,7 @@ namespace xo
 			}
 		}
 
-		const test_result& test_case::run()
+		const test_result& test_case::run( const test_options& options )
 		{
 			log::debug( "STARTING: ", name_ );
 			if ( try_run_func() )
@@ -72,7 +72,8 @@ namespace xo
 					auto nump = result_.passed_;
 					if ( result_.passed_ > 0 )
 						log::info( "PASSED: ", name_, " (", nump, nump == 1 ? " check)" : " checks)" );
-					else log::warning( name_, ": ", " empty test case" );
+					else if ( options.show_warning_for_empty_test_cases )
+						log::warning( name_, ": ", " empty test case" );
 				}
 				else if ( result_.checks_ > 1 )
 				{
@@ -89,13 +90,13 @@ namespace xo
 			return result_;
 		}
 
-		int run_tests()
+		int run_tests( const test_options& options )
 		{
 			test_result total;
 			int tests_failed = 0;
 			for ( auto& tc : get_test_cases() )
 			{
-				const auto& r = tc->run();
+				const auto& r = tc->run( options );
 				tests_failed += int( !r.success() );
 				total += r;
 			}
@@ -108,14 +109,14 @@ namespace xo
 			return tests_failed;
 		}
 
-		int run_tests_async()
+		int run_tests_async( const test_options& options )
 		{
 			xo::timer t;
 
 			test_result total;
 			std::vector< std::future< const test_result& > > results;
 			for ( index_t i = 0; i < get_test_cases().size(); ++i )
-				results.push_back( std::async( &test_case::run, get_test_cases()[i].get() ) );
+				results.push_back( std::async( &test_case::run, get_test_cases()[i].get(), options ) );
 
 			int tests_failed = 0;
 			for ( auto& fut : results )

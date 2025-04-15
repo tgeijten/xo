@@ -4,6 +4,7 @@
 #include "xo/system/assert.h"
 #include "xo/string/string_type.h"
 #include "xo/container/vector_type.h"
+#include "xo/numerical/compare.h"
 #include <functional>
 
 #define XO_TEST_CASE( _name_ ) \
@@ -20,6 +21,16 @@
 
 #define XO_CHECK_MESSAGE( _operation_, _message_ ) \
 	try { bool _result_ = ( _operation_ ); XO_ACTIVE_TEST_CASE.check( _result_, _message_ ); } \
+	catch( std::exception& e ) { XO_ACTIVE_TEST_CASE.check( false, e.what() ); }
+
+#define XO_CHECK_IF_IDENTICAL( _value1_, _value2_ ) \
+	try { bool _result_ = _value1_ == _value2_; \
+	XO_ACTIVE_TEST_CASE.check( _result_, ::xo::to_str( _value1_ ) + " != " + ::xo::to_str( _value2_ ) ); } \
+	catch( std::exception& e ) { XO_ACTIVE_TEST_CASE.check( false, e.what() ); }
+
+#define XO_CHECK_IF_EQUAL( _value1_, _value2_ ) \
+	try { bool _result_ = ( ::xo::equal( _value1_, _value2_ ) ); \
+	XO_ACTIVE_TEST_CASE.check( _result_, ::xo::to_str( _value1_ ) + " != " + ::xo::to_str( _value2_ ) ); } \
 	catch( std::exception& e ) { XO_ACTIVE_TEST_CASE.check( false, e.what() ); }
 
 namespace xo
@@ -41,13 +52,17 @@ namespace xo
 			}
 		};
 
+		struct test_options {
+			bool show_warning_for_empty_test_cases = true;
+		};
+
 		using test_func_t = std::function< void( class test_case& ) >;
 		class XO_API test_case
 		{
 		public:
 			test_case( const string& name, test_func_t func );
 			bool check( bool result, const string& message = "" );
-			const test_result& run();
+			const test_result& run( const test_options& options );
 			const string& name() const { return name_; }
 
 		private:
@@ -58,7 +73,7 @@ namespace xo
 		};
 
 		XO_API index_t add_test_case( const string& name, test_func_t fn );
-		XO_API int run_tests();
-		XO_API int run_tests_async();
+		XO_API int run_tests( const test_options& options = {} );
+		XO_API int run_tests_async( const test_options& options = {} );
 	}
 }
