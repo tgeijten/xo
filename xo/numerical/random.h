@@ -16,12 +16,19 @@ namespace xo
 		void seed( unsigned int s ) { re.seed( s ); }
 
 		template< typename T > T uniform( T min, T max ) { return std::uniform_real_distribution<T>( min, max )( re ); }
-		template< typename T > T uniform( const xo::bounds<T>& b ) { return std::uniform_real_distribution<T>( b.lower, b.upper )( re ); }
+		template< typename T > T uniform( const xo::bounds<T>& b ) { return uniform<T>( b.lower, b.upper ); }
+
 		template< typename T > T uniform_int( T min, T max ) { return std::uniform_int_distribution<T>( min, max )( re ); }
-		template< typename T > T uniform_int( const xo::bounds<T>& b ) { return std::uniform_int_distribution<T>( b.lower, b.upper )( re ); }
+		template< typename T > T uniform_int( const xo::bounds<T>& b ) { return uniform_int<T>( b.lower, b.upper ); }
+
 		template< typename T > T normal( T mean, T stdev ) { return std::normal_distribution<T>( mean, stdev )( re ); }
 
-		template< typename T > vec3_<T> uniform_vec3( T min, T max ) { std::uniform_real_distribution<T> rd{ min, max }; return { rd( re ), rd( re ), rd( re ) }; }
+		template< typename T > vec3_<T> uniform_vec3( T min, T max ) {
+			std::uniform_real_distribution<T> rd{ min, max }; return { rd( re ), rd( re ), rd( re ) };
+		}
+		template< typename T > quat_<T> uniform_quat( degree_<T> min, degree_<T> max ) {
+			auto ea = vec3deg_<T>( uniform_vec3<T>( min.value, max.value ) ); return quat_from_euler_xyz( ea );
+		}
 
 	private:
 		RandomEngineT re;
