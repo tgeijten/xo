@@ -2,6 +2,7 @@
 
 #include "xo/system/xo_config.h"
 #include "bounds.h"
+#include "xo/geometry/angle.h"
 
 #include <random>
 
