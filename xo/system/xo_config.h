@@ -1,5 +1,24 @@
 #pragma once
 
+// OS settings
+#if defined(_MSC_VER)
+#	define XO_OS_WINDOWS 1
+#else
+#	define XO_OS_WINDOWS 0
+#endif
+
+#if defined(__linux__)
+#	define XO_OS_LINUX 1
+#else
+#	define XO_OS_LINUX 0
+#endif
+
+#if defined(__APPLE__)
+#	define XO_OS_MACOS 1
+#else
+#	define XO_OS_MACOS 0
+#endif
+
 // DEBUG settings
 #ifdef NDEBUG
 #	define XO_IS_DEBUG_BUILD 0
