@@ -131,6 +131,10 @@ namespace xo
 	template< typename T > vec3_<T> divide( const vec3_<T>& v1, const vec3_<T>& v2 )
 	{ return vec3_<T>( v1.x / v2.x, v1.y / v2.y, v1.z / v2.z ); }
 
+	/// Square vector components
+	template< typename T > vec3_<T> squared( const vec3_<T>& v )
+	{ return vec3_<T>( v.x * v.x, v.y * v.y, v.z * v.z ); }
+
 	/// Scale vector components
 	template< typename T > vec3_<T>& scale( vec3_<T>& v, const vec3_<T>& s )
 	{ v.x *= s.x; v.y *= s.y; v.z *= s.z; return v; }
