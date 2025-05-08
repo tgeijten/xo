@@ -285,7 +285,7 @@ namespace xo
 		return vec3_<T>( txz + twy, tyz - twx, 1.0f - ( txx + tyy ) );
 	}
 
-	/// Get axes from quaternion (#todo: verify)
+	/// Get axes from quaternion
 	template< typename T > vec3_< vec3_<T> > axes_from_quat( const quat_<T>& q ) {
 		T tx = q.x + q.x, ty = q.y + q.y, tz = q.z + q.z;
 		T twx = tx * q.w, twy = ty * q.w, twz = tz * q.w;
