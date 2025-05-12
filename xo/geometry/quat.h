@@ -184,16 +184,8 @@ namespace xo
 		else return { vec3_<T>::unit_x(), radian_<T>() };
 	}
 
-	/// Get quaternion and angle around specific unit-length axis, does not handle singularity
-	template< typename T > std::pair< quat_<T>, radian_<T> > quat_angle_around_axis_fast( const quat_<T>& q, const vec3_<T>& a ) {
-		auto d = dot_product( vec3_<T>( q.x, q.y, q.z ), a );
-		auto qa = xo::normalized( quat_<T>( q.w, d * a.x, d * a.y, d * a.z ) ); // assume ||a|| == 1
-		return { qa, radian_<T>( std::copysign( 2 * std::acos( qa.w ), d ) ) };
-	}
-
-	/// Get quaternion and angle around specific unit-length axis
-	// #todo: better singularity handling
-	template< typename T > std::pair< quat_<T>, radian_<T> > quat_angle_around_axis( const quat_<T>& q, const vec3_<T>& a ) {
+	/// Get quaternion and angle around specific unit-length axis (legacy version that uses scaled vector)
+	template< typename T > std::pair< quat_<T>, radian_<T> > quat_angle_around_axis_legacy( const quat_<T>& q, const vec3_<T>& a ) {
 		auto d = dot_product( vec3_<T>( q.x, q.y, q.z ), a );
 		auto qa = quat_<T>( q.w, d * a.x, d * a.y, d * a.z ); // assume ||a|| == 1
 		if ( auto l = length( qa ); l > constants<T>::epsilon() )
@@ -202,13 +194,29 @@ namespace xo
 		return { qa, radian_<T>( std::copysign( 2 * std::acos( qa.w ), d ) ) };
 	}
 
-	/// Get rotation around specific unit-length axis
+	/// Get rotation around specific unit-length axis (most accurate)
 	template< typename T > radian_<T> rotation_around_axis( const quat_<T>& q, const vec3_<T>& a ) {
+		auto dot_vec = q.x * a.x + q.y * a.y + q.z * a.z;
+		auto theta = 2 * std::acos( q.w );
+		auto sin_half_theta = std::sqrt( T( 1 ) - q.w * q.w );
+		if ( sin_half_theta > xo::num<T>::epsilon )
+			return radian_<T>( theta * dot_vec / sin_half_theta );
+		else return radian_<T>( T( 2 ) * dot_vec );
+	}
+
+	/// Get rotation around specific unit-length axis by scaling the vector part (legacy version that uses scaled vector)
+	template< typename T > radian_<T> rotation_around_axis_legacy( const quat_<T>& q, const vec3_<T>& a ) {
 		auto d = dot_product( vec3_<T>( q.x, q.y, q.z ), a );
 		auto qa = quat_<T>( q.w, d * a.x, d * a.y, d * a.z ); // assume ||a|| == 1
 		if ( auto l = length( qa ); l > constants<T>::epsilon() )
 			return radian_<T>( std::copysign( 2 * std::acos( qa.w / l ), d ) );
 		else return radian_<T>( 0 );
+	}
+
+	/// Get rotation around specific unit-length axis (fast, correct for small rotations)
+	template< typename T > radian_<T> rotation_around_axis_fast( const quat_<T>& q, const vec3_<T>& a ) {
+		auto d = dot_product( vec3_<T>( q.x, q.y, q.z ), a );
+		return radian_<T>( 2 * std::asin( d ) );
 	}
 
 	/// Get quaternion and angle around x-axis

@@ -3,6 +3,7 @@
 #include "xo/geometry/vec3.h"
 #include "xo/numerical/random.h"
 #include "test_tools.h"
+#include "xo/system/log.h"
 
 namespace xo
 {
@@ -64,6 +65,26 @@ namespace xo
 			XO_CHECK( equal( q2, q2o, eps ) );
 			XO_CHECK( equal( q3, q3o, eps ) );
 			XO_CHECK( equal( q4, q4o, eps ) );
+		}
+	}
+
+	XO_TEST_CASE_SKIP( xo_rotation_around_axis_test )
+	{
+		for ( auto d = 0_degd; d < 180_degd; d += 10_degd ) {
+			auto q = quat_from_euler( d, 10_degd, 0_degd, euler_order::yzx );
+			auto a1 = degreed( rotation_around_axis_legacy( q, vec3d::unit_x() ) );
+			auto a2 = degreed( rotation_around_axis_fast( q, vec3d::unit_x() ) );
+			auto a4 = degreed( rotation_around_axis( q, vec3d::unit_x() ) );
+			log::info( d, ": as=", a1, " af=", a2, " a4=", a4 );
+		}
+
+		random_number_generator_fast rng;
+		for ( index_t i = 0; i < 10; ++i ) {
+			auto q = quat_from_euler( 20_degd, -30_degd, 40_degd );
+			auto v = normalized( rng.uniform_vec3<double>( -1, 1 ) );
+			auto a1 = rotation_around_axis_legacy( q, v );
+			auto a2 = rotation_around_axis_fast( q, v );
+			auto a4 = rotation_around_axis( q, v );
 		}
 	}
 }
