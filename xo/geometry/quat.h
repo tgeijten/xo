@@ -228,7 +228,7 @@ namespace xo
 		else return { {}, {} };
 	}
 
-	/// Get quaternion and angle around x-axis
+	/// Get quaternion and angle around y-axis
 	template< typename T > std::pair< quat_<T>, radian_<T> > quat_angle_around_y( const quat_<T>& q ) {
 		if ( auto l = std::sqrt( q.w * q.w + q.y * q.y ); l > constants<T>::epsilon() ) {
 			auto s = inv( l ); auto w = s * q.w;
@@ -237,7 +237,7 @@ namespace xo
 		else return { {}, {} };
 	}
 
-	/// Get quaternion and angle around x-axis
+	/// Get quaternion and angle around z-axis
 	template< typename T > std::pair< quat_<T>, radian_<T> > quat_angle_around_z( const quat_<T>& q ) {
 		if ( auto l = std::sqrt( q.w * q.w + q.z * q.z ); l > constants<T>::epsilon() ) {
 			auto s = inv( l ); auto w = s * q.w;
