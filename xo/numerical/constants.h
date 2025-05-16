@@ -42,8 +42,8 @@ namespace xo
 		static constexpr T e = T( XO_E_LONG_DOUBLE );
 		static constexpr T sqrt2 = T( XO_SQRT2_LONG_DOUBLE );
 		static constexpr T half_sqrt2 = T( 0.5 ) * T( XO_SQRT2_LONG_DOUBLE );
-		static constexpr T epsilon = std::numeric_limits< T >::epsilon();
-		static constexpr T ample_epsilon = T( 8 * std::numeric_limits< T >::epsilon() );
+		static constexpr T epsilon = std::numeric_limits<T>::epsilon();
+		static constexpr T ample_epsilon = T( 8 * std::numeric_limits<T>::epsilon() );
 		static constexpr T max = std::numeric_limits<T>::max();
 		static constexpr T highest = std::numeric_limits<T>::max();
 		static constexpr T smallest = std::numeric_limits<T>::min();
@@ -59,7 +59,11 @@ namespace xo
 		}
 	};
 
-	using constantsd = constants< double >;
-	using constantsf = constants< float >;
-	using constantsi = constants< int >;
+	using constantsd = constants<double>;
+	using constantsf = constants<float>;
+	using constantsi = constants<int>;
+
+	using numd = num<double>;
+	using numf = num<float>;
+	using numi = num<int>;
 }
