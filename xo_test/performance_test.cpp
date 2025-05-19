@@ -63,7 +63,7 @@ namespace xo
 		sw.restart();
 		for ( int i = num_evals / N; i > 0; --i )
 			for ( int j = 0; j < N; ++j )
-				result += rotation_around_axis_legacy( qa[j], axis );
+				result += twist_around_axis( qa[j], axis );
 		sw.split( name.c_str() );
 		return result;
 	}

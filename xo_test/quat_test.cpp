@@ -68,23 +68,33 @@ namespace xo
 		}
 	}
 
-	XO_TEST_CASE_SKIP( xo_rotation_around_axis_test )
+	XO_TEST_CASE( xo_rotation_around_axis_test )
 	{
-		for ( auto d = 0_degd; d < 180_degd; d += 10_degd ) {
-			auto q = quat_from_euler( d, 10_degd, 0_degd, euler_order::yzx );
-			auto a1 = degreed( rotation_around_axis_legacy( q, vec3d::unit_x() ) );
-			auto a2 = degreed( rotation_around_axis_fast( q, vec3d::unit_x() ) );
-			auto a4 = degreed( rotation_around_axis( q, vec3d::unit_x() ) );
-			log::info( d, ": as=", a1, " af=", a2, " a4=", a4 );
+		for ( auto dx = 0_degd; dx <= 90_degd; dx += 30_degd ) {
+			log::info( "--- dx=", dx, " ---" );
+			for ( auto dy = 0_degd; dy <= 180_degd; dy += 30_degd ) {
+				auto q = quat_from_euler( dx, dy, 0_degd, euler_order::xyz );
+				auto al = degreed( twist_around_axis( q, vec3d::unit_y() ) );
+				auto aa = degreed( angle_around_axis( q, vec3d::unit_y() ) );
+
+				auto qal = quat_twist_around_y( q );
+				auto aly = degreed( qal.second );
+				auto aly2 = degreed( quat_twist_around_y( qal.first ).second );
+
+				auto qaa = quat_angle_around_y( q );
+				auto aay = degreed( qaa.second );
+				auto aay2 = degreed( quat_angle_around_y( qaa.first ).second );
+				log::info( "al=", al, " aly=", aly, " aly2=", aly2, " aa=", aa, " aay=", aay, " aay2=", aay2 );
+				XO_CHECK_IF_EQUAL( al.value, aly2.value );
+			}
 		}
 
 		random_number_generator_fast rng;
 		for ( index_t i = 0; i < 10; ++i ) {
 			auto q = quat_from_euler( 20_degd, -30_degd, 40_degd );
 			auto v = normalized( rng.uniform_vec3<double>( -1, 1 ) );
-			auto a1 = rotation_around_axis_legacy( q, v );
-			auto a2 = rotation_around_axis_fast( q, v );
-			auto a4 = rotation_around_axis( q, v );
+			auto a1 = twist_around_axis( q, v );
+			auto a4 = angle_around_axis( q, v );
 		}
 	}
 }

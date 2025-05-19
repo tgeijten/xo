@@ -96,17 +96,19 @@ namespace xo
 	XO_TEST_CASE( xo_angle_decomposition_test )
 	{
 		auto q0 = quat_from_euler( 2_radd, 0_radd, 1_radd, euler_order::zyx );
-		auto d0 = rotation_around_axis_legacy( q0, vec3d::unit_x() );
+		auto d0 = twist_around_axis( q0, vec3d::unit_x() );
 		XO_CHECK( equal( d0.value, 2.0 ) );
 
 		auto q = quat_from_euler( 0.4_radd, 0.3_radd, 0_radd, euler_order::xyz );
-		auto rx = rotation_around_axis_legacy( q, vec3d::unit_x() );
-		auto ry = rotation_around_axis_legacy( q, vec3d::unit_y() );
-		auto rz = rotation_around_axis_legacy( q, vec3d::unit_z() );
-		auto rxyz = rotation_around_xyz( q );
-		XO_CHECK( rx == rxyz.x );
-		XO_CHECK( ry == rxyz.y );
-		XO_CHECK( rz == rxyz.z );
+		auto rx = twist_around_axis( q, vec3d::unit_x() );
+		auto ry = twist_around_axis( q, vec3d::unit_y() );
+		auto rz = twist_around_axis( q, vec3d::unit_z() );
+		auto rx2 = twist_around_x( q );
+		auto ry2 = twist_around_y( q );
+		auto rz2 = twist_around_z( q );
+		XO_CHECK( rx == rx2 );
+		XO_CHECK( ry == ry2 );
+		XO_CHECK( rz == rz2 );
 
 		auto qyaw = yaw( q );
 		auto qpitch = pitch( q );
