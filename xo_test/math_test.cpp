@@ -160,6 +160,19 @@ namespace xo
 		XO_CHECK( equal( lg3( x2 ), -10.0 ) );
 	}
 
+	XO_TEST_CASE_SKIP( harmonic_sum_test )
+	{
+		xo::random_number_generator_accurate rng;
+
+		for ( int i = 0; i < 10; ++i ) {
+			auto v1 = rng.uniform( 0.0, 1.0 );
+			auto v2 = rng.uniform( 0.0, 1.0 );
+			auto s = harmonic_sum( v1, v2 );
+			auto s2 = 1 / ( 1 / v1 + 1 / v2 );
+			XO_CHECK_IF_EQUAL( s, s2 );
+		}
+	}
+
 #if 0
 	void vec_quat_test()
 	{

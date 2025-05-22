@@ -172,4 +172,7 @@ namespace xo
 		while ( q ) { auto t = p % q; p = q; q = t; }
 		return p;
 	}
+
+	/// harmonic sum
+	template< typename T > T harmonic_sum( T v1, T v2 ) { return ( v1 * v2 ) / ( v1 + v2 ); }
 }
