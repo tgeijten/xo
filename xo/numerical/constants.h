@@ -48,7 +48,7 @@ namespace xo
 		static constexpr T highest = std::numeric_limits<T>::max();
 		static constexpr T smallest = std::numeric_limits<T>::min();
 		static constexpr T lowest = std::numeric_limits<T>::lowest();
-		static constexpr T quieNaN = std::numeric_limits<T>::quiet_NaN();
+		static constexpr T quiet_NaN = std::numeric_limits<T>::quiet_NaN();
 		static constexpr T infinity = std::numeric_limits<T>::infinity();
 		static constexpr bool is_signed = std::numeric_limits<T>::is_signed;
 		static constexpr T sentinel() {
