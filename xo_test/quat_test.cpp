@@ -82,6 +82,8 @@ namespace xo
 				auto aly2 = degreed( quat_twist_around_y( qal.first ).second );
 
 				auto qaa = quat_angle_around_y( q );
+				auto qaax = quat_angle_around_x( q );
+				auto qaaz = quat_angle_around_z( q );
 				auto aay = degreed( qaa.second );
 				auto aay2 = degreed( quat_angle_around_y( qaa.first ).second );
 				log::info( "al=", al, " aly=", aly, " aly2=", aly2, " aa=", aa, " aay=", aay, " aay2=", aay2 );

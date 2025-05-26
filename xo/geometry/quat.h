@@ -258,7 +258,7 @@ namespace xo
 	/// Get quaternion and angle around x-axis
 	template< typename T > std::pair< quat_<T>, radian_<T> > quat_angle_around_x( const quat_<T>& q ) {
 		T a = 2 * std::acos( q.w ), sin_half_a = std::sqrt( 1 - q.w * q.w );
-		T ax = sin_half_a > xo::num<T>::epsilon ? ax = a * q.x / sin_half_a : 2 * q.x;
+		T ax = sin_half_a > xo::num<T>::epsilon ? a * q.x / sin_half_a : 2 * q.x;
 		T half_ax = T( 0.5 ) * ax;
 		return { quat_<T>( std::cos( half_ax ), std::sin( half_ax ), 0, 0 ), radian_<T>( ax ) };
 	}
@@ -266,7 +266,7 @@ namespace xo
 	/// Get quaternion and angle around y-axis
 	template< typename T > std::pair< quat_<T>, radian_<T> > quat_angle_around_y( const quat_<T>& q ) {
 		T a = 2 * std::acos( q.w ), sin_half_a = std::sqrt( 1 - q.w * q.w );
-		T ay = sin_half_a > xo::num<T>::epsilon ? ay = a * q.y / sin_half_a : 2 * q.y;
+		T ay = sin_half_a > xo::num<T>::epsilon ? a * q.y / sin_half_a : 2 * q.y;
 		T half_ay = T( 0.5 ) * ay;
 		return { quat_<T>( std::cos( half_ay ), 0, std::sin( half_ay ), 0 ), radian_<T>( ay ) };
 	}
@@ -274,7 +274,7 @@ namespace xo
 	/// Get quaternion and angle around z-axis
 	template< typename T > std::pair< quat_<T>, radian_<T> > quat_angle_around_z( const quat_<T>& q ) {
 		T a = 2 * std::acos( q.w ), sin_half_a = std::sqrt( 1 - q.w * q.w );
-		T ay = sin_half_a > xo::num<T>::epsilon ? az = a * q.z / sin_half_a : 2 * q.z;
+		T az = sin_half_a > xo::num<T>::epsilon ? a * q.z / sin_half_a : 2 * q.z;
 		T half_az = T( 0.5 ) * az;
 		return { quat_<T>( std::cos( half_az ), 0, 0, std::sin( half_az ) ), radian_<T>( az ) };
 	}
