@@ -167,9 +167,9 @@ namespace xo
 	/// convert from prop_node
 	template< typename T > bool from_prop_node( const prop_node& pn, vec3_<T>& v ) {
 		// load vec3_ from array [ 1 2 3 ], group { x=1 y=2 z=3 }, or string: "1 2 3"
-		if ( pn.size() == 3 ) {
-			if ( pn.is_array() ) // array: [ 1 2 3 ]
-				v.set( pn.get<T>( 0 ), pn.get<T>( 1 ), pn.get<T>( 2 ) );
+		if ( pn.size() >= 3 ) {
+			if ( pn.is_array() )
+				v.set( pn.get<T>( 0 ), pn.get<T>( 1 ), pn.get<T>( 2 ) ); // array: [ 1 2 3 ]
 			else v.set( pn.get<T>( "x" ), pn.get<T>( "y" ), pn.get<T>( "z" ) ); // group: { x=1 y=2 z=3 }
 			return true;
 		}
