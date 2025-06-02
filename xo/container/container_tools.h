@@ -128,9 +128,14 @@ namespace xo
 		copy_cast( std::begin( source ), std::end( source ), std::begin( target ) );
 	}
 
-	/// append a container to another
+	/// append container c2 to container c1
 	template< typename C1, typename C2 > C1& append( C1& c1, const C2& c2 ) {
 		c1.insert( c1.end(), c2.begin(), c2.end() ); return c1;
+	}
+
+	/// append c1 to c2 while skipping duplicates
+	template< typename C1, typename C2 > C1& merge( C1& c1, const C2& c2 ) {
+		for ( auto&& e : c2 ) if ( !contains( c1, e ) ) c1.emplace_back( e ); return c1;
 	}
 
 	/// get index of last element
