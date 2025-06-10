@@ -473,7 +473,7 @@ namespace xo
 		}
 		else if ( vec3_<T> v; from_prop_node( pn, v ) ) {
 			// quaternion from Euler angles
-			auto in_radians = pn.get( "in_radians", false );
+			auto in_radians = pn.get( "in_radians", !pn.get( "in_degrees", true ) );
 			auto ea = in_radians ? vec3_<radian_<T>>( v ) : vec3_<radian_<T>>( vec3_<degree_<T>>( v ) );
 			auto order = pn.get< euler_order >( "order", euler_order::xyz );
 			q = quat_from_euler( ea, order );
