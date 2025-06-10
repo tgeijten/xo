@@ -28,6 +28,7 @@ namespace xo
 		bool empty() const { return patterns_.empty(); }
 		string str() const { return concat_str( patterns(), ";" ); }
 		const vector<string>& patterns() const { return patterns_; }
+		vector<string>& patterns() { return patterns_; }
 
 	private:
 		vector<string> patterns_;
