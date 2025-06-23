@@ -444,7 +444,7 @@ namespace xo
 
 	void append_str( string& str, const string& append, const string& delim )
 	{
-		if ( !str.empty() && !str_ends_with( str, delim ) )
+		if ( !str.empty() && !append.empty() && !str_ends_with( str, delim ) )
 			str += delim;
 		str += append;
 	}
