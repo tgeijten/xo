@@ -85,7 +85,7 @@ namespace xo
 	}
 
 	template< typename T >
-	vec3_<T> mirrored_axis_if( vec3_<T> dir, bool m ) {
+	vec3_<T> mirrored_axis_if( vec3_<T> obj, bool m ) {
 		mirror_axis_if( obj, m );
 		return obj;
 	}
