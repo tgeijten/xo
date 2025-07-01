@@ -61,7 +61,7 @@ namespace xo
 					zml_error( str, ec, "'<<' has no find matching '>>'" );
 				if ( filename.is_relative() )
 					filename = folder / filename;
-				parent.append( load_zml( filename, ec ) );
+				parent.append( load_zml( filename, ec, folder, included_files ) );
 				if ( included_files )
 					included_files->emplace_back( std::move( filename ) );
 			}
@@ -267,7 +267,7 @@ namespace xo
 		xo_assert( read_pn_ );
 		// #todo: more efficient. parser should be able to take any stream type.
 		char_stream stream( string( std::istreambuf_iterator<char>( str ), {} ) );
-		*read_pn_ = parse_zml( stream, ec_, file_folder_, &included_files_ );
+		*read_pn_ = parse_zml( stream, ec_, file_folder_, included_files_ );
 		return str;
 	}
 

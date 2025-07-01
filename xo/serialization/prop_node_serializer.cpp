@@ -8,15 +8,15 @@
 namespace xo
 {
 	prop_node_serializer::prop_node_serializer() :
-		read_pn_( nullptr ), write_pn_( nullptr ), ec_( nullptr ), file_folder_()
+		read_pn_( nullptr ), write_pn_( nullptr ), ec_( nullptr ), file_folder_(), included_files_()
 	{}
 
-	prop_node_serializer::prop_node_serializer( const prop_node& pn, error_code* ec, const path& file_folder ) :
-		read_pn_( nullptr ), write_pn_( &pn ), ec_( ec ), file_folder_( file_folder )
+	prop_node_serializer::prop_node_serializer( const prop_node& pn, error_code* ec, const path& file_folder, vector<path>* included_files ) :
+		read_pn_( nullptr ), write_pn_( &pn ), ec_( ec ), file_folder_( file_folder ), included_files_( included_files ) 
 	{}
 
-	prop_node_serializer::prop_node_serializer( prop_node& pn, error_code* ec, const path& file_folder ) :
-		read_pn_( &pn ), write_pn_( &pn ), ec_( ec ), file_folder_( file_folder )
+	prop_node_serializer::prop_node_serializer( prop_node& pn, error_code* ec, const path& file_folder, vector<path>* included_files ) :
+		read_pn_( &pn ), write_pn_( &pn ), ec_( ec ), file_folder_( file_folder ), included_files_( included_files ) 
 	{}
 
 	prop_node prop_node_serializer::load_file( const path& filename, error_code* ec )
