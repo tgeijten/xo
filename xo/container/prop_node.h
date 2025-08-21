@@ -8,9 +8,10 @@
 #include "xo/string/string_tools.h"
 #include "xo/container/vector_type.h"
 #include "xo/container/pair_type.h"
+#include "xo/container/container_tools.h"
+#include "xo/container/view_if.h"
 #include "xo/utility/optional.h"
 #include "xo/utility/type_traits.h"
-#include "xo/container/view_if.h"
 
 #include <initializer_list>
 #include <array>
@@ -81,13 +82,13 @@ namespace xo
 		template< typename T > bool try_get( T& value, const key_t& key ) const;
 
 		/// get the value of a child node for a range of keys, or a default value if it doesn't exist
-		template< typename T > T get_any( std::initializer_list< key_t > keys, const T& def ) const;
+		template< typename T > T get_any( std::initializer_list<key_t> keys, const T& def ) const;
 
 		/// get the value of a child node for a range of keys, or a default value if it doesn't exist
-		template< typename T > T get_any( std::initializer_list< key_t > keys ) const;
+		template< typename T > T get_any( std::initializer_list<key_t> keys ) const;
 
 		/// get the value of a child node for a range of keys, or a default value if it doesn't exist
-		template< typename T > optional<T> try_get_any( std::initializer_list< key_t > keys ) const;
+		template< typename T > optional<T> try_get_any( std::initializer_list<key_t> keys ) const;
 
 		/// get all values with a specific key
 		template< typename T > vector<T> get_all( const key_t& key ) const;
@@ -104,7 +105,7 @@ namespace xo
 		bool has_key( const key_t& key ) const;
 
 		/// see if this prop_node has any specific key
-		bool has_any_key( std::initializer_list< key_t > keys ) const;
+		bool has_any_key( std::initializer_list<key_t> keys ) const;
 
 		/// count the number of occurances of key
 		size_t count_key( const key_t& key ) const;
@@ -170,8 +171,8 @@ namespace xo
 
 		/// access child by name, throws if not existing
 		const prop_node& get_child( const key_t& key ) const;
-		const prop_node& get_any_child( std::initializer_list< key_t > keys ) const;
-		const prop_node* try_get_any_child( std::initializer_list< key_t > keys ) const;
+		const prop_node& get_any_child( std::initializer_list<key_t> keys ) const;
+		const prop_node* try_get_any_child( std::initializer_list<key_t> keys ) const;
 
 		const prop_node& operator[]( const key_t& key ) const { return get_child( key ); }
 		prop_node& get_child( const key_t& key );
@@ -230,6 +231,10 @@ namespace xo
 		/// access selection with specific key
 		auto select( const string& key ) const
 		{ return make_view_if( begin(), end(), [=]( const pair_t& kvp ) { return kvp.first == key; } ); }
+
+		/// access selection with specific keys
+		auto select_any( const std::vector<key_t>& keys ) const
+		{ return make_view_if( begin(), end(), [=]( const pair_t& kvp ) { return contains( keys, kvp.first ); } ); }
 
 		/// access items with specific pattern
 		auto select_pattern( const string& pattern ) const
@@ -369,21 +374,21 @@ namespace xo
 	}
 
 	template< typename T >
-	T prop_node::get_any( std::initializer_list< key_t > keys, const T& def ) const {
+	T prop_node::get_any( std::initializer_list<key_t> keys, const T& def ) const {
 		if ( auto c = try_get_any_child( keys ) )
 			return c->get< T >();
 		return def;
 	}
 
 	template< typename T >
-	T prop_node::get_any( std::initializer_list< key_t > keys ) const {
+	T prop_node::get_any( std::initializer_list<key_t> keys ) const {
 		if ( auto c = try_get_any_child( keys ) )
 			return c->get< T >();
 		xo_error( "Could not find key: " + concat_str( keys, " or " ) );
 	}
 
 	template< typename T >
-	optional< T > prop_node::try_get_any( std::initializer_list< key_t > keys ) const {
+	optional< T > prop_node::try_get_any( std::initializer_list<key_t> keys ) const {
 		if ( auto c = try_get_any_child( keys ) )
 			return c->get< T >();
 		return optional< T >();
