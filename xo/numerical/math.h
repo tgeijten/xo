@@ -116,13 +116,19 @@ namespace xo
 		return soft_clamp( v, min, max, boundary );
 	}
 
-	/// clamp that is C2 continuous with asymmetric boundaries defined by lb [min,ub] and ub [lb, max]
+	/// clamp that is C2 continuous with asymmetric boundaries defined by min < lb < max and lb < ub < max
 	template< typename T > T smooth_clamped( const T& v, const T& min, const T& max, const T& lb, const T& ub ) {
 		if ( v < lb )
 			return ( lb - min ) * std::tanh( ( v - lb ) / ( lb - min ) ) + lb;
 		else if ( v > ub )
 			return ( max - ub ) * std::tanh( ( v - ub ) / ( max - ub ) ) + ub;
 		else return v;
+	}
+
+	/// clamp that is C2 continuous with relative asymmetric boundaries defined by 0 < lb < 1 and lb < ub < 1
+	template< typename T > T smooth_clamped_relative( const T& v, const T& min, const T& max, const T& lb, const T& ub ) {
+		auto r = max - min;
+		return smooth_clamped( v, min, max, min + lb * r, min + ub * r );
 	}
 
 	/// convert float [0..1] to uint [0..255]
