@@ -84,6 +84,12 @@ namespace xo
 	/// remove a substring from a temporary string
 	XO_API string remove_str( string&& s, string_view find_str );
 
+	/// remove substrings from a string
+	XO_API string remove_strs( const string& s, std::initializer_list<string_view> find_strs );
+
+	/// remove substrings from a temporary string
+	XO_API string remove_strs( string&& s, std::initializer_list<string_view> find_strs );
+
 	/// replace a substring in a string
 	XO_API void replace_str( string& s, string_view find_str, string_view replace_with );
 

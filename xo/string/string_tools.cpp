@@ -178,6 +178,18 @@ namespace xo
 		return std::move( s );
 	}
 
+	string remove_strs( string&& s, std::initializer_list<string_view> find_strs )
+	{
+		for ( auto&& find_str : find_strs )
+			remove_str( s, find_str );
+		return s;
+	}
+
+	string remove_strs( const string& s, std::initializer_list<string_view> find_strs )
+	{
+		return remove_strs( string( s ), find_strs );
+	}
+
 	void replace_str( string& s, string_view find_str, string_view replace_with )
 	{
 		xo_assert( !find_str.empty() );
