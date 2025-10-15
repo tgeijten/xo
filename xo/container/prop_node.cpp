@@ -82,6 +82,12 @@ namespace xo
 		children.insert( children.end(), count, pair_t( key, value ) );
 	}
 
+	prop_node& prop_node::insert_child( index_t idx, const key_t& key )
+	{
+		xo_assert( idx <= size() );
+		return children.insert( children.begin() + idx, pair_t{ key, {} } )->second;
+	}
+
 	prop_node::iterator prop_node::insert( iterator pos, const_iterator first, const_iterator last )
 	{
 		return children.insert( pos, first, last );
