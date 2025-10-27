@@ -27,6 +27,7 @@ namespace xo
 		path& remove_filename();
 		path& replace_filename( const path& f = path() );
 		path& replace_stem( const path& stem = path() );
+		path& replace( const path& find_path, const path& replace_path );
 		path& concat_stem( const string_type& postfix );
 		path& make_preferred();
 		path parent_path() const;

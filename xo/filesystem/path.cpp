@@ -36,6 +36,12 @@ namespace xo
 		return *this /= stem + ext;
 	}
 
+	path& path::replace( const path& find_path, const path& replace_path )
+	{
+		xo::replace_str( data_, find_path.str(), replace_path.str() );
+		return *this;
+	}
+
 	path& path::concat_stem( const string_type& postfix )
 	{
 		replace_stem( stem() + postfix );
