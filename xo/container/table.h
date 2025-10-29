@@ -20,13 +20,13 @@ namespace xo
 		table( size_t rows = 0, size_t cols = 0 ) : row_labels( rows ), col_labels( cols ), data( rows* cols ) {}
 		~table() {}
 
-		index_t add_row( const L& label, const T& default_value = T() ) {
+		index_t add_row( const L& label = L(), const T& default_value = T() ) {
 			row_labels.add( label );
 			data.resize( row_size() * column_size(), default_value );
 			return row_size() - 1;
 		}
 
-		index_t add_column( const L& label, const T& default_value = T() ) {
+		index_t add_column( const L& label = L(), const T& default_value = T() ) {
 			resize( row_size(), column_size() + 1, default_value );
 			return col_labels.set( column_size() - 1, label );
 		}
@@ -77,8 +77,11 @@ namespace xo
 		const T& back_row( index_t col ) const { return operator()( row_size() - 1, col ); }
 		T& back_row( index_t col ) { return operator()( row_size() - 1, col ); }
 
-		template< typename T1 >
-		friend std::ostream& operator<<( std::ostream& str, const table< T1 >& t );
+		decltype( auto ) row_label( index_t idx ) const { return row_labels.get( idx ); }
+		decltype( auto ) column_label( index_t idx ) const { return col_labels.get( idx ); }
+
+		template< typename T1, typename L1 >
+		friend std::ostream& operator<<( std::ostream& str, const table< T1, L1 >& t );
 
 	private:
 
@@ -87,16 +90,16 @@ namespace xo
 		std::vector< T > data;
 	};
 
-	template< typename T >
-	std::ostream& operator<<( std::ostream& str, const table< T >& t ) {
+	template< typename T, typename L = string>
+	std::ostream& operator<<( std::ostream& str, const table< T, L >& t ) {
 		str << "Row";
-		for ( auto& rl : t.col_labels )
-			str << "\t" << rl;
+		for ( index_t i = 0; i < t.column_size(); ++i )
+			str << "\t" << t.column_label( i );
 		str << std::endl;
 
-		for ( index_t row = 0; row < t.row_size(); ++row )
-		{
-			str << t.row_labels[row];
+		for ( index_t row = 0; row < t.row_size(); ++row ) {
+			str << t.row_label( row );
+
 			for ( index_t col = 0; col < t.column_size(); ++col )
 				str << "\t" << t( row, col );
 			str << std::endl;

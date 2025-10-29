@@ -147,13 +147,35 @@ namespace xo
 		std::stringstream str;
 		str << t;
 		auto t2 = read_table< double >( str );
+		//std::cout << t2;
 		XO_CHECK( t2( "R1", "C1" ) == 1.0 );
 		XO_CHECK( t.column_size() == t2.column_size() );
 		XO_CHECK( t.row_size() == t2.row_size() );
 		for ( auto c : irange( t.column_size() ) )
 			for ( auto r : irange( t.row_size() ) )
 				XO_CHECK( t2( r, c ) == t( r, c ) );
-		//std::cout << t2;
+
+		// test table without labels
+		table< double, no_value_t > tv;
+		for ( index_t i = 0; i < 10; ++i )
+		{
+			tv.add_column();
+			tv.add_row();
+			tv( i, i ) = double( i );
+		}
+
+		XO_CHECK( tv( 1, 1 ) == 1.0 );
+		std::stringstream str2;
+		str2 << tv;
+		auto tv2 = read_table< double >( str2 );
+		//std::cout << tv2;
+
+		XO_CHECK( tv2( 1, 1 ) == 1.0 );
+		XO_CHECK( tv.column_size() == tv2.column_size() );
+		XO_CHECK( tv.row_size() == tv2.row_size() );
+		for ( auto c : irange( tv.column_size() ) )
+			for ( auto r : irange( tv.row_size() ) )
+				XO_CHECK( tv2( r, c ) == tv( r, c ) );
 	}
 
 	XO_TEST_CASE( xo_indexed_map )

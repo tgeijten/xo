@@ -48,6 +48,8 @@ namespace xo
 		size_t size() const { return values_.size(); }
 
 		const T& operator[]( index_t idx ) const { return values_[idx]; }
+		const T& get( index_t idx ) const { return values_[idx]; }
+		const T& at( index_t idx ) const { xo_assert( idx < values_.size() );  return values_[idx]; }
 
 		index_t set( index_t idx, const T& value ) {
 			xo_assert( idx < size() && try_find( value ) == no_index );
@@ -64,14 +66,23 @@ namespace xo
 		std::unordered_map<T, index_t> value_indices_;
 	};
 
-	template<> struct index_map< index_t >
+	struct no_value_t { no_value_t() = default; };
+
+	// template specialization that does not store value, useful for table without labels
+	template<> struct index_map< no_value_t >
 	{
-		index_map( size_t channels = 0 ) : num_channels( channels ) { }
-		size_t size() const { return num_channels; }
-		index_t add( index_t i ) { return num_channels++; }
-		index_t get_value( index_t idx ) const { return idx; }
+		index_map( size_t channels = 0 ) : size_( channels ) { }
+		index_t add( no_value_t nv ) { return size_++; }
+		void resize( size_t s ) { size_ = s; }
+		void reserve( size_t s ) {}
+		void clear() { size_ = 0; }
+		size_t size() const { return size_; }
+		index_t operator[]( index_t idx ) const { return idx; }
+		index_t get( index_t idx ) const { return idx; }
+		index_t at( index_t idx ) const { xo_assert( idx < size_ ); return idx; }
+		index_t set( index_t i, no_value_t nv ) { return i; }
 
 	private:
-		index_t num_channels;
+		index_t size_;
 	};
 }
