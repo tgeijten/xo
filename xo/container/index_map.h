@@ -10,66 +10,66 @@ namespace xo
 	template< typename T >
 	struct index_map
 	{
-		index_map( size_t channels = 0 ) : labels_( channels ) {}
-		index_map( std::initializer_list<T> labels ) : labels_( labels ) {}
-		index_map( const std::vector<T>& labels ) : labels_( labels ) {}
+		index_map( size_t channels = 0 ) : values_( channels ) {}
+		index_map( std::initializer_list<T> values ) : values_( values ) {}
+		index_map( const std::vector<T>& values ) : values_( values ) {}
 		~index_map() {}
 
-		index_t add( const T& label ) {
-			xo_assert( find( label ) == no_index );
-			labels_.push_back( label );
-			return label_indices_[label] = labels_.size() - 1;
+		index_t add( const T& value ) {
+			xo_assert( try_find( value ) == no_index );
+			values_.push_back( value );
+			return value_indices_[value] = values_.size() - 1;
 		}
 
-		index_t find( const T& label ) const {
-			auto it = label_indices_.find( label );
-			return ( it != label_indices_.end() ) ? it->second : no_index;
+		index_t try_find( const T& value ) const {
+			auto it = value_indices_.find( value );
+			return ( it != value_indices_.end() ) ? it->second : no_index;
 		}
 
-		index_t find_or_throw( const T& label ) const {
-			auto it = label_indices_.find( label );
-			xo_error_if( it == label_indices_.end(), "Could not find label: " + label );
+		index_t find( const T& value ) const {
+			auto it = value_indices_.find( value );
+			xo_error_if( it == value_indices_.end(), "Could not find value: " + value );
 			return it->second;
 		}
 
-		index_t find_or_add( const T& label ) const {
-			auto it = label_indices_.find( label );
-			if ( it == label_indices_.end() ) {
-				labels_.push_back( label );
-				return label_indices_[label] = labels_.size() - 1;
+		index_t find_or_add( const T& value ) const {
+			auto it = value_indices_.find( value );
+			if ( it == value_indices_.end() ) {
+				values_.push_back( value );
+				return value_indices_[value] = values_.size() - 1;
 			}
 			else return it->second;
 		}
 
-		void resize( size_t s ) { xo_assert( s >= size() ); labels_.resize( s ); }
-		void reserve( size_t s ) { labels_.reserve( s ); }
-		void clear() { labels_.clear(); label_indices_.clear(); }
+		void resize( size_t s ) { xo_assert( s >= size() ); values_.resize( s ); }
+		void reserve( size_t s ) { values_.reserve( s ); }
+		void clear() { values_.clear(); value_indices_.clear(); }
 
-		size_t size() const { return labels_.size(); }
+		size_t size() const { return values_.size(); }
 
-		const T& operator[]( index_t idx ) const { return labels_[idx]; }
+		const T& operator[]( index_t idx ) const { return values_[idx]; }
 
-		index_t set( index_t idx, const T& label ) {
-			xo_assert( idx < size() && find( label ) == no_index );
-			labels_[idx] = label;
-			label_indices_[label] = idx;
+		index_t set( index_t idx, const T& value ) {
+			xo_assert( idx < size() && try_find( value ) == no_index );
+			values_[idx] = value;
+			value_indices_[value] = idx;
 			return idx;
 		}
 
-		typename std::vector<T>::const_iterator begin() const { return labels_.begin(); }
-		typename std::vector<T>::const_iterator end() const { return labels_.end(); }
+		typename std::vector<T>::const_iterator begin() const { return values_.begin(); }
+		typename std::vector<T>::const_iterator end() const { return values_.end(); }
 
 	private:
-		std::vector<T> labels_;
-		std::unordered_map<T, index_t> label_indices_;
+		std::vector<T> values_;
+		std::unordered_map<T, index_t> value_indices_;
 	};
 
-	template<> struct index_map< void >
+	template<> struct index_map< index_t >
 	{
 		index_map( size_t channels = 0 ) : num_channels( channels ) { }
 		size_t size() const { return num_channels; }
-		index_t add() { return num_channels++; }
-		index_t get_label( index_t idx ) const { return idx; }
+		index_t add( index_t i ) { return num_channels++; }
+		index_t get_value( index_t idx ) const { return idx; }
 
 	private:
 		index_t num_channels;

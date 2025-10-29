@@ -31,8 +31,8 @@ namespace xo
 			return col_labels.set( column_size() - 1, label );
 		}
 
-		index_t find_column( const L& label ) const { return col_labels.find( label ); }
-		index_t find_row( const L& label ) const { return row_labels.find( label ); }
+		index_t find_column( const L& label ) const { return col_labels.try_find( label ); }
+		index_t find_row( const L& label ) const { return row_labels.try_find( label ); }
 
 		index_t get_or_add_row( const L& label, const T& default_value = T() ) {
 			auto idx = find_row( label );

@@ -60,14 +60,14 @@ namespace xo
 		}
 
 		/// find index of a label
-		index_t find_channel( const L& label ) const { return labels_.find_or_throw( label ); }
+		index_t find_channel( const L& label ) const { return labels_.find( label ); }
 
 		/// find index of a label
-		index_t try_find_channel( const L& label ) const { return labels_.find( label ); }
+		index_t try_find_channel( const L& label ) const { return labels_.try_find( label ); }
 
 		/// find or add a channel
 		index_t find_or_add_channel( const L& label, const T& value = T() ) {
-			auto idx = labels_.find( label );
+			auto idx = labels_.try_find( label );
 			return idx == no_index ? add_channel( label, value ) : idx;
 		}
 
