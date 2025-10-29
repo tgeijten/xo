@@ -31,16 +31,19 @@ namespace xo
 			return col_labels.set( column_size() - 1, label );
 		}
 
-		index_t find_column( const L& label ) const { return col_labels.try_find( label ); }
-		index_t find_row( const L& label ) const { return row_labels.try_find( label ); }
+		index_t find_column( const L& label ) const { return col_labels.find( label ); }
+		index_t find_row( const L& label ) const { return row_labels.find( label ); }
+
+		index_t try_find_column( const L& label ) const { return col_labels.try_find( label ); }
+		index_t try_find_row( const L& label ) const { return row_labels.try_find( label ); }
 
 		index_t get_or_add_row( const L& label, const T& default_value = T() ) {
-			auto idx = find_row( label );
+			auto idx = try_find_row( label );
 			return idx == no_index ? add_row( label, default_value ) : idx;
 		}
 
 		index_t get_or_add_column( const L& label, const T& default_value = T() ) {
-			auto idx = find_column( label );
+			auto idx = try_find_column( label );
 			return idx == no_index ? add_column( label, default_value ) : idx;
 		}
 
@@ -60,13 +63,16 @@ namespace xo
 		size_t column_size() const { return col_labels.size(); }
 		bool empty() const { return data.empty(); }
 
-		const T& operator()( index_t row, index_t col ) const { xo_assert( row < row_size() && col < column_size() ); return data[row * column_size() + col]; }
-		T& operator()( index_t row, index_t col ) { xo_assert( row < row_size() && col < column_size() ); return data[row * column_size() + col]; }
+		const T& operator()( index_t row, index_t col ) const { return data[row * column_size() + col]; }
+		T& operator()( index_t row, index_t col ) { return data[row * column_size() + col]; }
+
+		const T& at( index_t row, index_t col ) const { xo_assert( row < row_size() && col < column_size() ); return data[row * column_size() + col]; }
+		T& at( index_t row, index_t col ) { xo_assert( row < row_size() && col < column_size() ); return data[row * column_size() + col]; }
 
 		const T& operator()( const L& row, const L& col ) const { operator()( find_row( row ), find_column( col ) ); }
 		T& operator()( const L& row, const L& col ) { return operator()( get_or_add_row( row ), get_or_add_column( col ) ); }
 
-		const T& operator()( index_t row, const L& col ) const { return operator()( row, find_column( col ) ); }
+		const T& operator()( index_t row, const L& col ) const { return operator()( row, try_find_column( col ) ); }
 
 		const T& back_row( index_t col ) const { return operator()( row_size() - 1, col ); }
 		T& back_row( index_t col ) { return operator()( row_size() - 1, col ); }
