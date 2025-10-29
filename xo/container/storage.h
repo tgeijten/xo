@@ -2,7 +2,7 @@
 
 #include "xo/xo_types.h"
 #include "xo/system/assert.h"
-#include "xo/container/label_vector.h"
+#include "xo/container/index_map.h"
 #include "xo/numerical/math.h"
 #include "xo/string/string_tools.h"
 #include "xo/serialization/char_stream.h"
@@ -154,13 +154,13 @@ namespace xo
 		}
 		std::vector<T> get_channel( const L& label ) const { return get_channel( find_channel( label ) ); }
 
-		const label_vector< L >& labels() const { return labels_; }
+		const index_map< L >& labels() const { return labels_; }
 		const container_type& data() const { return data_; }
 		container_type& data() { return data_; }
 
 	private:
 		size_t frame_size_;
-		label_vector< L > labels_;
+		index_map< L > labels_;
 		container_type data_;
 	};
 

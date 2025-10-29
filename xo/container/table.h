@@ -2,7 +2,7 @@
 
 #include "xo/xo_types.h"
 #include "xo/container/container_tools.h"
-#include "xo/container/label_vector.h"
+#include "xo/container/index_map.h"
 #include "xo/string/string_type.h"
 #include "xo/string/string_tools.h"
 #include "xo/filesystem/path.h"
@@ -76,8 +76,8 @@ namespace xo
 
 	private:
 
-		label_vector< L > row_labels;
-		label_vector< L > col_labels;
+		index_map< L > row_labels;
+		index_map< L > col_labels;
 		std::vector< T > data;
 	};
 

@@ -2,7 +2,7 @@
 #include <map>
 #include "xo/geometry/vec3.h"
 #include "xo/system/log.h"
-#include "xo/container/label_vector.h"
+#include "xo/container/index_map.h"
 #include "xo/container/circular_deque.h"
 #include "xo/container/storage.h"
 #include "xo/system/test_case.h"
