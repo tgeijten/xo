@@ -1,5 +1,5 @@
 #include "xo/system/test_case.h"
-#include "xo/geometry/mat33.h"
+#include "xo/geometry/mat3.h"
 #include "xo/numerical/random.h"
 #include "xo/geometry/angle_type.h"
 #include "xo/geometry/quat.h"

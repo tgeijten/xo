@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mat33_type.h"
+#include "mat3_type.h"
 #include "vec3_type.h"
 #include "quat_type.h"
 #include <cmath>
