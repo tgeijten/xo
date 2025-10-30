@@ -2,11 +2,9 @@
 
 #include "xo/geometry/quat_type.h"
 #include "xo/geometry/vec3.h"
-#include "xo/geometry/mat33.h"
 #include "xo/geometry/angle.h"
 #include "xo/system/assert.h"
 #include "xo/numerical/compare.h"
-#include "mat33_type.h"
 #include "xo/utility/smart_enum.h"
 
 namespace xo
@@ -119,7 +117,7 @@ namespace xo
 	{ auto f = T( -1 ) / squared_length( q ); q.x *= f; q.y *= f; q.z *= f; return q; }
 
 	/// return quaternion in which w is positive (negate if w < 0)
-	template< typename T > quat_<T> positive( quat_<T> q )
+	template< typename T > quat_<T> canonical( quat_<T> q )
 	{ if ( q.w < 0 ) { q.w = -q.w; q.x = -q.x; q.y = -q.y; q.z = -q.z; } return q; }
 
 	/// make quaternion from axis and angle

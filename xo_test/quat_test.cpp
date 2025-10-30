@@ -71,7 +71,7 @@ namespace xo
 	XO_TEST_CASE( xo_rotation_around_axis_test )
 	{
 		for ( auto dx = 0_degd; dx <= 90_degd; dx += 30_degd ) {
-			log::info( "--- dx=", dx, " ---" );
+			log::debug( "--- dx=", dx, " ---" );
 			for ( auto dy = 0_degd; dy <= 180_degd; dy += 30_degd ) {
 				auto q = quat_from_euler( dx, dy, 0_degd, euler_order::xyz );
 				auto al = degreed( twist_around_axis( q, vec3d::unit_y() ) );
@@ -86,7 +86,7 @@ namespace xo
 				auto qaaz = quat_angle_around_z( q );
 				auto aay = degreed( qaa.second );
 				auto aay2 = degreed( quat_angle_around_y( qaa.first ).second );
-				log::info( "al=", al, " aly=", aly, " aly2=", aly2, " aa=", aa, " aay=", aay, " aay2=", aay2 );
+				log::debug( "al=", al, " aly=", aly, " aly2=", aly2, " aa=", aa, " aay=", aay, " aay2=", aay2 );
 				XO_CHECK_IF_EQUAL( al.value, aly2.value );
 			}
 		}
