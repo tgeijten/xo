@@ -5,10 +5,13 @@
 
 namespace xo
 {
-	/// compare floating point variables using ample_epsilon
-	/// IMPORTANT: this may not work as expected with values close to zero
+	/// compare floating point variables using relative epsilon
 	template< typename T > bool equal( T v1, T v2, T e = constants<T>::ample_epsilon() )
 	{ return abs( v1 - v2 ) <= abs( v1 ) * e; }
+
+	/// compare floating point variables using absolute epsilon
+	template< typename T > bool equal_abs( T v1, T v2, T e = constants<T>::epsilon() )
+	{ return abs( v1 - v2 ) <= e; }
 
 	/// compare floating point variables using ample_epsilon
 	template< typename T > bool less_than_or_equal( T v1, T v2, T e = constants<T>::ample_epsilon() )

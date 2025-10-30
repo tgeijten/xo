@@ -33,6 +33,16 @@
 	XO_ACTIVE_TEST_CASE.check( _result_, ::xo::to_str( _value1_ ) + " != " + ::xo::to_str( _value2_ ) ); } \
 	catch( std::exception& e ) { XO_ACTIVE_TEST_CASE.check( false, e.what() ); }
 
+#define XO_CHECK_IF_EQUAL_EPSILON_REL( _value1_, _value2_, _eps_ ) \
+	try { bool _result_ = ( ::xo::equal( _value1_, _value2_, _eps_ ) ); \
+	XO_ACTIVE_TEST_CASE.check( _result_, ::xo::to_str( _value1_ ) + " != " + ::xo::to_str( _value2_ ) ); } \
+	catch( std::exception& e ) { XO_ACTIVE_TEST_CASE.check( false, e.what() ); }
+
+#define XO_CHECK_IF_EQUAL_EPSILON_ABS( _value1_, _value2_, _eps_ ) \
+	try { bool _result_ = ( ::xo::equal_abs( _value1_, _value2_, _eps_ ) ); \
+	XO_ACTIVE_TEST_CASE.check( _result_, ::xo::to_str( _value1_ ) + " != " + ::xo::to_str( _value2_ ) ); } \
+	catch( std::exception& e ) { XO_ACTIVE_TEST_CASE.check( false, e.what() ); }
+
 namespace xo
 {
 	namespace test

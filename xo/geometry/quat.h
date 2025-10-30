@@ -65,9 +65,13 @@ namespace xo
 	template< typename T > bool operator!=( const quat_<T>& q1, const quat_<T>& q2 )
 	{ return !( q1 == q2 ); }
 
-	/// Compare quaternions with epsilon
+	/// Compare quaternions with relative epsilon
 	template< typename T > bool equal( const quat_<T>& q1, const quat_<T>& q2, T e = constants<T>::ample_epsilon() )
 	{ return equal( q1.w, q2.w, e ) && equal( q1.x, q2.x, e ) && equal( q1.y, q2.y, e ) && equal( q1.z, q2.z, e ); }
+
+	/// Compare quaternions with absolute epsilon
+	template< typename T > bool equal_abs( const quat_<T>& q1, const quat_<T>& q2, T e = constants<T>::epsilon() )
+	{ return equal_abs( q1.w, q2.w, e ) && equal_abs( q1.x, q2.x, e ) && equal_abs( q1.y, q2.y, e ) && equal_abs( q1.z, q2.z, e ); }
 
 	/// normalize quaternion, return length
 	template< typename T > T normalize( quat_<T>& q )

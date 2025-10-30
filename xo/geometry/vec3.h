@@ -95,9 +95,13 @@ namespace xo
 	template< typename T > bool operator!=( const vec3_<T>& v1, const vec3_<T>& v2 )
 	{ return !( v1 == v2 ); }
 
-	/// Compare vec3 with epsilon
+	/// Compare vec3 with relative epsilon
 	template< typename T > bool equal( const vec3_<T>& v1, const vec3_<T>& v2, T e = constants<T>::ample_epsilon() )
 	{ return equal( v1.x, v2.x, e ) && equal( v1.y, v2.y, e ) && equal( v1.z, v2.z, e ); }
+
+	/// Compare vec3 with absolute epsilon
+	template< typename T > bool equal_abs( const vec3_<T>& v1, const vec3_<T>& v2, T e = constants<T>::epsilon() )
+	{ return equal_abs( v1.x, v2.x, e ) && equal_abs( v1.y, v2.y, e ) && equal_abs( v1.z, v2.z, e ); }
 
 	/// Normalize a vec3, returns length
 	template< typename T > T normalize( vec3_<T>& v )
