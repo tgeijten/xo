@@ -10,6 +10,7 @@ namespace xo
 		constexpr scale3_( no_init_t ) {}
 		constexpr scale3_() : vec3_<T>( T( 1 ), T( 1 ), T( 1 ) ) {}
 		constexpr scale3_( T v ) : vec3_<T>( v, v, v ) {}
+		constexpr scale3_( const vec3_<T>& v ) : vec3_<T>( v ) {}
 		constexpr scale3_( const scale3_<T>& o ) = default;
 		constexpr scale3_( const T& sx, const T& sy, const T& sz ) : vec3_<T>( sx, sy, sz ) {}
 		constexpr scale3_( scale3_<T>&& o ) noexcept = default;
