@@ -287,6 +287,13 @@ namespace xo
 		return from_str( pn.get_str(), v );
 	};
 
+	/// conversion to prop_node
+	inline bool from_prop_node( const prop_node& pn, prop_node& v ) {
+		pn.set_accessed_recursively( true );
+		v = pn;
+		return true;
+	};
+
 	template< typename T > prop_node to_prop_node( const vector<T>& vec ) {
 		prop_node pn;
 		for ( size_t i = 0; i < vec.size(); ++i )
