@@ -29,6 +29,7 @@ namespace xo
 		index_type value() const { return idx; }
 		bool has_value() const { return idx != no_value_sentinel; }
 		explicit operator bool() const { return has_value(); }
+		template< typename U > index_class<U, I> as() const { return index_class<U, I>( idx ); }
 
 		void reset() { idx = no_value_sentinel; }
 

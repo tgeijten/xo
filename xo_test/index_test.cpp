@@ -18,6 +18,9 @@ namespace xo
 		XO_CHECK( sp.size() == 6 );
 		XO_CHECK( !sp.empty() );
 		for ( auto i : sp )
-			XO_CHECK( i == icheck++ )
+			XO_CHECK( i == icheck++ );
+
+		auto idx2 = idx.as<int>();
+		XO_CHECK( idx.idx == idx2.idx );
 	}
 }
