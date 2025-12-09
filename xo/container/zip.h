@@ -23,6 +23,7 @@ namespace xo
 
 	template< typename C1, typename C2 >
 	auto zip( C1& c1, C2& c2 ) {
+		xo_debug_assert( c1.size() <= c2.size() );
 		return zipper( std::begin( c1 ), std::end( c1 ), std::begin( c2 ) );
 	}
 }
