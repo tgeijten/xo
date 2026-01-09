@@ -151,7 +151,7 @@ namespace xo
 		return result;
 	}
 
-	/// Get quaternion to represent the rotation from source to target quaternion
+	/// Get quaternion to represent the rotation from source to target quaternion, in the source coordinate frame
 	template< typename T > quat_<T> quat_from_quats( const quat_<T>& source, const quat_<T>& target )
 	{ return -source * target; }
 
