@@ -88,18 +88,18 @@ namespace xo
 	/// get normalized quaternion, handles zero quaternion
 	template< typename T > quat_<T> normalized_safe( quat_<T> q ) { normalize_safe( q ); return q; }
 
-	// Fast normalization using first order Padé approximant, works only when ||q|| ~ 1
+	// Fast normalization using first order Pade approximant, works only when ||q|| ~ 1
 	template< typename T > void normalize_fast( quat_<T>& q )
 	{ T sl = squared_length( q ); q *= T( 2 ) / ( T( 1 ) + sl ); }
 
-	/// get normalized quaternion using first order Padé approximant, works only when ||q|| ~ 1
+	/// get normalized quaternion using first order Pade approximant, works only when ||q|| ~ 1
 	template< typename T > quat_<T> normalized_fast( quat_<T> q ) { normalize_fast( q ); return q; }
 
 	// Perform either fast or normal normalization, based on epsilon of squared length
 	template< typename T > void normalize_try_fast( quat_<T>& q, const T epsilon = T( 2.107342e-08 ) ) {
 		const auto slen = squared_length( q );
 		if ( std::abs( T( 1 ) - slen ) < epsilon )
-			q *= T( 2 ) / ( T( 1 ) + slen ); // first order Padé approximant
+			q *= T( 2 ) / ( T( 1 ) + slen ); // first order Pade approximant
 		else q *= T( 1 ) / std::sqrt( slen );
 	}
 
