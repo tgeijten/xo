@@ -33,6 +33,8 @@ namespace xo
 		/// element access
 		const T& operator[]( index_t idx ) const { return ( &x )[idx]; }
 		T& operator[]( index_t idx ) { return ( &x )[idx]; }
+		const T* data() const { return &x; }
+		T* data() { return &x; }
 
 		/// const properties
 		bool is_null() const { return x == T( 0 ) && y == T( 0 ) && z == T( 0 ); }
