@@ -42,8 +42,6 @@ namespace xo
 
 	/// Get mat3 from quaternion
 	template< typename T > mat3_<T> mat3_from_quat( const quat_<T>& q ) {
-		mat3_<T> m{ no_init };
-
 		auto xx = q.x * q.x;
 		auto yy = q.y * q.y;
 		auto zz = q.z * q.z;
@@ -54,17 +52,11 @@ namespace xo
 		auto wy = q.w * q.y;
 		auto wz = q.w * q.z;
 
-		m.e00 = T( 1 ) - T( 2 ) * ( yy + zz );
-		m.e01 = T( 2 ) * ( xy - wz );
-		m.e02 = T( 2 ) * ( xz + wy );
-		m.e10 = T( 2 ) * ( xy + wz );
-		m.e11 = T( 1 ) - T( 2 ) * ( xx + zz );
-		m.e12 = T( 2 ) * ( yz - wx );
-		m.e20 = T( 2 ) * ( xz - wy );
-		m.e21 = T( 2 ) * ( yz + wx );
-		m.e22 = T( 1 ) - T( 2 ) * ( xx + yy );
-
-		return m;
+		return mat3_<T>{
+			T(1) - T(2) * ( yy + zz ), T(2) * ( xy - wz ), T(2) * ( xz + wy ),
+			T(2) * ( xy + wz ), T(1) - T(2) * ( xx + zz ), T(2) * ( yz - wx ),
+			T(2) * ( xz - wy ), T(2) * ( yz + wx ), T(1) - T(2) * ( xx + yy )
+		};
 	}
 
 	/// Get quaternion from mat3
@@ -78,8 +70,7 @@ namespace xo
 			q.x = ( m.e21 - m.e12 ) * root;
 			q.y = ( m.e02 - m.e20 ) * root;
 			q.z = ( m.e10 - m.e01 ) * root;
-		}
-		else {
+		} else {
 			size_t i = 0;
 			if ( m[1][1] > m[0][0] ) i = 1;
 			if ( m[2][2] > m[i][i] ) i = 2;
