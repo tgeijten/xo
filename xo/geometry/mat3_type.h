@@ -20,12 +20,12 @@ namespace xo
 		T e00, e01, e02, e10, e11, e12, e20, e21, e22;
 
 		T* operator[]( index_t row ) { return &ptr()[row * 3]; }
-		const T* operator[]( index_t row ) const { return &ptr()[row * 3]; }
-		T& operator()( index_t row, index_t col ) { return ptr()[row * 3 + col]; }
+		const T* operator[]( index_t row ) const { return &data()[row * 3]; }
+		T& operator()( index_t row, index_t col ) { return data()[row * 3 + col]; }
 		const T& operator()( index_t row, index_t col ) const { return ptr()[row * 3 + col]; }
 
-		T* ptr() { return &e00; }
-		const T* ptr() const { return &e00; }
+		T* data() { return &e00; }
+		const T* data() const { return &e00; }
 
 		static constexpr mat3_<T> zero() { return mat3_<T>(); }
 		static constexpr mat3_<T> identity() { return mat3_<T>( T(1), T(0), T(0), T(0), T(1), T(0), T(0), T(0), T(1) ); }
