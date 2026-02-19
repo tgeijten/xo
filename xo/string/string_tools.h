@@ -51,8 +51,11 @@ namespace xo
 	/// check if a string contains a string
 	XO_API bool str_contains( const string& str, string_view substr );
 
-	/// check if a string contains a string
+	/// check if a string contains a char
 	XO_API bool str_contains( const string& str, char c );
+
+	/// check if a string contains any char
+	XO_API bool str_contains_any_of( const string& str, string_view chars );
 
 	/// remove leading and trailing characters
 	XO_API string trim_str( const string& str, const char* trim_chars = " \t\r\n\f\v" );

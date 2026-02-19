@@ -102,6 +102,11 @@ namespace xo
 		return str.find( c ) != string::npos;
 	}
 
+	bool str_contains_any_of( const string& str, string_view chars )
+	{
+		return str.find_first_of( chars ) != string::npos;
+	}
+
 	string trim_str( const string& s, const char* space_chars )
 	{
 		auto left = s.find_first_not_of( space_chars );
