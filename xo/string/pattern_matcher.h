@@ -5,6 +5,7 @@
 #include "xo/string/string_tools.h"
 #include "xo/container/prop_node.h"
 #include "xo/container/vector_type.h"
+#include "xo/geometry/mirror_tools.h"
 
 namespace xo
 {
@@ -45,5 +46,10 @@ namespace xo
 
 	inline string to_str( const pattern_matcher& pm ) {
 		return pm.str();
+	}
+
+	inline void mirror( pattern_matcher& pm ) {
+		for ( auto& p : pm.patterns() )
+			mirror( p );
 	}
 }

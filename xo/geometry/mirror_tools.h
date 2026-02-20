@@ -5,7 +5,6 @@
 #include "transform.h"
 #include "xo/numerical/bounds.h"
 #include "xo/utility/side.h"
-#include "xo/string/pattern_matcher.h"
 
 namespace xo
 {
@@ -51,11 +50,6 @@ namespace xo
 
 	inline void mirror( string& name ) {
 		str_mirror_side( name );
-	}
-
-	inline void mirror( pattern_matcher& pm ) {
-		for ( auto& p : pm.patterns() )
-			mirror( p );
 	}
 
 	template< typename T >
