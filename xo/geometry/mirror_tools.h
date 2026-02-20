@@ -59,17 +59,15 @@ namespace xo
 	}
 
 	template< typename T >
-	T& mirror_if( T& obj, bool m ) {
+	void mirror_if( T& obj, bool m ) {
 		if ( m )
 			mirror( obj );
-		return obj;
 	}
 
 	template< typename T >
-	T& mirror_axis_if( vec3_<T>& obj, bool m ) {
+	void mirror_axis_if( vec3_<T>& obj, bool m ) {
 		if ( m )
 			mirror_axis( obj );
-		return obj;
 	}
 
 	template< typename T >
