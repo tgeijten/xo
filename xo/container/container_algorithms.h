@@ -2,11 +2,11 @@
 
 #include <vector>
 #include <algorithm>
+#include <cmath>
 
 #include "xo/system/assert.h"
 #include "xo/xo_types.h"
 #include "xo/container/pair_type.h"
-#include <cmath>
 
 namespace xo
 {
@@ -31,7 +31,25 @@ namespace xo
 
 	template< typename C, typename T, typename Op >
 	T accumulate( const C& cont, T init, Op op ) {
-		return accumulate( std::cbegin( cont ), std::cend( cont ), init, op );
+		return xo::accumulate( std::cbegin( cont ), std::cend( cont ), init, op );
+	}
+
+	/// erase all elements matching value from c
+	template < typename C, typename T >
+	typename C::size_type erase( C& c, const T& value ) {
+		auto it = std::remove( c.begin(), c.end(), value );
+		auto count = std::distance( it, c.end() );
+		c.erase( it, c.end() );
+		return count;
+	}
+
+	/// erase all elements matching pred
+	template < typename C, typename P >
+	typename C::size_type erase_if( C& c, P pred ) {
+		auto it = std::remove_if( c.begin(), c.end(), pred );
+		auto count = std::distance( it, c.end() );
+		c.erase( it, c.end() );
+		return count;
 	}
 
 	template< typename It, typename T >
