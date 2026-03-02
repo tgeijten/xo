@@ -20,13 +20,25 @@ namespace xo
 	}
 
 	/// find element in a container
-	template< typename C > auto find( C& cont, const typename C::value_type& e ) {
+	template< typename C, typename T > auto find( const C& cont, const T& e ) {
 		auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( *it == e ) break; return it;
 	}
 
 	/// find element in a container
-	template< typename C > auto find( const C& cont, const typename C::value_type& e ) {
+	template< typename C, typename T > auto find( C& cont, const T& e ) {
 		auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( *it == e ) break; return it;
+	}
+
+	/// find ref to element in a container or throw
+	template< typename C, typename T > const auto& find_ref( const C& cont, const T& e ) {
+		for ( auto it = std::begin( cont ); it != std::end( cont ); ++it ) if ( *it == e ) return *it;
+		xo_error( "Could not find element" );
+	}
+
+	/// find ref to element in a container or throw
+	template< typename C, typename T > auto& find_ref( C& cont, const T& e ) {
+		for ( auto it = std::begin( cont ); it != std::end( cont ); ++it ) if ( *it == e ) return *it;
+		xo_error( "Could not find element" );
 	}
 
 	/// find the index of an element in an array-type container
@@ -51,12 +63,14 @@ namespace xo
 
 	/// find reference to element in a container, throw if not found
 	template< typename C, typename P > const auto& find_ref_if( const C& cont, P pred ) {
-		auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( pred( *it ) ) return *it; xo_error( "Could not find element" );
+		for ( auto it = std::begin( cont ); it != std::end( cont ); ++it ) if ( pred( *it ) ) return *it;
+		xo_error( "Could not find element" );
 	}
 
 	/// find reference to element in a container, throw if not found
 	template< typename C, typename P > auto& find_ref_if( C& cont, P pred ) {
-		auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( pred( *it ) ) return *it; xo_error( "Could not find element" );
+		for ( auto it = std::begin( cont ); it != std::end( cont ); ++it ) if ( pred( *it ) ) return *it;
+		xo_error( "Could not find element" );
 	}
 
 	/// count element in a container
