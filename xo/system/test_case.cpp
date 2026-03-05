@@ -84,7 +84,7 @@ namespace xo
 			else
 			{
 				auto lock = std::scoped_lock( g_log_mutex );
-				log::critical( name_, ": EXCEPTION: ", result_.error_ );
+				log::critical( "EXCEPTION: ", name_, ": ", result_.error_ );
 			}
 
 			return result_;

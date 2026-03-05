@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xo/system/xo_config.h"
+#include "xo/string/string_tools.h"
 #include <string>
 
 #if XO_EXCEPTIONS_ENABLED
@@ -37,3 +38,6 @@
 
 #define XO_NOT_IMPLEMENTED \
 	xo_error( std::string( __FUNCTION__ ) + "(): Function not implemented" );
+
+#define xo_rethrow( _EXCEPTION_, _MESSAGE_ ) \
+	xo_error( _MESSAGE_ + std::string( ":\n  " ) + xo::replace_str( _EXCEPTION_.what(), "\n", "\n  " ) );

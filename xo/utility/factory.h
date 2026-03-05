@@ -49,6 +49,18 @@ namespace xo
 			return it->second( args... );
 		}
 
+		/// create instance of type, rethrow exception in constructor with type
+		u_ptr< T > create_rethrow( const string& type_id, Args... args ) {
+			auto it = func_map_.find( type_id );
+			xo_error_if( it == end(), "Unknown type: " + type_id );
+			try {
+				return it->second( args... );
+			}
+			catch ( const std::exception& e ) {
+				xo_rethrow( e, "Error creating " + type_id );
+			}
+		}
+
 		/// try create instance of type, return nullptr if not found
 		u_ptr< T > try_create( const string& type_id, Args... args ) {
 			auto it = func_map_.find( type_id );
