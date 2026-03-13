@@ -104,7 +104,7 @@ namespace xo
 	/// limit transform function, used by soft_clamp
 	template< typename T > T limit_transform( T x, T limit ) { return limit - limit * limit / ( x + limit ); }
 
-	/// clamp with smooth boundary transformation
+	/// clamp with C1 continuous boundary transformation
 	template< typename T > T soft_clamp( T& v, const T& min, const T& max, const T& boundary ) {
 		auto r = boundary * ( max - min );
 		if ( v > max - r ) v = max - r + limit_transform( v - max + r, r );
@@ -112,8 +112,24 @@ namespace xo
 		return v;
 	}
 
+	/// clamp with C1 continuous boundary transformation
 	template< typename T > T soft_clamped( T v, const T& min, const T& max, const T& boundary ) {
 		return soft_clamp( v, min, max, boundary );
+	}
+
+	/// clamp with C1 continuous asymmetric boundaries defined by min < lb < max and lb < ub < max
+	template< typename T > T soft_clamped( const T& v, const T& min, const T& max, const T& lb, const T& ub ) {
+		if ( v < lb )
+			return min + squared( lb - min ) / ( 2 * lb - min - v );
+		if ( v > ub )
+			return max - squared( max - ub ) / ( max - 2 * ub + v );
+		else return v;
+	}
+
+	/// clamp with C1 continuous asymmetric relative boundaries defined by 0 < lb < ub < 1
+	template< typename T > T soft_clamped_relative( const T& v, const T& min, const T& max, const T& lb, const T& ub ) {
+		auto r = max - min;
+		return soft_clamped( v, min, max, min + lb * r, min + ub * r );
 	}
 
 	/// clamp that is C2 continuous with asymmetric boundaries defined by min < lb < max and lb < ub < max
@@ -125,7 +141,7 @@ namespace xo
 		else return v;
 	}
 
-	/// clamp that is C2 continuous with relative asymmetric boundaries defined by 0 < lb < 1 and lb < ub < 1
+	/// clamp that is C2 continuous with relative asymmetric boundaries defined by defined by 0 < lb < ub < 1 
 	template< typename T > T smooth_clamped_relative( const T& v, const T& min, const T& max, const T& lb, const T& ub ) {
 		auto r = max - min;
 		return smooth_clamped( v, min, max, min + lb * r, min + ub * r );
@@ -135,7 +151,7 @@ namespace xo
 	template< typename T >
 	uint32 float_to_byte( const T& value ) { return round_cast<uint32>( clamped( value, T( 0 ), T( 1 ) ) * T( 255 ) ); }
 
-	/// convert uint32 [0..255] to float [0..1]
+	/// convert uint32 [0..255] to float [0..1], starting at start_bit
 	template< typename T >
 	T get_byte( T value, int start_bit ) { return ( value >> start_bit ) & T( 255 ); }
 
