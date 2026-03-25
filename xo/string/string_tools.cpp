@@ -466,6 +466,15 @@ namespace xo
 		str += append;
 	}
 
+	string append_str( string_view str1, string_view str2 )
+	{
+		string result;
+		result.reserve( str1.size() + str2.size() );
+		result = str1;
+		result += str2;
+		return result;
+	}
+
 	string get_filename_ext( const string& str )
 	{
 		size_t n = str.find_last_of( '.' );

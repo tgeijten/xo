@@ -78,7 +78,11 @@ namespace xo
 		const L& get_label( index_t channel ) const { return labels_[channel]; }
 
 		/// add frame to storage
-		frame add_frame( T value = T( 0 ) ) { data_.resize( data_.size() + channel_size(), value ); ++frame_size_; return back(); }
+		frame add_frame( T value = T( 0 ) ) {
+			data_.resize( data_.size() + channel_size(), value );
+			++frame_size_;
+			return back();
+		}
 
 		/// add frame to storage
 		frame add_frame( const std::vector< T >& data ) {
@@ -144,6 +148,11 @@ namespace xo
 				data_.resize( nframes * nchannels, value );
 				frame_size_ = nframes;
 			}
+		}
+
+		void reserve( size_t nframes, size_t nchannels = channel_size() ) {
+			xo_error_if( nframes < frame_size() || nchannels < channel_size(), "Cannot shrink storage" );
+			reserve( nframes, nchannels );
 		}
 
 		std::vector<T> get_channel( index_t channel ) const {
