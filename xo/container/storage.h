@@ -150,9 +150,9 @@ namespace xo
 			}
 		}
 
-		void reserve( size_t nframes, size_t nchannels = channel_size() ) {
-			xo_error_if( nframes < frame_size() || nchannels < channel_size(), "Cannot shrink storage" );
-			reserve( nframes, nchannels );
+		void reserve( size_t nframes ) {
+			xo_error_if( nframes < frame_size(), "Cannot shrink storage" );
+			reserve( nframes, channel_size() );
 		}
 
 		std::vector<T> get_channel( index_t channel ) const {
