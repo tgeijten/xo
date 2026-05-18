@@ -23,7 +23,7 @@ namespace xo
 	XO_API bool file_exists( const path& file );
 	XO_API bool directory_exists( const path& folder );
 
-	XO_API void current_find_file_path( const path& dir );
+	XO_API void set_current_find_file_path( const path& dir );
 	XO_API const path& current_find_file_path();
 
 	XO_API path find_file( std::initializer_list<path> paths );

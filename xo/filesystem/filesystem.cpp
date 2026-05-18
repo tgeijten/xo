@@ -163,7 +163,7 @@ namespace xo
 #endif
 	}
 
-	void current_find_file_path( const path& folder )
+	void set_current_find_file_path( const path& folder )
 	{
 		g_current_find_file_folder = folder;
 	}
