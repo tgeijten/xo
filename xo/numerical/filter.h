@@ -44,7 +44,7 @@ namespace xo
 		f.b0_ = T( 1 ) / ( T( 1 ) + q * ita + ita * ita );
 		f.b_[0] = T( 2 ) * f.b0_;
 		f.b_[1] = f.b0_;
-		f.a_[0] = T( 2 ) * ( ita * ita - T( 1 ) ) * f.b0_;
+		f.a_[0] = T( 2 ) * ( ita * ita - T( 1 ) ) * f.b0_; // #todo: check if sign needs to be inverted
 		f.a_[1] = -( T( 1 ) - q * ita + ita * ita ) * f.b0_;
 		return f;
 	}
