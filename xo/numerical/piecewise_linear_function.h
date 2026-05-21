@@ -9,7 +9,8 @@ namespace xo
 	template< typename T >
 	struct piecewise_linear_function
 	{
-		using container_t = flat_map< T, T >;
+		using container_t = flat_map<T, T>;
+		using point_t = typename container_t::value_type;
 
 		piecewise_linear_function() : data_() {}
 
@@ -36,7 +37,7 @@ namespace xo
 		}
 
 		const container_t& data() const { return data_; }
-		const std::pair<double, double>& point( index_t i ) const { return *( data_.begin() + i ); }
+		const point_t& point( index_t i ) const { return *( data_.begin() + i ); }
 		size_t size() const { return data_.size(); }
 		auto front() const { return data_.front(); }
 		auto back() const { return data_.back(); }
