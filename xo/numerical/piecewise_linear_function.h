@@ -35,9 +35,11 @@ namespace xo
 			return lerp( it0->second, it1->second, t );
 		}
 
-		const container_t& data() { return data_; }
-		const std::pair< double, double >& point( index_t i ) { return *( data_.begin() + i ); }
+		const container_t& data() const { return data_; }
+		const std::pair<double, double>& point( index_t i ) const { return *( data_.begin() + i ); }
 		size_t size() const { return data_.size(); }
+		auto front() const { return data_.front(); }
+		auto back() const { return data_.back(); }
 
 	private:
 		container_t data_;
