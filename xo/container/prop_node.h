@@ -310,6 +310,13 @@ namespace xo
 		return true;
 	};
 
+	template< typename T, std::size_t N > prop_node to_prop_node( const std::array<T, N>& arr ) {
+		prop_node pn;
+		for ( size_t i = 0; i < arr.size(); ++i )
+			pn.add_value( arr[i] );
+		return pn;
+	}
+
 	template< typename T, std::size_t N > bool from_prop_node( const prop_node& pn, std::array<T, N>& arr ) {
 		auto n = std::min( arr.size(), pn.size() );
 		for ( index_t i = 0; i < n; ++i )
