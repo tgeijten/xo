@@ -52,13 +52,21 @@ namespace xo
 	}
 
 	/// find element in a container, returns iterator
-	template< typename C, typename P > auto find_if( const C& cont, const P pred ) {
+	template< typename C, typename P > auto find_if( const C& cont, P pred ) {
 		auto it = std::begin( cont ); for ( ; it != std::end( cont ); ++it ) if ( pred( *it ) ) break; return it;
 	}
 
 	/// find index to element in a container
-	template< typename C, typename P > index_t find_index_if( const C& cont, const P pred, index_t idx = 0 ) {
+	template< typename C, typename P > index_t find_index_if( const C& cont, P pred, index_t idx = 0 ) {
 		for ( ; idx < std::size( cont ); ++idx ) if ( pred( cont[idx] ) ) return idx; return no_index;
+	}
+
+	/// find indices to elements in a container
+	template< typename C, typename P >
+	std::vector<index_t> find_indices_if( const C& cont, P pred, index_t idx = 0 ) {
+		std::vector<index_t> result;
+		for ( ; idx < std::size( cont ); ++idx ) if ( pred( cont[idx] ) ) result.push_back( idx );
+		return result;
 	}
 
 	/// find reference to element in a container, throw if not found
