@@ -47,9 +47,16 @@ namespace xo
 		T& soft_clamp( T& value, const T& boundary ) const { return xo::soft_clamp( value, lower, upper, boundary ); }
 		T soft_clamped( T value ) const { return xo::soft_clamped( value, lower, upper ); }
 
-		// return inverted bounds
-		bounds< T > operator-() const { return bounds( -upper, -lower ); }
 		bool is_null() const { return lower == T( 0 ) && upper == T( 0 ); }
+
+		// return inverted bounds
+		bounds<T> operator-() const { return bounds( -upper, -lower ); }
+
+		// bounds scaling operators
+		bounds<T>& operator*=( T s ) { upper *= s; lower *= s; }
+		bounds<T>& operator*( T s ) { return bounds( upper * s, lower * s ); }
+		bounds<T>& operator/=( T s ) { upper /= s; lower /= s; }
+		bounds<T>& operator/( T s ) { return bounds( upper / s, lower / s ); }
 
 		T lower;
 		T upper;
