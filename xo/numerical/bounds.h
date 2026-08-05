@@ -39,8 +39,8 @@ namespace xo
 			else return { true, T( 0 ) };
 		}
 
-		void extend( const T& value ) { lower = min( lower, value ); upper = max( upper, value ); }
-		void extend( const bounds& b ) { lower = min( lower, b.lower ); upper = max( upper, b.upper ); }
+		bounds& extend( const T& value ) { lower = min( lower, value ); upper = max( upper, value ); return *this; }
+		bounds& extend( const bounds& b ) { lower = min( lower, b.lower ); upper = max( upper, b.upper ); return *this; }
 
 		T& clamp( T& value ) const { return xo::clamp( value, lower, upper ); }
 		T clamped( T value ) const { return xo::clamped( value, lower, upper ); }
@@ -48,22 +48,25 @@ namespace xo
 		T soft_clamped( T value ) const { return xo::soft_clamped( value, lower, upper ); }
 
 		bool is_null() const { return lower == T( 0 ) && upper == T( 0 ); }
+		bool empty() const { return lower >= upper; }
 
 		// return inverted bounds
 		bounds<T> operator-() const { return bounds( -upper, -lower ); }
 
 		// bounds scaling operators
-		bounds<T>& operator*=( T s ) { upper *= s; lower *= s; }
-		bounds<T>& operator*( T s ) { return bounds( upper * s, lower * s ); }
-		bounds<T>& operator/=( T s ) { upper /= s; lower /= s; }
-		bounds<T>& operator/( T s ) { return bounds( upper / s, lower / s ); }
+		bounds<T>& operator*=( T s ) { lower *= s; upper *= s; return *this; }
+		bounds<T>& operator/=( T s ) { lower /= s; upper /= s; return *this; }
+		bounds<T> operator*( T s ) const { return bounds( lower * s, upper * s ); }
+		bounds<T> operator/( T s ) const { return bounds( lower / s, upper / s ); }
 
 		T lower;
 		T upper;
 
+		static constexpr bounds<T> zero() { return bounds<T>( T( 0 ), T( 0 ) ); }
 		static constexpr bounds<T> infinite() { return bounds<T>( num<T>::lowest, num<T>::max ); }
 		static constexpr bounds<T> positive() { return bounds<T>( T( 0 ), num<T>::max ); }
 		static constexpr bounds<T> negative() { return bounds<T>( num<T>::lowest, T( 0 ) ); }
+		static constexpr bounds<T> no_bounds() { return bounds<T>( num<T>::max, num<T>::lowest ); }
 	};
 
 	using boundsf = bounds<float>;
