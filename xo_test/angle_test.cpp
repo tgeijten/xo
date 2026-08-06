@@ -1,6 +1,7 @@
 #include "xo/system/test_case.h"
 #include "xo/geometry/angle.h"
 #include "xo/geometry/quat.h"
+#include "xo/numerical/bounds.h"
 
 namespace xo
 {
@@ -47,5 +48,11 @@ namespace xo
 
 		auto r3 = r1 + r2;
 		XO_CHECK( r1 < r2 );
+
+		// angle bounds #todo: make sure test 1-4 compile
+		constexpr auto test1 = 90.0 * degreed( 10.0 );
+		//constexpr auto test2 = test1 * test1;
+		//constexpr auto test3 = degreed( 90.0 ) * degreed( 10.0 );
+		//xo::bounds<degreed> test4 = xo::bounds<degreed>::no_bounds();
 	}
 }

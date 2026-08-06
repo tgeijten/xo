@@ -5,6 +5,7 @@
 #include "xo/numerical/math.h"
 #include "xo/numerical/constants.h"
 #include "xo/container/prop_node.h"
+#include <utility>
 
 namespace xo
 {
@@ -51,13 +52,15 @@ namespace xo
 		bool empty() const { return lower >= upper; }
 
 		// return inverted bounds
-		bounds<T> operator-() const { return bounds( -upper, -lower ); }
+		bounds operator-() const { return bounds( -upper, -lower ); }
 
-		// bounds scaling operators
-		bounds<T>& operator*=( T s ) { lower *= s; upper *= s; return *this; }
-		bounds<T>& operator/=( T s ) { lower /= s; upper /= s; return *this; }
-		bounds<T> operator*( T s ) const { return bounds( lower * s, upper * s ); }
-		bounds<T> operator/( T s ) const { return bounds( lower / s, upper / s ); }
+		// bounds scaling
+		bounds& scale( const T& s ) { lower *= s; upper *= s; if ( s < 0 ) std::swap( lower, upper ); return *this; }
+		bounds& operator*=( const T& s ) { return scale( s ); }
+		bounds& operator/=( const T& s ) { return scale( T( 1 ) / s ); }
+		bounds operator*( const T& s ) const { return bounds( *this ) *= s; }
+		bounds operator/( const T& s ) const { return bounds( *this ) /= s; }
+		friend bounds operator*( const T& s, const bounds& b ) { return b * s; }
 
 		T lower;
 		T upper;
