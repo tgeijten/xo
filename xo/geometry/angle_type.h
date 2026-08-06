@@ -22,11 +22,11 @@ namespace xo
 
 		/// copy / conversion constructor
 		template< angle_unit U, typename T2 > explicit constexpr angle_( const angle_<U, T2>& a )
-			: arithmetic< T, angle_<angle_unit::degrees, T>>( T( a.deg_value() ) ) {}
+			: arithmetic< T, angle_<angle_unit::degrees, T> >( T( a.deg_value() ) ) {}
 
 		/// value constructor
 		template< typename T2 > explicit constexpr angle_( const T2& v )
-			: arithmetic< T, angle_<angle_unit::degrees, T>>( T( v ) ) {}
+			: arithmetic< T, angle_<angle_unit::degrees, T> >( T( v ) ) {}
 
 		/// copy assignment
 		angle_& operator=( const angle_& a ) { this->value = a.value; return *this; }
