@@ -18,7 +18,7 @@ namespace xo
 		static constexpr T two_pi() { return T( 2 ) * T( XO_PI_LONG_DOUBLE ); }
 		static constexpr T e() { return T( XO_E_LONG_DOUBLE ); }
 		static constexpr T epsilon() { return std::numeric_limits< T >::epsilon(); }
-		static constexpr T ample_epsilon() { return T( 8 * std::numeric_limits< T >::epsilon() ); }
+		static constexpr T ample_epsilon() { return T( 8 ) * std::numeric_limits< T >::epsilon(); }
 		static constexpr T max() { return std::numeric_limits<T>::max(); }
 		static constexpr T min() { return std::numeric_limits<T>::min(); }
 		static constexpr T lowest() { return std::numeric_limits<T>::lowest(); }
@@ -43,7 +43,7 @@ namespace xo
 		static constexpr T sqrt2 = T( XO_SQRT2_LONG_DOUBLE );
 		static constexpr T half_sqrt2 = T( 0.5 ) * T( XO_SQRT2_LONG_DOUBLE );
 		static constexpr T epsilon = std::numeric_limits<T>::epsilon();
-		static constexpr T ample_epsilon = T( 8 * std::numeric_limits<T>::epsilon() );
+		static constexpr T ample_epsilon = T( 8 ) * std::numeric_limits<T>::epsilon();
 		static constexpr T max = std::numeric_limits<T>::max();
 		static constexpr T highest = std::numeric_limits<T>::max();
 		static constexpr T smallest = std::numeric_limits<T>::min();
