@@ -13,7 +13,9 @@
 
 namespace xo
 {
+	const char* characters_requiring_quotes = "{}[]#<>\\/:=";
 	using str_replace_vec = std::vector< std::pair< string, string > >;
+
 	void replace_all( string& s, const str_replace_vec& rvec )
 	{
 		for ( auto& r : rvec )
@@ -172,11 +174,11 @@ namespace xo
 		bool show_value = !pn.get_str().empty() || pn.size() == 0;
 		xo_error_if( !show_label && show_value && !inside_array, "Value without label outside array" );
 		if ( show_label )
-			str << try_quoted( label, "{}[]#<>\\/" );
+			str << try_quoted( label, characters_requiring_quotes );
 		if ( show_label && show_value )
 			str << equals_str;
 		if ( show_value )
-			str << try_quoted( pn.get_str(), "{}[]#<>\\/" );
+			str << try_quoted( pn.get_str(), characters_requiring_quotes );
 	}
 
 	void write_zml_node_one_line( std::ostream& str, const string& label, const prop_node& pn, bool inside_array )
