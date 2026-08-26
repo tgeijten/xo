@@ -14,7 +14,6 @@ namespace xo
 		bool empty() const { return major_ == 0 && minor_ == 0 && patch_ == 0 && build_ == 0 && postfix_.empty(); }
 		bool is_at_least( int maj, int min, int patch = 0, int bld = 0 ) const;
 		bool is_below( int maj, int min, int patch = 0, int bld = 0 ) const;
-		string str() const { }
 
 		int major_;
 		int minor_;
