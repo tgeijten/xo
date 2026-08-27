@@ -250,12 +250,13 @@ namespace xo
 		return s;
 	}
 
-	string convert_all_caps_str( string s, string_view sep_chars )
+	string to_title_case( string s, string_view sep_chars )
 	{
 		bool new_word = true;
 		for ( char& c : s ) {
 			if ( !new_word )
 				c = std::tolower( c );
+			else c = std::toupper( c );
 			new_word = sep_chars.find( c ) != string::npos;
 		}
 		return s;
