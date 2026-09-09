@@ -19,13 +19,16 @@ namespace xo
 				bool has_hsv = xo::str_begins_with( str, "hsv" );
 				if ( has_rgb || has_hsv ) {
 					auto v = xo::split_str( str, ",; ()" );
+					auto has_dot = xo::str_contains( str, '.' );
 					if ( v.size() == 4 ) {
 						if ( has_rgb ) {
-							c = color{ std::stof( v[1] ) / 255, std::stof( v[2] ) / 255, std::stof( v[3] ) / 255 };
+							float s = has_dot ? 1.0 : 1.0 / 255;
+							c = color{ s * std::stof( v[1] ), s * std::stof( v[2] ), s * std::stof( v[3] ) };
 							return true;
 						}
 						else if ( has_hsv ) {
-							c = color_from_hsv( std::stof( v[1] ), std::stof( v[2] ) / 100, std::stof( v[3] ) / 100 );
+							float s = has_dot ? 1.0 : 0.01;
+							c = color_from_hsv( std::stof( v[1] ), s * std::stof( v[2] ), s * std::stof( v[3] ) );
 							return true;
 						}
 						else return false;
