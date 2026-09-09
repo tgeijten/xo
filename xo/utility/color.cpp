@@ -22,12 +22,12 @@ namespace xo
 					auto has_dot = xo::str_contains( str, '.' );
 					if ( v.size() == 4 ) {
 						if ( has_rgb ) {
-							float s = has_dot ? 1.0 : 1.0 / 255;
+							float s = has_dot ? 1.0f : 1.0f / 255.0f;
 							c = color{ s * std::stof( v[1] ), s * std::stof( v[2] ), s * std::stof( v[3] ) };
 							return true;
 						}
 						else if ( has_hsv ) {
-							float s = has_dot ? 1.0 : 0.01;
+							float s = has_dot ? 1.0f : 0.01f;
 							c = color_from_hsv( std::stof( v[1] ), s * std::stof( v[2] ), s * std::stof( v[3] ) );
 							return true;
 						}
