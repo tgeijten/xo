@@ -81,6 +81,9 @@ namespace xo
 		/// get a value of a child node, only stores if exists
 		template< typename T > bool try_get( T& value, const key_t& key ) const;
 
+		/// get a value of a child node, only stores if exists
+		template< typename T > bool try_get( xo::optional<T>& value, const key_t& key ) const;
+
 		/// get the value of a child node for a range of keys, or a default value if it doesn't exist
 		template< typename T > T get_any( std::initializer_list<key_t> keys, const T& def ) const;
 
@@ -350,12 +353,12 @@ namespace xo
 
 	template< typename T >
 	T prop_node::get( const key_t& key ) const {
-		return get_child( key ).get< T >();
+		return get_child( key ).get<T>();
 	}
 
 	template< typename T >
 	T prop_node::get( index_t idx ) const {
-		return get_child( idx ).get< T >();
+		return get_child( idx ).get<T>();
 	}
 
 	template< typename T >
@@ -376,14 +379,22 @@ namespace xo
 	template< typename T >
 	optional<T> prop_node::try_get( const key_t& key ) const {
 		if ( auto c = try_get_child( key ) )
-			return c->try_get< T >();
-		else return optional< T >();
+			return c->try_get<T>();
+		else return optional<T>();
 	}
 
 	template< typename T >
 	bool prop_node::try_get( T& value, const key_t& key ) const {
 		if ( auto c = try_get_child( key ) ) {
-			value = c->get< T >(); return true;
+			value = c->get<T>(); return true;
+		}
+		else return false;
+	}
+
+	template< typename T >
+	bool prop_node::try_get( xo::optional<T>& value, const key_t& key ) const {
+		if ( auto c = try_get_child( key ) ) {
+			value = c->get<T>(); return true;
 		}
 		else return false;
 	}
@@ -391,22 +402,22 @@ namespace xo
 	template< typename T >
 	T prop_node::get_any( std::initializer_list<key_t> keys, const T& def ) const {
 		if ( auto c = try_get_any_child( keys ) )
-			return c->get< T >();
+			return c->get<T>();
 		return def;
 	}
 
 	template< typename T >
 	T prop_node::get_any( std::initializer_list<key_t> keys ) const {
 		if ( auto c = try_get_any_child( keys ) )
-			return c->get< T >();
+			return c->get<T>();
 		xo_error( "Could not find key: " + concat_str( keys, " or " ) );
 	}
 
 	template< typename T >
-	optional< T > prop_node::try_get_any( std::initializer_list<key_t> keys ) const {
+	optional<T> prop_node::try_get_any( std::initializer_list<key_t> keys ) const {
 		if ( auto c = try_get_any_child( keys ) )
-			return c->get< T >();
-		return optional< T >();
+			return c->get<T>();
+		return optional<T>();
 	}
 
 	template< typename T >
