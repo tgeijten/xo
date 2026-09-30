@@ -20,6 +20,7 @@ namespace smart_enum_detail
 		}
 		return false;
 	}
+
 	inline std::string to_str( int e, const char* va_args ) {
 		while ( e-- > 0 && *va_args ) {
 			va_args += std::strcspn( va_args, sep_chars );
@@ -51,12 +52,12 @@ XO_SMART_ENUM_DETAIL_DEFINE_FUNCTIONS( E, #__VA_ARGS__ )
 enum class E : T { __VA_ARGS__ }; \
 XO_SMART_ENUM_DETAIL_DEFINE_FUNCTIONS( E, #__VA_ARGS__ )
 
-#define XO_SMART_ENUM_DETAIL_CHECK_VALUE( E, V ) \
-static_assert( sizeof( E::V ) > 0, "Invalid enum value" );
-
-#define XO_DEFINE_ENUM_SERIALIZATION( E, ... ) \
-XO_FOR_EACH( XO_SMART_ENUM_DETAIL_CHECK_VALUE, E, __VA_ARGS__ ) \
-XO_SMART_ENUM_DETAIL_DEFINE_FUNCTIONS( E, #__VA_ARGS__ )
-
 #define XO_DEFINE_ENUM_SERIALIZATION_UNCHECKED( E, ... ) \
 XO_SMART_ENUM_DETAIL_DEFINE_FUNCTIONS( E, #__VA_ARGS__ )
+
+#define XO_SMART_ENUM_DETAIL_CHECK_VALUE( E, A, I ) \
+static_assert( E::A == E( I ), "Enum serialization mismatch" );
+
+#define XO_DEFINE_ENUM_SERIALIZATION( E, ... ) \
+XO_FOR_EACH_I( XO_SMART_ENUM_DETAIL_CHECK_VALUE, E, __VA_ARGS__ ) \
+XO_DEFINE_ENUM_SERIALIZATION_UNCHECKED( E, __VA_ARGS__ )
