@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 
+#include "for_each.h"
+
 namespace smart_enum_detail
 {
 	constexpr const char* sep_chars = " ,\t\n\r";
@@ -49,5 +51,12 @@ XO_SMART_ENUM_DETAIL_DEFINE_FUNCTIONS( E, #__VA_ARGS__ )
 enum class E : T { __VA_ARGS__ }; \
 XO_SMART_ENUM_DETAIL_DEFINE_FUNCTIONS( E, #__VA_ARGS__ )
 
+#define XO_SMART_ENUM_DETAIL_CHECK_VALUE( E, V ) \
+static_assert( sizeof( E::V ) > 0, "Invalid enum value" );
+
 #define XO_DEFINE_ENUM_SERIALIZATION( E, ... ) \
+XO_FOR_EACH( XO_SMART_ENUM_DETAIL_CHECK_VALUE, E, __VA_ARGS__ ) \
+XO_SMART_ENUM_DETAIL_DEFINE_FUNCTIONS( E, #__VA_ARGS__ )
+
+#define XO_DEFINE_ENUM_SERIALIZATION_UNCHECKED( E, ... ) \
 XO_SMART_ENUM_DETAIL_DEFINE_FUNCTIONS( E, #__VA_ARGS__ )
