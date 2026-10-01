@@ -111,6 +111,10 @@ namespace xo
 	template< typename T > vec3_<T>& clamp( vec3_<T>& v, const T& lb, const T& ub )
 	{ clamp( v.x, lb, ub ); clamp( v.y, lb, ub ); clamp( v.z, lb, ub ); return v; }
 
+	/// clamp a value so that it is between lb and ub.
+	template< typename T > vec3_<T>& clamp( vec3_<T>& v, const vec3_<T>& lb, const vec3_<T>& ub )
+	{ clamp( v.x, lb.x, ub.x ); clamp( v.y, lb.y, ub.y ); clamp( v.z, lb.z, ub.z ); return v; }
+
 	/// Get normalized vec3
 	template< typename T > vec3_<T> normalized( vec3_<T> v )
 	{ normalize( v ); return v; }
